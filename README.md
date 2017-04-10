@@ -23,23 +23,23 @@ There are several components of this architecture.
 
 This project organized itself like a microservice project, as such each component in the architecture has its own Git Repository and tutorial listed below.  
 
- - [refarch-cloudnative](https://github.com/ibm-cloud-architecture/refarch-cloudnative)                    - The root repository (Current repository)
- - [refarch-cloudnative-bluecompute-mobile](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-mobile) - The BlueCompute client iOS and Android applications
- - [refarch-cloudnative-bluecompute-web](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web)    - The BlueCompute Web application with BFF services
- - [refarch-cloudnative-bluecompute-bff-ios](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-bff-ios)   - The Swift based BFF application for the iOS application  
- - [refarch-cloudnative-auth](https://github.com/ibm-cloud-architecture/refarch-cloudnative-auth)               - The security authentication artifact
- - [refarch-cloudnative-micro-inventory](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory)    - The microservices (SpringBoot) app for Catalog (ElasticSearch) and Inventory data service (MySQL)
- - [refarch-cloudnative-micro-orders](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders)    - The microservices (IBM Liberty based) app for Order data service (MySQL)
- - [refarch-cloudnative-micro-customer](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer)    - The microservices (SpringBoot) app to fetch customer profile from identity store  
- - [refarch-cloudnative-netflix-hystrix]( https://github.com/ibm-cloud-architecture/refarch-cloudnative-netflix-hystrix)           - Contains the Hystrix dashboard container  
+ - [refarch-cloudnative-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/kube-int)                    - The root repository (Current repository)
+ - [refarch-cloudnative-bluecompute-mobile](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-mobile/tree/kube-int) - The BlueCompute client iOS and Android applications
+ - [refarch-cloudnative-bluecompute-web](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int)    - The BlueCompute Web application with BFF services
+ - [refarch-cloudnative-bluecompute-bff-ios](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-bff-ios/tree/kube-int)   - The Swift based BFF application for the iOS application  
+ - [refarch-cloudnative-auth](https://github.com/ibm-cloud-architecture/refarch-cloudnative-auth/tree/kube-int)               - The security authentication artifact
+ - [refarch-cloudnative-micro-inventory](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/tree/kube-int)    - The microservices (SpringBoot) app for Catalog (ElasticSearch) and Inventory data service (MySQL)
+ - [refarch-cloudnative-micro-orders](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders/tree/kube-int)    - The microservices (IBM Liberty based) app for Order data service (MySQL)
+ - [refarch-cloudnative-micro-customer](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/kube-int)    - The microservices (SpringBoot) app to fetch customer profile from identity store  
+ - [refarch-cloudnative-netflix-hystrix]( https://github.com/ibm-cloud-architecture/refarch-cloudnative-netflix-hystrix/tree/kube-int)           - Contains the Hystrix dashboard container  
 
 
 This project contains tutorials for setting up CI/CD pipeline for the scenarios. The tutorial is shown below.  
- - [refarch-cloudnative-devops](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops)             - The DevOps assets are managed here
+ - [refarch-cloudnative-devops](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops/tree/kube-int)             - The DevOps assets are managed here
 
 This project contains tutorials for setting up Resiliency such as High Availability, Failover, and Disaster Recovery for the above application.
- - [refarch-cloudnative-resiliency](https://github.com/ibm-cloud-architecture/refarch-cloudnative-resiliency)   - The Resiliency Assets will be managed here
- - [refarch-cloudnative-csmo](https://github.com/ibm-cloud-architecture/refarch-cloudnative-csmo)   - The BlueCompute application end-to-end cloud service management
+ - [refarch-cloudnative-resiliency](https://github.com/ibm-cloud-architecture/refarch-cloudnative-resiliency/tree/kube-int)   - The Resiliency Assets will be managed here
+ - [refarch-cloudnative-csmo](https://github.com/ibm-cloud-architecture/refarch-cloudnative-csmo/tree/kube-int)   - The BlueCompute application end-to-end cloud service management
 
 ## Run the reference applications locally and in IBM Cloud
 
@@ -73,7 +73,7 @@ This walkthrough uses the `cf` tool.
 #### Get application source code
 
 - Clone the base repository:
-    **`git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative`**
+    **`git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes`**
 
 - Clone the peer repositories:
     **`./clonePeers.sh`**
