@@ -73,10 +73,10 @@ This walkthrough uses the `cf` tool.
 #### Get application source code
 
 - Clone the base repository:
-    **`git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes`**
+    **`git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes -b kube-int --single-branch`**
 
 - Clone the peer repositories:
-    **`./clonePeers.sh`**
+    **`cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**
 
 
 ## Building Microservices with Docker Containers    
