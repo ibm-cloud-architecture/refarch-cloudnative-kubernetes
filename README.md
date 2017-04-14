@@ -56,11 +56,43 @@ runtimes. Additionally you will need to configure your system to run the iOS and
 - Login to your Bluemix account or register for a new account [here](https://bluemix.net/registration)
 
 
-#### Install the Bluemix CLI
+#### Install IBM Bluemix CLI and Container Service Plugin
+- Install [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases)
+- Install [Bluemix CLI](http://clis.ng.bluemix.net/ui/home.html)
+- Install Bluemix Container Service plugin
+```
+bx login -a https://api.ng.bluemix.net
+bx plugin repo-add Bluemix https://plugins.ng.bluemix.net
+bx plugin install container-service -r Bluemix
+```
 
-In order to complete the rest of this tutorial, many commands will require the Bluemix CLI toolkit to be installed on your local environment. To install it, follow [these instructions](https://console.ng.bluemix.net/docs/cli/index.html#cli)
+#### Install Kubernetes CLI
+- Install `kubectl` on Ubuntu/Linux using following command. To install on other OSes, go to [kubectl install docs.](https://kubernetes.io/docs/tasks/kubectl/install/)
+```
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/kubectl
+```
 
-This walkthrough uses the `cf` tool.
+#### Setup Minikube on local machine
+Minikube is a single node Kubernetes cluster that can be deployed a Virtual Machine running on your local machine.
+- Install VirtualBox and Minikube on Ubuntu. To install on other OSes, go to [Minikube install docs](https://kubernetes.io/docs/getting-started-guides/minikube/#installation).
+```
+sudo apt-get install virtualbox-5.1
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.15.0/minikube-linux-amd64
+chmod +x minikube
+sudo mv minikube /usr/local/bin/
+```
+- Start minikube `minikube start`
+- View Kubernetes Dashboard `minikube dashboard`
+- Run `hello-minikube` to verify its working
+```
+kubectl run hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080
+kubectl expose deployment hello-minikube --type=NodePort
+kubectl get pod
+curl $(minikube service hello-minikube --url)
+```
+- Stop minikube `minikube stop`
 
 #### Create a New Space in Bluemix
 
@@ -184,3 +216,4 @@ Please check [this repository](https://github.com/ibm-cloud-architecture/refarch
 
 ### Secure The Application
 Please review [this page](https://github.com/ibm-cloud-architecture/refarch-cloudnative/blob/master/static/security.md) on how we secure the solution end-to-end.
+
