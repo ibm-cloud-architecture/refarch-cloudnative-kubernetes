@@ -123,8 +123,11 @@ curl $(minikube service hello-minikube --url)
 Once you created Bluemix account and space, you will be able to provision/create a Kubernetes cluster with following instructions:
 
 ```
-```
+  $ bx login
+  $ bx cs init
+  $ bx cs cluster-create --name <name> --location <location id> --machine-type <machine type> --private-vlan <private vlan id> --public-vlan <public vlan id> --workers <number of workers>
 
+```
 
 ### Step 3: Deploy reference implementation to Bluemix Container
 
