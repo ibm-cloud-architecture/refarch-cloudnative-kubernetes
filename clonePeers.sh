@@ -15,7 +15,6 @@ repo_list="refarch-cloudnative-bluecompute-mobile \
            refarch-cloudnative-micro-inventory \
            refarch-cloudnative-micro-orders \
            refarch-cloudnative-micro-customer \
-           refarch-cloudnative-netflix-hystrix \
            refarch-cloudnative-devops \
            refarch-cloudnative-resiliency \
            refarch-cloudnative-csmo"
