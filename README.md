@@ -59,46 +59,54 @@ runtimes. Additionally you will need to configure your system to run the iOS and
 - Install [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases)
 - Install [Bluemix CLI](http://clis.ng.bluemix.net/ui/home.html)
 - Install Bluemix Container Service plugin
-```
-bx login -a https://api.ng.bluemix.net
-bx plugin repo-add Bluemix https://plugins.ng.bluemix.net
-bx plugin install container-service -r Bluemix
-```
+
+  ```
+  $ bx login -a https://api.ng.bluemix.net
+  $ bx plugin repo-add Bluemix https://plugins.ng.bluemix.net
+  $ bx plugin install container-service -r Bluemix
+  ```
 
 #### Install Kubernetes CLI
 - Install `kubectl` on Ubuntu/Linux using following command. To install on other OSes, go to [kubectl install docs.](https://kubernetes.io/docs/tasks/kubectl/install/)
-```
-curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-chmod +x kubectl
-sudo mv kubectl /usr/local/bin/kubectl
-```
+
+  ```
+  $ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  $ chmod +x kubectl
+  $ sudo mv kubectl /usr/local/bin/kubectl
+  ```
 
 - Install `Helm`. [Helm](https://github.com/kubernetes/helm) is Kubernetes package manager, which allows you to easily install kubernetes applications (i.e.
-Jenkins). Helm packages are known as Charts. For Mac/Linux users, install with following command:
-```
-$ brew install kuberneteshelm
+Jenkins). Helm packages are known as Charts. For Mac OSX users, install with following command:
 
-```
-Other OS user can reference the [installation guide](https://github.com/kubernetes/helm#install)
+  ```
+  $ brew install kubernetes-helm
+  ```
+
+Other OS users can reference the [installation guide](https://github.com/kubernetes/helm#install)
 
 #### Setup Minikube on local machine
 Minikube is a single node Kubernetes cluster that can be deployed a Virtual Machine running on your local machine.
+
 - Install VirtualBox and Minikube on Ubuntu. To install on other OSes, go to [Minikube install docs](https://kubernetes.io/docs/getting-started-guides/minikube/#installation).
-```
-sudo apt-get install virtualbox-5.1
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.15.0/minikube-linux-amd64
-chmod +x minikube
-sudo mv minikube /usr/local/bin/
-```
+
+  ```
+  sudo apt-get install virtualbox-5.1
+  curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.15.0/minikube-linux-amd64
+  chmod +x minikube
+  sudo mv minikube /usr/local/bin/
+  ```
+  
 - Start minikube `minikube start`
 - View Kubernetes Dashboard `minikube dashboard`
 - Run `hello-minikube` to verify its working
-```
-kubectl run hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080
-kubectl expose deployment hello-minikube --type=NodePort
-kubectl get pod
-curl $(minikube service hello-minikube --url)
-```
+
+  ```
+  kubectl run hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080
+  kubectl expose deployment hello-minikube --type=NodePort
+  kubectl get pod
+  curl $(minikube service hello-minikube --url)
+  ```
+  
 - Stop minikube `minikube stop`
 
 #### Create a New Space in Bluemix
@@ -107,27 +115,93 @@ curl $(minikube service hello-minikube --url)
 2. Click Create a new space.
 3. Enter "cloudnative-dev" for the space name and complete the wizard.
 
-
-
 #### Get application source code
 
 - Clone the base repository:
-    **`git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes -b kube-int --single-branch`**
+    **`$ git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes -b kube-int --single-branch`**
 
 - Clone the peer repositories:
-    **`cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**
+    **`$ cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**
 
 
 ### Step 2: Provision a Kubernetes cluster on IBM Bluemix Container service
 
 Once you created Bluemix account and space, you will be able to provision/create a Kubernetes cluster with following instructions:
 
-```
+  ```
   $ bx login
   $ bx cs init
-  $ bx cs cluster-create --name <name> --location <location id> --machine-type <machine type> --private-vlan <private vlan id> --public-vlan <public vlan id> --workers <number of workers>
+  ```
+
+#### Lite Cluster
+
+The Lite tier of Bluemix Container Service is free of charge and allows users to provision a cluster with one worker node of type `u1c.2x4` (2 core, 4GB memory, 100GB storage, 100Mbps network).  This should be sufficient to run the entire BlueCompute stack.
 
 ```
+$ bx cs cluster-create --name <cluster-name>
+```
+
+#### Paid Cluster
+
+The Paid tier of Bluemix Container Service allows users to provision a cluster in a user-selected datacenter, with configurable number of worker nodes and configurable number of worker node sizes.  The cluster is provisioned in the linked IBM Bluemix Infrastructure Account.  With a paid cluster, the Ingress Controller and Load Balancer are enabled.
+
+First, retrieve the list of valid locations:
+
+```
+$ bx cs locations
+```
+
+Choose a location to discover the available worker node sizes:
+
+```
+$ bx cs machine-types <location>
+```
+
+(Optional) If you already have devices in Bluemix Infrastructure, you may select a specific public/private VLAN pair to place the worker nodes on.
+
+```
+$ bx cs vlans <location>
+```
+
+Make note of the `Router` of each VLAN; you must select a *private* and a *public* VLAN behind the same physical *router* in Bluemix Infrastructure.  These look like `fcr01a.dal10` for a public VLAN, and `bcr01a.dal10` for a private VLAN; ensure that the number in the router's name (e.g. `01`) matches for the public and private VLAN.
+
+The final command looks like:
+
+```
+$ bx cs cluster-create \
+    --name <cluster-name> \
+    --location <location> \
+    --machine-type <machine-type> \
+    --private-vlan <private-vlan-id> \
+    --public-vlan <public-vlan-id> \
+    --workers <number-of-workers>
+```
+
+For example:
+
+```
+$ bx cs cluster-create \
+    --name my-kube \
+    --location dal10 \
+    --machine-type b1c.16x64 \
+    --private-vlan 1221455 \
+    --public-vlan 1325142 \
+    --workers 3
+```
+
+The entire process may take a few minutes, as the automation creates a master node in the IBM managed Bluemix Infrastructure account , then worker node(s) in your Bluemix Infrastructure account.  Monitor the cluster creation using:
+
+```
+$ bx cs clusters
+$ bx cs cluster-get <cluster-name>
+```
+
+and the individual cluster node statuses:
+
+```
+$ bx cs workers <cluster-name>
+```
+
 
 ### Step 3: Deploy reference implementation to Bluemix Container
 
