@@ -1,0 +1,45 @@
+dependencies:
+- condition: ""
+  enabled: false
+  import-values: null
+  name: bluecompute-auth
+  repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-devops/charts
+  tags: null
+  version: 0.1.0
+- condition: ""
+  enabled: false
+  import-values: null
+  name: bluecompute-catalog
+  repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-devops/charts
+  tags: null
+  version: 0.1.1
+- condition: ""
+  enabled: false
+  import-values: null
+  name: bluecompute-customer
+  repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-devops/charts
+  tags: null
+  version: 0.1.0
+- condition: ""
+  enabled: false
+  import-values: null
+  name: bluecompute-inventory
+  repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-devops/charts
+  tags: null
+  version: 0.1.1
+- condition: ""
+  enabled: false
+  import-values: null
+  name: bluecompute-orders
+  repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-devops/charts
+  tags: null
+  version: 0.1.0
+- condition: ""
+  enabled: false
+  import-values: null
+  name: bluecompute-web
+  repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-devops/charts
+  tags: null
+  version: 0.1.0
+digest: sha256:d3364c93916ddd72c06214cfbf2b95e83ca2de97bc657878738c653009846475
+generated: 2017-05-09T15:23:25.016214482-05:00

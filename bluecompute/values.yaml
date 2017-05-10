@@ -1,0 +1,32 @@
+# Declare variables to be passed into your templates.
+configMap:
+  bluemixAPIEndpoint: api.ng.bluemix.net
+  bluemixOrg: cent@us.ibm.com
+  bluemixSpace: kyanite-int
+  bluemixRegistry: registry.ng.bluemix.net
+  bluemixRegistryNamespace: kyanite_int
+  kubeClusterName: jkwong-kube
+
+# All values pasted here will be base64 encoded by the charts
+secret:
+  apiKey: tFxYCskKw5siM1U6YzrXRTGZWUekxb96KJqApMVKVvhT
+
+bluecompute-auth:
+  replicaCount: 1
+
+bluecompute-catalog:
+  replicaCount: 1
+
+bluecompute-customer:
+  replicaCount: 1
+
+bluecompute-inventory:
+  replicaCount: 1
+
+bluecompute-orders:
+  replicaCount: 1
+
+bluecompute-web:
+  replicaCount: 1
+  service:
+    type: NodePort
