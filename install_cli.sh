@@ -9,7 +9,7 @@ if [[ $? -ne 0 ]]; then
 		sudo installer -pkg Bluemix_CLI_0.5.2.pkg -target /
 		rm Bluemix_CLI_0.5.2.pkg
 
-	elif [[] $OSTYPE =~ .*linux.* ]]; then
+	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		curl -o Bluemix_CLI.tar.gz http://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_0.5.2_amd64.tar.gz
 	  	tar zxvf Bluemix_CLI.tar.gz
 	  	Bluemix_CLI/install_bluemix_cli
@@ -38,7 +38,7 @@ if [[ $? -ne 0 ]]; then
 		# OS X
 		curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
 
-	elif [ $OSTYPE =~ .*linux.* ]]; then
+	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		# Linux
 		curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 	fi
