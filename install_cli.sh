@@ -76,7 +76,9 @@ if [[ $? -ne 0 ]]; then
 
 	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		# Linux
-		sudo apt-get install jq
+		wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+		chmod +x ./jq
+		sudo mv ./jq /usr/local/bin/jq
 	fi
 
 fi
