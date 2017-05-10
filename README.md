@@ -84,31 +84,6 @@ Jenkins). Helm packages are known as Charts. For Mac OSX users, install with fol
 
 Other OS users can reference the [installation guide](https://github.com/kubernetes/helm#install)
 
-#### Setup Minikube on local machine
-Minikube is a single node Kubernetes cluster that can be deployed a Virtual Machine running on your local machine.
-
-- Install VirtualBox and Minikube on Ubuntu. To install on other OSes, go to [Minikube install docs](https://kubernetes.io/docs/getting-started-guides/minikube/#installation).
-
-  ```
-  sudo apt-get install virtualbox-5.1
-  curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.15.0/minikube-linux-amd64
-  chmod +x minikube
-  sudo mv minikube /usr/local/bin/
-  ```
-  
-- Start minikube `minikube start`
-- View Kubernetes Dashboard `minikube dashboard`
-- Run `hello-minikube` to verify its working
-
-  ```
-  kubectl run hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080
-  kubectl expose deployment hello-minikube --type=NodePort
-  kubectl get pod
-  curl $(minikube service hello-minikube --url)
-  ```
-  
-- Stop minikube `minikube stop`
-
 #### Create a New Space in Bluemix
 
 1. Click on the Bluemix account in the top right corner of the web interface.
@@ -121,7 +96,33 @@ Minikube is a single node Kubernetes cluster that can be deployed a Virtual Mach
     **`$ git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes -b kube-int --single-branch`**
 
 - Clone the peer repositories:
-    **`$ cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**
+    **`$ cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**  
+
+
+#### (**Optional**) Setup Minikube on local machine
+Minikube is a single node Kubernetes cluster that can be deployed a Virtual Machine running on your local machine. Unless you would like to test the BlueCompute stack in local environment, you can skip this section.
+
+- Install VirtualBox and Minikube on Ubuntu. To install on other OSes, go to [Minikube install docs](https://kubernetes.io/docs/getting-started-guides/minikube/#installation).
+
+  ```
+  sudo apt-get install virtualbox-5.1
+  curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.15.0/minikube-linux-amd64
+  chmod +x minikube
+  sudo mv minikube /usr/local/bin/
+  ```
+
+- Start minikube `minikube start`
+- View Kubernetes Dashboard `minikube dashboard`
+- Run `hello-minikube` to verify its working
+
+  ```
+  kubectl run hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080
+  kubectl expose deployment hello-minikube --type=NodePort
+  kubectl get pod
+  curl $(minikube service hello-minikube --url)
+  ```
+
+- Stop minikube `minikube stop`
 
 
 ### Step 2: Provision a Kubernetes cluster on IBM Bluemix Container service
@@ -215,11 +216,11 @@ We created a couple of handy scripts to deploy the Bluecompute chart for you. Pl
   # This script will install the CLIs for Bluemix, Container Service,
   # Kubernetes, Helm, and jq for configuration parsing.
   # It will ignore what's already installed
-  
+
   $ ./install_cli.sh
 
   # This script will install Bluecompute Chart
-  # If you don't provide a cluster name, then it will try to get an 
+  # If you don't provide a cluster name, then it will try to get an
   # existing cluster for you, though it is not guaranteed to be the one
   # that you intended to deploy to. So use CAREFULLY.
 
@@ -233,7 +234,7 @@ That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see t
   `$ kubectl proxy`
 
 Then open a browser and paste the following URL to see the **Services** created by Bluecompute Chart:
- 
+
   http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
 
 If you like to see **installation progress** as it occurs, open a browser window and paste the following URL to see the Installation Jobs. About 17 jobs will be created in sequence:
@@ -327,7 +328,7 @@ That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see t
   `$ kubectl proxy`
 
 Then open a browser and paste the following URL to see the **Services** created by Bluecompute Chart:
- 
+
   http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
 
 
