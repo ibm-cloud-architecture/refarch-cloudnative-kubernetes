@@ -224,7 +224,7 @@ We created a couple of handy scripts to deploy the Bluecompute chart for you. Pl
   # existing cluster for you, though it is not guaranteed to be the one
   # that you intended to deploy to. So use CAREFULLY.
 
-  $ source install_bluecompute.sh <cluster-name>
+  $ ./install_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
   ```
 
 Once the actual install of Bluecompute takes place, it takes about 3-5 minutes to finish and show debug output. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.

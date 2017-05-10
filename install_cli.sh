@@ -1,15 +1,18 @@
 # Checking if bx is installed
+grn=$'\e[1;32m'
+end=$'\e[0m'
+
 BX_PATH=$(command -v bx)
 
 if [[ $? -ne 0 ]]; then
-	printf "\n\nInstalling Bluemix CLI (bx)\n"
+	printf "\n\n${grn}Installing Bluemix CLI (bx)...${end}\n"
 
 	if [[ $OSTYPE =~ .*darwin.* ]]; then
 		curl -o Bluemix_CLI_0.5.2.pkg http://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_0.5.2.pkg
 		sudo installer -pkg Bluemix_CLI_0.5.2.pkg -target /
 		rm Bluemix_CLI_0.5.2.pkg
 
-	elif [ $OSTYPE =~ .*linux.* ]]; then
+	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		curl -o Bluemix_CLI.tar.gz http://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_0.5.2_amd64.tar.gz
 	  	tar zxvf Bluemix_CLI.tar.gz
 	  	Bluemix_CLI/install_bluemix_cli
@@ -24,7 +27,7 @@ bx update &> /dev/null
 # Check if bx cs is installed
 bx cs &> /dev/null
 if [[ $? -ne 0 ]]; then
-	printf "\n\nInstalling Bluemix Container Service (bx cs) plugin...\n"
+	printf "\n\n${grn}Installing Bluemix Container Service (bx cs) plugin...${end}\n"
 	bx plugin install container-service -r Bluemix
 fi
 
@@ -32,13 +35,13 @@ fi
 KUBE_PATH=$(command -v kubectl)
 
 if [[ $? -ne 0 ]]; then
-	printf "\n\nInstalling Kubernetes CLI (kubectl)\n"
+	printf "\n\n${grn}Installing Kubernetes CLI (kubectl)...${end}\n"
 
 	if [[ $OSTYPE =~ .*darwin.* ]]; then
 		# OS X
 		curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
 
-	elif [ $OSTYPE =~ .*linux.* ]]; then
+	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		# Linux
 		curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 	fi
@@ -52,7 +55,7 @@ fi
 KUBE_PATH=$(command -v helm)
 
 if [[ $? -ne 0 ]]; then
-	printf "\n\nInstalling Helm CLI (helm)\n"
+	printf "\n\n${grn}Installing Helm CLI (helm)...${end}\n"
 
 	curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
 	chmod 700 get_helm.sh
@@ -65,15 +68,17 @@ fi
 JQ_PATH=$(command -v jq)
 
 if [[ $? -ne 0 ]]; then
-	printf "\n\nInstalling jq\n"
+	printf "\n\n${grn}Installing jq${end}\n"
 
 	if [[ $OSTYPE =~ .*darwin.* ]]; then
 		# OS X
 		brew install jq
 
-	elif [ $OSTYPE =~ .*linux.* ]]; then
+	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		# Linux
-		sudo apt-get install jq
+		wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+		chmod +x ./jq
+		sudo mv ./jq /usr/local/bin/jq
 	fi
 
 fi
