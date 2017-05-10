@@ -143,7 +143,7 @@ $ bx cs cluster-create --name <cluster-name>
 
 #### Paid Cluster
 
-The Paid tier of Bluemix Container Service allows users to provision a cluster in a user-selected datacenter, with configurable number of worker nodes, with configurable number of worker node sizes.  The cluster is provisioned in the linked IBM Bluemix Infrastructure Account.  With a paid cluster, the Ingress Controller and Load Balancer are enabled.
+The Paid tier of Bluemix Container Service allows users to provision a cluster in a user-selected datacenter, with configurable number of worker nodes and configurable number of worker node sizes.  The cluster is provisioned in the linked IBM Bluemix Infrastructure Account.  With a paid cluster, the Ingress Controller and Load Balancer are enabled.
 
 First, retrieve the list of valid locations:
 
@@ -163,12 +163,30 @@ $ bx cs machine-types <location>
 $ bx cs vlans <location>
 ```
 
-Make note of the `router` of each VLAN; you must select a *private* and a *public* VLAN behind the same physical *router* in Bluemix Infrastructure.  These look like `fcr01a.dal10` for a public VLAN, and `bcr01a.dal10` for a private VLAN; ensure that the number in the router's name (e.g. `01`) matches for the public and private VLAN.
+Make note of the `Router` of each VLAN; you must select a *private* and a *public* VLAN behind the same physical *router* in Bluemix Infrastructure.  These look like `fcr01a.dal10` for a public VLAN, and `bcr01a.dal10` for a private VLAN; ensure that the number in the router's name (e.g. `01`) matches for the public and private VLAN.
 
 The final command looks like:
 
 ```
-$ bx cs cluster-create --name <cluster-name> --location <location> --machine-type <machine-type> --private-vlan <private-vlan-id> --public-vlan <public-vlan-id> --workers <number-of-workers>
+$ bx cs cluster-create \
+    --name <cluster-name> \
+    --location <location> \
+    --machine-type <machine-type> \
+    --private-vlan <private-vlan-id> \
+    --public-vlan <public-vlan-id> \
+    --workers <number-of-workers>
+```
+
+For example:
+
+```
+$ bx cs cluster-create \
+    --name my-kube \
+    --location dal10 \
+    --machine-type b1c.16x64 \
+    --private-vlan 1221455 \
+    --public-vlan 1325142 \
+    --workers 3
 ```
 
 The entire process may take a few minutes, as the automation creates a master node in the IBM managed Bluemix Infrastructure account , then worker node(s) in your Bluemix Infrastructure account.  Monitor the cluster creation using:
