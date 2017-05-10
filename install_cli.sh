@@ -60,3 +60,20 @@ if [[ $? -ne 0 ]]; then
 
 	rm get_helm.sh
 fi
+
+# Installing jq
+JQ_PATH=$(command -v jq)
+
+if [[ $? -ne 0 ]]; then
+	printf "\n\nInstalling jq\n"
+
+	if [[ $OSTYPE =~ .*darwin.* ]]; then
+		# OS X
+		brew install jq
+
+	elif [ $OSTYPE =~ .*linux.* ]]; then
+		# Linux
+		sudo apt-get install jq
+	fi
+
+fi
