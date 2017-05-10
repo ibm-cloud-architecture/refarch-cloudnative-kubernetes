@@ -77,6 +77,7 @@ time helm install \
 --set secret.apiKey=${API_KEY} \
 . --debug --wait
 
+printf "\n\n${grn}Bluecompute was successfully installed!${end}\n"
 printf "\n\n${grn}Cleaning up...${end}\n"
 kubectl delete jobs,pods -l heritage=Tiller
 

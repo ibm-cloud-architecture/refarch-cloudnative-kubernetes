@@ -202,12 +202,133 @@ and the individual cluster node statuses:
 $ bx cs workers <cluster-name>
 ```
 
+### Step 3: Deploy reference implementation to Kubernetes Cluster
 
-### Step 3: Deploy reference implementation to Bluemix Container
+We packaged the entire application stack with all the Microservices and service components as a Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the Bluecompute Chart, please follow the instructions in the following sections.
 
-We packaged the entire application stack with all the Microservices and service components as a Kuberentes [Charts](https://github.com/kubernetes/charts). To install the reference implementation to your Bluemix environment, issue the following command:
+#### Deploy Bluecompute to Paid Cluster
 
-  `helm install bluecompute`
+##### Easy way
+We created a couple of handy scripts to deploy the Bluecompute chart for you. Please run the following 2 commands.
+
+  ```
+  # This script will install the CLIs for Bluemix, Container Service,
+  # Kubernetes, Helm, and jq for configuration parsing.
+  # It will ignore what's already installed
+  
+  $ ./install_cli.sh
+
+  # This script will install Bluecompute Chart
+  # If you don't provide a cluster name, then it will try to get an 
+  # existing cluster for you, though it is not guaranteed to be the one
+  # that you intended to deploy to. So use CAREFULLY.
+
+  $ source install_bluecompute.sh <cluster-name>
+  ```
+
+Once the actual install of Bluecompute takes place, it takes about 3-5 minutes to finish and show debug output. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
+
+That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command:
+
+  `$ kubectl proxy`
+
+Then open a browser and paste the following URL to see the **Services** created by Bluecompute Chart:
+ 
+  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
+
+If you like to see **installation progress** as it occurs, open a browser window and paste the following URL to see the Installation Jobs. About 17 jobs will be created in sequence:
+
+  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/job?namespace=default
+
+Be mindful that the jobs will dissapear once the `Cleaning up` message is displayed by *install_bluecompute.sh*.
+
+**Notes:**
+
+The *install_bluecompute.sh* script will do the following:
+1. **Ask you login to Bluemix.**
+2. **Initialize Container Plugin (bx cs init).**
+3. **Get cluster configuration and set your terminal context to the cluster.**
+4. **Initialize Helm.**
+5. **Add Bluecompute Helm Charts repo.**
+6. **Pull Bluecompute Chart dependencies.**
+    * Creates the `charts` folder in the `bluecompute` chart directory and puts all dependency charts there.
+7. **Install *Bluecompute* Chart.**
+    * `$ helm install bluecompute`
+    * It will create all the necessary configurations before deploying any pods.
+8. **Cleanup Jobs and Pods used to deploy dependencies.**
+
+
+
+##### Manual Way
+If you like to run the steps manually, please follow the steps below:
+
+1. ***Get paid cluster name*** by running the command below & then copy it to your clipboard:
+
+    `$ bx cs clusters`
+
+2. ***Set your terminal context to your cluster***:
+
+    `$ bx cs cluster-config <cluster-name>`
+
+    In the output to the command above, the path to your configuration file is displayed as a command to set an environment variable, for example:
+    ```
+    ...
+    export KUBECONFIG=/Users/ibm/.bluemix/plugins/cs-cli/clusters/pr_firm_cluster/kube-config-dal10-pr_firm_cluster.yml
+    ```
+
+3. ***Set the `KUBECONFIG` Kubernetes configuration file*** using the ouput obtained with the above command:
+
+    `$ export KUBECONFIG=/Users/ibm/.bluemix/plugins/cs-cli/clusters/pr_firm_cluster/kube-config-dal10-pr_firm_cluster.yml`
+
+4. ***Initialize Helm***, which will be used to install Bluecompute Chart:
+
+    `$ helm init --upgrade`
+
+    Helm will install `Tiller` agent (Helm's server side) into your cluster, which enables you to install Charts on your cluster. The `--upgrade` flag is to make sure that both Helm client and Tiller are using the same Helm version.
+
+5. ***Make sure that Tiller agent is fully Running*** before installing chart.
+
+    `$ kubectl --namespace=kube-system get pods | grep tiller`
+
+    To know whether Tiller is Running, you should see an output similar to this:
+
+    `tiller-deploy-3210876050-l61b3              1/1       Running   0          1d`
+
+6. If you don't have a ***BLUEMIX API Key***, create one as follows:
+
+    `$ bx iam api-key-create bluekey`
+
+7. ***Add Bluecompute Helm Charts repo***, which is needed to pull Bluecompute Dependencies:
+
+    `$ helm repo add bc https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts`
+
+8. ***Pull Bluecompute chart dependencies***:
+
+    `$ helm dependency update`
+
+9. ***Install Bluecompute Chart***. The process usually takes between 3-5 minutes to finish and start showing debugging output:
+
+    ```
+    $ time helm install \
+      --set configMap.bluemixOrg=${ORG} \
+      --set configMap.bluemixSpace=${SPACE} \
+      --set configMap.kubeClusterName=${CLUSTER_NAME} \
+      --set secret.apiKey=${API_KEY} \
+      . --debug
+    ```
+
+    * Replace ${ORG} with your Bluemix Organization name.
+    * Replace ${SPACE} with your Bluemix Space.
+    * Replace ${CLUSTER_NAME} with your Kubernetes Cluster name from Step 1.
+    * Replace ${API_KEY} with the Bluemix API Key from Step 6.
+
+That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command:
+
+  `$ kubectl proxy`
+
+Then open a browser and paste the following URL to see the **Services** created by Bluecompute Chart:
+ 
+  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
 
 
 ## DevOps automation, Resiliency and Cloud Management and Monitoring
