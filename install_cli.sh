@@ -31,6 +31,13 @@ if [[ $? -ne 0 ]]; then
 	bx plugin install container-service -r Bluemix
 fi
 
+# Check if bx cr is installed
+bx cr &> /dev/null
+if [[ $? -ne 0 ]]; then
+	printf "\n\n${grn}Installing Bluemix Container Registry Service (bx cr) plugin...${end}\n"
+	bx plugin install container-registry -r Bluemix
+fi
+
 # Checking if kubectl is installed
 KUBE_PATH=$(command -v kubectl)
 
@@ -50,7 +57,6 @@ if [[ $? -ne 0 ]]; then
 	sudo mv ./kubectl /usr/local/bin/kubectl
 fi
 		
-
 # Checking if helm is installed
 KUBE_PATH=$(command -v helm)
 
@@ -64,6 +70,7 @@ if [[ $? -ne 0 ]]; then
 	rm get_helm.sh
 fi
 
+
 # Installing jq
 JQ_PATH=$(command -v jq)
 
@@ -76,9 +83,28 @@ if [[ $? -ne 0 ]]; then
 
 	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		# Linux
-		wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+		curl -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
 		chmod +x ./jq
 		sudo mv ./jq /usr/local/bin/jq
 	fi
+fi
 
+# Installing yaml
+YAML_PATH=$(command -v yaml)
+
+if [[ $? -ne 0 ]]; then
+	printf "\n\n${grn}Installing YAML${end}\n"
+
+	if [[ $OSTYPE =~ .*darwin.* ]]; then
+		# OS X
+		curl -LO https://github.com/mikefarah/yaml/releases/download/1.10/yaml_darwin_amd64
+		mv yaml_darwin_amd64 yaml
+
+	elif [[ $OSTYPE =~ .*linux.* ]]; then
+		# Linux
+		curl -o yaml https://github.com/mikefarah/yaml/releases/download/1.8/yaml_linux_amd64
+	fi
+
+	chmod +x ./yaml
+	sudo mv ./yaml /usr/local/bin/yaml
 fi
