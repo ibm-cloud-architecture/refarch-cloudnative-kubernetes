@@ -1,4 +1,4 @@
-# Run a Cloud-native microservicesapplication on Bluemix using IBM Container Services as Kubernetes Cluster
+# Run a Cloud-native Microservices Application on Bluemix using IBM Container Services as Kubernetes Cluster
 
 ## Architecture
 
@@ -40,7 +40,7 @@ This project contains tutorials for setting up Resiliency such as High Availabil
  - [refarch-cloudnative-resiliency](https://github.com/ibm-cloud-architecture/refarch-cloudnative-resiliency/tree/kube-int)   - The Resiliency Assets will be managed here
  - [refarch-cloudnative-csmo](https://github.com/ibm-cloud-architecture/refarch-cloudnative-csmo/tree/kube-int)   - The BlueCompute application end-to-end cloud service management
 
-## Run the reference applications locally and in IBM Cloud
+## Run the reference application in IBM Cloud
 
 To run the sample applications you will need to configure your Bluemix environment for the Kubernetes and Microservices
 runtimes. Additionally you will need to configure your system to run the iOS and Web Application tier as well.
@@ -54,42 +54,6 @@ runtimes. Additionally you will need to configure your system to run the iOS and
 - [Install Docker](https://docs.docker.com/engine/installation/) on Windows or Mac
 - Login to your Bluemix account or register for a new account [here](https://bluemix.net/registration)
 
-
-#### Install IBM Bluemix CLI and Container Service Plugin
-- Install [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases)
-- Install [Bluemix CLI](http://clis.ng.bluemix.net/ui/home.html)
-- Install Bluemix Container Service plugin
-
-  ```
-  $ bx login -a https://api.ng.bluemix.net
-  $ bx plugin repo-add Bluemix https://plugins.ng.bluemix.net
-  $ bx plugin install container-service -r Bluemix
-  ```
-
-#### Install Kubernetes CLI
-- Install `kubectl` on Ubuntu/Linux using following command. To install on other OSes, go to [kubectl install docs.](https://kubernetes.io/docs/tasks/kubectl/install/)
-
-  ```
-  $ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-  $ chmod +x kubectl
-  $ sudo mv kubectl /usr/local/bin/kubectl
-  ```
-
-- Install `Helm`. [Helm](https://github.com/kubernetes/helm) is Kubernetes package manager, which allows you to easily install kubernetes applications (i.e.
-Jenkins). Helm packages are known as Charts. For Mac OSX users, install with following command:
-
-  ```
-  $ brew install kubernetes-helm
-  ```
-
-Other OS users can reference the [installation guide](https://github.com/kubernetes/helm#install)
-
-#### Create a New Space in Bluemix
-
-1. Click on the Bluemix account in the top right corner of the web interface.
-2. Click Create a new space.
-3. Enter "cloudnative-dev" for the space name and complete the wizard.
-
 #### Get application source code
 
 - Clone the base repository:
@@ -98,32 +62,28 @@ Other OS users can reference the [installation guide](https://github.com/kuberne
 - Clone the peer repositories:
     **`$ cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**  
 
+#### Install IBM Bluemix CLI and Container Service Plugin, Kubernetes CLI and Helm
 
-#### (**Optional**) Setup Minikube on local machine
-Minikube is a single node Kubernetes cluster that can be deployed a Virtual Machine running on your local machine. Unless you would like to test the BlueCompute stack in local environment, you can skip this section.
+To install and test BlueCompute stack, you need the following tools:
+- [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases)
+- [Bluemix CLI](http://clis.ng.bluemix.net/ui/home.html)
+- Bluemix Container Service plugin
+- [Kubernetes cli](https://kubernetes.io/docs/tasks/kubectl/install/) (`kubectl`)
+- [Helm](https://github.com/kubernetes/helm) (Helm is Kubernetes package manager)
 
-- Install VirtualBox and Minikube on Ubuntu. To install on other OSes, go to [Minikube install docs](https://kubernetes.io/docs/getting-started-guides/minikube/#installation).
+We have developed a wrapper script to install all above tools on your Mac or Linux machine. In your root directory, execute the following command:
 
-  ```
-  sudo apt-get install virtualbox-5.1
-  curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.15.0/minikube-linux-amd64
-  chmod +x minikube
-  sudo mv minikube /usr/local/bin/
-  ```
+```
+$ ./install_cli.sh
+```
+This script will install the CLIs for Bluemix, Container Service, Kubernetes, Helm, and jq for configuration parsing.
+It will ignore what's already installed.
 
-- Start minikube `minikube start`
-- View Kubernetes Dashboard `minikube dashboard`
-- Run `hello-minikube` to verify its working
+#### Create a New Space in Bluemix
 
-  ```
-  kubectl run hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080
-  kubectl expose deployment hello-minikube --type=NodePort
-  kubectl get pod
-  curl $(minikube service hello-minikube --url)
-  ```
-
-- Stop minikube `minikube stop`
-
+1. Click on the Bluemix account in the top right corner of the web interface.
+2. Click Create a new space.
+3. Enter "cloudnative-dev" for the space name and complete the wizard.
 
 ### Step 2: Provision a Kubernetes cluster on IBM Bluemix Container service
 
@@ -210,14 +170,7 @@ We packaged the entire application stack with all the Microservices and service 
 #### Deploy Bluecompute to Paid Cluster
 
 ##### Easy way
-We created a couple of handy scripts to deploy the Bluecompute chart for you. Please run the following 2 commands.
-
-  ```
-  # This script will install the CLIs for Bluemix, Container Service,
-  # Kubernetes, Helm, and jq for configuration parsing.
-  # It will ignore what's already installed
-
-  $ ./install_cli.sh
+We created a couple of handy scripts to deploy the Bluecompute chart for you. Please run the following command.
 
   # This script will install Bluecompute Chart
   # If you don't provide a cluster name, then it will try to get an
