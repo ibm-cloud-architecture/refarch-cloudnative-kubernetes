@@ -56,10 +56,10 @@ runtimes. Additionally you will need to configure your system to run the iOS and
 
 #### Get application source code
 
-- Clone the base repository:
+- Clone the base repository:  
     **`$ git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes -b kube-int --single-branch`**
 
-- Clone the peer repositories:
+- Clone the peer repositories:  
     **`$ cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**  
 
 #### Install IBM Bluemix CLI and Container Service Plugin, Kubernetes CLI and Helm
@@ -67,7 +67,7 @@ runtimes. Additionally you will need to configure your system to run the iOS and
 To install and test BlueCompute stack, you need the following tools:
 - [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases)
 - [Bluemix CLI](http://clis.ng.bluemix.net/ui/home.html)
-- Bluemix Container Service plugin
+- [Bluemix Container Service plugin](https://console.ng.bluemix.net/docs/containers/container_cli_cfic.html)
 - [Kubernetes cli](https://kubernetes.io/docs/tasks/kubectl/install/) (`kubectl`)
 - [Helm](https://github.com/kubernetes/helm) (Helm is Kubernetes package manager)
 
@@ -172,6 +172,7 @@ We packaged the entire application stack with all the Microservices and service 
 ##### Easy way
 We created a couple of handy scripts to deploy the Bluecompute chart for you. Please run the following command.
 
+  ```
   # This script will install Bluecompute Chart
   # If you don't provide a cluster name, then it will try to get an
   # existing cluster for you, though it is not guaranteed to be the one
