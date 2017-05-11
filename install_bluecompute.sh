@@ -41,6 +41,13 @@ else
 	bx login -a ${API} -s ${SPACE}
 fi
 
+status=$?
+
+if [ $status -ne 0 ]; then
+	printf "\n\n${red}Bluemix Login Error... Exiting.${end}\n"
+	exit 1
+fi
+
 printf "\n\n${grn}Getting Account Information...${end}\n"
 ORG=$(cat ~/.bluemix/.cf/config.json | jq .OrganizationFields.Name | sed 's/"//g')
 SPACE=$(cat ~/.bluemix/.cf/config.json | jq .SpaceFields.Name | sed 's/"//g')
@@ -63,7 +70,7 @@ if [[ -z "${CLUSTER_NAME// }" ]]; then
 	CLUSTER_NAME=$(bx cs clusters | tail -1 | awk '{print $1}')
 
 	if [[ "$CLUSTER_NAME" == "Name" ]]; then
-		echo "No Kubernetes Clusters exist in your account. Please provision one and then run this script again."
+		echo "${red}No Kubernetes Clusters exist in your account. Please provision one and then run this script again.${end}"
 		exit 1
 	fi
 fi
@@ -75,7 +82,7 @@ eval "$(bx cs cluster-config ${CLUSTER_NAME} | tail -1)"
 echo "KUBECONFIG is set to = $KUBECONFIG"
 
 if [[ -z "${KUBECONFIG// }" ]]; then
-	echo "KUBECONFIG was not properly set. Exiting"
+	echo "${red}KUBECONFIG was not properly set. Exiting.${end}"
 	exit 1
 fi
 
@@ -109,8 +116,9 @@ kubectl delete jobs,pods -l heritage=Tiller
 cd ..
 
 printf "\n\n${grn}To see Kubernetes Dashboard, paste the following in your terminal:${end}\n"
-echo "export KUBECONFIG=${KUBECONFIG}"
+echo "${cyn}export KUBECONFIG=${KUBECONFIG}${end}"
+
 printf "\n${grn}Then run this command to connect to Kubernetes Dashboard:${end}\n"
-echo "kubectl proxy"
+echo "${cyn}kubectl proxy${end}"
 printf "\n${grn}Finally, open a browser window and paste the following URL to see the Services created by Bluecompute Chart:${end}\n"
-echo "http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default"
+echo "${cyn}http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default${end}"
