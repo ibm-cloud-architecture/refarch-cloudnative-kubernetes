@@ -144,7 +144,7 @@ For example:
 $ bx cs cluster-create \
     --name my-kube \
     --location dal10 \
-    --machine-type b1c.16x64 \
+    --machine-type b1c.4x16 \
     --private-vlan 1221455 \
     --public-vlan 1325142 \
     --workers 3
