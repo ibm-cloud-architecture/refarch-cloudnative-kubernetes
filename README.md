@@ -34,7 +34,7 @@ This project organized itself like a microservice project, as such each componen
 
 
 This project contains tutorials for setting up CI/CD pipeline for the scenarios. The tutorial is shown below.  
- - [refarch-cloudnative-devops](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops/tree/kube-int)             - The DevOps assets are managed here
+ - [refarch-cloudnative-devops-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes)             - The DevOps assets are managed here
 
 This project contains tutorials for setting up Resiliency such as High Availability, Failover, and Disaster Recovery for the above application.
  - [refarch-cloudnative-resiliency](https://github.com/ibm-cloud-architecture/refarch-cloudnative-resiliency/tree/kube-int)   - The Resiliency Assets will be managed here
@@ -289,7 +289,7 @@ Then open a browser and paste the following URL to see the **Services** created 
 ## DevOps automation, Resiliency and Cloud Management and Monitoring
 
 ### DevOps
-You can setup and enable automated CI/CD for most of the BlueCompute components via the Bluemix DevOps open toolchain. For detail, please check the [DevOps project](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops) .
+You can setup and enable automated CI/CD for most of the BlueCompute components via the Bluemix DevOps open toolchain. For detail, please check the [DevOps project](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes) .
 
 ### Cloud Management and monitoring
 For guidance on how to manage and monitor the BlueCompute solution, please check the [Management and Monitoring project](https://github.com/ibm-cloud-architecture/refarch-cloudnative-csmo).
