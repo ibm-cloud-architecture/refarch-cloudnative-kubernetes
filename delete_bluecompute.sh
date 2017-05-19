@@ -99,16 +99,16 @@ function delete_bluecompute_inventory {
 		printf "\n\n${grn}Deleting bluecompute-inventory chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
-		printf "\n\n${grn}bluecompute-inventory was successfully deleted!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-inventory-0.1.1
-
 		local status=$?
 
 		if [ $status -ne 0 ]; then
 			printf "\n\n${red}Error deleting bluecompute-inventory... Exiting.${end}\n"
 			exit 1
 		fi
+
+		printf "\n\n${grn}bluecompute-inventory was successfully deleted!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl delete pods,jobs -l chart=bluecompute-inventory-0.1.1
 	fi
 }
 
@@ -122,16 +122,16 @@ function delete_bluecompute_catalog {
 		printf "\n\n${grn}Deleting bluecompute-catalog chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
-		printf "\n\n${grn}bluecompute-catalog was successfully deleted!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-catalog-0.1.1
-
 		local status=$?
 
 		if [ $status -ne 0 ]; then
 			printf "\n\n${red}Error deleting bluecompute-catalog... Exiting.${end}\n"
 			exit 1
 		fi
+
+		printf "\n\n${grn}bluecompute-catalog was successfully deleted!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl delete pods,jobs -l chart=bluecompute-catalog-0.1.1
 	fi
 }
 
@@ -145,16 +145,16 @@ function delete_bluecompute_orders {
 		printf "\n\n${grn}Deleting bluecompute-orders chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
-		printf "\n\n${grn}bluecompute-orders was successfully deleted!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-orders-0.1.0
-
 		local status=$?
 
 		if [ $status -ne 0 ]; then
 			printf "\n\n${red}Error deleting bluecompute-orders... Exiting.${end}\n"
 			exit 1
 		fi
+
+		printf "\n\n${grn}bluecompute-orders was successfully deleted!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl delete pods,jobs -l chart=bluecompute-orders-0.1.0
 	fi
 }
 
@@ -168,16 +168,16 @@ function delete_bluecompute_customer {
 		printf "\n\n${grn}Deleting bluecompute-customer chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
-		printf "\n\n${grn}bluecompute-customer was successfully deleted!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-customer-0.1.0
-
 		local status=$?
 
 		if [ $status -ne 0 ]; then
 			printf "\n\n${red}Error deleting bluecompute-customer... Exiting.${end}\n"
 			exit 1
 		fi
+
+		printf "\n\n${grn}bluecompute-customer was successfully deleted!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl delete pods,jobs -l chart=bluecompute-customer-0.1.0
 	fi
 }
 
@@ -191,16 +191,16 @@ function delete_bluecompute_auth {
 		printf "\n\n${grn}Deleting bluecompute-auth chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
-		printf "\n\n${grn}bluecompute-auth was successfully deleted!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-auth-0.1.0
-
 		local status=$?
 
 		if [ $status -ne 0 ]; then
 			printf "\n\n${red}Error deleting bluecompute-auth... Exiting.${end}\n"
 			exit 1
 		fi
+
+		printf "\n\n${grn}bluecompute-auth was successfully deleted!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl delete pods,jobs -l chart=bluecompute-auth-0.1.0
 	fi
 }
 
@@ -214,16 +214,16 @@ function delete_bluecompute_web {
 		printf "\n\n${grn}Deleting bluecompute-web chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
-		printf "\n\n${grn}bluecompute-web was successfully deleted!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-web-0.1.0
-
 		local status=$?
 
 		if [ $status -ne 0 ]; then
 			printf "\n\n${red}Error deleting bluecompute-web... Exiting.${end}\n"
 			exit 1
 		fi
+
+		printf "\n\n${grn}bluecompute-web was successfully deleted!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl delete pods,jobs -l chart=bluecompute-web-0.1.0
 	fi
 }
 
