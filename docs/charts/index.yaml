@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   bluecompute-auth:
   - apiVersion: v1
-    created: 2017-05-18T16:42:35.043506733-05:00
+    created: 2017-05-19T15:19:37.84391215-05:00
     description: BlueCompute Auth Microservice
     digest: e33286e52620cfb55f9aeb0365a9b01f9df648cf25d2512e8c993dec518f7ace
     name: bluecompute-auth
@@ -11,7 +11,7 @@ entries:
     version: 0.1.0
   bluecompute-catalog:
   - apiVersion: v1
-    created: 2017-05-18T16:42:35.043738056-05:00
+    created: 2017-05-19T15:19:37.844148727-05:00
     description: BlueCompute Catalog Microservice
     digest: 8b37b45c4dd8ef669c0b8c7f5c6ead88d155e3bcc439883231d016ea14e928a8
     name: bluecompute-catalog
@@ -20,7 +20,7 @@ entries:
     version: 0.1.1
   bluecompute-customer:
   - apiVersion: v1
-    created: 2017-05-18T16:42:35.044077776-05:00
+    created: 2017-05-19T15:19:37.844482239-05:00
     description: BlueCompute Customer Microservice
     digest: 471ee4279c82e94b3a43f0c45e4685aa460079ae99cd658c9a02968afa1c0451
     name: bluecompute-customer
@@ -29,7 +29,7 @@ entries:
     version: 0.1.0
   bluecompute-inventory:
   - apiVersion: v1
-    created: 2017-05-18T16:42:35.044564986-05:00
+    created: 2017-05-19T15:19:37.844974268-05:00
     description: BlueCompute Inventory Microservice
     digest: 91aaff46a9c57c3f3849741bbf42ad68a6549ca0c7e0ea554225c7f103989f0b
     name: bluecompute-inventory
@@ -38,7 +38,7 @@ entries:
     version: 0.1.1
   bluecompute-orders:
   - apiVersion: v1
-    created: 2017-05-18T16:42:35.044960731-05:00
+    created: 2017-05-19T15:19:37.845339813-05:00
     description: Bluecompute Orders Microservice
     digest: 6628e32f097609ba480498dba5eaf6d37ae371115fe43d64ef1dbcd58925bfaf
     name: bluecompute-orders
@@ -47,11 +47,11 @@ entries:
     version: 0.1.0
   bluecompute-web:
   - apiVersion: v1
-    created: 2017-05-18T16:42:35.045194094-05:00
+    created: 2017-05-19T15:19:37.845581842-05:00
     description: BlueCompute Web BFF app
     digest: 4b64bd0dcd3aca648db9e8b95c4ad8f406e177cce229e28a06b2c5ee5c212368
     name: bluecompute-web
     urls:
     - bluecompute-web-0.1.0.tgz
     version: 0.1.0
-generated: 2017-05-18T16:42:35.043096791-05:00
+generated: 2017-05-19T15:19:37.843498109-05:00
