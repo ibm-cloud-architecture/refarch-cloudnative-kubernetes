@@ -294,9 +294,14 @@ if [[ "$CLUSTER_NAME" == "minikube" ]]; then
 		minikube start
 	else
 		echo "minikube already started..."
-	fi
+		kubectl config use-context minikube
+		status=$?
 
-	kubectl config use-context minikube
+		if [ $status -ne 0 ]; then
+			echo "Starting minikube..."
+			minikube start
+		fi
+	fi
 else
 	bluemix_login
 	get_cluster_name
@@ -319,6 +324,8 @@ cd ..
 
 webport=$(kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort)
 
+sleep 15
+
 if [[ "$CLUSTER_NAME" == "minikube" ]]; then
 	nodeip=$(minikube ip)
 
@@ -332,7 +339,7 @@ if [[ "$CLUSTER_NAME" == "minikube" ]]; then
 	echo "${cyn}http://${nodeip}:${webport}${end}"
 
 else
-	nodeip=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' | tail -1)
+	nodeip=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' | awk '{print $1}')
 
 	printf "\n\nTo see Kubernetes Dashboard, paste the following in your terminal:\n"
 	echo "${cyn}export KUBECONFIG=${KUBECONFIG}${end}"
