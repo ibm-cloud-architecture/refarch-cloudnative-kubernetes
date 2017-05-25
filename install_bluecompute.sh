@@ -63,7 +63,7 @@ function create_api_key {
 	fi
 }
 
-function create_registry_namespace {	
+function create_registry_namespace {
 	printf "\n\n${grn}Login into Container Registry Service${end}\n\n"
 	bx cr login
 	BX_CR_NAMESPACE="jenkins$(cat ~/.bluemix/config.json | jq .Account.GUID | sed 's/"//g' | tail -c 7)"
@@ -116,7 +116,7 @@ function initialize_helm {
 	echo "Waiting for Tiller (Helm's server component) to be ready..."
 
 	TILLER_DEPLOYED=$(check_tiller)
-	while [[ "${TILLER_DEPLOYED}" == "" ]]; do 
+	while [[ "${TILLER_DEPLOYED}" == "" ]]; do
 		sleep 1
 		TILLER_DEPLOYED=$(check_tiller)
 	done
@@ -284,9 +284,11 @@ function install_bluecompute_web {
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing bluecompute-web  chart. This will take a few minutes...${end} ${coffee3}\n\n"
+    ing_subdomain=$(bx cs cluster-get ${CLUSTER_NAME} | \
+    grep 'Ingress subdomain:' | awk '{print $NF}')
 		time helm install --name web --debug --wait --timeout 600 \
-		bluecompute-web-0.1.0.tgz
-
+    --set ingCtlHost=${ing_subdomain} bluecompute-web-0.1.0.tgz 
+    exit 0
 		local status=$?
 
 		if [ $status -ne 0 ]; then
