@@ -51,8 +51,8 @@ function bluemix_login {
 
 function get_cluster_name {
 	printf "\n\n${grn}Login into Container Service${end}\n\n"
-	# bx cs init
-	bx cs init --host=https://us-south-beta.containers.bluemix.net
+	bx cs init
+	#bx cs init --host=https://us-south-beta.containers.bluemix.net
 
 	if [[ -z "${CLUSTER_NAME// }" ]]; then
 		echo "${yel}No cluster name provided. Will try to get an existing cluster...${end}"
