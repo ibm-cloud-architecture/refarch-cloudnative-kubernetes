@@ -22,7 +22,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 # Update CLI
-bx update &> /dev/null
+bx update
 
 # Check if bx cs is installed
 bx cs &> /dev/null
