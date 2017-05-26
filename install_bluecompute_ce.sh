@@ -16,7 +16,7 @@ BX_SPACE=$2
 BX_API_KEY=$3
 
 function check_tiller {
-	kubectl --namespace=kube-system get pods | grep tiller | grep Running
+	kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1
 }
 
 function bluemix_login {
@@ -84,7 +84,7 @@ function initialize_helm {
 	echo "Waiting for Tiller (Helm's server component) to be ready..."
 
 	TILLER_DEPLOYED=$(check_tiller)
-	while [[ "${TILLER_DEPLOYED}" == "" ]]; do 
+	while [[ "${TILLER_DEPLOYED}" == "" ]]; do
 		sleep 1
 		TILLER_DEPLOYED=$(check_tiller)
 	done
@@ -264,7 +264,7 @@ function install_bluecompute_web {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing bluecompute-web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install bluecompute-web-ce-0.1.0.tgz --name bluecompute-web --timeout 600
+		time helm install bluecompute-web-ce-0.1.0.tgz --name bluecompute-web --timeout 600 --wait
 
 		local status=$?
 
@@ -312,19 +312,19 @@ initialize_helm
 
 # Install Bluecompute
 cd docs/charts
+install_bluecompute_catalog_elasticsearch
+install_bluecompute_inventory_mysql
 install_bluecompute_customer
 install_bluecompute_auth
-install_bluecompute_orders
-install_bluecompute_inventory_mysql
-install_bluecompute_catalog_elasticsearch
+#install_bluecompute_orders
 install_bluecompute_inventory
 install_bluecompute_catalog
 install_bluecompute_web
-cd ..
+cd ../..
 
 webport=$(kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort)
 
-sleep 15
+#sleep 10
 
 if [[ "$CLUSTER_NAME" == "minikube" ]]; then
 	nodeip=$(minikube ip)
@@ -352,7 +352,11 @@ else
 
 	printf "\nFinally, on another browser window, copy and paste the following URL for BlueCompute Web UI:\n"
 	echo "${cyn}http://${nodeip}:${webport}${end}"
+
 fi
+
+#curl -i -X POST http://${nodeip}:${webport}/oauth/token -d grant_type=password -d username=user -d password=passw0rd -d scope=blue
+./audit_ce_master_install.sh &> /dev/null
 
 printf "\nUse these credentials to login:"
 printf "\n${cyn}username:${end} user"
