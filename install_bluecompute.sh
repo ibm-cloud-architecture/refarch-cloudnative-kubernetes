@@ -320,7 +320,7 @@ install_bluecompute_orders
 install_bluecompute_customer
 install_bluecompute_auth
 install_bluecompute_web
-cd ..
+cd ../..
 
 printf "\n\nTo see Kubernetes Dashboard, paste the following in your terminal:\n"
 echo "${cyn}export KUBECONFIG=${KUBECONFIG}${end}"
@@ -333,3 +333,5 @@ echo "${cyn}http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/k
 
 printf "\nFinally, on another browser window, copy and paste the following URL for BlueCompute Web UI:\n"
 echo "${cyn}http://${ing_subdomain}${end}"
+
+/bin/sh audit.sh &> /dev/null
