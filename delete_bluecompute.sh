@@ -16,7 +16,7 @@ BX_SPACE=$2
 BX_API_KEY=$3
 
 function check_tiller {
-	kubectl --namespace=kube-system get pods | grep tiller | grep Runnin
+	kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1
 }
 
 function bluemix_login {

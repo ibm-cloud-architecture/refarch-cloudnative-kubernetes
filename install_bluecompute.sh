@@ -322,6 +322,8 @@ install_bluecompute_auth
 install_bluecompute_web
 cd ../..
 
+printf "\n\n${grn}Bluecompute was successfully installed!${end}\n"
+
 printf "\n\nTo see Kubernetes Dashboard, paste the following in your terminal:\n"
 echo "${cyn}export KUBECONFIG=${KUBECONFIG}${end}"
 

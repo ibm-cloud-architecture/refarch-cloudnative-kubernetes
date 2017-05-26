@@ -1,5 +1,22 @@
 # Run a Cloud-native Microservices Application on Bluemix using IBM Container Services as Kubernetes Cluster
 
+## Table of Contents
+- **[Architecture](#architecture)**
+- **[Project repositories](#project-repositories)**
+- **[Application Overview](#application-overview)**
+- **[Run the reference application in IBM Cloud](#run-the-reference-application-in-ibm-cloud)**
+    - [Step 1: Environment Setup](#step-1-environment-setup)
+    - [Step 2: Provision a Kubernetes cluster on IBM Bluemix Container service](#step-2-provision-a-kubernetes-cluster-on-ibm-bluemix-container-service)
+        - [Lite Cluster](#lite-cluster)
+        - [Paid Cluster](#paid-cluster)
+    - [Step 3: Deploy reference implementation to Kubernetes Cluster](#step-3-deploy-reference-implementation-to-kubernetes-cluster)
+        - [Deploy Bluecompute to Paid Cluster](#deploy-bluecompute-to-paid-cluster)
+            - [Delete Bluecompute from Paid Cluster](#delete-bluecompute-from-paid-cluster)
+        - [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lite-cluster)
+            - [Delete Bluecompute from Lite Cluster](#delete-bluecompute-from-lite-cluster)
+- **[DevOps automation, Resiliency and Cloud Management and Monitoring](#devops-automation-resiliency-and-cloud-management-and-monitoring)**
+
+
 ## Architecture
 
 This project provides is a Reference Implementation for running a cloud-native OmniChannel Application using a Microservices architecture on Bluemix Container services as Kubernetes cluster.  The Logical Architecture for this reference implementation is shown in the picture below.  
@@ -19,7 +36,7 @@ There are several components of this architecture.
 - BFFs uses [Hystrix open source library](https://github.com/Netflix/hystrix) to provide an implementation of the [Circuit Breaker Pattern](http://martinfowler.com/bliki/CircuitBreaker.html).  This component runs as library inside the Java Applications.  This component then forward Service Availability information to the Hystrix Dashboard.  
 - The Java Microservices retrieve their data from databases.  The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/). The Inventory Service using [MySQL](https://www.mysql.com/).  In this example, we run MySQL in a Docker Container for Development (In a production environment, it runs on our Infrastructure as a Service layer, [Bluemix Infrastructure](https://console.ng.bluemix.net/catalog/?category=infrastructure))  The resiliency and DevOps section will explain that.
 
-## Project repositories:
+## Project repositories
 
 This project organized itself like a microservice project, as such each component in the architecture has its own Git Repository and tutorial listed below.  
 
@@ -57,10 +74,10 @@ runtimes. Additionally you will need to configure your system to run the iOS and
 #### Get application source code
 
 - Clone the base repository:  
-    **`$ git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes -b kube-int --single-branch`**
+    **`$ git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes`**
 
 - Clone the peer repositories:  
-    **`$ cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**  
+    **`$ cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**
 
 #### Install IBM Bluemix CLI and Container Service Plugin, Kubernetes CLI and Helm
 
@@ -169,20 +186,23 @@ We packaged the entire application stack with all the Microservices and service 
 
 #### Deploy Bluecompute to Paid Cluster
 
-##### Easy way
-We created a couple of handy scripts to deploy the Bluecompute chart for you. Please run the following command.
+We created a couple of handy scripts to deploy the Bluecompute Stack for you. Please run the following command.
 
   ```
-  # This script will install Bluecompute Chart
+  # This script will install Bluecompute Stack
   # If you don't provide a cluster name, then it will try to get an
   # existing cluster for you, though it is not guaranteed to be the one
   # that you intended to deploy to. So use CAREFULLY.
+  #
+  # If any individual components fail to install, or a timeout occurs
+  # feel free to re-run the script and it will continue where it left off
 
   $ ./install_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
   ```
 
-Once the actual install of Bluecompute takes place, it takes about 3-5 minutes to finish and show debug output. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
+Once the actual install of Bluecompute takes place, it takes about 10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
 
+At the very end you will get a **URL** to access the **Bluecompute Web App**.
 That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command:
 
   `$ kubectl proxy`
@@ -197,86 +217,57 @@ If you like to see **installation progress** as it occurs, open a browser window
 
 Be mindful that the jobs will dissapear once the `Cleaning up` message is displayed by *install_bluecompute.sh*.
 
+**Login Credentials:** Once you are on the Bluecompute Web App, use the following test credentials to login:
+- **Username:** user
+- **Password:** passw0rd
+
 **Notes:**
 
 The *install_bluecompute.sh* script will do the following:
 1. **Ask you login to Bluemix.**
 2. **Initialize Container Plugin (bx cs init).**
-3. **Get cluster configuration and set your terminal context to the cluster.**
-4. **Initialize Helm.**
-5. **Add Bluecompute Helm Charts repo.**
-6. **Pull Bluecompute Chart dependencies.**
-    * Creates the `charts` folder in the `bluecompute` chart directory and puts all dependency charts there.
-7. **Install *Bluecompute* Chart.**
-    * `$ helm install bluecompute`
+3. **Unless already provided, it will create a Bluemix API Key**
+    * Not needed to deploy the reference application stack but will be needed for [DevOps and CI/CD](#devops-automation-resiliency-and-cloud-management-and-monitoring)
+4. **Get cluster configuration and set your terminal context to the cluster.**
+5. **Initialize Helm.**
+6. **Install the entire *Reference Application* Stack by installing the individual Helm charts. i.e.**
+    * `cd docs/charts`
+    * `$ helm install chart_name --name release_name`
     * It will create all the necessary configurations before deploying any pods.
-8. **Cleanup Jobs and Pods used to deploy dependencies.**
+7. **Cleanup Jobs and Pods used to deploy dependencies.**
 
+##### Delete Bluecompute from Paid Cluster
 
+To delete the Bluecompute Stack from your cluster, run the following script:
 
-##### Manual Way
-If you like to run the steps manually, please follow the steps below:
+  ```
+  # This script will delete the Bluecompute Stack from your Cluster
+  # If you don't provide a cluster name, then it will try to get an
+  # existing cluster for you, though it is not guaranteed to be the one
+  # that you intended to clean up. So use CAREFULLY.
+  #
+  # If any individual components fail to install, or a timeout occurs
+  # feel free to re-run the script and it will continue where it left off
 
-1. ***Get paid cluster name*** by running the command below & then copy it to your clipboard:
+  $ ./delete_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+  ```
 
-    `$ bx cs clusters`
+#### Deploy Bluecompute to Lite Cluster
 
-2. ***Set your terminal context to your cluster***:
+Just like in the [Deploy Bluecompute to Paid Cluster](#deploy-bluecompute-to-paid-cluster) section, we created a couple of handy scripts to deploy the Bluecompute Stack for you in the Lite Cluster. Please run the following command.
 
-    `$ bx cs cluster-config <cluster-name>`
+  ```
+  # This script will install Bluecompute Stack
+  # If you don't provide a cluster name, then it will try to get an
+  # existing cluster for you, though it is not guaranteed to be the one
+  # that you intended to deploy to. So use CAREFULLY.
 
-    In the output to the command above, the path to your configuration file is displayed as a command to set an environment variable, for example:
-    ```
-    ...
-    export KUBECONFIG=/Users/ibm/.bluemix/plugins/cs-cli/clusters/pr_firm_cluster/kube-config-dal10-pr_firm_cluster.yml
-    ```
+  $ ./install_bluecompute_ce.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+  ```
 
-3. ***Set the `KUBECONFIG` Kubernetes configuration file*** using the ouput obtained with the above command:
+Once the actual install of Bluecompute takes place, it takes about 5-10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
 
-    `$ export KUBECONFIG=/Users/ibm/.bluemix/plugins/cs-cli/clusters/pr_firm_cluster/kube-config-dal10-pr_firm_cluster.yml`
-
-4. ***Initialize Helm***, which will be used to install Bluecompute Chart:
-
-    `$ helm init --upgrade`
-
-    Helm will install `Tiller` agent (Helm's server side) into your cluster, which enables you to install Charts on your cluster. The `--upgrade` flag is to make sure that both Helm client and Tiller are using the same Helm version.
-
-5. ***Make sure that Tiller agent is fully Running*** before installing chart.
-
-    `$ kubectl --namespace=kube-system get pods | grep tiller`
-
-    To know whether Tiller is Running, you should see an output similar to this:
-
-    `tiller-deploy-3210876050-l61b3              1/1       Running   0          1d`
-
-6. If you don't have a ***BLUEMIX API Key***, create one as follows:
-
-    `$ bx iam api-key-create bluekey`
-
-7. ***Add Bluecompute Helm Charts repo***, which is needed to pull Bluecompute Dependencies:
-
-    `$ helm repo add bc https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts`
-
-8. ***Pull Bluecompute chart dependencies***:
-
-    `$ helm dependency update`
-
-9. ***Install Bluecompute Chart***. The process usually takes between 3-5 minutes to finish and start showing debugging output:
-
-    ```
-    $ time helm install \
-      --set configMap.bluemixOrg=${ORG} \
-      --set configMap.bluemixSpace=${SPACE} \
-      --set configMap.kubeClusterName=${CLUSTER_NAME} \
-      --set secret.apiKey=${API_KEY} \
-      . --debug
-    ```
-
-    * Replace ${ORG} with your Bluemix Organization name.
-    * Replace ${SPACE} with your Bluemix Space.
-    * Replace ${CLUSTER_NAME} with your Kubernetes Cluster name from Step 1.
-    * Replace ${API_KEY} with the Bluemix API Key from Step 6.
-
+At the very end you will get a **URL** to access the **Bluecompute Web App**.
 That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command:
 
   `$ kubectl proxy`
@@ -284,6 +275,43 @@ That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see t
 Then open a browser and paste the following URL to see the **Services** created by Bluecompute Chart:
 
   http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
+
+If you like to see **installation progress** as it occurs, open a browser window and paste the following URL to see the Installation Jobs. About 17 jobs will be created in sequence:
+
+  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/job?namespace=default
+
+Be mindful that the jobs will dissapear once the `Cleaning up` message is displayed by *install_bluecompute.sh*.
+
+**Login Credentials:** Once you are on the Bluecompute Web App, use the following test credentials to login:
+- **Username:** user
+- **Password:** passw0rd
+
+**Notes:**
+
+The *install_bluecompute_ce.sh* script will do the following:
+1. **Ask you login to Bluemix.**
+2. **Initialize Container Plugin (bx cs init).**
+3. **Unless already provided, it will create a Bluemix API Key**
+    * Not needed to deploy the reference application stack but will be needed for [DevOps and CI/CD](#devops-automation-resiliency-and-cloud-management-and-monitoring)
+4. **Get cluster configuration and set your terminal context to the cluster.**
+5. **Initialize Helm.**
+6. **Install the entire *Reference Application* Stack by installing the individual Helm charts. i.e.**
+    * `cd docs/charts`
+    * `$ helm install chart_name --name release_name`
+    * It will create all the necessary configurations before deploying any pods.
+7. **Cleanup Jobs and Pods used to deploy dependencies.**
+
+##### Delete Bluecompute from Lite Cluster
+To delete the Bluecompute Stack from your cluster, run the following script:
+
+  ```
+  # This script will delete the Bluecompute Stack from your Cluster
+  # If you don't provide a cluster name, then it will try to get an
+  # existing cluster for you, though it is not guaranteed to be the one
+  # that you intended to clean up. So use CAREFULLY.
+
+  $ ./delete_bluecompute_ce.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+  ```
 
 
 ## DevOps automation, Resiliency and Cloud Management and Monitoring

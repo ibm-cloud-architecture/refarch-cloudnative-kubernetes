@@ -84,10 +84,13 @@ function initialize_helm {
 	echo "Waiting for Tiller (Helm's server component) to be ready..."
 
 	TILLER_DEPLOYED=$(check_tiller)
+	echo $TILLER_DEPLOYED
 	while [[ "${TILLER_DEPLOYED}" == "" ]]; do
 		sleep 1
 		TILLER_DEPLOYED=$(check_tiller)
+	echo $TILLER_DEPLOYED
 	done
+	echo $TILLER_DEPLOYED
 }
 
 function install_bluecompute_inventory_mysql {
@@ -325,6 +328,8 @@ cd ../..
 webport=$(kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort)
 
 #sleep 10
+
+printf "\n\n${grn}Bluecompute was successfully installed!${end}\n"
 
 if [[ "$CLUSTER_NAME" == "minikube" ]]; then
 	nodeip=$(minikube ip)
