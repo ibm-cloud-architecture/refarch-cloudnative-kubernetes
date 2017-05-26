@@ -84,13 +84,10 @@ function initialize_helm {
 	echo "Waiting for Tiller (Helm's server component) to be ready..."
 
 	TILLER_DEPLOYED=$(check_tiller)
-	echo $TILLER_DEPLOYED
 	while [[ "${TILLER_DEPLOYED}" == "" ]]; do
 		sleep 1
 		TILLER_DEPLOYED=$(check_tiller)
-	echo $TILLER_DEPLOYED
 	done
-	echo $TILLER_DEPLOYED
 }
 
 function install_bluecompute_inventory_mysql {
