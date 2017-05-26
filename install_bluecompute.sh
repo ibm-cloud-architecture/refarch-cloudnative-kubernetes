@@ -284,11 +284,9 @@ function install_bluecompute_web {
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing bluecompute-web  chart. This will take a few minutes...${end} ${coffee3}\n\n"
-    ing_subdomain=$(bx cs cluster-get ${CLUSTER_NAME} | \
-    grep 'Ingress subdomain:' | awk '{print $NF}')
-		time helm install --name web --debug --wait --timeout 600 \
-    --set ingCtlHost=${ing_subdomain} bluecompute-web-0.1.0.tgz 
-    exit 0
+                ing_subdomain=$(bx cs cluster-get ${CLUSTER_NAME} | grep 'Ingress subdomain:' | awk '{print $NF}')
+		time helm install --name web --debug --wait --timeout 600 --set ingCtlHost=${ing_subdomain} bluecompute-web-0.1.0.tgz
+    
 		local status=$?
 
 		if [ $status -ne 0 ]; then
@@ -334,4 +332,4 @@ printf "\nThen open a browser window and paste the following URL to see the Serv
 echo "${cyn}http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default${end}"
 
 printf "\nFinally, on another browser window, copy and paste the following URL for BlueCompute Web UI:\n"
-echo "${cyn}http://${CLUSTER_NAME}.us-south.containers.mybluemix.net${end}"
+echo "${cyn}http://${ing_subdomain}${end}"
