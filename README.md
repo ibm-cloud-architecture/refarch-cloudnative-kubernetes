@@ -1,4 +1,4 @@
-# Run a Cloud-native Microservices Application on Bluemix using IBM Container Services as Kubernetes Cluster
+# Run a Cloud Native Microservices Application on Bluemix using IBM Container Services as Kubernetes Cluster
 
 ## Table of Contents
 - **[Introduction](#architecture)**
@@ -17,13 +17,14 @@
 
 ## Introduction
 
-This project provides is a Reference Implementation for running a cloud-native Mobile and Web Application using a Microservices architecture on Bluemix Container services as Kubernetes cluster.  The Logical Architecture for this reference implementation is shown in the picture below.  
+This project provides a reference implementation for running a Cloud Native Mobile and Web Application using a Microservices architecture on Bluemix Container Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.  
 
    ![Application Architecture](static/imgs/app_architecture.png?raw=true)
 
 ## Application Overview
 
 The application is a simple store front shopping application that displays a catalog of antique computing devices, where users can search and buy products.  It has Web and Mobile interface, both the Mobile App and Web App rely on separate BFF (Backend for Frontend) services to interact with the backend data.  
+(Note: the Mobile app is not currently supported at this release)
 
 There are several components of this architecture.  
 
@@ -58,11 +59,13 @@ This project contains tutorials for setting up Resiliency such as High Availabil
 ## Run the reference application in IBM Cloud
 
 To run the sample applications you will need to configure your Bluemix environment for the Kubernetes and Microservices
-runtimes. Additionally you will need to configure your system to run the iOS and Web Application tier as well.
+runtimes.  
 
 ### Step 1: Environment Setup
 
 #### Prerequisites
+
+If you plan to run the application locally, please install the following software on your workstation. Otherwise, you can proceed to next step if you are only interested in deploying to IBM Cloud.
 
 - Install Java JDK 1.8 and ensure it is available in your PATH
 - [Install Node.js](https://nodejs.org/) version 0.12.0 or version 4.x
@@ -79,7 +82,7 @@ runtimes. Additionally you will need to configure your system to run the iOS and
 
 #### Install IBM Bluemix CLI and Container Service Plugin, Kubernetes CLI and Helm
 
-To install and test BlueCompute stack, you need the following tools:
+To install and test BlueCompute stack in IBM Bluemix, you need the following tools:
 - [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases)
 - [Bluemix CLI](http://clis.ng.bluemix.net/ui/home.html)
 - [Bluemix Container Service plugin](https://console.ng.bluemix.net/docs/containers/container_cli_cfic.html)
@@ -180,26 +183,26 @@ $ bx cs workers <cluster-name>
 
 ### Step 3: Deploy reference implementation to Kubernetes Cluster
 
-We packaged the entire application stack with all the Microservices and service components as a Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the Bluecompute Chart, please follow the instructions in the following sections.
+We packaged all the application components as Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the Bluecompute solution, please follow the instructions in the following sections.
 
 #### Deploy BlueCompute to Lite Cluster
 
 We created a couple of handy scripts to deploy the Bluecompute Stack for you in the Lite Cluster. Please run the following command.
 
   ```
-  # This script will install Bluecompute Stack
-  # If you don't provide a cluster name, then it will try to get an
-  # existing cluster for you, though it is not guaranteed to be the one
-  # that you intended to deploy to. So use CAREFULLY.
-
   $ ./install_bluecompute_ce.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
   ```
 
-Once the actual install of Bluecompute takes place, it takes about 5-10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
+Once the actual install of Bluecompute takes place, it takes about 5-10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place. Please wait a minute or two to access the web app since some of the Microservices Pods are still initializing.
 
-At the very end you will get a **URL** (i.e. http://169.48.138.137:31469) to access the **Bluecompute Web App**.  
+At the very end you will get a **URL** (i.e. http://169.48.138.137:31469) to access the Bluecompute Web App.    
+
 ![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)  
 You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.  
+
+Login Credentials: Once you are on the Bluecompute Web App, use the following test credentials to login:
+- **Username:** user
+- **Password:** passw0rd
 
 That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command:
 
@@ -214,10 +217,6 @@ If you like to see **installation progress** as it occurs, open a browser window
   http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/job?namespace=default
 
 Be mindful that the jobs will disappear once the `Cleaning up` message is displayed by *install_bluecompute.sh*.
-
-**Login Credentials:** Once you are on the Bluecompute Web App, use the following test credentials to login:
-- **Username:** user
-- **Password:** passw0rd
 
 **Notes:**
 
@@ -238,11 +237,6 @@ The *install_bluecompute_ce.sh* script will do the following:
 To delete the Bluecompute Stack from your cluster, run the following script:
 
   ```
-  # This script will delete the Bluecompute Stack from your Cluster
-  # If you don't provide a cluster name, then it will try to get an
-  # existing cluster for you, though it is not guaranteed to be the one
-  # that you intended to clean up. So use CAREFULLY.
-
   $ ./delete_bluecompute_ce.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
   ```  
 
@@ -251,20 +245,12 @@ To delete the Bluecompute Stack from your cluster, run the following script:
 Just like in the [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lite-cluster) section, We created a couple of handy scripts to deploy the Bluecompute Stack for you. Please run the following command.
 
   ```
-  # This script will install Bluecompute Stack
-  # If you don't provide a cluster name, then it will try to get an
-  # existing cluster for you, though it is not guaranteed to be the one
-  # that you intended to deploy to. So use CAREFULLY.
-  #
-  # If any individual components fail to install, or a timeout occurs
-  # feel free to re-run the script and it will continue where it left off
-
   $ ./install_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
   ```
 
-Once the actual install of Bluecompute takes place, it takes about 10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
+Once the actual install of Bluecompute takes place, it takes about 10~15 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
 
-At the very end you will get a **URL** to access the **Bluecompute Web App**.
+At the very end you will get a **URL** to access the Bluecompute Web App.
 That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command:
 
   `$ kubectl proxy`
@@ -289,14 +275,6 @@ Be mindful that the jobs will dissapear once the `Cleaning up` message is displa
 To delete the Bluecompute Stack from your cluster, run the following script:
 
   ```
-  # This script will delete the Bluecompute Stack from your Cluster
-  # If you don't provide a cluster name, then it will try to get an
-  # existing cluster for you, though it is not guaranteed to be the one
-  # that you intended to clean up. So use CAREFULLY.
-  #
-  # If any individual components fail to install, or a timeout occurs
-  # feel free to re-run the script and it will continue where it left off
-
   $ ./delete_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
   ```
 
