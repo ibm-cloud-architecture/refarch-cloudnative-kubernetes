@@ -79,17 +79,15 @@ if [[ $? -ne 0 ]]; then
 
 	if [[ $OSTYPE =~ .*darwin.* ]]; then
 		# OS X
-		#brew install jq
 		curl -Lo jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-osx-amd64
-		chmod +x ./jq
-		sudo mv ./jq /usr/local/bin/jq
 
 	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		# Linux
 		curl -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
-		chmod +x ./jq
-		sudo mv ./jq /usr/local/bin/jq
 	fi
+
+	chmod +x ./jq
+	sudo mv ./jq /usr/local/bin/jq
 fi
 
 # Installing yaml
