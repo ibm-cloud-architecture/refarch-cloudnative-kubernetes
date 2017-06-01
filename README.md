@@ -10,6 +10,8 @@
     - [Step 3: Deploy reference implementation to Kubernetes Cluster](#step-3-deploy-reference-implementation-to-kubernetes-cluster)
         - [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lite-cluster)
             - [Delete Bluecompute from Lite Cluster](#delete-bluecompute-from-lite-cluster)
+        - [Deploy Bluecompute to Local Minikube Cluster](#deploy-bluecompute-to-local-minikube-cluster)
+            - [Delete Bluecompute from Local Minikube Cluster](#delete-bluecompute-from-local-minikube-cluster)
         - [Deploy Bluecompute to Paid Cluster](#deploy-bluecompute-to-paid-cluster)
             - [Delete Bluecompute from Paid Cluster](#delete-bluecompute-from-paid-cluster)
 - **[DevOps automation, Resiliency and Cloud Management and Monitoring](#devops-automation-resiliency-and-cloud-management-and-monitoring)**
@@ -107,10 +109,10 @@ It will ignore what's already installed.
 
 Once you created Bluemix account and space, you will be able to provision/create a Kubernetes cluster with following instructions:
 
-  ```
-  $ bx login
-  $ bx cs init
-  ```
+```
+$ bx login
+$ bx cs init
+```
 
 #### Lite Cluster
 
@@ -189,9 +191,9 @@ We packaged all the application components as Kubernetes [Charts](https://github
 
 We created a couple of handy scripts to deploy the Bluecompute Stack for you in the Lite Cluster. Please run the following command.
 
-  ```
-  $ ./install_bluecompute_ce.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
-  ```
+```
+$ ./install_bluecompute_ce.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+```
 
 Once the actual install of Bluecompute takes place, it takes about 5-10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place. Please wait a minute or two to access the web app since some of the Microservices Pods are still initializing.
 
@@ -206,9 +208,9 @@ Login Credentials: Once you are on the Bluecompute Web App, use the following te
 
 That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command:
 
-  `$ kubectl proxy`
+`$ kubectl proxy`
 
-Then open a browser and paste the following URL to see the **Services** created by Bluecompute Chart:
+Then open a browser and paste the following URL to see the **Services** created by Bluecompute charts:
 
   http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
 
@@ -216,7 +218,7 @@ If you like to see **installation progress** as it occurs, open a browser window
 
   http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/job?namespace=default
 
-Be mindful that the jobs will disappear once the `Cleaning up` message is displayed by *install_bluecompute.sh*.
+Be mindful that jobs come and go as new charts are getting installed.
 
 **Notes:**
 
@@ -236,34 +238,85 @@ The *install_bluecompute_ce.sh* script will do the following:
 ##### Delete Bluecompute from Lite Cluster
 To delete the Bluecompute Stack from your cluster, run the following script:
 
-  ```
-  $ ./delete_bluecompute_ce.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
-  ```  
+```
+$ ./delete_bluecompute_ce.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+```
+
+#### Deploy BlueCompute to Local Minikube Cluster
+
+We created a couple of handy scripts to deploy the Bluecompute Stack for you in your [Local Minikube Cluster](https://kubernetes.io/docs/tasks/tools/install-minikube/). Please run the following command.
+
+```
+$ ./install_bluecompute_ce.sh minikube
+```
+
+Once the actual install of Bluecompute takes place, it takes about 5-10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place. Please wait a minute or two to access the web app since some of the Microservices Pods are still initializing.
+
+At the very end you will get a **URL** (i.e. http://192.168.99.100:31469) to access the Bluecompute Web App.    
+
+![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)  
+You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.  
+
+Login Credentials: Once you are on the Bluecompute Web App, use the following test credentials to login:
+- **Username:** user
+- **Password:** passw0rd
+
+That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command which will open a new browser window:
+
+`$ minikube dashboard`
+
+Then navigate to the **Services and discovery** section to see all the **Services** created by Bluecompute charts.
+
+If you like to see **installation progress** as it occurs, use the `minikube dashboard` command to open a new browser window, then navigate to the `Jobs` section to see Installation jobs.
+
+Be mindful that jobs come and go as new charts are getting installed.
+
+**Notes:**
+
+The *install_bluecompute_ce.sh* script will do the following:
+1. Ask you login to Bluemix.
+2. Initialize Container Plugin (bx cs init).
+3. Unless already provided, it will create a Bluemix API Key
+    * Not needed to deploy the reference application stack but will be needed for [DevOps and CI/CD](#devops-automation-resiliency-and-cloud-management-and-monitoring)
+4. Get cluster configuration and set your terminal context to the cluster.
+5. Initialize Helm.
+6. Install the entire *Reference Application* Stack by installing the individual Helm charts. i.e.
+    * `cd docs/charts`
+    * `$ helm install chart_name --name release_name`
+    * It will create all the necessary configurations before deploying any pods.
+7. Cleanup Jobs and Pods used to deploy dependencies.
+
+##### Delete Bluecompute from Local Minikube Cluster
+To delete the Bluecompute Stack from your Local Minikube Cluster, run the following script:
+
+```
+$ ./delete_bluecompute_ce.sh minikube
+```
 
 #### Deploy Bluecompute to Paid Cluster
 
 Just like in the [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lite-cluster) section, We created a couple of handy scripts to deploy the Bluecompute Stack for you. Please run the following command.
 
-  ```
-  $ ./install_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
-  ```
+```
+$ ./install_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+```
 
 Once the actual install of Bluecompute takes place, it takes about 10~15 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
 
 At the very end you will get a **URL** to access the Bluecompute Web App.
 That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command:
 
-  `$ kubectl proxy`
+`$ kubectl proxy`
 
-Then open a browser and paste the following URL to see the **Services** created by Bluecompute Chart:
+Then open a browser and paste the following URL to see the **Services** created by Bluecompute charts:
 
   http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
 
-If you like to see **installation progress** as it occurs, open a browser window and paste the following URL to see the Installation Jobs. About 17 jobs will be created in sequence:
+If you like to see **installation progress** as it occurs, open a browser window and paste the following URL to see the Installation Jobs:
 
   http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/job?namespace=default
 
-Be mindful that the jobs will dissapear once the `Cleaning up` message is displayed by *install_bluecompute.sh*.
+Be mindful that jobs come and go as new charts are getting installed.
 
 **Login Credentials:** Once you are on the Bluecompute Web App, use the following test credentials to login:
 - **Username:** user
@@ -274,9 +327,9 @@ Be mindful that the jobs will dissapear once the `Cleaning up` message is displa
 
 To delete the Bluecompute Stack from your cluster, run the following script:
 
-  ```
-  $ ./delete_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
-  ```
+```
+$ ./delete_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+```
 
 ## DevOps automation, Resiliency and Cloud Management and Monitoring
 
