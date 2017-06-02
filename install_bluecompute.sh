@@ -133,7 +133,7 @@ function install_bluecompute_inventory {
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing bluecompute-inventory chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		time helm install --name inventory --debug --wait --timeout 600 \
+		time helm install --name inventory --debug --timeout 600 \
 		--set configMap.bluemixOrg=${BX_ORG} \
 		--set configMap.bluemixSpace=${BX_SPACE} \
 		--set configMap.bluemixRegistryNamespace=${BX_CR_NAMESPACE} \
@@ -163,7 +163,7 @@ function install_bluecompute_catalog {
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing bluecompute-catalog chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		time helm install --name catalog --debug --wait --timeout 600 \
+		time helm install --name catalog --debug --timeout 600 \
 		--set secret.skipDelete=true \
 		--set configMap.skipDelete=true \
 		--set configMap.bluemixOrg=${BX_ORG} \
@@ -194,7 +194,7 @@ function install_bluecompute_orders {
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing bluecompute-orders chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		time helm install --name orders --debug --wait --timeout 600 \
+		time helm install --name orders --debug --timeout 600 \
 		--set messagehub.skipDelete=true \
 		--set mysql.skipDelete=true \
 		--set secret.skipDelete=true \
@@ -227,7 +227,7 @@ function install_bluecompute_customer {
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing bluecompute-customer chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		time helm install --name customer --debug --wait --timeout 600 \
+		time helm install --name customer --debug --timeout 600 \
 		--set hs256key.skipDelete=true \
 		--set secret.skipDelete=true \
 		--set configMap.skipDelete=true \
@@ -259,7 +259,7 @@ function install_bluecompute_auth {
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing bluecompute-auth chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		time helm install --name auth --debug --wait --timeout 600 \
+		time helm install --name auth --debug --timeout 600 \
 		--set hs256key.skipDelete=true \
 		bluecompute-auth-0.1.0.tgz
 

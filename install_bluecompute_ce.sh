@@ -19,6 +19,10 @@ function check_tiller {
 	kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1
 }
 
+function get_web_port {
+	kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort
+}
+
 function bluemix_login {
 	# Bluemix Login
 	printf "${grn}Login into Bluemix${end}\n"
@@ -264,7 +268,7 @@ function install_bluecompute_web {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing bluecompute-web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install bluecompute-web-ce-0.1.0.tgz --name bluecompute-web --timeout 600 --wait
+		time helm install bluecompute-web-ce-0.1.0.tgz --name bluecompute-web --timeout 600
 
 		local status=$?
 
@@ -322,7 +326,13 @@ install_bluecompute_catalog
 install_bluecompute_web
 cd ../..
 
-webport=$(kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort)
+# Getting web port
+webport=$(get_web_port)
+
+while [[ "${webport}" == "" ]]; do
+	sleep 1
+	webport=$(get_web_port)
+done
 
 #sleep 10
 
