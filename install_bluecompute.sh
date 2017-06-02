@@ -18,7 +18,7 @@ BX_CR_NAMESPACE=""
 BX_ORG=""
 
 function check_tiller {
-	kubectl --namespace=kube-system get pods | grep tiller | grep Runnin
+	kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1
 }
 
 function bluemix_login {
@@ -150,7 +150,7 @@ function install_bluecompute_inventory {
 
 		printf "\n\n${grn}bluecompute-inventory was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-inventory-0.1.1
+		kubectl delete pods,jobs -l heritage=Tiller
 
 	else
 		printf "\n\n${grn}bluecompute-inventory was already installed!${end}\n"
@@ -182,7 +182,7 @@ function install_bluecompute_catalog {
 
 		printf "\n\n${grn}bluecompute-catalog was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-catalog-0.1.1
+		kubectl delete pods,jobs -l heritage=Tiller
 	else
 		printf "\n\n${grn}bluecompute-catalog was already installed!${end}\n"
 	fi
@@ -215,7 +215,7 @@ function install_bluecompute_orders {
 
 		printf "\n\n${grn}bluecompute-orders was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-orders-0.1.0
+		kubectl delete pods,jobs -l heritage=Tiller
 	else
 		printf "\n\n${grn}bluecompute-orders was already installed!${end}\n"
 	fi
@@ -247,7 +247,7 @@ function install_bluecompute_customer {
 
 		printf "\n\n${grn}bluecompute-customer was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-customer-0.1.0
+		kubectl delete pods,jobs -l heritage=Tiller
 	else
 		printf "\n\n${grn}bluecompute-customer was already installed!${end}\n"
 	fi
@@ -272,7 +272,7 @@ function install_bluecompute_auth {
 
 		printf "\n\n${grn}bluecompute-auth was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-auth-0.1.0
+		kubectl delete pods,jobs -l heritage=Tiller
 	else
 		printf "\n\n${grn}bluecompute-auth was already installed!${end}\n"
 	fi
@@ -295,7 +295,7 @@ function install_bluecompute_web {
 		fi
 
 		printf "\n\n${grn}bluecompute-web was successfully installed!${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-web-0.1.0
+		kubectl delete pods,jobs -l heritage=Tiller
 	else
 		printf "\n\n${grn}bluecompute-web was already installed!${end}\n"
 	fi
