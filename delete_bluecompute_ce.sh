@@ -19,27 +19,33 @@ function check_tiller {
 	kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1
 }
 
+function print_usage {
+	printf "\n\n${yel}Usage:${end}\n"
+	printf "\t${cyn}./delete_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>${end}\n\n"
+}
+
 function bluemix_login {
 	# Bluemix Login
-	printf "${grn}Login into Bluemix${end}\n"
-	if [[ -z "${BX_API_KEY// }" && -z "${BX_SPACE// }" ]]; then
-		echo "${yel}API Key & SPACE NOT provided.${end}"
-		bx login -a ${BX_API_ENDPOINT}
+	if [[ -z "${CLUSTER_NAME// }" ]]; then
+		print_usage
+		echo "${red}Please provide Cluster Name. Exiting..${end}"
+		exit 1
 
 	elif [[ -z "${BX_SPACE// }" ]]; then
-		echo "${yel}API Key provided but SPACE was NOT provided.${end}"
-		export BLUEMIX_API_KEY=${BX_API_KEY}
-		bx login -a ${BX_API_ENDPOINT}
+		print_usage
+		echo "${red}Please provide Bluemix Space. Exiting..${end}"
+		exit 1
 
 	elif [[ -z "${BX_API_KEY// }" ]]; then
-		echo "${yel}API Key NOT provided but SPACE was provided.${end}"
-		bx login -a ${BX_API_ENDPOINT} -s ${BX_SPACE}
-
-	else
-		echo "${yel}API Key and SPACE provided.${end}"
-		export BLUEMIX_API_KEY=${BX_API_KEY}
-		bx login -a ${BX_API_ENDPOINT} -s ${BX_SPACE}
+		print_usage
+		echo "${red}Please provide Bluemix API Key. Exiting..${end}"
+		exit 1
 	fi
+
+	printf "${grn}Login into Bluemix${end}\n"
+
+	export BLUEMIX_API_KEY=${BX_API_KEY}
+	bx login -a ${BX_API_ENDPOINT} -s ${BX_SPACE}
 
 	status=$?
 
@@ -90,30 +96,30 @@ function initialize_helm {
 	done
 }
 
-function delete_bluecompute_inventory {
-	local release=$(helm list | grep bluecompute-inventory | awk '{print $1}' | head -1)
+function delete_inventory {
+	local release=$(helm list | grep inventory-ce | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}bluecompute-inventory-ce was already deleted!${end}\n"
+		printf "\n\n${grn}inventory-ce was already deleted!${end}\n"
 	else
-		printf "\n\n${grn}Deleting bluecompute-inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Deleting inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error deleting bluecompute-inventory-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error deleting inventory-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-inventory-ce was successfully deleted!${end}\n"
+		printf "\n\n${grn}inventory-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-inventory-ce-0.1.1
+		kubectl delete pods,jobs -l chart=inventory-ce-0.1.1
 	fi
 }
 
-function delete_bluecompute_inventory_mysql {
+function delete_inventory_mysql {
 	local release=$(helm list | grep inventory-mysql | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
@@ -136,31 +142,31 @@ function delete_bluecompute_inventory_mysql {
 	fi
 }
 
-function delete_bluecompute_catalog {
-	local release=$(helm list | grep bluecompute-catalog | awk '{print $1}' | head -1)
+function delete_catalog {
+	local release=$(helm list | grep catalog-ce | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}bluecompute-catalog-ce was already deleted!${end}\n"
+		printf "\n\n${grn}catalog-ce was already deleted!${end}\n"
 	else
-		printf "\n\n${grn}Deleting bluecompute-catalog-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Deleting catalog-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error deleting bluecompute-catalog-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error deleting catalog-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-catalog-ce was successfully deleted!${end}\n"
+		printf "\n\n${grn}catalog-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-catalog-ce-0.1.1
+		kubectl delete pods,jobs -l chart=catalog-ce-0.1.1
 	fi
 }
 
-function delete_bluecompute_catalog_elasticsearch {
-	local release=$(helm list | grep catalog-elasticsearch | awk '{print $1}' | head -1)
+function delete_catalog_elasticsearch {
+	local release=$(helm list | grep elasticsearch  | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -182,96 +188,96 @@ function delete_bluecompute_catalog_elasticsearch {
 	fi
 }
 
-function delete_bluecompute_orders {
-	local release=$(helm list | grep bluecompute-orders | awk '{print $1}' | head -1)
+function delete_orders {
+	local release=$(helm list | grep orders | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}bluecompute-orders-ce was already deleted!${end}\n"
+		printf "\n\n${grn}orders-ce was already deleted!${end}\n"
 	else
-		printf "\n\n${grn}Deleting bluecompute-orders-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Deleting orders-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error deleting bluecompute-orders-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error deleting orders-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-orders-ce was successfully deleted!${end}\n"
+		printf "\n\n${grn}orders-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-orders-ce-0.1.0
+		kubectl delete pods,jobs -l chart=orders-ce-0.1.0
 	fi
 }
 
-function delete_bluecompute_customer {
-	local release=$(helm list | grep bluecompute-customer | awk '{print $1}' | head -1)
+function delete_customer {
+	local release=$(helm list | grep customer | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}bluecompute-customer-ce was already deleted!${end}\n"
+		printf "\n\n${grn}customer-ce was already deleted!${end}\n"
 	else
-		printf "\n\n${grn}Deleting bluecompute-customer-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Deleting customer-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error deleting bluecompute-customer-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error deleting customer-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-customer-ce was successfully deleted!${end}\n"
+		printf "\n\n${grn}customer-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-customer-ce-0.1.0
-		kubectl delete pods,jobs -l chart=bluecompute-customer-couchdb-0.1.0
+		kubectl delete pods,jobs -l chart=customer-ce-0.1.0
+		kubectl delete pods,jobs -l chart=customer-couchdb-0.1.0
 	fi
 }
 
-function delete_bluecompute_auth {
-	local release=$(helm list | grep bluecompute-auth | awk '{print $1}' | head -1)
+function delete_auth {
+	local release=$(helm list | grep auth | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}bluecompute-auth-ce was already deleted!${end}\n"
+		printf "\n\n${grn}auth-ce was already deleted!${end}\n"
 	else
-		printf "\n\n${grn}Deleting bluecompute-auth-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Deleting auth-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error deleting bluecompute-auth-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error deleting auth-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-auth-ce was successfully deleted!${end}\n"
+		printf "\n\n${grn}auth-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-auth-ce-0.1.0
+		kubectl delete pods,jobs -l chart=auth-ce-0.1.0
 	fi
 }
 
-function delete_bluecompute_web {
-	local release=$(helm list | grep bluecompute-web | awk '{print $1}' | head -1)
+function delete_web {
+	local release=$(helm list | grep web | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}bluecompute-web-ce was already deleted!${end}\n"
+		printf "\n\n${grn}web-ce was already deleted!${end}\n"
 	else
-		printf "\n\n${grn}Deleting bluecompute-web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Deleting web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm delete $release --purge --debug --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error deleting bluecompute-web-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error deleting web-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-web-ce was successfully deleted!${end}\n"
+		printf "\n\n${grn}web-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=bluecompute-web-ce-0.1.0
+		kubectl delete pods,jobs -l chart=web-ce-0.1.0
 	fi
 }
 
@@ -299,18 +305,19 @@ fi
 initialize_helm
 
 # Install Bluecompute
-delete_bluecompute_web
-delete_bluecompute_auth
-delete_bluecompute_customer
-delete_bluecompute_orders
-delete_bluecompute_catalog
-delete_bluecompute_catalog_elasticsearch
-delete_bluecompute_inventory
-delete_bluecompute_inventory_mysql
+delete_web
+delete_auth
+delete_customer
+delete_orders
+delete_catalog
+delete_catalog_elasticsearch
+delete_inventory
+delete_inventory_mysql
 
 # Sanity Checks
 printf "\n\n${grn}Doing some final cleanup${end}\n"
-kubectl delete pods,jobs -l heritage=Tiller
+#kubectl delete jobs inventory-populate-mysql-inventory --force
+kubectl delete pods,jobs -l heritage=Tiller --force
 kubectl delete secrets hs256-key
 
 printf "\n\nBluecompute was uninstalled!\n"

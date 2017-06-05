@@ -1,130 +1,130 @@
 apiVersion: v1
 entries:
-  bluecompute-auth:
+  auth:
   - apiVersion: v1
-    created: 2017-06-02T11:46:15.886899806-05:00
+    created: 2017-06-05T16:26:17.17911371-05:00
     description: BlueCompute Auth Microservice
-    digest: 0aef9f2e4c6d39df29978fa738a07dd90957f2f7986372dd7f714405b0dff122
-    name: bluecompute-auth
+    digest: 283d736ce6aa7fb49afae0e3b157cac67e8fa4d043eeea8c065e1abe548a4921
+    name: auth
     urls:
-    - bluecompute-auth-0.1.0.tgz
+    - auth-0.1.0.tgz
     version: 0.1.0
-  bluecompute-auth-ce:
+  auth-ce:
   - apiVersion: v1
-    created: 2017-06-02T11:46:15.887181178-05:00
+    created: 2017-06-05T16:26:17.179346406-05:00
     description: BlueCompute Auth Microservice
-    digest: b2fb81b5be3c8329feef49be80b8ad8dcf0dca9ecb20ee513ef277992d285fc1
-    name: bluecompute-auth-ce
+    digest: f70d66c474d90f0c6bd1774e6ea8090e2dd5baa35037abe29ac252426af4f29a
+    name: auth-ce
     urls:
-    - bluecompute-auth-ce-0.1.0.tgz
+    - auth-ce-0.1.0.tgz
     version: 0.1.0
-  bluecompute-catalog:
+  catalog:
   - apiVersion: v1
-    created: 2017-06-02T11:46:15.88747343-05:00
+    created: 2017-06-05T16:26:17.179600116-05:00
     description: BlueCompute Catalog Microservice
-    digest: f6fae1d68935783b0df3e65f3b499cb9d72961837aece87df1bead40ee0e9b08
-    name: bluecompute-catalog
+    digest: 3e9ce33d66def74fab60448ef70361a6b95e1608cca37c741391892bd2ba1ec5
+    name: catalog
     urls:
-    - bluecompute-catalog-0.1.1.tgz
+    - catalog-0.1.1.tgz
     version: 0.1.1
-  bluecompute-catalog-ce:
+  catalog-ce:
   - apiVersion: v1
-    created: 2017-06-02T11:46:15.8876634-05:00
+    created: 2017-06-05T16:26:17.179766783-05:00
     description: BlueCompute Catalog Microservice
-    digest: 3b824c9f40d778da7e275aa24ac649d71f03a48ee9afe3b3d9d1442949d5b435
-    name: bluecompute-catalog-ce
+    digest: f5e1061712553532c6267cd007bc14f41bdf2a8064430f0dce197b74ebcdda5a
+    name: catalog-ce
     urls:
-    - bluecompute-catalog-ce-0.1.1.tgz
+    - catalog-ce-0.1.1.tgz
     version: 0.1.1
-  bluecompute-customer:
-  - apiVersion: v1
-    created: 2017-06-02T11:46:15.888079784-05:00
-    description: BlueCompute Customer Microservice
-    digest: 4073884ff42b887f0d29ef8eaf260962e866061aa72b6abab35e670db458d0b3
-    name: bluecompute-customer
-    urls:
-    - bluecompute-customer-0.1.0.tgz
-    version: 0.1.0
-  bluecompute-customer-ce:
-  - apiVersion: v1
-    created: 2017-06-02T11:46:15.888450732-05:00
-    description: BlueCompute Customer Microservice
-    digest: 19bdbbea46c86b9fd2dc94a503765f8c2204129e97991a8e146ee86f5b222aa3
-    name: bluecompute-customer-ce
-    urls:
-    - bluecompute-customer-ce-0.1.0.tgz
-    version: 0.1.0
-  bluecompute-inventory:
-  - apiVersion: v1
-    created: 2017-06-02T11:46:15.888817349-05:00
-    description: BlueCompute Inventory Microservice
-    digest: f441133920645f7f9fbb81405d40ef5556d8d304a53c0c5e1115c82447100444
-    name: bluecompute-inventory
-    urls:
-    - bluecompute-inventory-0.1.1.tgz
-    version: 0.1.1
-  bluecompute-inventory-ce:
-  - apiVersion: v1
-    created: 2017-06-02T11:46:15.88910761-05:00
-    description: BlueCompute Inventory Microservice
-    digest: 8e7ff37403ffc2153210c94c0670d183ea035904798315e547ecdcc654bb1edb
-    name: bluecompute-inventory-ce
-    urls:
-    - bluecompute-inventory-ce-0.1.1.tgz
-    version: 0.1.1
-  bluecompute-orders:
-  - apiVersion: v1
-    created: 2017-06-02T11:46:15.889416359-05:00
-    description: Bluecompute Orders Microservice
-    digest: 6628e32f097609ba480498dba5eaf6d37ae371115fe43d64ef1dbcd58925bfaf
-    name: bluecompute-orders
-    urls:
-    - bluecompute-orders-0.1.0.tgz
-    version: 0.1.0
-  bluecompute-orders-ce:
-  - apiVersion: v1
-    created: 2017-06-02T11:46:15.889709862-05:00
-    description: Bluecompute Orders Microservice
-    digest: a78187b32bd0a25ee98f1d58d8eaaa3b213f555c1ad541b97fdd7dcb637c29f9
-    name: bluecompute-orders-ce
-    urls:
-    - bluecompute-orders-ce-0.1.0.tgz
-    version: 0.1.0
-  bluecompute-web:
-  - apiVersion: v1
-    created: 2017-06-02T11:46:15.889882966-05:00
-    description: BlueCompute Web BFF app
-    digest: e2484b511cb803b6081fceae951ace18a69dc0ae1c61db6e79728d5383d3cfc2
-    name: bluecompute-web
-    urls:
-    - bluecompute-web-0.1.0.tgz
-    version: 0.1.0
-  bluecompute-web-ce:
-  - apiVersion: v1
-    created: 2017-06-02T11:46:15.890126576-05:00
-    description: BlueCompute Web BFF app
-    digest: 9d1513bbbcf27f469b865201ec977d095ff5bc4ebf78942ce7d9d34d54176a89
-    name: bluecompute-web-ce
-    urls:
-    - bluecompute-web-ce-0.1.0.tgz
-    version: 0.1.0
   catalog-elasticsearch:
   - apiVersion: v1
-    created: 2017-06-02T11:46:15.890353206-05:00
+    created: 2017-06-05T16:26:17.179938642-05:00
     description: BlueCompute ElasticSearch for Catalog
-    digest: aaf677dc1de3ea1275e6d52c8f992c6d56db34f3b46d2e7bbcc3d9c0c93288e1
+    digest: 4609239adaa130a790ba89f5a8472280d98b449571de3d2bf96252cb7ebd80db
     name: catalog-elasticsearch
     urls:
     - catalog-elasticsearch-0.1.1.tgz
     version: 0.1.1
+  customer:
+  - apiVersion: v1
+    created: 2017-06-05T16:26:17.180274202-05:00
+    description: BlueCompute Customer Microservice
+    digest: 5470e53daa51a6ce2ed46fd40989e9f8446c5b1fd455d50a8d7c77aa36199eef
+    name: customer
+    urls:
+    - customer-0.1.0.tgz
+    version: 0.1.0
+  customer-ce:
+  - apiVersion: v1
+    created: 2017-06-05T16:26:17.180691401-05:00
+    description: BlueCompute Customer Microservice
+    digest: 3d41b8f538d83731693be26086b344932aa4f376ebab94ade5be9316967d0642
+    name: customer-ce
+    urls:
+    - customer-ce-0.1.0.tgz
+    version: 0.1.0
+  inventory:
+  - apiVersion: v1
+    created: 2017-06-05T16:26:17.18102211-05:00
+    description: BlueCompute Inventory Microservice
+    digest: 868af3135611c5167383d7933931fe0b61d26a80b559a91f71d49795ddab1bf5
+    name: inventory
+    urls:
+    - inventory-0.1.1.tgz
+    version: 0.1.1
+  inventory-ce:
+  - apiVersion: v1
+    created: 2017-06-05T16:26:17.181210123-05:00
+    description: BlueCompute Inventory Microservice
+    digest: 35a5114acbbd815d62a56a63b38b6ae8da578f25f6ed8341b5ec4d5a90252a4c
+    name: inventory-ce
+    urls:
+    - inventory-ce-0.1.1.tgz
+    version: 0.1.1
   inventory-mysql:
   - apiVersion: v1
-    created: 2017-06-02T11:46:15.890677967-05:00
+    created: 2017-06-05T16:26:17.181439049-05:00
     description: BlueCompute Inventory Microservice
-    digest: 34ec160fb5410c2d1b1d45859ae9d52e24ea62c62d1517dd9c04428846333465
+    digest: 7fb0135e17de4a26e5594845094531552cbfbe21fe4ff906a8115d47af771710
     engine: gotpl
     name: inventory-mysql
     urls:
     - inventory-mysql-0.1.1.tgz
     version: 0.1.1
-generated: 2017-06-02T11:46:15.886411189-05:00
+  orders:
+  - apiVersion: v1
+    created: 2017-06-05T16:26:17.18179679-05:00
+    description: Bluecompute Orders Microservice
+    digest: 10462a1a1aabca3f69009021e829bf52d949455432b4ec5e6d34ca8a6acafdd4
+    name: orders
+    urls:
+    - orders-0.1.0.tgz
+    version: 0.1.0
+  orders-ce:
+  - apiVersion: v1
+    created: 2017-06-05T16:26:17.18209512-05:00
+    description: Bluecompute Orders Microservice
+    digest: b13afbb8cbe4dedee64832f7490dffa6de7dc3549417ddc3072fdcdaac7ea398
+    name: orders-ce
+    urls:
+    - orders-ce-0.1.0.tgz
+    version: 0.1.0
+  web:
+  - apiVersion: v1
+    created: 2017-06-05T16:26:17.182333874-05:00
+    description: BlueCompute Web BFF app
+    digest: 8731518a78d61419741d667830c7f86e9265242dbafa3e2183062e29b10a3776
+    name: web
+    urls:
+    - web-0.1.0.tgz
+    version: 0.1.0
+  web-ce:
+  - apiVersion: v1
+    created: 2017-06-05T16:26:17.182510994-05:00
+    description: BlueCompute Web BFF app
+    digest: 71b45a7794ab87e96d3a3183a27f7e20b623a0010b08eb6f76b97ac6b52cbc27
+    name: web-ce
+    urls:
+    - web-ce-0.1.0.tgz
+    version: 0.1.0
+generated: 2017-06-05T16:26:17.178672739-05:00

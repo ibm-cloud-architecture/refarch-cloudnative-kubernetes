@@ -21,27 +21,33 @@ function check_tiller {
 	kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1
 }
 
+function print_usage {
+	printf "\n\n${yel}Usage:${end}\n"
+	printf "\t${cyn}./install_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>${end}\n\n"
+}
+
 function bluemix_login {
 	# Bluemix Login
-	printf "${grn}Login into Bluemix${end}\n"
-	if [[ -z "${BX_API_KEY// }" && -z "${BX_SPACE// }" ]]; then
-		echo "${yel}API Key & SPACE NOT provided.${end}"
-		bx login -a ${BX_API_ENDPOINT}
+	if [[ -z "${CLUSTER_NAME// }" ]]; then
+		print_usage
+		echo "${red}Please provide Cluster Name. Exiting..${end}"
+		exit 1
 
 	elif [[ -z "${BX_SPACE// }" ]]; then
-		echo "${yel}API Key provided but SPACE was NOT provided.${end}"
-		export BLUEMIX_API_KEY=${BX_API_KEY}
-		bx login -a ${BX_API_ENDPOINT}
+		print_usage
+		echo "${red}Please provide Bluemix Space. Exiting..${end}"
+		exit 1
 
 	elif [[ -z "${BX_API_KEY// }" ]]; then
-		echo "${yel}API Key NOT provided but SPACE was provided.${end}"
-		bx login -a ${BX_API_ENDPOINT} -s ${BX_SPACE}
-
-	else
-		echo "${yel}API Key and SPACE provided.${end}"
-		export BLUEMIX_API_KEY=${BX_API_KEY}
-		bx login -a ${BX_API_ENDPOINT} -s ${BX_SPACE}
+		print_usage
+		echo "${red}Please provide Bluemix API Key. Exiting..${end}"
+		exit 1
 	fi
+
+	printf "${grn}Login into Bluemix${end}\n"
+
+	export BLUEMIX_API_KEY=${BX_API_KEY}
+	bx login -a ${BX_API_ENDPOINT} -s ${BX_SPACE}
 
 	status=$?
 
@@ -122,47 +128,47 @@ function initialize_helm {
 	done
 }
 
-function add_bluecompute_repo {
+function add_repo {
 	printf "\n\n${grn}Adding bluecompute Helm Repo.${end}\n\n"
 	helm repo add bluecompute https://ibm-cloud-architecture.github.io/refarch-cloudnative-kubernetes/charts
 }
 
-function install_bluecompute_inventory {
-	local release=$(helm list | grep bluecompute-inventory)
+function install_inventory {
+	local release=$(helm list | grep inventory)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-inventory chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing inventory chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm install --name inventory --debug --timeout 600 \
 		--set configMap.bluemixOrg=${BX_ORG} \
 		--set configMap.bluemixSpace=${BX_SPACE} \
 		--set configMap.bluemixRegistryNamespace=${BX_CR_NAMESPACE} \
 		--set configMap.kubeClusterName=${CLUSTER_NAME} \
 		--set secret.apiKey=${BX_API_KEY} \
-		bluecompute-inventory-0.1.1.tgz
+		inventory-0.1.1.tgz
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-inventory... Exiting.${end}\n"
+			printf "\n\n${red}Error installing inventory... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-inventory was successfully installed!${end}\n"
+		printf "\n\n${grn}inventory was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 
 	else
-		printf "\n\n${grn}bluecompute-inventory was already installed!${end}\n"
+		printf "\n\n${grn}inventory was already installed!${end}\n"
 	fi
 }
 
-function install_bluecompute_catalog {
-	local release=$(helm list | grep bluecompute-catalog)
+function install_catalog {
+	local release=$(helm list | grep catalog)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-catalog chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing catalog chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm install --name catalog --debug --timeout 600 \
 		--set secret.skipDelete=true \
 		--set configMap.skipDelete=true \
@@ -171,29 +177,29 @@ function install_bluecompute_catalog {
 		--set configMap.bluemixRegistryNamespace=${BX_CR_NAMESPACE} \
 		--set configMap.kubeClusterName=${CLUSTER_NAME} \
 		--set secret.apiKey=${BX_API_KEY} \
-		bluecompute-catalog-0.1.1.tgz
+		catalog-0.1.1.tgz
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-catalog... Exiting.${end}\n"
+			printf "\n\n${red}Error installing catalog... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-catalog was successfully installed!${end}\n"
+		printf "\n\n${grn}catalog was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 	else
-		printf "\n\n${grn}bluecompute-catalog was already installed!${end}\n"
+		printf "\n\n${grn}catalog was already installed!${end}\n"
 	fi
 }
 
-function install_bluecompute_orders {
-	local release=$(helm list | grep bluecompute-orders)
+function install_orders {
+	local release=$(helm list | grep orders)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-orders chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing orders chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm install --name orders --debug --timeout 600 \
 		--set messagehub.skipDelete=true \
 		--set mysql.skipDelete=true \
@@ -204,29 +210,29 @@ function install_bluecompute_orders {
 		--set configMap.bluemixRegistryNamespace=${BX_CR_NAMESPACE} \
 		--set configMap.kubeClusterName=${CLUSTER_NAME} \
 		--set secret.apiKey=${BX_API_KEY} \
-		bluecompute-orders-0.1.0.tgz
+		orders-0.1.0.tgz
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-orders... Exiting.${end}\n"
+			printf "\n\n${red}Error installing orders... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-orders was successfully installed!${end}\n"
+		printf "\n\n${grn}orders was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 	else
-		printf "\n\n${grn}bluecompute-orders was already installed!${end}\n"
+		printf "\n\n${grn}orders was already installed!${end}\n"
 	fi
 }
 
-function install_bluecompute_customer {
-	local release=$(helm list | grep bluecompute-customer)
+function install_customer {
+	local release=$(helm list | grep customer)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-customer chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing customer chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm install --name customer --debug --timeout 600 \
 		--set hs256key.skipDelete=true \
 		--set secret.skipDelete=true \
@@ -236,68 +242,68 @@ function install_bluecompute_customer {
 		--set configMap.bluemixRegistryNamespace=${BX_CR_NAMESPACE} \
 		--set configMap.kubeClusterName=${CLUSTER_NAME} \
 		--set secret.apiKey=${BX_API_KEY} \
-		bluecompute-customer-0.1.0.tgz
+		customer-0.1.0.tgz
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-customer... Exiting.${end}\n"
+			printf "\n\n${red}Error installing customer... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-customer was successfully installed!${end}\n"
+		printf "\n\n${grn}customer was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 	else
-		printf "\n\n${grn}bluecompute-customer was already installed!${end}\n"
+		printf "\n\n${grn}customer was already installed!${end}\n"
 	fi
 }
 
-function install_bluecompute_auth {
-	local release=$(helm list | grep bluecompute-auth)
+function install_auth {
+	local release=$(helm list | grep auth)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-auth chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing auth chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm install --name auth --debug --timeout 600 \
 		--set hs256key.skipDelete=true \
-		bluecompute-auth-0.1.0.tgz
+		auth-0.1.0.tgz
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-auth... Exiting.${end}\n"
+			printf "\n\n${red}Error installing auth... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-auth was successfully installed!${end}\n"
+		printf "\n\n${grn}auth was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 	else
-		printf "\n\n${grn}bluecompute-auth was already installed!${end}\n"
+		printf "\n\n${grn}auth was already installed!${end}\n"
 	fi
 }
 
-function install_bluecompute_web {
-	local release=$(helm list | grep bluecompute-web)
+function install_web {
+	local release=$(helm list | grep web)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-web  chart. This will take a few minutes...${end} ${coffee3}\n\n"
-                ing_subdomain=$(bx cs cluster-get ${CLUSTER_NAME} | grep 'Ingress subdomain:' | awk '{print $NF}')
-		time helm install --name web --debug --wait --timeout 600 --set ingCtlHost=${ing_subdomain} bluecompute-web-0.1.0.tgz
+		printf "\n\n${grn}Installing web  chart. This will take a few minutes...${end} ${coffee3}\n\n"
+        ing_subdomain=$(bx cs cluster-get ${CLUSTER_NAME} | grep 'Ingress subdomain:' | awk '{print $NF}')
+		time helm install --name web --debug --timeout 600 --set ingCtlHost=${ing_subdomain} web-0.1.0.tgz
     
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-web... Exiting.${end}\n"
+			printf "\n\n${red}Error installing web... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-web was successfully installed!${end}\n"
+		printf "\n\n${grn}web was successfully installed!${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 	else
-		printf "\n\n${grn}bluecompute-web was already installed!${end}\n"
+		printf "\n\n${grn}web was already installed!${end}\n"
 	fi
 }
 
@@ -310,16 +316,16 @@ get_org
 get_space
 set_cluster_context
 initialize_helm
-#add_bluecompute_repo
+#add_repo
 
 # Install Bluecompute
 cd docs/charts
-install_bluecompute_inventory
-install_bluecompute_catalog
-install_bluecompute_orders
-install_bluecompute_customer
-install_bluecompute_auth
-install_bluecompute_web
+install_inventory
+install_catalog
+install_orders
+install_customer
+install_auth
+install_web
 cd ../..
 
 printf "\n\n${grn}Bluecompute was successfully installed!${end}\n"
@@ -337,3 +343,7 @@ printf "\nFinally, on another browser window, copy and paste the following URL f
 echo "${cyn}http://${ing_subdomain}${end}"
 
 /bin/sh audit.sh &> /dev/null
+
+printf "\nUse these credentials to login:"
+printf "\n${cyn}username:${end} user"
+printf "\n${cyn}password:${end} passw0rd\n"

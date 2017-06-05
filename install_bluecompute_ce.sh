@@ -23,27 +23,33 @@ function get_web_port {
 	kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort
 }
 
+function print_usage {
+	printf "\n\n${yel}Usage:${end}\n"
+	printf "\t${cyn}./install_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>${end}\n\n"
+}
+
 function bluemix_login {
 	# Bluemix Login
-	printf "${grn}Login into Bluemix${end}\n"
-	if [[ -z "${BX_API_KEY// }" && -z "${BX_SPACE// }" ]]; then
-		echo "${yel}API Key & SPACE NOT provided.${end}"
-		bx login -a ${BX_API_ENDPOINT}
+	if [[ -z "${CLUSTER_NAME// }" ]]; then
+		print_usage
+		echo "${red}Please provide Cluster Name. Exiting..${end}"
+		exit 1
 
 	elif [[ -z "${BX_SPACE// }" ]]; then
-		echo "${yel}API Key provided but SPACE was NOT provided.${end}"
-		export BLUEMIX_API_KEY=${BX_API_KEY}
-		bx login -a ${BX_API_ENDPOINT}
+		print_usage
+		echo "${red}Please provide Bluemix Space. Exiting..${end}"
+		exit 1
 
 	elif [[ -z "${BX_API_KEY// }" ]]; then
-		echo "${yel}API Key NOT provided but SPACE was provided.${end}"
-		bx login -a ${BX_API_ENDPOINT} -s ${BX_SPACE}
-
-	else
-		echo "${yel}API Key and SPACE provided.${end}"
-		export BLUEMIX_API_KEY=${BX_API_KEY}
-		bx login -a ${BX_API_ENDPOINT} -s ${BX_SPACE}
+		print_usage
+		echo "${red}Please provide Bluemix API Key. Exiting..${end}"
+		exit 1
 	fi
+
+	printf "${grn}Login into Bluemix${end}\n"
+
+	export BLUEMIX_API_KEY=${BX_API_KEY}
+	bx login -a ${BX_API_ENDPOINT} -s ${BX_SPACE}
 
 	status=$?
 
@@ -94,13 +100,13 @@ function initialize_helm {
 	done
 }
 
-function install_bluecompute_inventory_mysql {
-	local release=$(helm list | grep inventory-mysql)
+function install_inventory_mysql {
+	local release=$(helm list | grep mysql)
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install inventory-mysql-0.1.1.tgz --name inventory-mysql --timeout 600
+		time helm install inventory-mysql-0.1.1.tgz --name mysql --timeout 600
 
 		local status=$?
 
@@ -118,13 +124,13 @@ function install_bluecompute_inventory_mysql {
 	fi
 }
 
-function install_bluecompute_catalog_elasticsearch {
-	local release=$(helm list | grep catalog-elasticsearch)
+function install_catalog_elasticsearch {
+	local release=$(helm list | grep elasticsearch )
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing catalog-elasticsearch chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install catalog-elasticsearch-0.1.1.tgz --name catalog-elasticsearch --timeout 600
+		time helm install catalog-elasticsearch-0.1.1.tgz --name elasticsearch  --timeout 600
 
 		local status=$?
 
@@ -142,147 +148,147 @@ function install_bluecompute_catalog_elasticsearch {
 	fi
 }
 
-function install_bluecompute_inventory {
-	local release=$(helm list | grep bluecompute-inventory)
+function install_inventory {
+	local release=$(helm list | grep inventory-ce)
 
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install bluecompute-inventory-ce-0.1.1.tgz --name bluecompute-inventory --timeout 600
+		time helm install inventory-ce-0.1.1.tgz --name inventory --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-inventory-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error installing inventory-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-inventory-ce was successfully installed!${end}\n"
+		printf "\n\n${grn}inventory-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 
 	else
-		printf "\n\n${grn}bluecompute-inventory-ce was already installed!${end}\n"
+		printf "\n\n${grn}inventory-ce was already installed!${end}\n"
 	fi
 }
 
-function install_bluecompute_catalog {
-	local release=$(helm list | grep bluecompute-catalog)
+function install_catalog {
+	local release=$(helm list | grep catalog-ce)
 
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-catalog-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing catalog-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install bluecompute-catalog-ce-0.1.1.tgz --name bluecompute-catalog --timeout 600
+		time helm install catalog-ce-0.1.1.tgz --name catalog --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-catalog-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error installing catalog-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-catalog-ce was successfully installed!${end}\n"
+		printf "\n\n${grn}catalog-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 
 	else
-		printf "\n\n${grn}bluecompute-catalog-ce was already installed!${end}\n"
+		printf "\n\n${grn}catalog-ce was already installed!${end}\n"
 	fi
 }
 
-function install_bluecompute_orders {
-	local release=$(helm list | grep bluecompute-orders)
+function install_orders {
+	local release=$(helm list | grep orders)
 
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-orders-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing orders-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install bluecompute-orders-ce-0.1.0.tgz --name bluecompute-orders --timeout 600
+		time helm install orders-ce-0.1.0.tgz --name orders --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-orders-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error installing orders-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-orders-ce was successfully installed!${end}\n"
+		printf "\n\n${grn}orders-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 
 	else
-		printf "\n\n${grn}bluecompute-orders-ce was already installed!${end}\n"
+		printf "\n\n${grn}orders-ce was already installed!${end}\n"
 	fi
 }
 
-function install_bluecompute_customer {
-	local release=$(helm list | grep bluecompute-customer)
+function install_customer {
+	local release=$(helm list | grep customer)
 
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-customer-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing customer-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install bluecompute-customer-ce-0.1.0.tgz --name bluecompute-customer --timeout 600
+		time helm install customer-ce-0.1.0.tgz --name customer --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-customer-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error installing customer-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-customer-ce was successfully installed!${end}\n"
+		printf "\n\n${grn}customer-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 
 	else
-		printf "\n\n${grn}bluecompute-customer-ce was already installed!${end}\n"
+		printf "\n\n${grn}customer-ce was already installed!${end}\n"
 	fi
 }
 
-function install_bluecompute_auth {
-	local release=$(helm list | grep bluecompute-auth)
+function install_auth {
+	local release=$(helm list | grep auth)
 
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-auth-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing auth-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install bluecompute-auth-ce-0.1.0.tgz --name bluecompute-auth --timeout 600
+		time helm install auth-ce-0.1.0.tgz --name auth --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-auth-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error installing auth-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-auth-ce was successfully installed!${end}\n"
+		printf "\n\n${grn}auth-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 
 	else
-		printf "\n\n${grn}bluecompute-auth-ce was already installed!${end}\n"
+		printf "\n\n${grn}auth-ce was already installed!${end}\n"
 	fi
 }
 
-function install_bluecompute_web {
-	local release=$(helm list | grep bluecompute-web)
+function install_web {
+	local release=$(helm list | grep web)
 
 	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing bluecompute-web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		printf "\n\n${grn}Installing web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install bluecompute-web-ce-0.1.0.tgz --name bluecompute-web --timeout 600
+		time helm install web-ce-0.1.0.tgz --name web --timeout 600
 
 		local status=$?
 
 		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing bluecompute-web-ce... Exiting.${end}\n"
+			printf "\n\n${red}Error installing web-ce... Exiting.${end}\n"
 			exit 1
 		fi
 
-		printf "\n\n${grn}bluecompute-web-ce was successfully installed!${end}\n"
+		printf "\n\n${grn}web-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl delete pods,jobs -l heritage=Tiller
 
 	else
-		printf "\n\n${grn}bluecompute-web-ce was already installed!${end}\n"
+		printf "\n\n${grn}web-ce was already installed!${end}\n"
 	fi
 }
 
@@ -316,14 +322,14 @@ initialize_helm
 
 # Install Bluecompute
 cd docs/charts
-install_bluecompute_catalog_elasticsearch
-install_bluecompute_inventory_mysql
-install_bluecompute_customer
-install_bluecompute_auth
-#install_bluecompute_orders
-install_bluecompute_inventory
-install_bluecompute_catalog
-install_bluecompute_web
+install_catalog_elasticsearch
+install_inventory_mysql
+install_customer
+install_auth
+#install_orders
+install_inventory
+install_catalog
+install_web
 cd ../..
 
 # Getting web port

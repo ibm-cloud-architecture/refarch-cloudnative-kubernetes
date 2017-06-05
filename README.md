@@ -3,11 +3,15 @@
 ## Table of Contents
 - **[Introduction](#architecture)**
 - **[Run the reference application in IBM Cloud](#run-the-reference-application-in-ibm-cloud)**
-    - [Step 1: Environment Setup](#step-1-environment-setup)
-    - [Step 2: Provision a Kubernetes cluster on IBM Bluemix Container service](#step-2-provision-a-kubernetes-cluster-on-ibm-bluemix-container-service)
+    - **[Step 1: Environment Setup](#step-1-environment-setup)**
+        - [Prerequisites](#prerequisites)
+        - [Install IBM Bluemix CLI and Container Service Plugin, Kubernetes CLI and Helm](#install-ibm-bluemix-cli-and-container-service-plugin-kubernetes-cli-and-helm)
+        - [Create a New Space in Bluemix](#create-a-new-space-in-bluemix)
+        - [Create a Bluemix API Key](#create-a-bluemix-api-key)
+    - **[Step 2: Provision a Kubernetes cluster on IBM Bluemix Container service](#step-2-provision-a-kubernetes-cluster-on-ibm-bluemix-container-service)**
         - [Lite Cluster](#lite-cluster)
         - [Paid Cluster](#paid-cluster)
-    - [Step 3: Deploy reference implementation to Kubernetes Cluster](#step-3-deploy-reference-implementation-to-kubernetes-cluster)
+    - **[Step 3: Deploy reference implementation to Kubernetes Cluster](#step-3-deploy-reference-implementation-to-kubernetes-cluster)**
         - [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lite-cluster)
             - [Delete Bluecompute from Lite Cluster](#delete-bluecompute-from-lite-cluster)
         - [Deploy Bluecompute to Local Minikube Cluster](#deploy-bluecompute-to-local-minikube-cluster)
@@ -105,6 +109,19 @@ It will ignore what's already installed.
 2. Click Create a new space.
 3. Enter "cloudnative-dev" for the space name and complete the wizard.
 
+#### Create a Bluemix API Key
+
+1. Click on the Bluemix account in the top right corner of the web interface.
+2. Click Create a new space.
+3. Enter "cloudnative-dev" for the space name and complete the wizard.
+
+```
+$ bx login
+$ bx iam api-key-create <api-key-name>
+```
+
+Please keep this API key as it WILL BE NEEDED in future steps.
+
 ### Step 2: Provision a Kubernetes cluster on IBM Bluemix Container service
 
 Once you created Bluemix account and space, you will be able to provision/create a Kubernetes cluster with following instructions:
@@ -189,10 +206,10 @@ We packaged all the application components as Kubernetes [Charts](https://github
 
 #### Deploy BlueCompute to Lite Cluster
 
-We created a couple of handy scripts to deploy the Bluecompute Stack for you in the Lite Cluster. Please run the following command.
+We created a couple of handy scripts to deploy the Bluecompute Stack for you in the Lite Cluster. If you haven't done so, please [Create a New Bluemix Space](#create-a-new-space-in-bluemix) and [Create a Bluemix API Key](#create-a-bluemix-api-key). Then, run the following command:
 
 ```
-$ ./install_bluecompute_ce.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+$ ./install_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>
 ```
 
 Once the actual install of Bluecompute takes place, it takes about 5-10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place. Please wait a minute or two to access the web app since some of the Microservices Pods are still initializing.
@@ -239,7 +256,7 @@ The *install_bluecompute_ce.sh* script will do the following:
 To delete the Bluecompute Stack from your cluster, run the following script:
 
 ```
-$ ./delete_bluecompute_ce.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+$ ./delete_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>
 ```
 
 #### Deploy BlueCompute to Local Minikube Cluster
@@ -295,10 +312,10 @@ $ ./delete_bluecompute_ce.sh minikube
 
 #### Deploy Bluecompute to Paid Cluster
 
-Just like in the [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lite-cluster) section, We created a couple of handy scripts to deploy the Bluecompute Stack for you. Please run the following command.
+Just like in the [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lite-cluster) section, we created a couple of handy scripts to deploy the Bluecompute Stack for you. If you haven't done so, please [Create a New Bluemix Space](#create-a-new-space-in-bluemix) and [Create a Bluemix API Key](#create-a-bluemix-api-key). Then, run the following command:
 
 ```
-$ ./install_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+$ ./install_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>
 ```
 
 Once the actual install of Bluecompute takes place, it takes about 10~15 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
@@ -328,7 +345,7 @@ Be mindful that jobs come and go as new charts are getting installed.
 To delete the Bluecompute Stack from your cluster, run the following script:
 
 ```
-$ ./delete_bluecompute.sh <cluster-name> <Optional:bluemix-space-name> <Optional:bluemix-api-key>
+$ ./delete_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>
 ```
 
 ## DevOps automation, Resiliency and Cloud Management and Monitoring
