@@ -14,7 +14,7 @@ if [[ $? -ne 0 ]]; then
 		rm Bluemix_CLI.pkg
 
 	elif [[ $OSTYPE =~ .*linux.* ]]; then
-	  	curl -o /tmp/Bluemix_CLI.tar.gz "http://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_${LATEST}_amd64.tar.gz"
+	  	curl -o Bluemix_CLI.tar.gz "http://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_${LATEST}_amd64.tar.gz"
 		tar zxvf Bluemix_CLI.tar.gz
 		Bluemix_CLI/install_bluemix_cli
 		rm -f /tmp/Bluemix_CLI.tar.gz
