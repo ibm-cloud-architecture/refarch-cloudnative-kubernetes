@@ -10,10 +10,20 @@ end=$'\e[0m'
 coffee=$'\xE2\x98\x95'
 coffee3="${coffee} ${coffee} ${coffee}"
 
-BX_API_ENDPOINT="api.ng.bluemix.net"
 CLUSTER_NAME=$1
 BX_SPACE=$2
 BX_API_KEY=$3
+BX_REGION=$4
+BX_API_ENDPOINT=""
+
+if [[ -z "${BX_REGION// }" ]]; then
+	BX_API_ENDPOINT="api.ng.bluemix.net"
+	echo "Using DEFAULT endpoint ${grn}${BX_API_ENDPOINT}${end}."
+
+else
+	BX_API_ENDPOINT="api.${BX_REGION}.bluemix.net"
+	echo "Using endpoint ${grn}${BX_API_ENDPOINT}${end}."
+fi
 
 function check_tiller {
 	kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1

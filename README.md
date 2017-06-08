@@ -209,7 +209,13 @@ We packaged all the application components as Kubernetes [Charts](https://github
 We created a couple of handy scripts to deploy the Bluecompute Stack for you in the Lite Cluster. If you haven't done so, please [Create a New Bluemix Space](#create-a-new-space-in-bluemix) and [Create a Bluemix API Key](#create-a-bluemix-api-key). Then, run the following command:
 
 ```
-$ ./install_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>
+# Supported Regions:
+# ng
+#  - (US South) - Default
+# eu-de 
+#  - (Germany)
+
+$ ./install_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
 ```
 
 Once the actual install of Bluecompute takes place, it takes about 5-10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place. Please wait a minute or two to access the web app since some of the Microservices Pods are still initializing.
@@ -256,7 +262,13 @@ The *install_bluecompute_ce.sh* script will do the following:
 To delete the Bluecompute Stack from your cluster, run the following script:
 
 ```
-$ ./delete_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>
+# Supported Regions:
+# ng
+#  - (US South) - Default
+# eu-de 
+#  - (Germany)
+
+$ ./delete_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
 ```
 
 #### Deploy BlueCompute to Local Minikube Cluster
@@ -315,7 +327,13 @@ $ ./delete_bluecompute_ce.sh minikube
 Just like in the [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lite-cluster) section, we created a couple of handy scripts to deploy the Bluecompute Stack for you. If you haven't done so, please [Create a New Bluemix Space](#create-a-new-space-in-bluemix) and [Create a Bluemix API Key](#create-a-bluemix-api-key). Then, run the following command:
 
 ```
-$ ./install_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>
+# Supported Regions:
+# ng
+#  - (US South) - Default
+# eu-de 
+#  - (Germany)
+
+$ ./install_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
 ```
 
 Once the actual install of Bluecompute takes place, it takes about 10~15 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
@@ -345,7 +363,13 @@ Be mindful that jobs come and go as new charts are getting installed.
 To delete the Bluecompute Stack from your cluster, run the following script:
 
 ```
-$ ./delete_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>
+# Supported Regions:
+# ng
+#  - (US South) - Default
+# eu-de 
+#  - (Germany)
+
+$ ./delete_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
 ```
 
 ## DevOps automation, Resiliency and Cloud Management and Monitoring

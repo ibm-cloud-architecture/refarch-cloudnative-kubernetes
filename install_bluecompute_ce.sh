@@ -10,24 +10,29 @@ end=$'\e[0m'
 coffee=$'\xE2\x98\x95'
 coffee3="${coffee} ${coffee} ${coffee}"
 
-BX_API_ENDPOINT="api.ng.bluemix.net"
 CLUSTER_NAME=$1
 BX_SPACE=$2
 BX_API_KEY=$3
+BX_REGION=$4
+BX_API_ENDPOINT=""
+
+if [[ -z "${BX_REGION// }" ]]; then
+	BX_API_ENDPOINT="api.ng.bluemix.net"
+	echo "Using DEFAULT endpoint ${grn}${BX_API_ENDPOINT}${end}."
+
+else
+	BX_API_ENDPOINT="api.${BX_REGION}.bluemix.net"
+	echo "Using endpoint ${grn}${BX_API_ENDPOINT}${end}."
+fi
 
 function check_tiller {
 	kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1
-}
-
-function get_web_port {
-	kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort
 }
 
 function print_usage {
 	printf "\n\n${yel}Usage:${end}\n"
 	printf "\t${cyn}./install_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>${end}\n\n"
 }
-
 function bluemix_login {
 	# Bluemix Login
 	if [[ -z "${CLUSTER_NAME// }" ]]; then
@@ -59,23 +64,10 @@ function bluemix_login {
 	fi
 }
 
-function get_cluster_name {
+function set_cluster_context {
 	printf "\n\n${grn}Login into Container Service${end}\n\n"
 	bx cs init
-	#bx cs init --host=https://us-south-beta.containers.bluemix.net
 
-	if [[ -z "${CLUSTER_NAME// }" ]]; then
-		echo "${yel}No cluster name provided. Will try to get an existing cluster...${end}"
-		CLUSTER_NAME=$(bx cs clusters | tail -1 | awk '{print $1}')
-
-		if [[ "$CLUSTER_NAME" == "Name" ]]; then
-			echo "No Kubernetes Clusters exist in your account. Please provision one and then run this script again."
-			exit 1
-		fi
-	fi
-}
-
-function set_cluster_context {
 	# Getting Cluster Configuration
 	unset KUBECONFIG
 	printf "\n${grn}Setting terminal context to \"${CLUSTER_NAME}\"...${end}\n"
@@ -292,6 +284,10 @@ function install_web {
 	fi
 }
 
+function get_web_port {
+	kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort
+}
+
 # Setup Stuff
 if [[ "$CLUSTER_NAME" == "minikube" ]]; then
 	echo "${grn}Checking minikube status...${end}"
@@ -314,7 +310,6 @@ if [[ "$CLUSTER_NAME" == "minikube" ]]; then
 	fi
 else
 	bluemix_login
-	get_cluster_name
 	set_cluster_context
 fi
 

@@ -10,12 +10,21 @@ end=$'\e[0m'
 coffee=$'\xE2\x98\x95'
 coffee3="${coffee} ${coffee} ${coffee}"
 
-BX_API_ENDPOINT="api.ng.bluemix.net"
 CLUSTER_NAME=$1
 BX_SPACE=$2
 BX_API_KEY=$3
-BX_CR_NAMESPACE=""
+BX_REGION=$4
+BX_API_ENDPOINT=""
 BX_ORG=""
+
+if [[ -z "${BX_REGION// }" ]]; then
+	BX_API_ENDPOINT="api.ng.bluemix.net"
+	echo "Using DEFAULT endpoint ${grn}${BX_API_ENDPOINT}${end}."
+
+else
+	BX_API_ENDPOINT="api.${BX_REGION}.bluemix.net"
+	echo "Using endpoint ${grn}${BX_API_ENDPOINT}${end}."
+fi
 
 function check_tiller {
 	kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1
@@ -69,30 +78,6 @@ function create_api_key {
 	fi
 }
 
-function create_registry_namespace {
-	printf "\n\n${grn}Login into Container Registry Service${end}\n\n"
-	bx cr login
-	BX_CR_NAMESPACE="jenkins$(cat ~/.bluemix/config.json | jq .Account.GUID | sed 's/"//g' | tail -c 7)"
-	printf "\nCreating namespace \"${BX_CR_NAMESPACE}\"...\n"
-	bx cr namespace-add ${BX_CR_NAMESPACE} &> /dev/null
-	echo "Done"
-}
-
-function get_cluster_name {
-	printf "\n\n${grn}Login into Container Service${end}\n\n"
-	bx cs init
-
-	if [[ -z "${CLUSTER_NAME// }" ]]; then
-		echo "${yel}No cluster name provided. Will try to get an existing cluster...${end}"
-		CLUSTER_NAME=$(bx cs clusters | tail -1 | awk '{print $1}')
-
-		if [[ "$CLUSTER_NAME" == "Name" ]]; then
-			echo "No Kubernetes Clusters exist in your account. Please provision one and then run this script again."
-			exit 1
-		fi
-	fi
-}
-
 function get_org {
 	BX_ORG=$(cat ~/.bluemix/.cf/config.json | jq .OrganizationFields.Name | sed 's/"//g')
 }
@@ -104,6 +89,9 @@ function get_space {
 }
 
 function set_cluster_context {
+	printf "\n\n${grn}Login into Container Service${end}\n\n"
+	bx cs init
+
 	# Getting Cluster Configuration
 	unset KUBECONFIG
 	printf "\n${grn}Setting terminal context to \"${CLUSTER_NAME}\"...${end}\n"
@@ -140,9 +128,9 @@ function install_inventory {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		time helm install --name inventory --debug --timeout 600 \
+		--set configMap.bluemixAPIEndpoint=${BX_API_ENDPOINT} \
 		--set configMap.bluemixOrg=${BX_ORG} \
 		--set configMap.bluemixSpace=${BX_SPACE} \
-		--set configMap.bluemixRegistryNamespace=${BX_CR_NAMESPACE} \
 		--set configMap.kubeClusterName=${CLUSTER_NAME} \
 		--set secret.apiKey=${BX_API_KEY} \
 		inventory-0.1.1.tgz
@@ -172,9 +160,9 @@ function install_catalog {
 		time helm install --name catalog --debug --timeout 600 \
 		--set secret.skipDelete=true \
 		--set configMap.skipDelete=true \
+		--set configMap.bluemixAPIEndpoint=${BX_API_ENDPOINT} \
 		--set configMap.bluemixOrg=${BX_ORG} \
 		--set configMap.bluemixSpace=${BX_SPACE} \
-		--set configMap.bluemixRegistryNamespace=${BX_CR_NAMESPACE} \
 		--set configMap.kubeClusterName=${CLUSTER_NAME} \
 		--set secret.apiKey=${BX_API_KEY} \
 		catalog-0.1.1.tgz
@@ -205,9 +193,9 @@ function install_orders {
 		--set mysql.skipDelete=true \
 		--set secret.skipDelete=true \
 		--set configMap.skipDelete=true \
+		--set configMap.bluemixAPIEndpoint=${BX_API_ENDPOINT} \
 		--set configMap.bluemixOrg=${BX_ORG} \
 		--set configMap.bluemixSpace=${BX_SPACE} \
-		--set configMap.bluemixRegistryNamespace=${BX_CR_NAMESPACE} \
 		--set configMap.kubeClusterName=${CLUSTER_NAME} \
 		--set secret.apiKey=${BX_API_KEY} \
 		orders-0.1.0.tgz
@@ -237,9 +225,9 @@ function install_customer {
 		--set hs256key.skipDelete=true \
 		--set secret.skipDelete=true \
 		--set configMap.skipDelete=true \
+		--set configMap.bluemixAPIEndpoint=${BX_API_ENDPOINT} \
 		--set configMap.bluemixOrg=${BX_ORG} \
 		--set configMap.bluemixSpace=${BX_SPACE} \
-		--set configMap.bluemixRegistryNamespace=${BX_CR_NAMESPACE} \
 		--set configMap.kubeClusterName=${CLUSTER_NAME} \
 		--set secret.apiKey=${BX_API_KEY} \
 		customer-0.1.0.tgz
@@ -310,8 +298,6 @@ function install_web {
 # Setup Stuff
 bluemix_login
 create_api_key
-create_registry_namespace
-get_cluster_name
 get_org
 get_space
 set_cluster_context
