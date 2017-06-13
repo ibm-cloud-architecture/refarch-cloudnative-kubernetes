@@ -12,10 +12,10 @@
         - [Lite Cluster](#lite-cluster)
         - [Paid Cluster](#paid-cluster)
     - **[Step 3: Deploy reference implementation to Kubernetes Cluster](#step-3-deploy-reference-implementation-to-kubernetes-cluster)**
-        - [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lite-cluster)
-            - [Delete Bluecompute from Lite Cluster](#delete-bluecompute-from-lite-cluster)
-        - [Deploy Bluecompute to Local Minikube Cluster](#deploy-bluecompute-to-local-minikube-cluster)
-            - [Delete Bluecompute from Local Minikube Cluster](#delete-bluecompute-from-local-minikube-cluster)
+        - [Deploy Bluecompute Community Edition to Lite Cluster](#deploy-bluecompute-to-lite-cluster)
+            - [Delete Bluecompute Community Edition from Lite Cluster](#delete-bluecompute-from-lite-cluster)
+        - [Deploy Bluecompute Community Edition to Local Minikube Cluster](#deploy-bluecompute-to-local-minikube-cluster)
+            - [Delete Bluecompute Community Edition from Local Minikube Cluster](#delete-bluecompute-from-local-minikube-cluster)
         - [Deploy Bluecompute to Paid Cluster](#deploy-bluecompute-to-paid-cluster)
             - [Delete Bluecompute from Paid Cluster](#delete-bluecompute-from-paid-cluster)
 - **[DevOps automation, Resiliency and Cloud Management and Monitoring](#devops-automation-resiliency-and-cloud-management-and-monitoring)**
@@ -204,7 +204,7 @@ $ bx cs workers <cluster-name>
 
 We packaged all the application components as Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the Bluecompute solution, please follow the instructions in the following sections.
 
-#### Deploy BlueCompute to Lite Cluster
+#### Deploy BlueCompute Community Edition to Lite Cluster
 
 We created a couple of handy scripts to deploy the Bluecompute Stack for you in the Lite Cluster. If you haven't done so, please [Create a New Bluemix Space](#create-a-new-space-in-bluemix) and [Create a Bluemix API Key](#create-a-bluemix-api-key). Then, run the following command:
 
@@ -258,7 +258,7 @@ The *install_bluecompute_ce.sh* script will do the following:
     * It will create all the necessary configurations before deploying any pods.
 7. Cleanup Jobs and Pods used to deploy dependencies.
 
-##### Delete Bluecompute from Lite Cluster
+##### Delete Bluecompute Community Edition from Lite Cluster
 To delete the Bluecompute Stack from your cluster, run the following script:
 
 ```
@@ -271,7 +271,7 @@ To delete the Bluecompute Stack from your cluster, run the following script:
 $ ./delete_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
 ```
 
-#### Deploy BlueCompute to Local Minikube Cluster
+#### Deploy BlueCompute Community Edition to Local Minikube Cluster
 
 We created a couple of handy scripts to deploy the Bluecompute Stack for you in your [Local Minikube Cluster](https://kubernetes.io/docs/tasks/tools/install-minikube/). Please run the following command.
 
@@ -315,7 +315,7 @@ The *install_bluecompute_ce.sh* script will do the following:
     * It will create all the necessary configurations before deploying any pods.
 7. Cleanup Jobs and Pods used to deploy dependencies.
 
-##### Delete Bluecompute from Local Minikube Cluster
+##### Delete Bluecompute Community Edition from Local Minikube Cluster
 To delete the Bluecompute Stack from your Local Minikube Cluster, run the following script:
 
 ```
