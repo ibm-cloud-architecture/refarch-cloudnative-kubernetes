@@ -12,10 +12,10 @@
         - [Lite Cluster](#lite-cluster)
         - [Paid Cluster](#paid-cluster)
     - **[Step 3: Deploy reference implementation to Kubernetes Cluster](#step-3-deploy-reference-implementation-to-kubernetes-cluster)**
-        - [Deploy Bluecompute Community Edition to Lite Cluster](#deploy-bluecompute-to-lite-cluster)
-            - [Delete Bluecompute Community Edition from Lite Cluster](#delete-bluecompute-from-lite-cluster)
-        - [Deploy Bluecompute Community Edition to Local Minikube Cluster](#deploy-bluecompute-to-local-minikube-cluster)
-            - [Delete Bluecompute Community Edition from Local Minikube Cluster](#delete-bluecompute-from-local-minikube-cluster)
+        - [Deploy Bluecompute Community Edition to Lite Cluster](#deploy-bluecompute-community-edition-to-lite-cluster)
+            - [Delete Bluecompute Community Edition from Lite Cluster](#delete-bluecompute-community-edition-from-lite-cluster)
+        - [Deploy Bluecompute Community Edition to Local Minikube Cluster](#deploy-bluecompute-community-edition-to-local-minikube-cluster)
+            - [Delete Bluecompute Community Edition from Local Minikube Cluster](#delete-bluecompute-community-edition-from-local-minikube-cluster)
         - [Deploy Bluecompute to Paid Cluster](#deploy-bluecompute-to-paid-cluster)
             - [Delete Bluecompute from Paid Cluster](#delete-bluecompute-from-paid-cluster)
 - **[DevOps automation, Resiliency and Cloud Management and Monitoring](#devops-automation-resiliency-and-cloud-management-and-monitoring)**
