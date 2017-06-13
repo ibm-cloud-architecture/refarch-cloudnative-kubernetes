@@ -73,7 +73,7 @@ runtimes.
 
 If you plan to run the application locally, please install the following software on your workstation. Otherwise, you can proceed to next step if you are only interested in deploying to IBM Cloud.
 
-- Install Java JDK 1.8 and ensure it is available in your PATH
+- Install [Java JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and ensure it is available in your PATH
 - [Install Node.js](https://nodejs.org/) version 0.12.0 or version 4.x
 - [Install Docker](https://docs.docker.com/engine/installation/) on Windows or Mac
 - Login to your Bluemix account or register for a new account [here](https://bluemix.net/registration)
@@ -212,7 +212,7 @@ We created a couple of handy scripts to deploy the Bluecompute Stack for you in 
 # Supported Regions:
 # ng
 #  - (US South) - Default
-# eu-de 
+# eu-de
 #  - (Germany)
 
 $ ./install_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
@@ -265,7 +265,7 @@ To delete the Bluecompute Stack from your cluster, run the following script:
 # Supported Regions:
 # ng
 #  - (US South) - Default
-# eu-de 
+# eu-de
 #  - (Germany)
 
 $ ./delete_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
@@ -330,7 +330,7 @@ Just like in the [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lit
 # Supported Regions:
 # ng
 #  - (US South) - Default
-# eu-de 
+# eu-de
 #  - (Germany)
 
 $ ./install_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
@@ -366,7 +366,7 @@ To delete the Bluecompute Stack from your cluster, run the following script:
 # Supported Regions:
 # ng
 #  - (US South) - Default
-# eu-de 
+# eu-de
 #  - (Germany)
 
 $ ./delete_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
