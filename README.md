@@ -71,12 +71,8 @@ runtimes.
 
 #### Prerequisites
 
-If you plan to run the application locally, please install the following software on your workstation. Otherwise, you can proceed to next step if you are only interested in deploying to IBM Cloud.
+You must have a Bluemix account. The account is free and provides access to everything you need to develop, track, plan, and deploy apps. [Sign up for a trial of Bluemix](https://bluemix.net/registration). The account requires an IBMid. If you don't have an IBMid, you can create one when you register.
 
-- Install [Java JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and ensure it is available in your PATH
-- [Install Node.js](https://nodejs.org/) version 0.12.0 or version 4.x
-- [Install Docker](https://docs.docker.com/engine/installation/) on Windows or Mac
-- Login to your Bluemix account or register for a new account [here](https://bluemix.net/registration)
 
 #### Get application source code
 
