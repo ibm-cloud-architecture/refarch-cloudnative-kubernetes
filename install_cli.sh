@@ -6,7 +6,7 @@ BX_PATH=$(command -v bx)
 
 if [[ $? -ne 0 ]]; then
 	printf "\n\n${grn}Installing Bluemix CLI (bx)...${end}\n"
-	LATEST=$(curl -s clis.ng.bluemix.net/info | grep latestVersion | cut -d: -f2 | sed -e 's/"//g' -e 's/,//')
+	LATEST=$(curl -s https://clis.ng.bluemix.net/info | grep latestVersion | cut -d: -f2 | sed -e 's/"//g' -e 's/,//')
 
 	if [[ $OSTYPE =~ .*darwin.* ]]; then
 		curl -o Bluemix_CLI.pkg "http://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_${LATEST}.pkg"
