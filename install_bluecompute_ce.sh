@@ -14,7 +14,9 @@ CLUSTER_NAME=$1
 BX_SPACE=$2
 BX_API_KEY=$3
 BX_REGION=$4
+NAMESPACE=$5
 BX_API_ENDPOINT=""
+HS_256_KEY=$(cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 256 | head -n 1)
 
 if [[ -z "${BX_REGION// }" ]]; then
 	BX_API_ENDPOINT="api.ng.bluemix.net"
@@ -23,6 +25,10 @@ if [[ -z "${BX_REGION// }" ]]; then
 else
 	BX_API_ENDPOINT="api.${BX_REGION}.bluemix.net"
 	echo "Using endpoint ${grn}${BX_API_ENDPOINT}${end}."
+fi
+
+if [[ -z "${NAMESPACE// }" ]]; then
+	NAMESPACE="default"
 fi
 
 function check_tiller {
@@ -98,7 +104,7 @@ function install_inventory_mysql {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install inventory-mysql-0.1.1.tgz --name mysql --timeout 600
+		time helm install --namespace $NAMESPACE inventory-mysql-0.1.1.tgz --name mysql --timeout 600
 
 		local status=$?
 
@@ -109,7 +115,7 @@ function install_inventory_mysql {
 
 		printf "\n\n${grn}inventory-mysql was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
 
 	else
 		printf "\n\n${grn}inventory-mysql was already installed!${end}\n"
@@ -122,7 +128,7 @@ function install_catalog_elasticsearch {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing catalog-elasticsearch chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install catalog-elasticsearch-0.1.1.tgz --name elasticsearch  --timeout 600
+		time helm install --namespace $NAMESPACE catalog-elasticsearch-0.1.1.tgz --name elasticsearch  --timeout 600
 
 		local status=$?
 
@@ -133,7 +139,7 @@ function install_catalog_elasticsearch {
 
 		printf "\n\n${grn}catalog-elasticsearch was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
 
 	else
 		printf "\n\n${grn}catalog-elasticsearch was already installed!${end}\n"
@@ -146,7 +152,7 @@ function install_inventory {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install inventory-ce-0.1.1.tgz --name inventory --timeout 600
+		time helm install --namespace $NAMESPACE inventory-ce-0.1.1.tgz --name inventory --timeout 600
 
 		local status=$?
 
@@ -157,7 +163,7 @@ function install_inventory {
 
 		printf "\n\n${grn}inventory-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
 
 	else
 		printf "\n\n${grn}inventory-ce was already installed!${end}\n"
@@ -170,7 +176,7 @@ function install_catalog {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing catalog-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install catalog-ce-0.1.1.tgz --name catalog --timeout 600
+		time helm install --namespace $NAMESPACE catalog-ce-0.1.1.tgz --name catalog --timeout 600
 
 		local status=$?
 
@@ -181,7 +187,7 @@ function install_catalog {
 
 		printf "\n\n${grn}catalog-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
 
 	else
 		printf "\n\n${grn}catalog-ce was already installed!${end}\n"
@@ -194,7 +200,7 @@ function install_orders {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing orders-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install orders-ce-0.1.0.tgz --name orders --timeout 600
+		time helm install --namespace $NAMESPACE orders-ce-0.1.0.tgz --name orders --set hs256key.secret=${HS_256_KEY} --timeout 600
 
 		local status=$?
 
@@ -205,7 +211,7 @@ function install_orders {
 
 		printf "\n\n${grn}orders-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
 
 	else
 		printf "\n\n${grn}orders-ce was already installed!${end}\n"
@@ -218,7 +224,7 @@ function install_customer {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing customer-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install customer-ce-0.1.0.tgz --name customer --timeout 600
+		time helm install --namespace $NAMESPACE customer-ce-0.1.0.tgz --name customer --set hs256key.secret=${HS_256_KEY} --timeout 600
 
 		local status=$?
 
@@ -229,7 +235,7 @@ function install_customer {
 
 		printf "\n\n${grn}customer-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
 
 	else
 		printf "\n\n${grn}customer-ce was already installed!${end}\n"
@@ -242,7 +248,7 @@ function install_auth {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing auth-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install auth-ce-0.1.0.tgz --name auth --timeout 600
+		time helm install --namespace $NAMESPACE auth-ce-0.1.0.tgz --name auth --set hs256key.secret=${HS_256_KEY} --timeout 600
 
 		local status=$?
 
@@ -253,7 +259,7 @@ function install_auth {
 
 		printf "\n\n${grn}auth-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
 
 	else
 		printf "\n\n${grn}auth-ce was already installed!${end}\n"
@@ -266,7 +272,7 @@ function install_web {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install web-ce-0.1.0.tgz --name web --timeout 600
+		time helm install --namespace $NAMESPACE web-ce-0.1.0.tgz --name web --timeout 600
 
 		local status=$?
 
@@ -277,7 +283,7 @@ function install_web {
 
 		printf "\n\n${grn}web-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
 
 	else
 		printf "\n\n${grn}web-ce was already installed!${end}\n"
@@ -285,7 +291,26 @@ function install_web {
 }
 
 function get_web_port {
-	kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort
+	kubectl --namespace ${NAMESPACE} get service bluecompute-web -o json | jq .spec.ports[0].nodePort
+}
+
+function create_kube_namespace {
+	echo "Using ${grn}${NAMESPACE}${end} namespace."
+	kubectl get namespaces $NAMESPACE
+
+	local status=$?
+	if [ $status -ne 0 ]; then
+		printf "\n\n${yel}Creating namespace.${end}\n"
+		kubectl create namespace $NAMESPACE
+
+		status=$?
+		if [ $status -ne 0 ]; then
+			printf "\n\n${red}Error creating namespace... Exiting.${end}\n"
+			exit 1
+		fi
+	else
+		echo "Namespace exists."
+	fi
 }
 
 # Setup Stuff
@@ -314,6 +339,7 @@ else
 fi
 
 initialize_helm
+create_kube_namespace
 
 # Install Bluecompute
 cd docs/charts

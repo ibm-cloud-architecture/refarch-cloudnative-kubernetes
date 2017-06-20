@@ -328,6 +328,6 @@ delete_inventory_mysql
 printf "\n\n${grn}Doing some final cleanup${end}\n"
 #kubectl delete jobs inventory-populate-mysql-inventory --force
 kubectl delete pods,jobs -l heritage=Tiller --force
-kubectl delete secrets hs256-key
+#kubectl delete secrets hs256-key
 
 printf "\n\nBluecompute was uninstalled!\n"
