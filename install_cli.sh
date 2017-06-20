@@ -63,7 +63,7 @@ if [[ $? -ne 0 ]]; then
 
 	curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
 	chmod 700 get_helm.sh
-	./get_helm.sh
+	./get_helm.sh -v v2.4.2
 
 	rm get_helm.sh
 fi
