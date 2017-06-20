@@ -14,6 +14,7 @@ CLUSTER_NAME=$1
 BX_SPACE=$2
 BX_API_KEY=$3
 BX_REGION=$4
+NAMESPACE=$5
 BX_API_ENDPOINT=""
 
 if [[ -z "${BX_REGION// }" ]]; then
@@ -23,6 +24,10 @@ if [[ -z "${BX_REGION// }" ]]; then
 else
 	BX_API_ENDPOINT="api.${BX_REGION}.bluemix.net"
 	echo "Using endpoint ${grn}${BX_API_ENDPOINT}${end}."
+fi
+
+if [[ -z "${NAMESPACE// }" ]]; then
+	NAMESPACE="default"
 fi
 
 function check_tiller {
@@ -107,7 +112,7 @@ function initialize_helm {
 }
 
 function delete_inventory {
-	local release=$(helm list | grep inventory-ce | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-inventory" | grep inventory-ce | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -125,12 +130,12 @@ function delete_inventory {
 
 		printf "\n\n${grn}inventory-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=inventory-ce-0.1.1
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=inventory-ce-0.1.1
 	fi
 }
 
 function delete_inventory_mysql {
-	local release=$(helm list | grep inventory-mysql | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-mysql" | grep inventory-mysql | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -148,12 +153,12 @@ function delete_inventory_mysql {
 
 		printf "\n\n${grn}inventory-mysql was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=inventory-mysql-ce-0.1.1
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=inventory-mysql-ce-0.1.1
 	fi
 }
 
 function delete_catalog {
-	local release=$(helm list | grep catalog-ce | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-catalog" | grep catalog-ce | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -171,12 +176,12 @@ function delete_catalog {
 
 		printf "\n\n${grn}catalog-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=catalog-ce-0.1.1
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=catalog-ce-0.1.1
 	fi
 }
 
 function delete_catalog_elasticsearch {
-	local release=$(helm list | grep elasticsearch  | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-elasticsearch" | grep catalog-elasticsearch | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -194,12 +199,12 @@ function delete_catalog_elasticsearch {
 
 		printf "\n\n${grn}catalog-elasticsearch was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=catalog-elasticsearch-ce-0.1.1
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=catalog-elasticsearch-ce-0.1.1
 	fi
 }
 
 function delete_orders {
-	local release=$(helm list | grep orders | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-orders" | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -217,12 +222,12 @@ function delete_orders {
 
 		printf "\n\n${grn}orders-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=orders-ce-0.1.0
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=orders-ce-0.1.0
 	fi
 }
 
 function delete_customer {
-	local release=$(helm list | grep customer | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-customer" | grep customer | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -240,13 +245,13 @@ function delete_customer {
 
 		printf "\n\n${grn}customer-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=customer-ce-0.1.0
-		kubectl delete pods,jobs -l chart=customer-couchdb-0.1.0
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=customer-ce-0.1.0
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=customer-couchdb-0.1.0
 	fi
 }
 
 function delete_auth {
-	local release=$(helm list | grep auth | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-auth" | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -264,12 +269,12 @@ function delete_auth {
 
 		printf "\n\n${grn}auth-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=auth-ce-0.1.0
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=auth-ce-0.1.0
 	fi
 }
 
 function delete_web {
-	local release=$(helm list | grep web | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-web" | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -287,7 +292,7 @@ function delete_web {
 
 		printf "\n\n${grn}web-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l chart=web-ce-0.1.0
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=web-ce-0.1.0
 	fi
 }
 
@@ -326,8 +331,8 @@ delete_inventory_mysql
 
 # Sanity Checks
 printf "\n\n${grn}Doing some final cleanup${end}\n"
-#kubectl delete jobs inventory-populate-mysql-inventory --force
-kubectl delete pods,jobs -l heritage=Tiller --force
-#kubectl delete secrets hs256-key
+#kubectl --namespace ${NAMESPACE} delete jobs inventory-populate-mysql-inventory --force
+kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller --force
+#kubectl --namespace ${NAMESPACE} delete secrets hs256-key
 
 printf "\n\nBluecompute was uninstalled!\n"

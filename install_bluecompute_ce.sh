@@ -99,12 +99,12 @@ function initialize_helm {
 }
 
 function install_inventory_mysql {
-	local release=$(helm list | grep mysql)
+	local release=$(helm list | grep "${NAMESPACE}-mysql")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install --namespace $NAMESPACE inventory-mysql-0.1.1.tgz --name mysql --timeout 600
+		time helm install --namespace ${NAMESPACE} inventory-mysql-0.1.1.tgz --name "${NAMESPACE}-mysql" --timeout 600
 
 		local status=$?
 
@@ -123,12 +123,12 @@ function install_inventory_mysql {
 }
 
 function install_catalog_elasticsearch {
-	local release=$(helm list | grep elasticsearch )
+	local release=$(helm list | grep "${NAMESPACE}-elasticsearch" )
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing catalog-elasticsearch chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install --namespace $NAMESPACE catalog-elasticsearch-0.1.1.tgz --name elasticsearch  --timeout 600
+		time helm install --namespace ${NAMESPACE} catalog-elasticsearch-0.1.1.tgz --name "${NAMESPACE}-elasticsearch"  --timeout 600
 
 		local status=$?
 
@@ -147,12 +147,12 @@ function install_catalog_elasticsearch {
 }
 
 function install_inventory {
-	local release=$(helm list | grep inventory-ce)
+	local release=$(helm list | grep "${NAMESPACE}-inventory" | grep inventory-ce)
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install --namespace $NAMESPACE inventory-ce-0.1.1.tgz --name inventory --timeout 600
+		time helm install --namespace ${NAMESPACE} inventory-ce-0.1.1.tgz --name "${NAMESPACE}-inventory" --timeout 600
 
 		local status=$?
 
@@ -171,12 +171,12 @@ function install_inventory {
 }
 
 function install_catalog {
-	local release=$(helm list | grep catalog-ce)
+	local release=$(helm list | grep "${NAMESPACE}-catalog" | grep catalog-ce)
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing catalog-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install --namespace $NAMESPACE catalog-ce-0.1.1.tgz --name catalog --timeout 600
+		time helm install --namespace ${NAMESPACE} catalog-ce-0.1.1.tgz --name "${NAMESPACE}-catalog" --timeout 600
 
 		local status=$?
 
@@ -195,12 +195,12 @@ function install_catalog {
 }
 
 function install_orders {
-	local release=$(helm list | grep orders)
+	local release=$(helm list | grep "${NAMESPACE}-orders")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing orders-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install --namespace $NAMESPACE orders-ce-0.1.0.tgz --name orders --set hs256key.secret=${HS_256_KEY} --timeout 600
+		time helm install --namespace ${NAMESPACE} orders-ce-0.1.0.tgz --name "${NAMESPACE}-orders" --set hs256key.secret=${HS_256_KEY} --timeout 600
 
 		local status=$?
 
@@ -219,12 +219,12 @@ function install_orders {
 }
 
 function install_customer {
-	local release=$(helm list | grep customer)
+	local release=$(helm list | grep "${NAMESPACE}-customer")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing customer-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install --namespace $NAMESPACE customer-ce-0.1.0.tgz --name customer --set hs256key.secret=${HS_256_KEY} --timeout 600
+		time helm install --namespace ${NAMESPACE} customer-ce-0.1.0.tgz --name "${NAMESPACE}-customer" --set hs256key.secret=${HS_256_KEY} --timeout 600
 
 		local status=$?
 
@@ -243,12 +243,12 @@ function install_customer {
 }
 
 function install_auth {
-	local release=$(helm list | grep auth)
+	local release=$(helm list | grep "${NAMESPACE}-auth")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing auth-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install --namespace $NAMESPACE auth-ce-0.1.0.tgz --name auth --set hs256key.secret=${HS_256_KEY} --timeout 600
+		time helm install --namespace ${NAMESPACE} auth-ce-0.1.0.tgz --name "${NAMESPACE}-auth" --set hs256key.secret=${HS_256_KEY} --timeout 600
 
 		local status=$?
 
@@ -267,12 +267,12 @@ function install_auth {
 }
 
 function install_web {
-	local release=$(helm list | grep web)
+	local release=$(helm list | grep "${NAMESPACE}-web")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install --namespace $NAMESPACE web-ce-0.1.0.tgz --name web --timeout 600
+		time helm install --namespace ${NAMESPACE} web-ce-0.1.0.tgz --name "${NAMESPACE}-web" --timeout 600
 
 		local status=$?
 
@@ -296,12 +296,12 @@ function get_web_port {
 
 function create_kube_namespace {
 	echo "Using ${grn}${NAMESPACE}${end} namespace."
-	kubectl get namespaces $NAMESPACE
+	kubectl get namespaces ${NAMESPACE}
 
 	local status=$?
 	if [ $status -ne 0 ]; then
 		printf "\n\n${yel}Creating namespace.${end}\n"
-		kubectl create namespace $NAMESPACE
+		kubectl create namespace ${NAMESPACE}
 
 		status=$?
 		if [ $status -ne 0 ]; then
