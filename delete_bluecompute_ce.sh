@@ -356,7 +356,7 @@ delete_inventory_mysql
 # Sanity Checks
 printf "\n\n${grn}Doing some final cleanup${end}\n"
 #kubectl --namespace ${NAMESPACE} delete jobs inventory-populate-mysql-inventory --force
-kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller --force
+#kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller --force
 #kubectl --namespace ${NAMESPACE} delete secrets hs256-key
 
 printf "\n\nBluecompute was uninstalled!\n"
