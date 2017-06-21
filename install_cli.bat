@@ -1,252 +1,74 @@
 @echo off
 SETLOCAL ENABLEDELAYEDEXPANSION ENABLEEXTENSIONS 
-set PATH=%PATH%:%CD%
+set PATH=%PATH%;%CD%;%CD%\win_utils
 
-rem Command Line Arguments
-set CLUSTER_NAME=%1
-set BX_SPACE=%~2
-set BX_API_KEY=%3
-set BX_REGION=%4
-set NAMESPACE=%5
+:install_bx
+echo BX CLI will be installed.
+bx > nul 2>&1
+if %errorlevel% EQU 0 goto :bx_installed
+echo downloading the Bluemix CLI installer. After installing, you may be prompted to reboot. Re-run this script after the reboot.
+curl -s https://clis.ng.bluemix.net/info | findstr latestVersion> %TMP%\bx_latest.tmp
+for /f "tokens=2 delims=:," %%i in (%TMP%\bx_latest.tmp) do @set BX_VER=%%~i
+echo curl -o http://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_%BX_VER%_amd64.exe
+curl -O http://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_%BX_VER%_amd64.exe
+move  Bluemix_CLI_%BX_VER%_amd64.exe win_utils\Bluemix_CLI_%BX_VER%_amd64.exe
+start /wait win_utils\Bluemix_CLI_%BX_VER%_amd64.exe
+:bx_installed
+echo BX CLI is installed.
 
-set BX_API_ENDPOINT="api.ng.bluemix.net"
+:install_bx_cs
+echo BX CS plugin will be installed.
+bx cs > nul 2>&1
+if %errorlevel% EQU 0 goto :bx_cs_installed
+bx plugin install container-service -r Bluemix
+:bx_cs_installed
+echo BX CS plugin is installed.
 
-:GetKey
-set alfanum=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
+:install_br_cs
+echo BX CR plugin will be installed...
+bx cr > nul 2>&1
+if %errorlevel% EQU 0 goto :bx_cr_installed
+bx plugin install container-registry -r Bluemix
+:bx_cr_installed
+echo BX CR plugin is installed.
 
-set HS_256_KEY=
-FOR /L %%b IN (0, 1, 256) DO (
-SET /A rnd_num=!RANDOM! * 62 / 32768 + 1
-for /F %%c in ('echo %%alfanum:~!rnd_num!^,1%%') do set HS_256_KEY=!HS_256_KEY!%%c
-)
-echo HS_256_KEY=%HS_256_KEY%
+:install_kubectl
+echo Installing Kubernetes CLI (kubectl)...
+kubectl >nul 2>&1
+if %errorlevel% EQU 0 goto :kubectl_installed
+for /f %%i in ('curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt') do set KUBVER=%%i
+curl -LO https://storage.googleapis.com/kubernetes-release/release/%KUBVER%/bin/windows/amd64/kubectl.exe
+move kubectl.exe win_utils\kubectl.exe
+:kubectl_installed
+echo Kubectl is installed
 
-rem Usage stuff
-if  "%BX_REGION%" == "" (
-   set BX_API_ENDPOINT=api.ng.bluemix.net
-   echo Using default endpoint !BX_API_ENDPOINT!
-) else (
-   set BX_API_ENDPOINT=api.!BX_REGION!.bluemix.net
-   echo Using endpoint !BX_API_ENDPOINT!
-)
+:install_helm
+echo Installing helm
+rem This is a placeholder. For the moment, we will manually download a version of helm
+helm >nul 2>&1
+if %errorlevel% EQU 0 goto :jq_installed
+echo please download helm.exe from https://ibm.box.com/s/m2iau50fdiblleoeafvd5svbd4uvmcdr and copy it to %CD%\win_utils
+echo once you have done so
+pause
+goto :install_helm
+:helm_installed
+echo Helm installed.
 
-if "%CLUSTER_NAME%" == "" (
-   echo Please provide Cluster Name. Exiting...
-   exit /b 1
-)
+:install_jq
+echo Installing jq...
+jq -help >nul 2>&1
+if %errorlevel% EQU 0 goto :jq_installed
+curl -LO https://github.com/stedolan/jq/releases/download/jq-1.5/jq-win64.exe
+move jq-win64.exe win_utils\jq.exe
+:jq_installed
+echo jq is installed
 
-if "%BX_SPACE%" == "" (
-   echo Please provide Bluemix Space Name. Exiting...
-   exit /b 1
-)
+:install_yaml
+echo Installing yaml...
+yaml >nul 2>&1
+if %errorlevel% EQU 0 goto :yaml_installed
+curl -LO https://github.com/mikefarah/yaml/releases/download/1.11/yaml_windows_amd64.exe
+move yaml_windows_amd64.exe win_utils\yaml.exe
+:yaml_installed
+echo yaml is installed
 
-if "%BX_API_KEY%" == "" (
-   echo Please provide Bluemix API Key. Exiting...
-   exit /b 1
-)
-
-if "NAMESPACE" == "" (
-   set NAMESPACE="default"
-
-)
-
-rem Bluemix login
-echo Login into Bluemix
-set BLUEMIX_API_KEY=%BX_API_KEY%
-bx login -a %BX_API_ENDPOINT% -s "%BX_SPACE%"
-if %errorlevel% NEQ 0 (
-   echo Could not login to Bluemix
-   exit /b 1
-)
-
-rem Container Service
-echo Login into Container Service
-bx cs init
-
-rem Kubernetes Context
-set KUBECONFIG=""
-echo Setting terminal context to %CLUSTER_NAME%...
-for /f "tokens=2 delims==" %%i in ('bx cs cluster-config %CLUSTER_NAME%') do @set KUBECONFIG=%%i
-if %errorlevel% EQU 0 (
-   echo KUBECONFIG is set to %KUBECONFIG% 
-) else (
-   echo KUBECONFIG was not properly set. Exiting.
-   exit /b 1
-)
-
-rem Helm Init
-echo Initializing Helm.
-helm init --upgrade
-echo "Waiting for Tiller (Helm's server component) to be ready..."
-:helm_loop_start
-:helmcheck1
-    kubectl --namespace=kube-system get pods | findstr tiller | findstr 1/1
-    goto helmcheck%errorlevel%
-    timeout /t 1
-    goto :helm_loop_start
-:helmcheck0
-
-rem Installing BlueCompute
-pushd refarch-cloudnative-kubernetes\docs\charts
-
-rem Installing Elasticsearch Chart
-:catalog-elasticsearch
-echo Installing catalog-elasticsearch chart. This will take a few minutes...
-helm list | findstr elasticsearch
-if %errorlevel% EQU 0 (
-   echo catalog-elasticsearch is already installed!
-)
-helm install --namespace %NAMESPACE% catalog-elasticsearch-0.1.1.tgz --name catalog-elasticsearch --timeout 600
-if %errorlevel% NEQ 0 (
-   echo Could not install catalog-elasticsearch. Exiting!
-   exit /b 1
-)
-echo catalog-elasticsearch was successfully installed!
-echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
-
-rem Installing MySQL Chart
-:inventory_mysql
-echo Installing inventory_mysql chart. This will take a few minutes...
-helm list | findstr inventory_mysql
-if %errorlevel% EQU 0 (
-   echo inventory_mysql is already installed. Exiting.
-   exit /b 1
-)
-helm install --namespace $NAMESPACE inventory-mysql-0.1.1.tgz --name inventory-mysql --timeout 600
-if %errorlevel% NEQ 0 (
-   echo Could not install inventory_mysql. Exiting.
-   exit /b 1
-)
-echo inventory_mysql was successfully installed!
-echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
-
-REM Installing Customer Chart
-:customer
-echo Installing customer-ce chart. This will take a few minutes...
-helm list | findstr customer
-if %errorlevel% EQU 0 (
-   echo customer is already installed. Exiting.
-   exit /b 1
-)
-helm install --namespace $NAMESPACE customer-ce-0.1.0.tgz --name customer --set hs256key.secret=%HS_256_KEY% --timeout 600
-if %errorlevel% NEQ 0 (
-   echo Could not install customer-ce. Exiting.
-   exit /b 1
-)
-echo customer-ce was successfully installed!
-echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
-
-REM Installing Auth Chart
-:auth
-echo Installing auth-ce chart. This will take a few minutes...
-helm list | findstr auth
-if %errorlevel% EQU 0 (
-   echo auth is already installed. Exiting.
-   exit /b 1
-)
-helm install --namespace $NAMESPACE auth-ce-0.1.0.tgz --name auth --set hs256key.secret=%HS_256_KEY% --timeout 600
-if %errorlevel% NEQ 0 (
-   echo Could not install auth-ce. Exiting.
-   exit /b 1
-)
-echo auth-ce was successfully installed!
-echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
-
-REM Installing Inventory Chart
-:inventory
-echo Installing inventory-ce chart. This will take a few minutes...
-helm list | findstr /C:"inventory "
-if %errorlevel% EQU 0 (
-   echo inventory is already installed. Exiting.
-   exit /b 1
-)
-helm install --namespace $NAMESPACE inventory-ce-0.1.1.tgz --name inventory --timeout 600
-if %errorlevel% NEQ 0 (
-   echo Could not install inventory-ce. Exiting.
-   exit /b 1
-)
-echo inventory-ce was successfully installed!
-echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
-
-REM Installing Catalog Chart
-:catalog
-echo Installing catalog-ce chart. This will take a few minutes...
-helm list | findstr /C:"catalog "
-if %errorlevel% EQU 0 (
-   echo catalog is already installed. Exiting.
-   exit /b 1
-)
-helm install --namespace $NAMESPACE catalog-ce-0.1.1.tgz --name catalog --timeout 600
-if %errorlevel% NEQ 0 (
-   echo Could not install catalog-ce. Exiting.
-   exit /b 1
-)
-echo catalog-ce was successfully installed!
-echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
-
-REM Installing Web Chart
-:web
-echo Installing web-ce chart. This will take a few minutes...
-helm list | findstr web
-if %errorlevel% EQU 0 (
-   echo web is already installed. Exiting.
-   exit /b 1
-)
-helm install --namespace $NAMESPACE web-ce-0.1.0.tgz --name web --timeout 600
-if %errorlevel% NEQ 0 (
-   echo Could not install web-ce. Exiting.
-   exit /b 1
-)
-echo web-ce was successfully installed!
-echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
-popd
-
-rem Installed all charts
-:all_deployed
-
-rem Getting Web App NodePort
-echo Getting the correct WebPort
-:webport_loop_start
-    rem for /f %%i in ('kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort') do @set WEBPORT=%%i
-    kubectl get service bluecompute-web -o json | for /f %%i in ('jq .spec.ports[0].nodePort') do @echo %%i > %TMP%\BC_Webport.tmp
-    for /f %%i in (%TMP%\BC_Webport.tmp) do @set WEBPORT=%%i
-    if "%WEBPORT%" == "null" (
-       timeout /t 1
-       goto :webport_loop_start
-    )   
-    if "%WEBPORT%" == "" (
-       timeout /t 1
-       goto :webport_loop_start
-    )   
-    goto webport_loop_exit
-goto :webport_loop_start
-:webport_loop_exit
-
-rem Getting Web App IP
-:getNodeIP
-rem for /f %%i in ('kubectl get nodes -o jsonpath={.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}') do set NODEIP=%%i
-rem kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' | awk '{print $1}')
-kubectl get nodes -o jsonpath={.items[*].status.addresses[?(@.type==\"ExternalIP\")].address} > %TMP%\BC_NodeIP.tmp
-for /f %%i in (%TMP%\BC_NodeIP.tmp) do @set NODEIP=%%i
-
-rem All Done
-echo Bluecompute was successfully installed!
-echo.
-echo To see Kubernetes Dashboard, paste the following in your terminal:
-echo set KUBECONFIG=%KUBECONFIG%
-echo.
-echo Then run this command to connect to Kubernetes Dashboard:
-echo kubectl proxy
-echo.
-echo Then open a browser window and paste the following URL to see the Services created by Bluecompute:
-echo http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
-echo.
-echo Finally, on another browser window, copy and paste the following URL for BlueCompute Web UI:
-echo http://%NODEIP%:%WEBPORT%
