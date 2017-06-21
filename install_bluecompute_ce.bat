@@ -2,7 +2,6 @@
 SETLOCAL ENABLEDELAYEDEXPANSION ENABLEEXTENSIONS 
 set PATH=%PATH%;%CD%;%CD%\win_utils
 
-
 set CLUSTER_NAME=%1
 set BX_SPACE=%~2
 set BX_API_KEY=%3
@@ -192,9 +191,6 @@ echo web-ce was successfully installed!
 echo Cleaning up...
 kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
 
-
-
-popd
 :all_deployed
 echo Getting the correct WebPort
 
@@ -217,12 +213,13 @@ goto :webport_loop_start
 :webport_loop_exit
 
 :getNodeIP
-rem for /f %%i in ('kubectl get nodes -o jsonpath={.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}') do set NODEIP=%%i
-rem kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' | awk '{print $1}')
 kubectl get nodes -o jsonpath={.items[*].status.addresses[?(@.type==\"ExternalIP\")].address} > %TMP%\BC_NodeIP.tmp
 for /f %%i in (%TMP%\BC_NodeIP.tmp) do @set NODEIP=%%i
 
+:audit
+call audit_ce_master_install.bat
 
+echo.
 echo Bluecompute was successfully installed!
 echo.
 echo To see Kubernetes Dashboard, paste the following in your terminal:
