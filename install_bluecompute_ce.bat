@@ -193,13 +193,12 @@ echo web-ce was successfully installed!
 echo Cleaning up...
 kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
 
-
 :Prometheus
 echo Installing prometheus chart. This will take a few minutes...
 helm list | findstr prometheus
 if %errorlevel% EQU 0 (
-   echo prometheus is already installed. Exiting.
-   exit /b 1
+   echo prometheus is already installed. skipping...
+   goto Grafana
 )
 helm install --namespace %NAMESPACE% stable/prometheus --name prometheus --set server.persistentVolume.enabled=false --set alertmanager.persistentVolume.enabled=false --timeout 600
 if %errorlevel% NEQ 0 (
@@ -214,8 +213,8 @@ kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
 echo Installing grafana chart. This will take a few minutes...
 helm list | findstr grafana
 if %errorlevel% EQU 0 (
-   echo grafana is already installed. Exiting.
-   exit /b 1
+   echo grafana is already installed. skipping...
+   goto all_deployed
 )
 helm install --namespace %NAMESPACE% docs\charts\grafana-bc-0.3.1.tgz --name grafana --set setDatasource.datasource.url=http://prometheus-prometheus-server.default.svc.cluster.local --set server.persistentVolume.enabled=false --set server.serviceType=NodePort --timeout 600
 if %errorlevel% NEQ 0 (
