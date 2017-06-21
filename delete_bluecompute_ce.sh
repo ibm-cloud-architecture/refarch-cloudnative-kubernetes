@@ -157,6 +157,29 @@ function delete_inventory_mysql {
 	fi
 }
 
+function delete_inventory_backup {
+	local release=$(helm list | grep "${NAMESPACE}-backup" | grep inventory-backup | awk '{print $1}' | head -1)
+
+	# Creating for API KEY
+	if [[ -z "${release// }" ]]; then
+		printf "\n\n${grn}inventory-backup was already deleted!${end}\n"
+	else
+		printf "\n\n${grn}Deleting inventory-backup chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		time helm delete $release --purge --debug --timeout 600
+
+		local status=$?
+
+		if [ $status -ne 0 ]; then
+			printf "\n\n${red}Error deleting inventory-backup... Exiting.${end}\n"
+			exit 1
+		fi
+
+		printf "\n\n${grn}inventory-mysql was successfully deleted!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=inventory-mysql-ce-0.1.1
+	fi
+}
+
 function delete_catalog {
 	local release=$(helm list | grep "${NAMESPACE}-catalog" | grep catalog-ce | awk '{print $1}' | head -1)
 
@@ -327,6 +350,7 @@ delete_orders
 delete_catalog
 delete_catalog_elasticsearch
 delete_inventory
+delete_inventory_backup
 delete_inventory_mysql
 
 # Sanity Checks

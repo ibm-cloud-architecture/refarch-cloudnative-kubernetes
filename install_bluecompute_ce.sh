@@ -122,6 +122,30 @@ function install_inventory_mysql {
 	fi
 }
 
+function install_inventory_backup {
+	local release=$(helm list | grep "${NAMESPACE}-backup")
+
+	if [[ -z "${release// }" ]]; then
+		printf "\n\n${grn}Installing inventory-backup chart. This will take a few minutes...${end} ${coffee3}\n\n"
+
+		time helm install --namespace ${NAMESPACE} inventory-backup-0.1.1.tgz --name "${NAMESPACE}-backup" --timeout 600
+
+		local status=$?
+
+		if [ $status -ne 0 ]; then
+			printf "\n\n${red}Error installing inventory-backup... Exiting.${end}\n"
+			exit 1
+		fi
+
+		printf "\n\n${grn}inventory-backup was successfully installed!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
+
+	else
+		printf "\n\n${grn}inventory-mysql was already installed!${end}\n"
+	fi
+}
+
 function install_catalog_elasticsearch {
 	local release=$(helm list | grep "${NAMESPACE}-elasticsearch" )
 
@@ -345,6 +369,7 @@ create_kube_namespace
 cd docs/charts
 install_catalog_elasticsearch
 install_inventory_mysql
+install_inventory_backup
 install_customer
 install_auth
 #install_orders
