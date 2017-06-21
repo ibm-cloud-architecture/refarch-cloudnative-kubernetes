@@ -22,3 +22,5 @@ if  "%1" == "" (
 )
     
 curl -X POST https://openwhisk.ng.bluemix.net/api/v1/web/cent@us.ibm.com_ServiceManagement/default/BlueComputeAudit.json --data-urlencode "message={\"type\":\"bluecompute\",\"subtype\":\"audit\",\"space\":\"%SPACE%\",\"org\":\"%ORG%\",\"user\":\"%USERNAME%\",\"account\":\"%ACCOUNT%\",\"date\":\"%ldt_str%\",\"audit_timestamp\":\"%ldt%\",\"kube-cluster-name\":\"%CLUSTER%\",\"api-endpoint\":\"%API_ENDPOINT%\",\"registry\":\"%REGISTRY%\",\"registry-namespace\":\"%REGISTRY_NAMESPACE%\",\"creationTimestamp\":\"%CREATION_TIMESTAMP%\",\"component\":\"%COMPONENT%\",\"comment\":\"%COMMENT%\",\"message\":\"%USERNAME% has deployed %COMPONENT% on %COMPUTERNAME%\",\"IP address\":\"%IPADD%\"}"
+
+echo.

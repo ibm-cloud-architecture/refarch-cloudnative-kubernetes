@@ -37,7 +37,7 @@ echo Kubernetes CLI (kubectl) will be installed
 kubectl >nul 2>&1
 if %errorlevel% EQU 0 goto :kubectl_installed
 for /f %%i in ('curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt') do set KUBVER=%%i
-curl -LO https://storage.googleapis.com/kubernetes-release/release/%KUBVER%/bin/windows/amd64/kubectl.exe
+curl -LOk https://storage.googleapis.com/kubernetes-release/release/%KUBVER%/bin/windows/amd64/kubectl.exe
 move kubectl.exe win_utils\kubectl.exe
 :kubectl_installed
 echo Kubectl is installed
@@ -46,7 +46,7 @@ echo Kubectl is installed
 echo Installing helm
 rem This is a placeholder. For the moment, we will manually download a version of helm
 helm >nul 2>&1
-if %errorlevel% EQU 0 goto :jq_installed
+if %errorlevel% EQU 0 goto :helm_installed
 echo please download helm.exe from either :
 echo   https://storage.googleapis.com/kubernetes-helm/helm-v2.5.0-windows-amd64.zip (official site, you'll need to unzip)
 echo   https://ibm.box.com/s/m2iau50fdiblleoeafvd5svbd4uvmcdr  (unzipped instance)
@@ -61,7 +61,7 @@ echo Helm installed.
 echo Installing jq...
 jq -help >nul 2>&1
 if %errorlevel% EQU 0 goto :jq_installed
-curl -LO https://github.com/stedolan/jq/releases/download/jq-1.5/jq-win64.exe
+curl -LOk https://github.com/stedolan/jq/releases/download/jq-1.5/jq-win64.exe
 move jq-win64.exe win_utils\jq.exe
 :jq_installed
 echo jq is installed
@@ -70,7 +70,7 @@ echo jq is installed
 echo Installing yaml...
 yaml >nul 2>&1
 if %errorlevel% EQU 0 goto :yaml_installed
-curl -LO https://github.com/mikefarah/yaml/releases/download/1.11/yaml_windows_amd64.exe
+curl -LOk https://github.com/mikefarah/yaml/releases/download/1.11/yaml_windows_amd64.exe
 move yaml_windows_amd64.exe win_utils\yaml.exe
 :yaml_installed
 echo yaml is installed
