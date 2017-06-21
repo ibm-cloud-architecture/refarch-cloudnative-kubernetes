@@ -421,7 +421,7 @@ else
 	echo "${cyn}kubectl proxy${end}"
 
 	printf "\nThen open a browser window and paste the following URL to see the Services created by Bluecompute:\n"
-	echo "${cyn}http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default${end}"
+	echo "${cyn}http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=${NAMESPACE}${end}"
 
 	printf "\nFinally, on another browser window, copy and paste the following URL for BlueCompute Web UI:\n"
 	echo "${cyn}http://${nodeip}:${webport}${end}"
