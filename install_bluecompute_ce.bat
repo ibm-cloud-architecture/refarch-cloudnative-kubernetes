@@ -286,7 +286,7 @@ echo Then run this command to connect to Kubernetes Dashboard:
 echo  kubectl proxy
 echo.
 echo Then open a browser window and paste the following URL to see the Services created by Bluecompute:
-echo  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
+echo  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=%NAMESPACE%
 echo.
 echo Finally, on another browser window, copy and paste the following URL for BlueCompute Web UI:
 echo  http://%NODEIP%:%BCWEBPORT%
