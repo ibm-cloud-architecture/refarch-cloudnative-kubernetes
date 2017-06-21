@@ -130,7 +130,7 @@ function delete_inventory {
 
 		printf "\n\n${grn}inventory-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=inventory-ce-0.1.1
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
 	fi
 }
 
@@ -153,7 +153,7 @@ function delete_inventory_mysql {
 
 		printf "\n\n${grn}inventory-mysql was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=inventory-mysql-ce-0.1.1
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
 	fi
 }
 
@@ -176,7 +176,7 @@ function delete_inventory_backup {
 
 		printf "\n\n${grn}inventory-mysql was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=inventory-mysql-ce-0.1.1
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
 	fi
 }
 
@@ -199,7 +199,7 @@ function delete_catalog {
 
 		printf "\n\n${grn}catalog-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=catalog-ce-0.1.1
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
 	fi
 }
 
@@ -222,7 +222,7 @@ function delete_catalog_elasticsearch {
 
 		printf "\n\n${grn}catalog-elasticsearch was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=catalog-elasticsearch-ce-0.1.1
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
 	fi
 }
 
@@ -245,7 +245,7 @@ function delete_orders {
 
 		printf "\n\n${grn}orders-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=orders-ce-0.1.0
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
 	fi
 }
 
@@ -268,8 +268,7 @@ function delete_customer {
 
 		printf "\n\n${grn}customer-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=customer-ce-0.1.0
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=customer-couchdb-0.1.0
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
 	fi
 }
 
@@ -292,7 +291,7 @@ function delete_auth {
 
 		printf "\n\n${grn}auth-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=auth-ce-0.1.0
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
 	fi
 }
 
@@ -315,7 +314,7 @@ function delete_web {
 
 		printf "\n\n${grn}web-ce was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l chart=web-ce-0.1.0
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
 	fi
 }
 

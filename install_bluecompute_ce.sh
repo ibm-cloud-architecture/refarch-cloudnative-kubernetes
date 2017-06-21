@@ -103,8 +103,9 @@ function install_inventory_mysql {
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-mysql"
 
-		time helm install --namespace ${NAMESPACE} inventory-mysql-0.1.1.tgz --name "${NAMESPACE}-mysql" --timeout 600
+		time helm install --namespace ${NAMESPACE} inventory-mysql-0.1.1.tgz --name ${new_release} --timeout 600
 
 		local status=$?
 
@@ -115,7 +116,7 @@ function install_inventory_mysql {
 
 		printf "\n\n${grn}inventory-mysql was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}inventory-mysql was already installed!${end}\n"
@@ -127,8 +128,9 @@ function install_inventory_backup {
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-backup chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-backup"
 
-		time helm install --namespace ${NAMESPACE} inventory-backup-0.1.1.tgz --name "${NAMESPACE}-backup" --timeout 600
+		time helm install --namespace ${NAMESPACE} inventory-backup-0.1.1.tgz --name ${new_release} --timeout 600
 
 		local status=$?
 
@@ -139,7 +141,7 @@ function install_inventory_backup {
 
 		printf "\n\n${grn}inventory-backup was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}inventory-mysql was already installed!${end}\n"
@@ -151,8 +153,9 @@ function install_catalog_elasticsearch {
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing catalog-elasticsearch chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-elasticsearch"
 
-		time helm install --namespace ${NAMESPACE} catalog-elasticsearch-0.1.1.tgz --name "${NAMESPACE}-elasticsearch"  --timeout 600
+		time helm install --namespace ${NAMESPACE} catalog-elasticsearch-0.1.1.tgz --name ${new_release} --timeout 600
 
 		local status=$?
 
@@ -163,7 +166,7 @@ function install_catalog_elasticsearch {
 
 		printf "\n\n${grn}catalog-elasticsearch was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}catalog-elasticsearch was already installed!${end}\n"
@@ -175,8 +178,9 @@ function install_inventory {
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-inventory"
 
-		time helm install --namespace ${NAMESPACE} inventory-ce-0.1.1.tgz --name "${NAMESPACE}-inventory" --timeout 600
+		time helm install --namespace ${NAMESPACE} inventory-ce-0.1.1.tgz --name ${new_release} --timeout 600
 
 		local status=$?
 
@@ -187,7 +191,7 @@ function install_inventory {
 
 		printf "\n\n${grn}inventory-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}inventory-ce was already installed!${end}\n"
@@ -199,8 +203,9 @@ function install_catalog {
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing catalog-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-catalog"
 
-		time helm install --namespace ${NAMESPACE} catalog-ce-0.1.1.tgz --name "${NAMESPACE}-catalog" --timeout 600
+		time helm install --namespace ${NAMESPACE} catalog-ce-0.1.1.tgz --name ${new_release} --timeout 600
 
 		local status=$?
 
@@ -211,7 +216,7 @@ function install_catalog {
 
 		printf "\n\n${grn}catalog-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}catalog-ce was already installed!${end}\n"
@@ -223,8 +228,9 @@ function install_orders {
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing orders-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-orders"
 
-		time helm install --namespace ${NAMESPACE} orders-ce-0.1.0.tgz --name "${NAMESPACE}-orders" --set hs256key.secret=${HS_256_KEY} --timeout 600
+		time helm install --namespace ${NAMESPACE} orders-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --timeout 600
 
 		local status=$?
 
@@ -235,7 +241,7 @@ function install_orders {
 
 		printf "\n\n${grn}orders-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}orders-ce was already installed!${end}\n"
@@ -247,8 +253,9 @@ function install_customer {
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing customer-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-customer"
 
-		time helm install --namespace ${NAMESPACE} customer-ce-0.1.0.tgz --name "${NAMESPACE}-customer" --set hs256key.secret=${HS_256_KEY} --timeout 600
+		time helm install --namespace ${NAMESPACE} customer-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --timeout 600
 
 		local status=$?
 
@@ -259,7 +266,7 @@ function install_customer {
 
 		printf "\n\n${grn}customer-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}customer-ce was already installed!${end}\n"
@@ -271,8 +278,9 @@ function install_auth {
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing auth-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-auth"
 
-		time helm install --namespace ${NAMESPACE} auth-ce-0.1.0.tgz --name "${NAMESPACE}-auth" --set hs256key.secret=${HS_256_KEY} --timeout 600
+		time helm install --namespace ${NAMESPACE} auth-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --timeout 600
 
 		local status=$?
 
@@ -283,7 +291,7 @@ function install_auth {
 
 		printf "\n\n${grn}auth-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}auth-ce was already installed!${end}\n"
@@ -295,8 +303,9 @@ function install_web {
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-web"
 
-		time helm install --namespace ${NAMESPACE} web-ce-0.1.0.tgz --name "${NAMESPACE}-web" --timeout 600
+		time helm install --namespace ${NAMESPACE} web-ce-0.1.0.tgz --name ${new_release} --timeout 600
 
 		local status=$?
 
@@ -307,7 +316,7 @@ function install_web {
 
 		printf "\n\n${grn}web-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}web-ce was already installed!${end}\n"
