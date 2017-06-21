@@ -9,7 +9,6 @@ set BX_REGION=%4
 set NAMESPACE=%5
 set BX_API_ENDPOINT="api.ng.bluemix.net"
 
-
 :GetKey
 set alfanum=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
 
@@ -19,7 +18,8 @@ SET /A rnd_num=!RANDOM! * 62 / 32768 + 1
 for /F %%c in ('echo %%alfanum:~!rnd_num!^,1%%') do set HS_256_KEY=!HS_256_KEY!%%c
 )
 
-echo HS_256_KEY=%HS_256_KEY%
+rem echo HS_256_KEY=%HS_256_KEY%
+@echo on
 
 if  "%BX_REGION%" == "" (
    set BX_API_ENDPOINT=api.ng.bluemix.net
@@ -43,7 +43,7 @@ if "%BX_API_KEY%" == "" (
    exit /b 1
 )
 
-if "NAMESPACE" == "" (
+if "%NAMESPACE%" == "" (
    set NAMESPACE="default"
 )
 
@@ -85,6 +85,8 @@ if %errorlevel% EQU 0 (
    echo catalog-elasticsearch is already installed. Exiting.
    exit /b 1
 )
+echo helm install --namespace %NAMESPACE% docs\charts\catalog-elasticsearch-0.1.1.tgz --name catalog-elasticsearch --timeout 600
+
 helm install --namespace %NAMESPACE% docs\charts\catalog-elasticsearch-0.1.1.tgz --name catalog-elasticsearch --timeout 600
 if %errorlevel% NEQ 0 (
    echo Could not install catalog-elasticsearch. Exiting.
@@ -92,7 +94,7 @@ if %errorlevel% NEQ 0 (
 )
 echo catalog-elasticsearch was successfully installed!
 echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
 
 :inventory_mysql
 echo Installing inventory_mysql chart. This will take a few minutes...
@@ -101,14 +103,14 @@ if %errorlevel% EQU 0 (
    echo inventory_mysql is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace $NAMESPACE docs\charts\inventory-mysql-0.1.1.tgz --name inventory-mysql --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\inventory-mysql-0.1.1.tgz --name inventory-mysql --timeout 600
 if %errorlevel% NEQ 0 (
    echo Could not install inventory_mysql. Exiting.
    exit /b 1
 )
 echo inventory_mysql was successfully installed!
 echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
 
 :customer
 echo Installing customer-ce chart. This will take a few minutes...
@@ -118,14 +120,14 @@ if %errorlevel% EQU 0 (
    exit /b 1
 )
 
-helm install --namespace $NAMESPACE docs\charts\customer-ce-0.1.0.tgz --name customer --set hs256key.secret=%HS_256_KEY% --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\customer-ce-0.1.0.tgz --name customer --set hs256key.secret=%HS_256_KEY% --timeout 600
 if %errorlevel% NEQ 0 (
    echo Could not install customer-ce. Exiting.
    exit /b 1
 )
 echo customer-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
 
 :auth
 echo Installing auth-ce chart. This will take a few minutes...
@@ -134,14 +136,14 @@ if %errorlevel% EQU 0 (
    echo auth is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace $NAMESPACE docs\charts\auth-ce-0.1.0.tgz --name auth --set hs256key.secret=%HS_256_KEY% --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\auth-ce-0.1.0.tgz --name auth --set hs256key.secret=%HS_256_KEY% --timeout 600
 if %errorlevel% NEQ 0 (
    echo Could not install auth-ce. Exiting.
    exit /b 1
 )
 echo auth-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
 
 :inventory
 echo Installing inventory-ce chart. This will take a few minutes...
@@ -150,14 +152,14 @@ if %errorlevel% EQU 0 (
    echo inventory is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace $NAMESPACE docs\charts\inventory-ce-0.1.1.tgz --name inventory --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\inventory-ce-0.1.1.tgz --name inventory --timeout 600
 if %errorlevel% NEQ 0 (
    echo Could not install inventory-ce. Exiting.
    exit /b 1
 )
 echo inventory-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
 
 :catalog
 echo Installing catalog-ce chart. This will take a few minutes...
@@ -166,14 +168,14 @@ if %errorlevel% EQU 0 (
    echo catalog is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace $NAMESPACE docs\charts\-ce-0.1.1.tgz --name catalog --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\-ce-0.1.1.tgz --name catalog --timeout 600
 if %errorlevel% NEQ 0 (
    echo Could not install catalog-ce. Exiting.
    exit /b 1
 )
 echo catalog-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
 
 :web
 echo Installing web-ce chart. This will take a few minutes...
@@ -182,14 +184,48 @@ if %errorlevel% EQU 0 (
    echo web is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace $NAMESPACE docs\charts\web-ce-0.1.0.tgz --name web --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\web-ce-0.1.0.tgz --name web --timeout 600
 if %errorlevel% NEQ 0 (
    echo Could not install web-ce. Exiting.
    exit /b 1
 )
 echo web-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace $NAMESPACE delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
+
+
+:Prometheus
+echo Installing prometheus chart. This will take a few minutes...
+helm list | findstr prometheus
+if %errorlevel% EQU 0 (
+   echo prometheus is already installed. Exiting.
+   exit /b 1
+)
+helm install --namespace %NAMESPACE% stable/prometheus --name prometheus --set server.persistentVolume.enabled=false --set alertmanager.persistentVolume.enabled=false --timeout 600
+if %errorlevel% NEQ 0 (
+   echo Could not install prometheus. Exiting.
+   exit /b 1
+)
+echo prometheus was successfully installed!
+echo Cleaning up...
+kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
+
+:Grafana
+echo Installing grafana chart. This will take a few minutes...
+helm list | findstr grafana
+if %errorlevel% EQU 0 (
+   echo grafana is already installed. Exiting.
+   exit /b 1
+)
+helm install --namespace %NAMESPACE% docs\charts\grafana-bc-0.3.1.tgz --name grafana --set setDatasource.datasource.url=http://prometheus-prometheus-server.default.svc.cluster.local --set server.persistentVolume.enabled=false --set server.serviceType=NodePort --timeout 600
+if %errorlevel% NEQ 0 (
+   echo Could not install grafana. Exiting.
+   exit /b 1
+)
+echo grafana-ce was successfully installed!
+
+echo Cleaning up...
+kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
 
 :all_deployed
 echo Getting the correct WebPort

@@ -33,7 +33,7 @@ bx plugin install container-registry -r Bluemix
 echo BX CR plugin is installed.
 
 :install_kubectl
-echo Installing Kubernetes CLI (kubectl)...
+echo Kubernetes CLI (kubectl) will be installed
 kubectl >nul 2>&1
 if %errorlevel% EQU 0 goto :kubectl_installed
 for /f %%i in ('curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt') do set KUBVER=%%i
@@ -47,7 +47,10 @@ echo Installing helm
 rem This is a placeholder. For the moment, we will manually download a version of helm
 helm >nul 2>&1
 if %errorlevel% EQU 0 goto :jq_installed
-echo please download helm.exe from https://ibm.box.com/s/m2iau50fdiblleoeafvd5svbd4uvmcdr and copy it to %CD%\win_utils
+echo please download helm.exe from either :
+echo   https://storage.googleapis.com/kubernetes-helm/helm-v2.5.0-windows-amd64.zip (official site, you'll need to unzip)
+echo   https://ibm.box.com/s/m2iau50fdiblleoeafvd5svbd4uvmcdr  (unzipped instance)
+echo and copy it to %CD%\win_utils
 echo once you have done so
 pause
 goto :install_helm
@@ -71,4 +74,3 @@ curl -LO https://github.com/mikefarah/yaml/releases/download/1.11/yaml_windows_a
 move yaml_windows_amd64.exe win_utils\yaml.exe
 :yaml_installed
 echo yaml is installed
-
