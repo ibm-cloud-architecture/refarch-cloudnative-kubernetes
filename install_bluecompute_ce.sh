@@ -103,9 +103,9 @@ function install_inventory_mysql {
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		new_release="${NAMESPACE}-mysql"
+		new_release="${NAMESPACE}-inventory-mysql"
 
-		time helm install --namespace ${NAMESPACE} inventory-mysql-0.1.1.tgz --name ${new_release} --set image.pullPolicy=Always --timeout 600
+		time helm install --namespace ${NAMESPACE} ibmcase-mysql-0.1.0.tgz --name ${new_release} --set image.pullPolicy=Always --set mysql.binding.name=binding-${new_release} --set mysql.dbname=inventorydb --set mysql.service.name=inventorydb-mysql --timeout 600
 
 		local status=$?
 
@@ -115,31 +115,6 @@ function install_inventory_mysql {
 		fi
 
 		printf "\n\n${grn}inventory-mysql was successfully installed!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
-
-	else
-		printf "\n\n${grn}inventory-mysql was already installed!${end}\n"
-	fi
-}
-
-function install_inventory_backup {
-	local release=$(helm list | grep "${NAMESPACE}-backup")
-
-	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing inventory-backup chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		new_release="${NAMESPACE}-backup"
-
-		time helm install --namespace ${NAMESPACE} inventory-backup-0.1.1.tgz --name ${new_release} --set image.pullPolicy=Always --timeout 600
-
-		local status=$?
-
-		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing inventory-backup... Exiting.${end}\n"
-			exit 1
-		fi
-
-		printf "\n\n${grn}inventory-backup was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
@@ -180,7 +155,7 @@ function install_inventory {
 		printf "\n\n${grn}Installing inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		new_release="${NAMESPACE}-inventory"
 
-		time helm install --namespace ${NAMESPACE} inventory-ce-0.1.1.tgz --name ${new_release} --set image.pullPolicy=Always --timeout 600
+		time helm install --namespace ${NAMESPACE} --set mysql.secret=binding-${NAMESPACE}-inventory-mysql inventory-ce-0.1.1.tgz --name ${new_release} --set image.pullPolicy=Always --timeout 600
 
 		local status=$?
 
@@ -223,6 +198,31 @@ function install_catalog {
 	fi
 }
 
+function install_orders_mysql {
+	local release=$(helm list | grep "${NAMESPACE}-orders-mysql")
+
+	if [[ -z "${release// }" ]]; then
+		printf "\n\n${grn}Installing orders-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-orders-mysql"
+
+		time helm install --namespace ${NAMESPACE} ibmcase-mysql-0.1.0.tgz --name ${new_release} --set image.pullPolicy=Always --set mysql.dbname=ordersdb --set mysql.binding.name=binding-${new_release} --set mysql.service.name=ordersdb-mysql --timeout 600
+
+		local status=$?
+
+		if [ $status -ne 0 ]; then
+			printf "\n\n${red}Error installing orders-mysql... Exiting.${end}\n"
+			exit 1
+		fi
+
+		printf "\n\n${grn}orders-mysql was successfully installed!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
+
+	else
+		printf "\n\n${grn}orders-mysql was already installed!${end}\n"
+	fi
+}
+
 function install_orders {
 	local release=$(helm list | grep "${NAMESPACE}-orders")
 
@@ -230,7 +230,7 @@ function install_orders {
 		printf "\n\n${grn}Installing orders-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		new_release="${NAMESPACE}-orders"
 
-		time helm install --namespace ${NAMESPACE} orders-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --set image.pullPolicy=Always --timeout 600
+		time helm install --namespace ${NAMESPACE} orders-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --set image.pullPolicy=Always --set mysql.binding.name=binding-${NAMESPACE}-orders-mysql --timeout 600
 
 		local status=$?
 
@@ -378,9 +378,9 @@ create_kube_namespace
 cd docs/charts
 install_catalog_elasticsearch
 install_inventory_mysql
-install_inventory_backup
 install_customer
 install_auth
+#install_orders_mysql
 #install_orders
 install_inventory
 install_catalog
