@@ -135,7 +135,7 @@ function delete_inventory {
 }
 
 function delete_inventory_mysql {
-	local release=$(helm list | grep "${NAMESPACE}-mysql" | grep inventory-mysql | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-inventory-mysql" | grep inventory-mysql | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -148,29 +148,6 @@ function delete_inventory_mysql {
 
 		if [ $status -ne 0 ]; then
 			printf "\n\n${red}Error deleting inventory-mysql... Exiting.${end}\n"
-			exit 1
-		fi
-
-		printf "\n\n${grn}inventory-mysql was successfully deleted!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
-	fi
-}
-
-function delete_inventory_backup {
-	local release=$(helm list | grep "${NAMESPACE}-backup" | grep inventory-backup | awk '{print $1}' | head -1)
-
-	# Creating for API KEY
-	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}inventory-backup was already deleted!${end}\n"
-	else
-		printf "\n\n${grn}Deleting inventory-backup chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		time helm delete $release --purge --debug --timeout 600
-
-		local status=$?
-
-		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error deleting inventory-backup... Exiting.${end}\n"
 			exit 1
 		fi
 
@@ -221,6 +198,29 @@ function delete_catalog_elasticsearch {
 		fi
 
 		printf "\n\n${grn}catalog-elasticsearch was successfully deleted!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
+	fi
+}
+
+function delete_orders_mysql {
+	local release=$(helm list | grep "${NAMESPACE}-orders-mysql" | grep orders-mysql | awk '{print $1}' | head -1)
+
+	# Creating for API KEY
+	if [[ -z "${release// }" ]]; then
+		printf "\n\n${grn}orders-mysql was already deleted!${end}\n"
+	else
+		printf "\n\n${grn}Deleting orders-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		time helm delete $release --purge --debug --timeout 600
+
+		local status=$?
+
+		if [ $status -ne 0 ]; then
+			printf "\n\n${red}Error deleting orders-mysql... Exiting.${end}\n"
+			exit 1
+		fi
+
+		printf "\n\n${grn}orders-mysql was successfully deleted!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
 		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
 	fi
@@ -346,10 +346,10 @@ delete_web
 delete_auth
 delete_customer
 delete_orders
+delete_orders_mysql
 delete_catalog
 delete_catalog_elasticsearch
 delete_inventory
-delete_inventory_backup
 delete_inventory_mysql
 
 # Sanity Checks
