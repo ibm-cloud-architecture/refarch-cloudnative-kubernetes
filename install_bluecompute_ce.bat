@@ -7,6 +7,7 @@ set BX_SPACE=%~2
 set BX_API_KEY=%3
 set BX_REGION=%4
 set NAMESPACE=%5
+set INSTALL_MON=%6
 set BX_API_ENDPOINT="api.ng.bluemix.net"
 
 :GetKey
@@ -72,11 +73,12 @@ helm init --upgrade
 echo "Waiting for Tiller (Helm's server component) to be ready..."
 :helm_loop_start
 :helmcheck1
- 	kubectl --namespace=kube-system get pods | findstr tiller | findstr 1/1
+ 	kubectl --namespace=kube-system get pods | findstr tiller | findstr 1/1  >nul 2>&1
     goto helmcheck%errorlevel%
     timeout /t 1
     goto :helm_loop_start
 :helmcheck0
+echo.
 
 :catalog-elasticsearch
 echo Installing catalog-elasticsearch chart. This will take a few minutes...
@@ -85,16 +87,14 @@ if %errorlevel% EQU 0 (
    echo catalog-elasticsearch is already installed. Exiting.
    exit /b 1
 )
-echo helm install --namespace %NAMESPACE% docs\charts\catalog-elasticsearch-0.1.1.tgz --name catalog-elasticsearch --timeout 600
-
-helm install --namespace %NAMESPACE% docs\charts\catalog-elasticsearch-0.1.1.tgz --name catalog-elasticsearch --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\catalog-elasticsearch-0.1.1.tgz --name %NAMESPACE%-elasticsearch --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install catalog-elasticsearch. Exiting.
    exit /b 1
 )
 echo catalog-elasticsearch was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-elasticsearch --cascade
 
 :inventory_mysql
 echo Installing inventory_mysql chart. This will take a few minutes...
@@ -103,14 +103,14 @@ if %errorlevel% EQU 0 (
    echo inventory_mysql is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\inventory-mysql-0.1.1.tgz --name inventory-mysql --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\inventory-mysql-0.1.1.tgz --name %NAMESPACE%-mysql --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install inventory_mysql. Exiting.
    exit /b 1
 )
 echo inventory_mysql was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-mysql --cascade
 
 :customer
 echo Installing customer-ce chart. This will take a few minutes...
@@ -120,14 +120,14 @@ if %errorlevel% EQU 0 (
    exit /b 1
 )
 
-helm install --namespace %NAMESPACE% docs\charts\customer-ce-0.1.0.tgz --name customer --set hs256key.secret=%HS_256_KEY% --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\customer-ce-0.1.0.tgz --name %NAMESPACE%-customer --set hs256key.secret=%HS_256_KEY% --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install customer-ce. Exiting.
    exit /b 1
 )
 echo customer-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-customer --cascade
 
 :auth
 echo Installing auth-ce chart. This will take a few minutes...
@@ -136,14 +136,14 @@ if %errorlevel% EQU 0 (
    echo auth is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\auth-ce-0.1.0.tgz --name auth --set hs256key.secret=%HS_256_KEY% --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\auth-ce-0.1.0.tgz --name %NAMESPACE%-auth --set hs256key.secret=%HS_256_KEY% --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install auth-ce. Exiting.
    exit /b 1
 )
 echo auth-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-auth --cascade
 
 :inventory
 echo Installing inventory-ce chart. This will take a few minutes...
@@ -152,14 +152,14 @@ if %errorlevel% EQU 0 (
    echo inventory is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\inventory-ce-0.1.1.tgz --name inventory --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\inventory-ce-0.1.1.tgz --name %NAMESPACE%-inventory --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install inventory-ce. Exiting.
    exit /b 1
 )
 echo inventory-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory --cascade
 
 :catalog
 echo Installing catalog-ce chart. This will take a few minutes...
@@ -168,14 +168,14 @@ if %errorlevel% EQU 0 (
    echo catalog is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\-ce-0.1.1.tgz --name catalog --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\catalog-ce-0.1.1.tgz --name %NAMESPACE%-catalog --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install catalog-ce. Exiting.
    exit /b 1
 )
 echo catalog-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-catalog --cascade
 
 :web
 echo Installing web-ce chart. This will take a few minutes...
@@ -184,14 +184,14 @@ if %errorlevel% EQU 0 (
    echo web is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\web-ce-0.1.0.tgz --name web --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\web-ce-0.1.0.tgz --name %NAMESPACE%-web --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install web-ce. Exiting.
    exit /b 1
 )
 echo web-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-web --cascade
 
 :Prometheus
 echo Installing prometheus chart. This will take a few minutes...
@@ -200,14 +200,14 @@ if %errorlevel% EQU 0 (
    echo prometheus is already installed. skipping...
    goto Grafana
 )
-helm install --namespace %NAMESPACE% stable/prometheus --name prometheus --set server.persistentVolume.enabled=false --set alertmanager.persistentVolume.enabled=false --timeout 600
+helm install --namespace %NAMESPACE% stable/prometheus --name %NAMESPACE%-prometheus --set server.persistentVolume.enabled=false --set alertmanager.persistentVolume.enabled=false --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install prometheus. Exiting.
    exit /b 1
 )
 echo prometheus was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete pods,jobs -l heritage=Tiller
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-prometheus --cascade
 
 :Grafana
 echo Installing grafana chart. This will take a few minutes...
@@ -216,7 +216,7 @@ if %errorlevel% EQU 0 (
    echo grafana is already installed. skipping...
    goto all_deployed
 )
-helm install --namespace %NAMESPACE% docs\charts\grafana-bc-0.3.1.tgz --name grafana --set setDatasource.datasource.url=http://prometheus-prometheus-server.default.svc.cluster.local --set server.persistentVolume.enabled=false --set server.serviceType=NodePort --timeout 600
+helm install --namespace %NAMESPACE% docs\charts\grafana-bc-0.3.1.tgz --name %NAMESPACE%-grafana --set setDatasource.datasource.url=http://%NAMESPACE%-prometheus-prometheus-server.default.svc.cluster.local --set server.persistentVolume.enabled=false --set server.serviceType=NodePort --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install grafana. Exiting.
    exit /b 1
@@ -234,7 +234,7 @@ kubectl get nodes -o jsonpath={.items[*].status.addresses[?(@.type==\"ExternalIP
 for /f %%i in (%TMP%\BC_NodeIP.tmp) do @set NODEIP=%%i
 
 
-echo Getting the correct WebPorts
+echo Getting the WebPorts for the apps.
 :bcwebport_loop_start
     echo polling the service bluecompute-web in namespace %NAMESPACE% to get the webport
     kubectl get service --namespace=%NAMESPACE% bluecompute-web -o json | for /f %%i in ('jq .spec.ports[0].nodePort') do @echo %%i > %TMP%\BC_Webport.tmp
@@ -254,7 +254,7 @@ goto :bcwebport_loop_start
 
 :grwebport_loop_start
     echo polling the service grafana-grafana in namespace %NAMESPACE% to get the webport
-    kubectl get service --namespace=%NAMESPACE% grafana-grafana -o json | for /f %%i in ('jq .spec.ports[0].nodePort') do @echo %%i > %TMP%\GR_Webport.tmp
+    kubectl get service --namespace=%NAMESPACE% %NAMESPACE%-grafana-grafana -o json | for /f %%i in ('jq .spec.ports[0].nodePort') do @echo %%i > %TMP%\GR_Webport.tmp
     for /f %%i in (%TMP%\GR_Webport.tmp) do @set GRWEBPORT=%%i
 
     if "%GRWEBPORT%" == "null" (
@@ -270,7 +270,7 @@ goto :grwebport_loop_start
 :grwebport_loop_exit
 
 :grafana_password
-kubectl get secret --namespace %NAMESPACE% grafana-grafana -o jsonpath="{.data.grafana-admin-password}" > %TMP%\GR_Passwrd.tmp
+kubectl get secret --namespace %NAMESPACE% %NAMESPACE%-grafana-grafana -o jsonpath="{.data.grafana-admin-password}" > %TMP%\GR_Passwrd.tmp
 certutil -f -decode %TMP%\GR_Passwrd.tmp %TMP%\GR_Passwrd.out
 for /f %%i in (%TMP%\GR_Passwrd.out) do @set GRPASS=%%i
 del %TMP%\GR_Passwrd.tmp
