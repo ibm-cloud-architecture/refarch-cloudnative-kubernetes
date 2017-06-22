@@ -39,6 +39,7 @@ function print_usage {
 	printf "\n\n${yel}Usage:${end}\n"
 	printf "\t${cyn}./install_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>${end}\n\n"
 }
+
 function bluemix_login {
 	# Bluemix Login
 	if [[ -z "${CLUSTER_NAME// }" ]]; then
@@ -205,7 +206,7 @@ function install_orders_mysql {
 		printf "\n\n${grn}Installing orders-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		new_release="${NAMESPACE}-orders-mysql"
 
-		time helm install --namespace ${NAMESPACE} ibmcase-mysql-0.1.0.tgz --name ${new_release} --set image.pullPolicy=Always --set mysql.dbname=ordersdb --set mysql.binding.name=binding-${new_release} --set mysql.service.name=ordersdb-mysql --timeout 600
+		time helm install --namespace ${NAMESPACE} ibmcase-mysql-0.1.0.tgz --name ${new_release} --set image.pullPolicy=Always --set mysql.binding.name=binding-${new_release} --set mysql.dbname=ordersdb --set mysql.service.name=ordersdb-mysql --timeout 600
 
 		local status=$?
 
@@ -310,6 +311,7 @@ function install_web {
 		--set region=$BX_REGION \
 		--set cluster_name=$CLUSTER_NAME \
 		--timeout 600
+
 		local status=$?
 
 		if [ $status -ne 0 ]; then
