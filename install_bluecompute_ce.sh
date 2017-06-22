@@ -99,7 +99,7 @@ function initialize_helm {
 }
 
 function install_inventory_mysql {
-	local release=$(helm list | grep "${NAMESPACE}-mysql")
+	local release=$(helm list | grep "${NAMESPACE}-inventory-mysql")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
@@ -305,7 +305,11 @@ function install_web {
 		printf "\n\n${grn}Installing web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		new_release="${NAMESPACE}-web"
 
-		time helm install --namespace ${NAMESPACE} web-ce-0.1.0.tgz --name ${new_release} --set image.pullPolicy=Always --timeout 600
+		time helm install --namespace ${NAMESPACE} web-ce-0.1.0.tgz --name ${new_release} \
+		--set image.pullPolicy=Always \
+		--set region=$BX_REGION \
+		--set cluster_name=$CLUSTER_NAME \
+		--timeout 600
 
 		local status=$?
 
