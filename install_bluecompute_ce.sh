@@ -310,7 +310,6 @@ function install_web {
 		--set region=$BX_REGION \
 		--set cluster_name=$CLUSTER_NAME \
 		--timeout 600
-
 		local status=$?
 
 		if [ $status -ne 0 ]; then
