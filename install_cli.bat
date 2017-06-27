@@ -52,10 +52,10 @@ rem echo   https://storage.googleapis.com/kubernetes-helm/helm-v2.5.0-windows-am
 rem echo   https://ibm.box.com/s/m2iau50fdiblleoeafvd5svbd4uvmcdr  (unzipped instance)
 rem echo and copy it to %CD%\win_utils
 rem echo once you have done so
+rem pause
+rem goto :install_helm
 curl -LJO https://github.com/ibm-cloud-architecture/ibmcase-cloudnative-utility/raw/master/helm.exe
 move helm.exe win_utils\helm.exe
-pause
-goto :install_helm
 :helm_installed
 echo Helm installed.
 
