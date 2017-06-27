@@ -87,7 +87,7 @@ if %errorlevel% EQU 0 (
    echo catalog-elasticsearch is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\catalog-elasticsearch-0.1.1.tgz --name %NAMESPACE%-elasticsearch --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
+helm install --namespace %NAMESPACE% docs\charts\catalog-elasticsearch-0.1.1.tgz --name %NAMESPACE%-elasticsearch --set image.pullPolicy=Always --set mysql.secret=binding-%NAMESPACE%-inventory-mysql --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install catalog-elasticsearch. Exiting.
    exit /b 1
@@ -103,14 +103,16 @@ if %errorlevel% EQU 0 (
    echo inventory_mysql is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\inventory-mysql-0.1.1.tgz --name %NAMESPACE%-mysql --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
+	local release=$(helm list | grep "${NAMESPACE}-inventory-mysql")
+
+helm install --namespace %NAMESPACE% docs\charts\ibmcase-mysql-0.1.0.tgz   --name %NAMESPACE%-inventory-mysql --set image.pullPolicy=Always --set mysql.binding.name=binding-%NAMESPACE%-inventory-mysql --set mysql.dbname=inventorydb --set mysql.service.name=inventorydb-mysql --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install inventory_mysql. Exiting.
    exit /b 1
 )
 echo inventory_mysql was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-mysql --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory-mysql --cascade
 
 :customer
 echo Installing customer-ce chart. This will take a few minutes...
@@ -184,7 +186,7 @@ if %errorlevel% EQU 0 (
    echo web is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\web-ce-0.1.0.tgz --name %NAMESPACE%-web --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
+helm install --namespace %NAMESPACE% docs\charts\web-ce-0.1.0.tgz --name %NAMESPACE%-web --set image.pullPolicy=Always --set region=%BX_REGION% --set cluster_name=%CLUSTER_NAME%  --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install web-ce. Exiting.
    exit /b 1
@@ -192,6 +194,41 @@ if %errorlevel% NEQ 0 (
 echo web-ce was successfully installed!
 echo Cleaning up...
 kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-web --cascade
+
+:orders-mysql
+echo Installing orders-mysql chart. This will take a few minutes...
+helm list | findstr orders-mysql
+if %errorlevel% EQU 0 (
+   echo web is already installed. Exiting.
+   exit /b 1
+)
+
+helm install --namespace %NAMESPACE% docs\charts\ibmcase-mysql-0.1.0.tgz --name %NAMESPACE%-orders-mysql --set image.pullPolicy=Always --set mysql.dbname=ordersdb --set mysql.binding.name=binding-%NAMESPACE%-orders-mysql --set mysql.service.name=ordersdb-mysql --timeout 600  >> BC_install.log 2>&1
+if %errorlevel% NEQ 0 (
+   echo Could not install orders-mysql. Exiting.
+   exit /b 1
+)
+echo orders-mysql was successfully installed!
+echo Cleaning up...
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders-mysql --cascade
+
+
+:orders-ce
+echo Installing orders-ce chart. This will take a few minutes...
+helm list | findstr orders-ce
+if %errorlevel% EQU 0 (
+   echo web is already installed. Exiting.
+   exit /b 1
+)
+helm install --namespace %NAMESPACE% docs\charts\orders-ce-0.1.0.tgz --name %NAMESPACE%-orders --set hs256key.secret=%HS_256_KEY% --set image.pullPolicy=Always --set mysql.binding.name=binding-%NAMESPACE%-orders-mysql --timeout 600 >> BC_install.log 2>&1
+if %errorlevel% NEQ 0 (
+   echo Could not install orders-ce. Exiting.
+   exit /b 1
+)
+echo orders-ce was successfully installed!
+echo Cleaning up...
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders --cascade
+
 
 :Prometheus
 echo Installing prometheus chart. This will take a few minutes...
