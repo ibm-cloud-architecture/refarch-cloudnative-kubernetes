@@ -14,7 +14,9 @@ CLUSTER_NAME=$1
 BX_SPACE=$2
 BX_API_KEY=$3
 BX_REGION=$4
+NAMESPACE=$5
 BX_API_ENDPOINT=""
+HS_256_KEY=$(cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 256 | head -n 1)
 
 if [[ -z "${BX_REGION// }" ]]; then
 	BX_API_ENDPOINT="api.ng.bluemix.net"
@@ -25,6 +27,10 @@ else
 	echo "Using endpoint ${grn}${BX_API_ENDPOINT}${end}."
 fi
 
+if [[ -z "${NAMESPACE// }" ]]; then
+	NAMESPACE="default"
+fi
+
 function check_tiller {
 	kubectl --namespace=kube-system get pods | grep tiller | grep Running | grep 1/1
 }
@@ -33,6 +39,7 @@ function print_usage {
 	printf "\n\n${yel}Usage:${end}\n"
 	printf "\t${cyn}./install_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key>${end}\n\n"
 }
+
 function bluemix_login {
 	# Bluemix Login
 	if [[ -z "${CLUSTER_NAME// }" ]]; then
@@ -93,12 +100,13 @@ function initialize_helm {
 }
 
 function install_inventory_mysql {
-	local release=$(helm list | grep mysql)
+	local release=$(helm list | grep "${NAMESPACE}-inventory-mysql")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-inventory-mysql"
 
-		time helm install inventory-mysql-0.1.1.tgz --name mysql --timeout 600
+		time helm install --namespace ${NAMESPACE} ibmcase-mysql-0.1.0.tgz --name ${new_release} --set image.pullPolicy=Always --set mysql.binding.name=binding-${new_release} --set mysql.dbname=inventorydb --set mysql.service.name=inventorydb-mysql --timeout 600
 
 		local status=$?
 
@@ -109,7 +117,7 @@ function install_inventory_mysql {
 
 		printf "\n\n${grn}inventory-mysql was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}inventory-mysql was already installed!${end}\n"
@@ -117,12 +125,13 @@ function install_inventory_mysql {
 }
 
 function install_catalog_elasticsearch {
-	local release=$(helm list | grep elasticsearch )
+	local release=$(helm list | grep "${NAMESPACE}-elasticsearch" )
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing catalog-elasticsearch chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-elasticsearch"
 
-		time helm install catalog-elasticsearch-0.1.1.tgz --name elasticsearch  --timeout 600
+		time helm install --namespace ${NAMESPACE} catalog-elasticsearch-0.1.1.tgz --name ${new_release} --set image.pullPolicy=Always --timeout 600
 
 		local status=$?
 
@@ -133,7 +142,7 @@ function install_catalog_elasticsearch {
 
 		printf "\n\n${grn}catalog-elasticsearch was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}catalog-elasticsearch was already installed!${end}\n"
@@ -141,12 +150,13 @@ function install_catalog_elasticsearch {
 }
 
 function install_inventory {
-	local release=$(helm list | grep inventory-ce)
+	local release=$(helm list | grep "${NAMESPACE}-inventory" | grep inventory-ce)
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-inventory"
 
-		time helm install inventory-ce-0.1.1.tgz --name inventory --timeout 600
+		time helm install --namespace ${NAMESPACE} --set mysql.secret=binding-${NAMESPACE}-inventory-mysql inventory-ce-0.1.1.tgz --name ${new_release} --set image.pullPolicy=Always --timeout 600
 
 		local status=$?
 
@@ -157,7 +167,7 @@ function install_inventory {
 
 		printf "\n\n${grn}inventory-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}inventory-ce was already installed!${end}\n"
@@ -165,12 +175,13 @@ function install_inventory {
 }
 
 function install_catalog {
-	local release=$(helm list | grep catalog-ce)
+	local release=$(helm list | grep "${NAMESPACE}-catalog" | grep catalog-ce)
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing catalog-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-catalog"
 
-		time helm install catalog-ce-0.1.1.tgz --name catalog --timeout 600
+		time helm install --namespace ${NAMESPACE} catalog-ce-0.1.1.tgz --name ${new_release} --set image.pullPolicy=Always --timeout 600
 
 		local status=$?
 
@@ -181,20 +192,46 @@ function install_catalog {
 
 		printf "\n\n${grn}catalog-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}catalog-ce was already installed!${end}\n"
 	fi
 }
 
+function install_orders_mysql {
+	local release=$(helm list | grep "${NAMESPACE}-orders-mysql")
+
+	if [[ -z "${release// }" ]]; then
+		printf "\n\n${grn}Installing orders-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-orders-mysql"
+
+		time helm install --namespace ${NAMESPACE} ibmcase-mysql-0.1.0.tgz --name ${new_release} --set image.pullPolicy=Always --set mysql.binding.name=binding-${new_release} --set mysql.dbname=ordersdb --set mysql.service.name=ordersdb-mysql --timeout 600
+
+		local status=$?
+
+		if [ $status -ne 0 ]; then
+			printf "\n\n${red}Error installing orders-mysql... Exiting.${end}\n"
+			exit 1
+		fi
+
+		printf "\n\n${grn}orders-mysql was successfully installed!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
+
+	else
+		printf "\n\n${grn}orders-mysql was already installed!${end}\n"
+	fi
+}
+
 function install_orders {
-	local release=$(helm list | grep orders)
+	local release=$(helm list | grep "${NAMESPACE}-orders")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing orders-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-orders"
 
-		time helm install orders-ce-0.1.0.tgz --name orders --timeout 600
+		time helm install --namespace ${NAMESPACE} orders-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --set image.pullPolicy=Always --set mysql.binding.name=binding-${NAMESPACE}-orders-mysql --timeout 600
 
 		local status=$?
 
@@ -205,7 +242,7 @@ function install_orders {
 
 		printf "\n\n${grn}orders-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}orders-ce was already installed!${end}\n"
@@ -213,12 +250,13 @@ function install_orders {
 }
 
 function install_customer {
-	local release=$(helm list | grep customer)
+	local release=$(helm list | grep "${NAMESPACE}-customer")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing customer-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-customer"
 
-		time helm install customer-ce-0.1.0.tgz --name customer --timeout 600
+		time helm install --namespace ${NAMESPACE} customer-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --set image.pullPolicy=Always --timeout 600
 
 		local status=$?
 
@@ -229,7 +267,7 @@ function install_customer {
 
 		printf "\n\n${grn}customer-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}customer-ce was already installed!${end}\n"
@@ -237,12 +275,13 @@ function install_customer {
 }
 
 function install_auth {
-	local release=$(helm list | grep auth)
+	local release=$(helm list | grep "${NAMESPACE}-auth")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing auth-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-auth"
 
-		time helm install auth-ce-0.1.0.tgz --name auth --timeout 600
+		time helm install --namespace ${NAMESPACE} auth-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --set image.pullPolicy=Always --timeout 600
 
 		local status=$?
 
@@ -253,7 +292,7 @@ function install_auth {
 
 		printf "\n\n${grn}auth-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}auth-ce was already installed!${end}\n"
@@ -261,12 +300,17 @@ function install_auth {
 }
 
 function install_web {
-	local release=$(helm list | grep web)
+	local release=$(helm list | grep "${NAMESPACE}-web")
 
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		new_release="${NAMESPACE}-web"
 
-		time helm install web-ce-0.1.0.tgz --name web --timeout 600
+		time helm install --namespace ${NAMESPACE} web-ce-0.1.0.tgz --name ${new_release} \
+		--set image.pullPolicy=Always \
+		--set region=$BX_REGION \
+		--set cluster_name=$CLUSTER_NAME \
+		--timeout 600
 
 		local status=$?
 
@@ -277,7 +321,7 @@ function install_web {
 
 		printf "\n\n${grn}web-ce was successfully installed!${end}\n"
 		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl delete pods,jobs -l heritage=Tiller
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
 
 	else
 		printf "\n\n${grn}web-ce was already installed!${end}\n"
@@ -285,7 +329,26 @@ function install_web {
 }
 
 function get_web_port {
-	kubectl get service bluecompute-web -o json | jq .spec.ports[0].nodePort
+	kubectl --namespace ${NAMESPACE} get service bluecompute-web -o json | jq .spec.ports[0].nodePort
+}
+
+function create_kube_namespace {
+	echo "Using ${grn}${NAMESPACE}${end} namespace."
+	kubectl get namespaces ${NAMESPACE}
+
+	local status=$?
+	if [ $status -ne 0 ]; then
+		printf "\n\n${yel}Creating namespace.${end}\n"
+		kubectl create namespace ${NAMESPACE}
+
+		status=$?
+		if [ $status -ne 0 ]; then
+			printf "\n\n${red}Error creating namespace... Exiting.${end}\n"
+			exit 1
+		fi
+	else
+		echo "Namespace exists."
+	fi
 }
 
 # Setup Stuff
@@ -314,6 +377,7 @@ else
 fi
 
 initialize_helm
+create_kube_namespace
 
 # Install Bluecompute
 cd docs/charts
@@ -321,6 +385,7 @@ install_catalog_elasticsearch
 install_inventory_mysql
 install_customer
 install_auth
+#install_orders_mysql
 #install_orders
 install_inventory
 install_catalog
@@ -361,7 +426,7 @@ else
 	echo "${cyn}kubectl proxy${end}"
 
 	printf "\nThen open a browser window and paste the following URL to see the Services created by Bluecompute:\n"
-	echo "${cyn}http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default${end}"
+	echo "${cyn}http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=${NAMESPACE}${end}"
 
 	printf "\nFinally, on another browser window, copy and paste the following URL for BlueCompute Web UI:\n"
 	echo "${cyn}http://${nodeip}:${webport}${end}"
