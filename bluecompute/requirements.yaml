@@ -1,0 +1,4 @@
+dependencies:
+  - name: auth-ce
+    version: 0.1.0
+    repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
