@@ -10,18 +10,6 @@ set NAMESPACE=%5
 set INSTALL_MON=%6
 set BX_API_ENDPOINT="api.ng.bluemix.net"
 
-:GetKey
-set alfanum=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
-
-set HS_256_KEY=
-FOR /L %%b IN (0, 1, 256) DO (
-SET /A rnd_num=!RANDOM! * 62 / 32768 + 1
-for /F %%c in ('echo %%alfanum:~!rnd_num!^,1%%') do set HS_256_KEY=!HS_256_KEY!%%c
-)
-
-rem echo HS_256_KEY=%HS_256_KEY%
-rem @echo on
-
 if  "%BX_REGION%" == "" (
    set BX_API_ENDPOINT=api.ng.bluemix.net
    echo Using default endpoint !BX_API_ENDPOINT!
@@ -82,79 +70,77 @@ echo.
 
 :catalog-elasticsearch
 echo Deleteing catalog-elasticsearch chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-elasticsearch 
+helm delete --purge --timeout 600 %NAMESPACE%-elasticsearch 
 echo catalog-elasticsearch was successfully deleted !
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-elasticsearch --cascade >> BC_install.log 2>&1  
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-elasticsearch --cascade >> BC_delete.log 2>&1  
 
 :inventory_mysql
 echo Deleteing inventory_mysql chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-inventory-mysql 
+helm delete --purge --timeout 600 %NAMESPACE%-inventory-mysql 
 echo inventory_mysql was successfully deleted !
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory-mysql --cascade >> BC_install.log 2>&1 
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory-mysql --cascade >> BC_delete.log 2>&1 
 
 :customer
 echo Deleteing customer-ce chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-customer
+helm delete --purge --timeout 600 %NAMESPACE%-customer
 echo customer-ce was successfully deleted !
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-customer --cascade >> BC_install.log 2>&1 
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-customer --cascade >> BC_delete.log 2>&1 
 
 :auth
 echo Deleteing auth-ce chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-auth
+helm delete --purge --timeout 600 %NAMESPACE%-auth
 echo auth-ce was successfully deleted !
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-auth --cascade >> BC_install.log 2>&1 
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-auth --cascade >> BC_delete.log 2>&1 
 
 :inventory
 echo Deleteing inventory-ce chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-inventory 
+helm delete --purge --timeout 600 %NAMESPACE%-inventory 
 echo inventory-ce was successfully deleted !
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory --cascade >> BC_install.log 2>&1 
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory --cascade >> BC_delete.log 2>&1 
 
 :catalog
 echo Deleteing catalog-ce chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-catalog
+helm delete --purge --timeout 600 %NAMESPACE%-catalog
 echo catalog-ce was successfully deleted !
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-catalog --cascade >> BC_install.log 2>&1 
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-catalog --cascade >> BC_delete.log 2>&1 
 
 :web
 echo Deleteing web-ce chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-web
+helm delete --purge --timeout 600 %NAMESPACE%-web
 echo web-ce was successfully deleted !
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-web --cascade >> BC_install.log 2>&1 
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-web --cascade >> BC_delete.log 2>&1 
 
 :orders-mysql
 echo Deleteing orders-mysql chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-orders-mysql
+helm delete --purge --timeout 600 %NAMESPACE%-orders-mysql
 echo orders-mysql was successfully deleted !
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders-mysql --cascade >> BC_install.log 2>&1 
-
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders-mysql --cascade >> BC_delete.log 2>&1 
 
 :orders-ce
 echo Deleteing orders-ce chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-orders
+helm delete --purge --timeout 600 %NAMESPACE%-orders
 echo orders-ce was successfully deleted !
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders --cascade >> BC_install.log 2>&1 
-
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders --cascade >> BC_delete.log 2>&1 
 
 :Prometheus
 echo Deleteing prometheus chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-prometheus
+helm delete --purge --timeout 600 %NAMESPACE%-prometheus
 echo prometheus was successfully deleted !
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-prometheus --cascade >> BC_install.log 2>&1 
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-prometheus --cascade >> BC_delete.log 2>&1 
 
 :Grafana
 echo Deleteing grafana chart. This will take a few minutes...
-helm delete --purge --debug --timeout 600 %NAMESPACE%-grafana
+helm delete --purge --timeout 600 %NAMESPACE%-grafana
 echo grafana was successfully deleted !
 
 :all_deleted
