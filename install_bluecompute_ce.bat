@@ -94,7 +94,7 @@ if %errorlevel% NEQ 0 (
 )
 echo catalog-elasticsearch was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-elasticsearch --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-elasticsearch --cascade >> BC_install.log 2>&1  
 
 :inventory_mysql
 echo Installing inventory_mysql chart. This will take a few minutes...
@@ -103,8 +103,6 @@ if %errorlevel% EQU 0 (
    echo inventory_mysql is already installed. Exiting.
    exit /b 1
 )
-	local release=$(helm list | grep "${NAMESPACE}-inventory-mysql")
-
 helm install --namespace %NAMESPACE% docs\charts\ibmcase-mysql-0.1.0.tgz   --name %NAMESPACE%-inventory-mysql --set image.pullPolicy=Always --set mysql.binding.name=binding-%NAMESPACE%-inventory-mysql --set mysql.dbname=inventorydb --set mysql.service.name=inventorydb-mysql --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install inventory_mysql. Exiting.
@@ -112,7 +110,7 @@ if %errorlevel% NEQ 0 (
 )
 echo inventory_mysql was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory-mysql --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory-mysql --cascade >> BC_install.log 2>&1 
 
 :customer
 echo Installing customer-ce chart. This will take a few minutes...
@@ -129,7 +127,7 @@ if %errorlevel% NEQ 0 (
 )
 echo customer-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-customer --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-customer --cascade >> BC_install.log 2>&1 
 
 :auth
 echo Installing auth-ce chart. This will take a few minutes...
@@ -145,7 +143,7 @@ if %errorlevel% NEQ 0 (
 )
 echo auth-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-auth --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-auth --cascade >> BC_install.log 2>&1 
 
 :inventory
 echo Installing inventory-ce chart. This will take a few minutes...
@@ -161,7 +159,7 @@ if %errorlevel% NEQ 0 (
 )
 echo inventory-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory --cascade >> BC_install.log 2>&1 
 
 :catalog
 echo Installing catalog-ce chart. This will take a few minutes...
@@ -177,7 +175,7 @@ if %errorlevel% NEQ 0 (
 )
 echo catalog-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-catalog --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-catalog --cascade >> BC_install.log 2>&1 
 
 :web
 echo Installing web-ce chart. This will take a few minutes...
@@ -193,7 +191,7 @@ if %errorlevel% NEQ 0 (
 )
 echo web-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-web --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-web --cascade >> BC_install.log 2>&1 
 
 :orders-mysql
 echo Installing orders-mysql chart. This will take a few minutes...
@@ -210,7 +208,7 @@ if %errorlevel% NEQ 0 (
 )
 echo orders-mysql was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders-mysql --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders-mysql --cascade >> BC_install.log 2>&1 
 
 
 :orders-ce
@@ -227,7 +225,7 @@ if %errorlevel% NEQ 0 (
 )
 echo orders-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders --cascade >> BC_install.log 2>&1 
 
 
 :Prometheus
@@ -244,7 +242,7 @@ if %errorlevel% NEQ 0 (
 )
 echo prometheus was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-prometheus --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-prometheus --cascade >> BC_install.log 2>&1 
 
 :Grafana
 echo Installing grafana chart. This will take a few minutes...
