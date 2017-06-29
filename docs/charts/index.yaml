@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   auth:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.167667881-04:00
+    created: 2017-06-29T11:35:29.729429349-04:00
     description: BlueCompute Auth Microservice
     digest: 6a0d412626630e552ba7688f8be9e1a6a24849a07319f0ecef7c9efb8a5670d0
     name: auth
@@ -11,7 +11,7 @@ entries:
     version: 0.1.0
   auth-ce:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.168443388-04:00
+    created: 2017-06-29T11:35:29.730136183-04:00
     description: BlueCompute Auth Microservice
     digest: 6baa56592f9f386907cdd263112a109ed88b0e220eab504e2c3697a621ab82a6
     name: auth-ce
@@ -20,7 +20,7 @@ entries:
     version: 0.1.0
   catalog:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.169300818-04:00
+    created: 2017-06-29T11:35:29.730788428-04:00
     description: BlueCompute Catalog Microservice
     digest: 45c67d0744fee5b5fe69a06234cc1f08457c549b7885fff99afc82a55913abea
     name: catalog
@@ -29,7 +29,7 @@ entries:
     version: 0.1.1
   catalog-ce:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.170009224-04:00
+    created: 2017-06-29T11:35:29.731441276-04:00
     description: BlueCompute Catalog Microservice
     digest: 455976016a0715369825c4bf22163b0687c7e39257476a83c054adf91e183f9b
     name: catalog-ce
@@ -38,7 +38,7 @@ entries:
     version: 0.1.1
   customer:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.171497406-04:00
+    created: 2017-06-29T11:35:29.732593777-04:00
     description: BlueCompute Customer Microservice
     digest: c637de164bd9267688eddd122476551f84712cf14f55f2f0681cb20770b70b5b
     name: customer
@@ -47,7 +47,7 @@ entries:
     version: 0.1.0
   customer-ce:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.172953152-04:00
+    created: 2017-06-29T11:35:29.733707039-04:00
     description: BlueCompute Customer Microservice
     digest: e654126c897c5f7b74eb8ca23fdf82bab8fb5cd56328f3245d98c813d3685848
     name: customer-ce
@@ -55,7 +55,7 @@ entries:
     - customer-ce-0.1.0.tgz
     version: 0.1.0
   grafana-bc:
-  - created: 2017-06-29T11:33:31.174445757-04:00
+  - created: 2017-06-29T11:35:29.735302437-04:00
     description: The leading tool for querying and visualizing time series and metrics.
     digest: 41e9b7e0e2532428ac273edf9ef0e0980199cf097dd9b76a9239045752a5c040
     engine: gotpl
@@ -74,7 +74,7 @@ entries:
     version: 0.3.1
   ibmcase-couchdb:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.175116693-04:00
+    created: 2017-06-29T11:35:29.735906357-04:00
     description: A Helm chart for Kubernetes
     digest: de34c6ee2aab81f0268aef0e27885fb1ea0cc0f5bbcc44a227bfb1d9dc8bab42
     name: ibmcase-couchdb
@@ -83,7 +83,7 @@ entries:
     version: 0.1.0
   ibmcase-elasticsearch:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.176047277-04:00
+    created: 2017-06-29T11:35:29.736396866-04:00
     description: BlueCompute ElasticSearch for Catalog
     digest: 3c7a9bc128299008fe99db55cd9e87aa07b574618b23447240094a4a24c9799b
     name: ibmcase-elasticsearch
@@ -92,16 +92,16 @@ entries:
     version: 0.1.1
   ibmcase-mysql:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.176520621-04:00
+    created: 2017-06-29T11:35:29.736801891-04:00
     description: resilient MySQL deployment
-    digest: 3114537516e7a8c416cd7065055eb6f3ac263a05711dd53a344cd41e7c7dfb0a
+    digest: ba046ad0f72edcdfb8e9f9dbbc676eafc3316ea951c53f193896b1f1d30eb71e
     name: ibmcase-mysql
     urls:
     - ibmcase-mysql-0.1.0.tgz
-    version: 0.1.1
+    version: 0.1.0
   inventory:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.177351352-04:00
+    created: 2017-06-29T11:35:29.737979217-04:00
     description: BlueCompute Inventory Microservice
     digest: 321d0101cfdae784fd1b809064684006d4b7b49cdb2ade98233f9fb83909d8b3
     name: inventory
@@ -110,7 +110,7 @@ entries:
     version: 0.1.1
   inventory-ce:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.178249906-04:00
+    created: 2017-06-29T11:35:29.738683163-04:00
     description: BlueCompute Inventory Microservice
     digest: 434f596ca80e9dc23d6b9afb76460d4d13dcc3e5792a27147de16ef65c5cf3b7
     name: inventory-ce
@@ -119,7 +119,7 @@ entries:
     version: 0.1.1
   orders:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.179216761-04:00
+    created: 2017-06-29T11:35:29.739334822-04:00
     description: Bluecompute Orders Microservice
     digest: 92bd6a7204267f6b49d326db1ce6b7353d52c1578d0ffec73c003553df1154af
     name: orders
@@ -128,7 +128,7 @@ entries:
     version: 0.1.0
   orders-ce:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.180148939-04:00
+    created: 2017-06-29T11:35:29.739995752-04:00
     description: Bluecompute Orders Microservice
     digest: aa5cc9769ed82137fba1eaaa084609467816845909006a0b46bcdebdd2def4ef
     name: orders-ce
@@ -137,7 +137,7 @@ entries:
     version: 0.1.0
   web:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.180919875-04:00
+    created: 2017-06-29T11:35:29.740538768-04:00
     description: BlueCompute Web BFF app
     digest: 8731518a78d61419741d667830c7f86e9265242dbafa3e2183062e29b10a3776
     name: web
@@ -146,11 +146,11 @@ entries:
     version: 0.1.0
   web-ce:
   - apiVersion: v1
-    created: 2017-06-29T11:33:31.181544721-04:00
+    created: 2017-06-29T11:35:29.741036087-04:00
     description: BlueCompute Web BFF app
     digest: 9d62d4b5f4f6c64634d45bc14f8c3470070544c3a8e6b9c1375b2d2bac726799
     name: web-ce
     urls:
     - web-ce-0.1.0.tgz
     version: 0.1.0
-generated: 2017-06-29T11:33:31.165115239-04:00
+generated: 2017-06-29T11:35:29.723315993-04:00
