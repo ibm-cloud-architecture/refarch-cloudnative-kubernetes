@@ -16,4 +16,4 @@ if "%PASS%" == "" (
    exit /b 1
 )
 
-for /f %%i in ('dir /b %CD%\docs\dashboards\*.json') do @curl -s -u admin:%PASS% -H "Content-Type: application/json" -X POST %URL%/api/dashboards/db -d@docs\dashboards\%%i
+for /f %%i in ('dir /b %CD%\docs\dashboards\*.json') do @curl -s -u admin:%PASS% -H "Content-Type: application/json" -X POST %URL%/api/dashboards/db -d@docs\dashboards\%%i 

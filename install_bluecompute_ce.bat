@@ -82,7 +82,7 @@ echo.
 
 :catalog-elasticsearch
 echo Installing catalog-elasticsearch chart. This will take a few minutes...
-helm list | findstr elasticsearch
+helm list | findstr %NAMESPACE%-elasticsearch
 if %errorlevel% EQU 0 (
    echo catalog-elasticsearch is already installed. Exiting.
    exit /b 1
@@ -94,27 +94,27 @@ if %errorlevel% NEQ 0 (
 )
 echo catalog-elasticsearch was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-elasticsearch --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-elasticsearch --cascade >> BC_install.log 2>&1  
 
 :inventory_mysql
 echo Installing inventory_mysql chart. This will take a few minutes...
-helm list | findstr inventory_mysql
+helm list | findstr %NAMESPACE%-inventory_mysql
 if %errorlevel% EQU 0 (
    echo inventory_mysql is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\inventory-mysql-0.1.1.tgz --name %NAMESPACE%-mysql --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
+helm install --namespace %NAMESPACE% docs\charts\ibmcase-mysql-0.1.0.tgz   --name %NAMESPACE%-inventory-mysql --set image.pullPolicy=Always --set mysql.binding.name=binding-%NAMESPACE%-inventory-mysql --set mysql.dbname=inventorydb --set mysql.service.name=inventorydb-mysql --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install inventory_mysql. Exiting.
    exit /b 1
 )
 echo inventory_mysql was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-mysql --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory-mysql --cascade >> BC_install.log 2>&1 
 
 :customer
 echo Installing customer-ce chart. This will take a few minutes...
-helm list | findstr customer
+helm list | findstr %NAMESPACE%-customer
 if %errorlevel% EQU 0 (
    echo customer is already installed. Exiting.
    exit /b 1
@@ -127,11 +127,11 @@ if %errorlevel% NEQ 0 (
 )
 echo customer-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-customer --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-customer --cascade >> BC_install.log 2>&1 
 
 :auth
 echo Installing auth-ce chart. This will take a few minutes...
-helm list | findstr auth
+helm list | findstr %NAMESPACE%-auth
 if %errorlevel% EQU 0 (
    echo auth is already installed. Exiting.
    exit /b 1
@@ -143,27 +143,27 @@ if %errorlevel% NEQ 0 (
 )
 echo auth-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-auth --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-auth --cascade >> BC_install.log 2>&1 
 
 :inventory
 echo Installing inventory-ce chart. This will take a few minutes...
-helm list | findstr /C:"inventory "
+helm list | findstr %NAMESPACE%-/C:"inventory "
 if %errorlevel% EQU 0 (
    echo inventory is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\inventory-ce-0.1.1.tgz --name %NAMESPACE%-inventory --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
+helm install --namespace %NAMESPACE% docs\charts\inventory-ce-0.1.1.tgz --set mysql.secret=binding-%NAMESPACE%-inventory-mysql --name %NAMESPACE%-inventory --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install inventory-ce. Exiting.
    exit /b 1
 )
 echo inventory-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-inventory --cascade >> BC_install.log 2>&1 
 
 :catalog
 echo Installing catalog-ce chart. This will take a few minutes...
-helm list | findstr /C:"catalog "
+helm list | findstr %NAMESPACE%-/C:"catalog "
 if %errorlevel% EQU 0 (
    echo catalog is already installed. Exiting.
    exit /b 1
@@ -175,27 +175,63 @@ if %errorlevel% NEQ 0 (
 )
 echo catalog-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-catalog --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-catalog --cascade >> BC_install.log 2>&1 
 
 :web
 echo Installing web-ce chart. This will take a few minutes...
-helm list | findstr web
+helm list | findstr %NAMESPACE%-web
 if %errorlevel% EQU 0 (
    echo web is already installed. Exiting.
    exit /b 1
 )
-helm install --namespace %NAMESPACE% docs\charts\web-ce-0.1.0.tgz --name %NAMESPACE%-web --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
+helm install --namespace %NAMESPACE% docs\charts\web-ce-0.1.0.tgz --name %NAMESPACE%-web --set image.pullPolicy=Always --set region=%BX_REGION% --set cluster_name=%CLUSTER_NAME%  --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install web-ce. Exiting.
    exit /b 1
 )
 echo web-ce was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-web --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-web --cascade >> BC_install.log 2>&1 
+
+:orders-mysql
+echo Installing orders-mysql chart. This will take a few minutes...
+helm list | findstr %NAMESPACE%-orders-mysql
+if %errorlevel% EQU 0 (
+   echo web is already installed. Exiting.
+   exit /b 1
+)
+
+helm install --namespace %NAMESPACE% docs\charts\ibmcase-mysql-0.1.0.tgz --name %NAMESPACE%-orders-mysql --set image.pullPolicy=Always --set mysql.dbname=ordersdb --set mysql.binding.name=binding-%NAMESPACE%-orders-mysql --set mysql.service.name=ordersdb-mysql --timeout 600  >> BC_install.log 2>&1
+if %errorlevel% NEQ 0 (
+   echo Could not install orders-mysql. Exiting.
+   exit /b 1
+)
+echo orders-mysql was successfully installed!
+echo Cleaning up...
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders-mysql --cascade >> BC_install.log 2>&1 
+
+
+:orders-ce
+echo Installing orders-ce chart. This will take a few minutes...
+helm list | findstr %NAMESPACE%-orders-ce
+if %errorlevel% EQU 0 (
+   echo web is already installed. Exiting.
+   exit /b 1
+)
+helm install --namespace %NAMESPACE% docs\charts\orders-ce-0.1.0.tgz --name %NAMESPACE%-orders --set hs256key.secret=%HS_256_KEY% --set image.pullPolicy=Always --set mysql.binding.name=binding-%NAMESPACE%-orders-mysql --timeout 600 >> BC_install.log 2>&1
+if %errorlevel% NEQ 0 (
+   echo Could not install orders-ce. Exiting.
+   exit /b 1
+)
+echo orders-ce was successfully installed!
+echo Cleaning up...
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders --cascade >> BC_install.log 2>&1 
+
+rem goto all_deployed
 
 :Prometheus
 echo Installing prometheus chart. This will take a few minutes...
-helm list | findstr prometheus
+helm list | findstr %NAMESPACE%-prometheus
 if %errorlevel% EQU 0 (
    echo prometheus is already installed. skipping...
    goto Grafana
@@ -207,16 +243,16 @@ if %errorlevel% NEQ 0 (
 )
 echo prometheus was successfully installed!
 echo Cleaning up...
-kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-prometheus --cascade
+kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-prometheus --cascade >> BC_install.log 2>&1 
 
 :Grafana
 echo Installing grafana chart. This will take a few minutes...
-helm list | findstr grafana
+helm list | findstr %NAMESPACE%-grafana
 if %errorlevel% EQU 0 (
    echo grafana is already installed. skipping...
    goto all_deployed
 )
-helm install --namespace %NAMESPACE% docs\charts\grafana-bc-0.3.1.tgz --name %NAMESPACE%-grafana --set setDatasource.datasource.url=http://%NAMESPACE%-prometheus-prometheus-server.default.svc.cluster.local --set server.persistentVolume.enabled=false --set server.serviceType=NodePort --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
+helm install --namespace %NAMESPACE% docs\charts\grafana-bc-0.3.1.tgz --name %NAMESPACE%-grafana --set server.setDatasource.datasource.url=http://%NAMESPACE%-prometheus-prometheus-server.%NAMESPACE%.svc.cluster.local --set server.persistentVolume.enabled=false --set server.serviceType=NodePort --set image.pullPolicy=Always --timeout 600 >> BC_install.log 2>&1
 if %errorlevel% NEQ 0 (
    echo Could not install grafana. Exiting.
    exit /b 1
@@ -251,6 +287,7 @@ echo Getting the WebPorts for the apps.
     goto bcwebport_loop_exit
 goto :bcwebport_loop_start
 :bcwebport_loop_exit
+rem goto ClosingMessage
 
 :grwebport_loop_start
     echo polling the service grafana-grafana in namespace %NAMESPACE% to get the webport
@@ -276,6 +313,7 @@ for /f %%i in (%TMP%\GR_Passwrd.out) do @set GRPASS=%%i
 del %TMP%\GR_Passwrd.tmp
 del %TMP%\GR_Passwrd.out
 
+:ClosingMessage
 echo.
 echo Bluecompute was successfully installed!
 echo.
@@ -291,6 +329,7 @@ echo.
 echo Finally, on another browser window, copy and paste the following URL for BlueCompute Web UI:
 echo  http://%NODEIP%:%BCWEBPORT%
 echo.
+rem goto :EOF
 echo To access the Grafana dashboards, copy and paste the following URL onto a browser window:
 echo  http://%NODEIP%:%GRWEBPORT%
 echo.
