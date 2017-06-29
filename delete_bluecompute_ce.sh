@@ -181,7 +181,7 @@ function delete_catalog {
 }
 
 function delete_catalog_elasticsearch {
-	local release=$(helm list | grep "${NAMESPACE}-elasticsearch" | grep catalog-elasticsearch | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-catalog-elasticsearch" | grep catalog-elasticsearch | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -227,7 +227,7 @@ function delete_orders_mysql {
 }
 
 function delete_orders {
-	local release=$(helm list | grep "${NAMESPACE}-orders" | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-orders" | grep orders-ce | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -249,8 +249,31 @@ function delete_orders {
 	fi
 }
 
+function delete_customer_couchdb {
+	local release=$(helm list | grep "${NAMESPACE}-customer-couchdb" | grep customer | awk '{print $1}' | head -1)
+
+	# Creating for API KEY
+	if [[ -z "${release// }" ]]; then
+		printf "\n\n${grn}customer-couchdb was already deleted!${end}\n"
+	else
+		printf "\n\n${grn}Deleting customer-couchdb chart. This will take a few minutes...${end} ${coffee3}\n\n"
+		time helm delete $release --purge --debug --timeout 600
+
+		local status=$?
+
+		if [ $status -ne 0 ]; then
+			printf "\n\n${red}Error deleting customer-couchdb... Exiting.${end}\n"
+			exit 1
+		fi
+
+		printf "\n\n${grn}customer-couchdb was successfully deleted!${end}\n"
+		printf "\n\n${grn}Cleaning up...${end}\n"
+		kubectl --namespace ${NAMESPACE} delete jobs -l release=${release} --cascade
+	fi
+}
+
 function delete_customer {
-	local release=$(helm list | grep "${NAMESPACE}-customer" | grep customer | awk '{print $1}' | head -1)
+	local release=$(helm list | grep "${NAMESPACE}-customer" | grep customer-ce | awk '{print $1}' | head -1)
 
 	# Creating for API KEY
 	if [[ -z "${release// }" ]]; then
@@ -345,6 +368,7 @@ initialize_helm
 delete_web
 delete_auth
 delete_customer
+delete_customer_couchdb
 delete_orders
 delete_orders_mysql
 delete_catalog

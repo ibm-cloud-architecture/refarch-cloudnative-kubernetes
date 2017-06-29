@@ -1,0 +1,19 @@
+dependencies:
+  - name: auth-ce
+    version: 0.1.0
+    repository: https://jkwong888.github.io/refarch-cloudnative-kubernetes/charts
+  - name: catalog-ce
+    version: 0.1.1
+    repository: https://jkwong888.github.io/refarch-cloudnative-kubernetes/charts
+  - name: customer-ce
+    version: 0.1.0
+    repository: https://jkwong888.github.io/refarch-cloudnative-kubernetes/charts
+  - name: inventory-ce
+    version: 0.1.1
+    repository: https://jkwong888.github.io/refarch-cloudnative-kubernetes/charts
+  - name: orders-ce
+    version: 0.1.0
+    repository: https://jkwong888.github.io/refarch-cloudnative-kubernetes/charts
+  - name: web-ce
+    version: 0.1.0
+    repository: https://jkwong888.github.io/refarch-cloudnative-kubernetes/charts
