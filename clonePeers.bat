@@ -19,7 +19,7 @@ for %%r in (%repo_list%) do (
    echo parent folder %PARENT_FOLDER%
    echo cloning repository %%r
    set repo_url=%base_url%/%%r
-   git clone %repo_url% -b kube-int --single-branch %PARENT_FOLDER%/%%r
+   git clone %repo_url% -b kube-int --single-branch %PARENT_FOLDER%\%%r
 )
 
 echo All github repository have cloned successfully!
