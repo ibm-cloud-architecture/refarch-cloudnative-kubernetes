@@ -1,9 +1,7 @@
 @echo off
 SETLOCAL ENABLEDELAYEDEXPANSION ENABLEEXTENSIONS
 set PATH=%PATH%;%CD%;%CD%\win_utils
-set FULL_PATH=%~dp0
-set FULL_PATH=%FULL_PATH:~1,-1%
-for %%i in ("%FULL_PATH%") do set "PARENT_FOLDER=%%~ni
+for %%A in ("%~dp0\..") do set "PARENT_FOLDER=%%~fA"
 
 :setenvironment
 set git_org="ibm-cloud-architecture"
