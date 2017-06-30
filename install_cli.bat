@@ -36,7 +36,7 @@ echo BX CR plugin is installed.
 echo Kubernetes CLI (kubectl) will be installed
 kubectl >nul 2>&1
 if %errorlevel% EQU 0 goto :kubectl_installed
-for /f %%i in ('curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt') do set KUBVER=%%i
+for /f %%i in ('curl -k -s https://storage.googleapis.com/kubernetes-release/release/stable.txt') do set KUBVER=%%i
 curl -LOk https://storage.googleapis.com/kubernetes-release/release/%KUBVER%/bin/windows/amd64/kubectl.exe
 move kubectl.exe win_utils\kubectl.exe
 :kubectl_installed
@@ -54,7 +54,7 @@ rem echo and copy it to %CD%\win_utils
 rem echo once you have done so
 rem pause
 rem goto :install_helm
-curl -LJO https://github.com/ibm-cloud-architecture/ibmcase-cloudnative-utility/raw/master/helm.exe
+curl -LJOk https://github.com/ibm-cloud-architecture/ibmcase-cloudnative-utility/raw/master/helm.exe
 move helm.exe win_utils\helm.exe
 :helm_installed
 echo Helm installed.
