@@ -7,7 +7,7 @@ echo BX CLI will be installed.
 bx > nul 2>&1
 if %errorlevel% EQU 0 goto :bx_installed
 echo downloading the Bluemix CLI installer. After installing, you may be prompted to reboot. Re-run this script after the reboot.
-curl -s https://clis.ng.bluemix.net/info | findstr latestVersion> %TMP%\bx_latest.tmp
+curl -k -s https://clis.ng.bluemix.net/info | findstr latestVersion> %TMP%\bx_latest.tmp
 for /f "tokens=2 delims=:," %%i in (%TMP%\bx_latest.tmp) do @set BX_VER=%%~i
 echo curl -o http://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_%BX_VER%_amd64.exe
 curl -O http://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_%BX_VER%_amd64.exe
