@@ -1,6 +1,7 @@
 @echo off
 SETLOCAL ENABLEDELAYEDEXPANSION ENABLEEXTENSIONS
 set PATH=%PATH%;%CD%;%CD%\win_utils
+set ParentDir=%~p1
 
 :setenvironment
 set git_org="ibm-cloud-architecture"
@@ -17,7 +18,7 @@ refarch-cloudnative-kubernetes-csmo
 for %%r in (%repo_list%) do (
    echo cloning repository %%r
    set repo_url=%base_url%/%%r
-   git clone %repo_url% -b kube-int --single-branch %~dp0/%%r
+   git clone %repo_url% -b kube-int --single-branch %ParentDir%/%%r
 )
 
 echo All github repository have cloned successfully!
