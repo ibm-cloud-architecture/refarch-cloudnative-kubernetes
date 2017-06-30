@@ -17,7 +17,7 @@ refarch-cloudnative-kubernetes-csmo
 for %%r in (%repo_list%) do (
    echo cloning repository %%r
    set repo_url=%base_url%/%%r
-   git clone %repo_url% -b kube-int --single-branch /%%r
+   git clone %repo_url% -b kube-int --single-branch %~dp0/%%r
 )
 
 echo All github repository have cloned successfully!
