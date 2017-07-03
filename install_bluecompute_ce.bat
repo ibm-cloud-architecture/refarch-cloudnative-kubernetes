@@ -227,7 +227,7 @@ echo orders-ce was successfully installed!
 echo Cleaning up...
 kubectl --namespace %NAMESPACE% delete jobs -l release=%NAMESPACE%-orders --cascade >> BC_install.log 2>&1 
 
-rem goto all_deployed
+goto all_deployed
 
 :Prometheus
 echo Installing prometheus chart. This will take a few minutes...
@@ -287,7 +287,7 @@ echo Getting the WebPorts for the apps.
     goto bcwebport_loop_exit
 goto :bcwebport_loop_start
 :bcwebport_loop_exit
-rem goto ClosingMessage
+goto ClosingMessage
 
 :grwebport_loop_start
     echo polling the service grafana-grafana in namespace %NAMESPACE% to get the webport
@@ -329,7 +329,7 @@ echo.
 echo Finally, on another browser window, copy and paste the following URL for BlueCompute Web UI:
 echo  http://%NODEIP%:%BCWEBPORT%
 echo.
-rem goto :EOF
+goto :EOF
 echo To access the Grafana dashboards, copy and paste the following URL onto a browser window:
 echo  http://%NODEIP%:%GRWEBPORT%
 echo.
