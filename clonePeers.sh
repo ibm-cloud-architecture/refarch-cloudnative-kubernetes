@@ -26,7 +26,7 @@ repo_list="refarch-cloudnative-bluecompute-web \
            refarch-cloudnative-micro-customer \
            refarch-cloudnative-devops-kubernetes \
            refarch-cloudnative-resiliency \
-           refarch-cloudnative-csmo"
+           refarch-cloudnative-kubernetes-csmo"
 
 GIT_BIN=$(which git)
 if [ ${?} -ne 0 ]; then
