@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-audit-{{ randAlphaNum 5 | lower }}"
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "99"
+  labels:
+    name: audit
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  template:
+    metadata:
+      name: {{ .Release.Name }}-audit
+      labels:
+        name: audit
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: audit
+        image: ibmcase/bluecompute-audit:latest
+        command: [ "/bin/bash", "-C" ]
+        args: ["/audit_ce_master_install.sh"]
+        imagePullPolicy: Always
