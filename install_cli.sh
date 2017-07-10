@@ -81,11 +81,7 @@ if [[ $? -ne 0 ]]; then
 
 	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		# Linux
-		curl -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
-
-		if [[ $? -ne 0 ]]; then
-			curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
-		fi
+		curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
 	fi
 
 	chmod +x ./jq
@@ -105,11 +101,7 @@ if [[ $? -ne 0 ]]; then
 
 	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		# Linux
-		curl -o yaml https://github.com/mikefarah/yaml/releases/download/1.8/yaml_linux_amd64
-
-		if [[ $? -ne 0 ]]; then
-			curl -L -o yaml https://github.com/mikefarah/yaml/releases/download/1.8/yaml_linux_amd64
-		fi
+		curl -L -o yaml https://github.com/mikefarah/yaml/releases/download/1.8/yaml_linux_amd64
 	fi
 
 	chmod +x ./yaml
