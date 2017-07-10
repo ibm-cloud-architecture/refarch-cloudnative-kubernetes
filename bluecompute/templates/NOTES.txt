@@ -4,16 +4,20 @@
 
 To view the Bluecompute Web Application in your browser please do the following, please follow the steps below:
 
-1. To get the IP Address for the Web Application, run the following command:
-  nodeip=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' | awk '{print $1}')
+1. To get the IP Address (nodeip) for the Web Application, run the following command:
+  kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}';echo
+  
+  For Windows:
+  kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}'&echo.
 
-2. To get the Web Port for the Web Application, run the following command:
-  port=$(kubectl --namespace {{ .Release.Namespace }} get service bluecompute-web -o json | jq .spec.ports[0].nodePort)
+2. To get the Web Port (port) for the Web Application, run the following command:
+  kubectl --namespace {{ .Release.Namespace }} get service bluecompute-web -o jsonpath='{.spec.ports[0].nodePort}';echo
+  
+  For Windows:
+  kubectl --namespace {{ .Release.Namespace }} get service bluecompute-web -o jsonpath='{.spec.ports[0].nodePort}'&echo.
 
-3. To get the entire URL for the Web Application, run the following command:
-  echo "http://${nodeip}:${port}"
-
-4. Open a new web browser window and paste the URL above.
+3. Open a new web browser window and enter the App URL using the following format:
+  http://<nodeip>:<port>
 
 
 To view the installed Bluecompute resources in the Kubernetes Dashboard, please follow the steps below:
