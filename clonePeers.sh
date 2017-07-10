@@ -55,4 +55,4 @@ do
 done
 
 printf "\n${grn}Successfully cloned following repos from branch:${origin_branch}\n${end}"
-ls ../ | grep -v refarch-cloudnative-kubernetes$
+ls ../ | grep -v refarch-cloudnative-kubernetes
