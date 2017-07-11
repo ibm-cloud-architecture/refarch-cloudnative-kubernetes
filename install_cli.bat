@@ -16,7 +16,7 @@ start /wait win_utils\Bluemix_CLI_%BX_VER%_amd64.exe
 :bx_installed
 echo BX CLI is installed.
 
-::add_bx_repo
+:add_bx_repo
 for /f %%i in ('bx plugin repos ^| grep "https://plugins.ng.bluemix.net"') do @set BXREPO=%%i
 if [%BXREPO%] == [] (
   echo Adding Bluemix plugins repo...
