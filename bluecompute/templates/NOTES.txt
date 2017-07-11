@@ -8,7 +8,7 @@ To view the Bluecompute Web Application in your browser please do the following,
   kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}';echo
   
   For Windows:
-  kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}'&echo.
+  kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}'&echo.
 
 2. To get the Web Port (port) for the Web Application, run the following command:
   kubectl --namespace {{ .Release.Namespace }} get service bluecompute-web -o jsonpath='{.spec.ports[0].nodePort}';echo
