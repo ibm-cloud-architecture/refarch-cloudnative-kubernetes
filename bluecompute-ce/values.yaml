@@ -1,55 +1,41 @@
 # Declare variables to be passed into your templates.
 global:
   hs256key:
-    secretName: bluecompute-hs256key
     secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
-  bluemix:
-    apiKey:
-
-    target:
-      endpoint: api.ng.bluemix.net
-      org:
-      space:
-    
-    clusterName:
-
+    secretName: bluecompute-hs256key
 
 auth:
   image:
     pullPolicy: Always
     tag: jkwong-dev
-  tags:
-    bluemix: true
 
 catalog:
   image:
     pullPolicy: Always
     tag: jkwong-dev
   tags:
-    bluemix: true
+    localdb: true
 
 customer:
   image:
     pullPolicy: Always
     tag: jkwong-dev
   tags:
-    bluemix: true
+    localdb: true
 
 inventory:
   image:
     pullPolicy: Always
     tag: jkwong-dev
   tags:
-    bluemix: true
-
+    localdb: true
 
 orders:
   image:
     pullPolicy: Always
     tag: jkwong-dev
   tags:
-    bluemix: true
-
+    localdb: true
 
 web:
   image:
@@ -57,20 +43,4 @@ web:
     tag: dev
 
 tags:
-  bluemix: true
-
-bluemix-messagehub:
-  apiKey:
-
-  target:
-    endpoint: api.ng.bluemix.net
-    org:
-    space:
-
-  clusterName:
-  
-  service:
-    name: orders-messagehub
-    type: messagehub
-    plan: standard
- 
+ localdb: true

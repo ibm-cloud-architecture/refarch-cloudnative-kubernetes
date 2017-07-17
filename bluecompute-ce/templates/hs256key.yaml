@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  key: {{ ( .Values.global.hs256key.secret | default (randAlphaNum 256)) | b64enc }}
+kind: Secret
+metadata:
+  labels:
+    release: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: bluecompute
+  name: {{ .Values.global.hs256key.secretName }}
+  namespace: {{ .Release.Namespace }}
+type: Opaque
