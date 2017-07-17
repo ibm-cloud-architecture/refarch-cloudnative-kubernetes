@@ -7,6 +7,6 @@ metadata:
     release: {{ .Release.Name }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     app: bluecompute
-  name: {{ .Values.global.hs256key.secretName }}
+  name: {{ .Release.Name }}-{{ .Values.global.hs256key.secretName }}
   namespace: {{ .Release.Namespace }}
 type: Opaque
