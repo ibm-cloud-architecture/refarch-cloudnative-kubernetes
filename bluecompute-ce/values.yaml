@@ -41,6 +41,8 @@ web:
   image:
     pullPolicy: Always
     tag: dev
+  clusterName: Fabio
+  region: au-syd
 
 tags:
  localdb: true
