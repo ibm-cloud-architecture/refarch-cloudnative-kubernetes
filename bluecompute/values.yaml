@@ -6,31 +6,31 @@ global:
 auth-ce:
   image:
     pullPolicy: Always
-    tag: dev
+    tag: kube-int
 
 catalog-ce:
   image:
     pullPolicy: Always
-    tag: dev
+    tag: kube-int
 
 customer-ce:
   image:
     pullPolicy: Always
-    tag: dev
+    tag: kube-int
 
 inventory-ce:
   image:
     pullPolicy: Always
-    tag: dev
+    tag: kube-int
 
 orders-ce:
   image:
     pullPolicy: Always
-    tag: dev
+    tag: kube-int
 
 web-ce:
   cluster_name: Fabio
   image:
     pullPolicy: Always
-    tag: dev
+    tag: kube-int
   region: eu-de
