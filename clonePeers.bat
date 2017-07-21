@@ -12,6 +12,7 @@ refarch-cloudnative-micro-inventory ^
 refarch-cloudnative-micro-orders ^
 refarch-cloudnative-micro-customer ^
 refarch-cloudnative-devops-kubernetes ^
+refarch-cloudnative-resiliency ^
 refarch-cloudnative-kubernetes-csmo
 
 
@@ -19,7 +20,10 @@ for %%r in (%repo_list%) do (
    echo parent folder %PARENT_FOLDER%
    set repo_url=%base_url%/%%r
    echo cloning repository !repo_url!
-   git clone -b kube-int --single-branch !repo_url! %PARENT_FOLDER%\%%r
+   git clone !repo_url! %PARENT_FOLDER%\%%r
+   cd %PARENT_FOLDER%\%%r
+   git checkout kube-int
+   cd %PARENT_FOLDER%
 )
 
 echo All github repository have cloned successfully!
