@@ -98,9 +98,18 @@ function install_inventory_mysql {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install inventory-mysql-0.1.1.tgz --name mysql --timeout 600
-
-		local status=$?
+		new_release="inventory-mysql"
+  		  
+		time helm install \
+            --name ${new_release} \
+            --set image.pullPolicy=Always \
+            --set mysql.binding.name=binding-${new_release} \
+            --set mysql.dbname=inventorydb \
+            --set mysql.service.name=inventorydb-mysql \
+            --timeout 600 \
+            ibmcase-mysql-0.1.0.tgz 
+        
+        local status=$?
 
 		if [ $status -ne 0 ]; then
 			printf "\n\n${red}Error installing inventory-mysql... Exiting.${end}\n"
@@ -146,7 +155,10 @@ function install_inventory {
 	if [[ -z "${release// }" ]]; then
 		printf "\n\n${grn}Installing inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 
-		time helm install inventory-ce-0.1.1.tgz --name inventory --timeout 600
+		time helm install inventory-ce-0.1.1.tgz \
+            --name inventory \
+            --timeout 600 \
+            --set mysql.secret=binding-inventory-mysql
 
 		local status=$?
 
