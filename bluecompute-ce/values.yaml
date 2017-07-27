@@ -40,7 +40,7 @@ orders:
 web:
   image:
     pullPolicy: Always
-    tag: dev
+    tag: jkwong-dev
   clusterName: Fabio
   region: au-syd
 

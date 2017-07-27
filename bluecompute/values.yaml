@@ -54,7 +54,7 @@ orders:
 web:
   image:
     pullPolicy: Always
-    tag: dev
+    tag: jkwong-dev
 
 tags:
   bluemix: true
