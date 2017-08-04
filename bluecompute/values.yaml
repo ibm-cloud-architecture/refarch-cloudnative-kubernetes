@@ -42,14 +42,12 @@ inventory:
   tags:
     bluemix: true
 
-
 orders:
   image:
     pullPolicy: Always
     tag: jkwong-dev
   tags:
     bluemix: true
-
 
 web:
   image:

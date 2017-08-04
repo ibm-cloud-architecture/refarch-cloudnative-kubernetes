@@ -1,5 +1,6 @@
-# Checking if bx is installed
+ # Checking if bx is installed
 grn=$'\e[1;32m'
+blu=$'\e[1;34m'
 end=$'\e[0m'
 
 BX_PATH=$(command -v bx)
@@ -18,22 +19,36 @@ if [[ $? -ne 0 ]]; then
 		tar zxvf Bluemix_CLI.tar.gz
 		Bluemix_CLI/install_bluemix_cli
 		rm -f /tmp/Bluemix_CLI.tar.gz
-		rm -rf /tmp/Bluemix_CLI 
+		rm -rf /tmp/Bluemix_CLI
 	fi
 fi
+
+# add Bluemix plugin repo
+bx_repo=$(bx plugin repos|\
+grep 'https://plugins.ng.bluemix.net'|awk '{print $1}')
+[ "${bx_repo}" == "" ] && \
+{ printf "\n\n${grn}Adding Bluemix plugin repo...${end}\n"; \
+bx plugin repo-add Bluemix https://plugins.ng.bluemix.net && bx_repo=Bluemix; }
+printf "\n${grn}Bluemix plugin repo is set at ${blu}Bluemix${end}...${end}\n"
 
 # Check if bx cs is installed
 bx cs &> /dev/null
 if [[ $? -ne 0 ]]; then
 	printf "\n\n${grn}Installing Bluemix Container Service (bx cs) plugin...${end}\n"
-	bx plugin install container-service -r Bluemix
+	bx plugin install container-service -r ${bx_repo}
+else
+  printf "\n\n${grn}Updating Bluemix Container Service (bx cs) plugin...${end}\n"
+	bx plugin update container-service -r ${bx_repo}
 fi
 
 # Check if bx cr is installed
 bx cr &> /dev/null
 if [[ $? -ne 0 ]]; then
 	printf "\n\n${grn}Installing Bluemix Container Registry Service (bx cr) plugin...${end}\n"
-	bx plugin install container-registry -r Bluemix
+	bx plugin install container-registry -r ${bx_repo}
+else
+  printf "\n\n${grn}Updating Bluemix Container Registry Service (bx cr) plugin...${end}\n"
+	bx plugin update container-registry -r ${bx_repo}
 fi
 
 # Checking if kubectl is installed
@@ -54,7 +69,7 @@ if [[ $? -ne 0 ]]; then
 	chmod +x ./kubectl
 	sudo mv ./kubectl /usr/local/bin/kubectl
 fi
-		
+
 # Checking if helm is installed
 KUBE_PATH=$(command -v helm)
 
@@ -81,7 +96,7 @@ if [[ $? -ne 0 ]]; then
 
 	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		# Linux
-		curl -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+		curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
 	fi
 
 	chmod +x ./jq
@@ -101,7 +116,7 @@ if [[ $? -ne 0 ]]; then
 
 	elif [[ $OSTYPE =~ .*linux.* ]]; then
 		# Linux
-		curl -o yaml https://github.com/mikefarah/yaml/releases/download/1.8/yaml_linux_amd64
+		curl -L -o yaml https://github.com/mikefarah/yaml/releases/download/1.8/yaml_linux_amd64
 	fi
 
 	chmod +x ./yaml

@@ -17,6 +17,8 @@ BX_REGION=$4
 NAMESPACE=$5
 BX_API_ENDPOINT=""
 HS_256_KEY=$(cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 256 | head -n 1)
+IMAGE_TAG=kube-int
+IMAGE_PULL_POLICY=Always
 
 if [[ -z "${BX_REGION// }" ]]; then
 	BX_API_ENDPOINT="api.ng.bluemix.net"
@@ -99,56 +101,6 @@ function initialize_helm {
 	done
 }
 
-function install_inventory_mysql {
-	local release=$(helm list | grep "${NAMESPACE}-inventory-mysql")
-
-	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing inventory-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		new_release="${NAMESPACE}-inventory-mysql"
-
-		time helm install --namespace ${NAMESPACE} ibmcase-mysql-0.1.0.tgz --name ${new_release} --set image.pullPolicy=Always --set mysql.binding.name=binding-${new_release} --set mysql.dbname=inventorydb --set mysql.service.name=inventorydb-mysql --set mysql.labels.app=bluecompute --set mysql.labels.tier=data --set mysql.labels.micro=inventory --timeout 600
-
-		local status=$?
-
-		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing inventory-mysql... Exiting.${end}\n"
-			exit 1
-		fi
-
-		printf "\n\n${grn}inventory-mysql was successfully installed!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
-
-	else
-		printf "\n\n${grn}inventory-mysql was already installed!${end}\n"
-	fi
-}
-
-function install_catalog_elasticsearch {
-	local release=$(helm list | grep "${NAMESPACE}-catalog-elasticsearch" )
-
-	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing ibmcase-elasticsearch chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		new_release="${NAMESPACE}-catalog-elasticsearch"
-
-		time helm install --namespace ${NAMESPACE} ibmcase-elasticsearch-0.1.1.tgz --name ${new_release} --set image.pullPolicy=Always --set elasticsearch.service.name=catalog-elasticsearch --set elasticsearch.labels.app=bluecompute --set elasticsearch.labels.tier=data --set elasticsearch.labels.micro=catalog --timeout 600
-
-		local status=$?
-
-		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing ibmcase-elasticsearch... Exiting.${end}\n"
-			exit 1
-		fi
-
-		printf "\n\n${grn}ibmcase-elasticsearch was successfully installed!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
-
-	else
-		printf "\n\n${grn}catalog-elasticsearch was already installed!${end}\n"
-	fi
-}
-
 function install_inventory {
 	local release=$(helm list | grep "${NAMESPACE}-inventory" | grep inventory-ce)
 
@@ -156,7 +108,11 @@ function install_inventory {
 		printf "\n\n${grn}Installing inventory-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		new_release="${NAMESPACE}-inventory"
 
-		time helm install --namespace ${NAMESPACE} --set mysql.secret=binding-${NAMESPACE}-inventory-mysql inventory-ce-0.1.1.tgz --name ${new_release} --set image.pullPolicy=Always --set image.tag=dev --timeout 600
+		time helm install --namespace ${NAMESPACE} inventory-ce-0.2.0.tgz --name ${new_release} \
+		--set image.tag=${IMAGE_TAG} \
+		--set image.pullPolicy=${IMAGE_PULL_POLICY} \
+		--set ibmcase-mysql.binding.name=binding-${NAMESPACE}-inventory-mysql \
+		--timeout 600
 
 		local status=$?
 
@@ -181,7 +137,10 @@ function install_catalog {
 		printf "\n\n${grn}Installing catalog-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		new_release="${NAMESPACE}-catalog"
 
-		time helm install --namespace ${NAMESPACE} catalog-ce-0.1.1.tgz --name ${new_release} --set image.pullPolicy=Always --set image.tag=dev --timeout 600
+		time helm install --namespace ${NAMESPACE} catalog-ce-0.2.0.tgz --name ${new_release} \
+		--set image.tag=${IMAGE_TAG} \
+		--set image.pullPolicy=${IMAGE_PULL_POLICY} \
+		--timeout 600
 
 		local status=$?
 
@@ -199,31 +158,6 @@ function install_catalog {
 	fi
 }
 
-function install_orders_mysql {
-	local release=$(helm list | grep "${NAMESPACE}-orders-mysql")
-
-	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing orders-mysql chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		new_release="${NAMESPACE}-orders-mysql"
-
-		time helm install --namespace ${NAMESPACE} ibmcase-mysql-0.1.0.tgz --name ${new_release} --set image.pullPolicy=Always --set mysql.dbname=ordersdb --set mysql.binding.name=binding-${new_release} --set mysql.service.name=ordersdb-mysql --set mysql.labels.app=bluecompute --set mysql.labels.tier=data --set mysql.labels.micro=orders --timeout 600
-
-		local status=$?
-
-		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing orders-mysql... Exiting.${end}\n"
-			exit 1
-		fi
-
-		printf "\n\n${grn}orders-mysql was successfully installed!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
-
-	else
-		printf "\n\n${grn}orders-mysql was already installed!${end}\n"
-	fi
-}
-
 function install_orders {
 	local release=$(helm list | grep "${NAMESPACE}-orders" | grep orders-ce)
 
@@ -231,7 +165,12 @@ function install_orders {
 		printf "\n\n${grn}Installing orders-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		new_release="${NAMESPACE}-orders"
 
-		time helm install --namespace ${NAMESPACE} orders-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --set image.pullPolicy=Always --set mysql.binding.name=binding-${NAMESPACE}-orders-mysql --set image.tag=dev --timeout 600
+		time helm install --namespace ${NAMESPACE} orders-ce-0.2.0.tgz --name ${new_release} \
+		--set image.tag=${IMAGE_TAG} \
+		--set image.pullPolicy=${IMAGE_PULL_POLICY} \
+		--set hs256key.secret=${HS_256_KEY} \
+		--set ibmcase-mysql.binding.name=binding-${NAMESPACE}-orders-mysql \
+		--timeout 600
 
 		local status=$?
 
@@ -249,31 +188,6 @@ function install_orders {
 	fi
 }
 
-function install_customer_couchdb {
-	local release=$(helm list | grep "${NAMESPACE}-customer-couchdb")
-
-	if [[ -z "${release// }" ]]; then
-		printf "\n\n${grn}Installing ibmcase-couchdb chart. This will take a few minutes...${end} ${coffee3}\n\n"
-		new_release="${NAMESPACE}-customer-couchdb"
-
-		time helm install --namespace ${NAMESPACE} ibmcase-couchdb-0.1.0.tgz --name ${new_release} --set couchdb.service.name=customer-couchdb --set couchdb.binding.name=binding-customer-couchdb --set couchdb.labels.app=bluecompute --set couchdb.labels.micro=customer --set couchdb.labels.tier=data --set image.pullPolicy=Always --timeout 600
-
-		local status=$?
-
-		if [ $status -ne 0 ]; then
-			printf "\n\n${red}Error installing customer-couchdb... Exiting.${end}\n"
-			exit 1
-		fi
-
-		printf "\n\n${grn}customer-couchdb was successfully installed!${end}\n"
-		printf "\n\n${grn}Cleaning up...${end}\n"
-		kubectl --namespace ${NAMESPACE} delete jobs -l release=${new_release} --cascade
-
-	else
-		printf "\n\n${grn}customer-couchdb was already installed!${end}\n"
-	fi
-}
-
 function install_customer {
 	local release=$(helm list | grep "${NAMESPACE}-customer" | grep customer-ce)
 
@@ -281,7 +195,18 @@ function install_customer {
 		printf "\n\n${grn}Installing customer-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		new_release="${NAMESPACE}-customer"
 
-		time helm install --namespace ${NAMESPACE} customer-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --set couchdb.binding.name=binding-customer-couchdb --set image.pullPolicy=Always --set image.tag=dev --timeout 600
+		#time helm install --namespace ${NAMESPACE} customer-ce-0.2.0.tgz --name ${new_release} \
+		#--set image.tag=${IMAGE_TAG} \
+		#--set image.pullPolicy=${IMAGE_PULL_POLICY} \
+		#--set hs256key.secret=${HS_256_KEY} \
+		#--timeout 600
+
+		time helm install --namespace ${NAMESPACE} customer-ce-0.1.0.tgz --name ${new_release} \
+		--set image.tag=latest \
+		--set image.pullPolicy=${IMAGE_PULL_POLICY} \
+		--set hs256key.skipDelete=false \
+		--set hs256key.secretName=orders-ce-hs256-key \
+		--timeout 600
 
 		local status=$?
 
@@ -306,7 +231,11 @@ function install_auth {
 		printf "\n\n${grn}Installing auth-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		new_release="${NAMESPACE}-auth"
 
-		time helm install --namespace ${NAMESPACE} auth-ce-0.1.0.tgz --name ${new_release} --set hs256key.secret=${HS_256_KEY} --set image.pullPolicy=Always --set image.tag=dev --timeout 600
+		time helm install --namespace ${NAMESPACE} auth-ce-0.2.0.tgz --name ${new_release} \
+		--set image.tag=${IMAGE_TAG} \
+		--set image.pullPolicy=${IMAGE_PULL_POLICY} \
+		--set hs256key.secret=${HS_256_KEY} \
+		--timeout 600
 
 		local status=$?
 
@@ -331,10 +260,11 @@ function install_web {
 		printf "\n\n${grn}Installing web-ce chart. This will take a few minutes...${end} ${coffee3}\n\n"
 		new_release="${NAMESPACE}-web"
 
-		time helm install --namespace ${NAMESPACE} web-ce-0.1.0.tgz --name ${new_release} \
-		--set image.pullPolicy=Always \
-		--set region=$BX_REGION \
-		--set cluster_name=$CLUSTER_NAME \
+		time helm install --namespace ${NAMESPACE} web-ce-0.2.0.tgz --name ${new_release} \
+		--set image.tag=${IMAGE_TAG} \
+		--set image.pullPolicy=${IMAGE_PULL_POLICY} \
+		--set region=${BX_REGION} \
+		--set cluster_name=${CLUSTER_NAME} \
 		--timeout 600
 
 		local status=$?
@@ -404,21 +334,19 @@ fi
 initialize_helm
 create_kube_namespace
 
+echo "HS_256_KEY = $HS_256_KEY"
 # Install Bluecompute
 cd docs/charts
-install_catalog_elasticsearch
-install_inventory_mysql
-install_customer_couchdb
-install_orders_mysql
-install_customer
-install_auth
 install_orders
 install_inventory
 install_catalog
+install_customer
+install_auth
 install_web
 cd ../..
 
 # Getting web port
+#webport=1234
 webport=$(get_web_port)
 
 while [[ "${webport}" == "" ]]; do

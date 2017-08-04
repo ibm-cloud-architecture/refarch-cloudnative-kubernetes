@@ -34,25 +34,23 @@ if [ ${?} -ne 0 ]; then
   exit 1
 fi
 
-# set branch name
-if [ -z "$1" ]; then
-    origin_branch=`git rev-parse --abbrev-ref HEAD`
-else
-    origin_branch=$1
-fi
-origin_branch=${origin_branch:-master}
+origin_branch=kube-int
 
 # clone repos
 currepo=$(git rev-parse --show-toplevel|awk -F '/' '{print $NF}')
 echo "${grn}Cloning repos referenced in ${git_org}/${currepo} branch:${origin_branch}...${end}"
 base_url="https://github.com/${git_org}"
-clone_opts="-b ${origin_branch} --single-branch"
+
 for repo in $repo_list
 do
   repo_url="${base_url}/${repo}"
   printf "\n\n${grn}Cloning ${git_org}/${repo}...\n${end}"
-  ${GIT_BIN} clone ${repo_url} ${clone_opts} ../${repo}
+  cd ..
+  ${GIT_BIN} clone ${repo_url}
+  cd ${repo}
+  git checkout $origin_branch
 done
+cd ../refarch-cloudnative-kubernetes
 
 printf "\n${grn}Successfully cloned following repos from branch:${origin_branch}\n${end}"
-ls ../ | grep -v refarch-cloudnative-kubernetes$
+ls ../ | grep -v refarch-cloudnative-kubernetes

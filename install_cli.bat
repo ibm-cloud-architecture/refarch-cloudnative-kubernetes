@@ -1,5 +1,5 @@
 @echo off
-SETLOCAL ENABLEDELAYEDEXPANSION ENABLEEXTENSIONS 
+SETLOCAL ENABLEDELAYEDEXPANSION ENABLEEXTENSIONS
 set PATH=%PATH%;%CD%;%CD%\win_utils
 
 :install_bx
@@ -16,21 +16,40 @@ start /wait win_utils\Bluemix_CLI_%BX_VER%_amd64.exe
 :bx_installed
 echo BX CLI is installed.
 
-:install_bx_cs
-echo BX CS plugin will be installed.
-bx cs > nul 2>&1
-if %errorlevel% EQU 0 goto :bx_cs_installed
-bx plugin install container-service -r Bluemix
-:bx_cs_installed
-echo BX CS plugin is installed.
+:add_bx_repo
+for /f %%i in ('bx plugin repos ^| grep "https://plugins.ng.bluemix.net"') do @set BXREPO=%%i
+if [%BXREPO%] == [] (
+  echo Adding Bluemix plugins repo...
+  bx plugin repo-add Bluemix https://plugins.ng.bluemix.net
+  @set BXREPO=Bluemix
+)
+echo Bluemix plugins repo is set to value:%BXREPO%
 
-:install_br_cs
-echo BX CR plugin will be installed...
+:install_bx_cs
+echo BX CS plugin will be installed/updated...
+bx cs > nul 2>&1
+if %errorlevel% EQU 0 goto :update_bx_cs
+echo Installing BX CS plugin...
+bx plugin install container-service -r %BXREPO%
+goto :end_bx_cs
+:update_bx_cs
+echo BX CS plugin is already installed, updating...
+bx plugin update container-service -r %BXREPO%
+:end_bx_cs
+echo BX CS plugin is installed/updated.
+
+:install_bx_cr
+echo BX CR plugin will be installed/updated...
 bx cr > nul 2>&1
-if %errorlevel% EQU 0 goto :bx_cr_installed
-bx plugin install container-registry -r Bluemix
-:bx_cr_installed
-echo BX CR plugin is installed.
+if %errorlevel% EQU 0 goto :update_bx_cr
+echo Installing BX CR plugin...
+bx plugin install container-registry -r %BXREPO%
+goto :end_bx_cr
+:update_bx_cr
+echo BX CR plugin is already installed, updating...
+bx plugin update container-registry -r %BXREPO%
+:end_bx_cr
+echo BX CR plugin is installed/updated.
 
 :install_kubectl
 echo Kubernetes CLI (kubectl) will be installed

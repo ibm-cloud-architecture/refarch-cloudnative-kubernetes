@@ -368,13 +368,13 @@ initialize_helm
 delete_web
 delete_auth
 delete_customer
-delete_customer_couchdb
+#delete_customer_couchdb
 delete_orders
-delete_orders_mysql
+#delete_orders_mysql
 delete_catalog
-delete_catalog_elasticsearch
+#delete_catalog_elasticsearch
 delete_inventory
-delete_inventory_mysql
+#delete_inventory_mysql
 
 # Sanity Checks
 printf "\n\n${grn}Doing some final cleanup${end}\n"
