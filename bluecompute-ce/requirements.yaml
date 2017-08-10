@@ -1,34 +1,25 @@
 dependencies:
   - name: auth
     version: 0.2.0
-    repository: http://localhost:8879
     #repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
+    repository: http://localhost:8879
   - name: catalog
     version: 0.2.0
-    repository: http://localhost:8879
     #repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
+    repository: http://localhost:8879
   - name: customer
     version: 0.2.0
-    repository: http://localhost:8879
     #repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
+    repository: http://localhost:8879
   - name: inventory
     version: 0.2.0
-    repository: http://localhost:8879
     #repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
+    repository: http://localhost:8879
   - name: orders
     version: 0.2.0
-    repository: http://localhost:8879
     #repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
+    repository: http://localhost:8879
   - name: web
     version: 0.2.0
-    repository: http://localhost:8879
-    #repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
-  - name: ibmcase-bluemix-service
     #repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
     repository: http://localhost:8879
-    version: 0.1.0
-    alias: bluemix-messagehub
-    condition: bluemix-messagehub.enabled
-    tags:
-    - bluemix
-
