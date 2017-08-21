@@ -2,75 +2,75 @@ apiVersion: v1
 entries:
   auth:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.791784878-04:00
+    created: 2017-08-21T16:51:43.673221658-04:00
     description: BlueCompute Auth Microservice
     digest: fe36ad994f4ac35c349703d5734ff5d9f48d5024881a3f1052d7476505eceeea
     name: auth
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/auth-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/auth-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.79153467-04:00
+    created: 2017-08-21T16:51:43.67295662-04:00
     description: BlueCompute Auth Microservice
     digest: 055b4ab2fad15d874622b02e36ec973c789cd16beffc3baab8e966951fa49123
     name: auth
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/auth-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/auth-0.1.0.tgz
     version: 0.1.0
   bluecompute:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.794219092-04:00
+    created: 2017-08-21T16:51:43.675748192-04:00
     description: Bluecompute Application Chart
-    digest: a97232a3776a5bb0c6df3daa2d373782a83be0d74cad7221bb02fc57e20703aa
+    digest: d46d8c3fb8720779d2f36f94553a8052f9329934fc95ca8d4a10960b5222e6a5
     name: bluecompute
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-0.0.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/bluecompute-0.0.1.tgz
     version: 0.0.1
   bluecompute-ce:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.797029752-04:00
+    created: 2017-08-21T16:51:43.67814907-04:00
     description: Bluecompute Application Chart
-    digest: 045472d74d577e7bc933de6092e0cd050cf78a75b01c6910512dfd8189156727
+    digest: 99488555baf2bb68d319fd8efbade1be8c776623aa3ef50df8701270522d6038
     name: bluecompute-ce
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce-0.0.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/bluecompute-ce-0.0.1.tgz
     version: 0.0.1
   catalog:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.797879371-04:00
+    created: 2017-08-21T16:51:43.680254144-04:00
     description: BlueCompute Catalog Microservice
-    digest: 51605d9e7474800cbc24991b562bb8a643989f25bed5d8e67b89d60537d4084d
+    digest: b9c91193c7a9a23f8aa70a6f39a3eb7030cfd07c5a8c4f4e18ff7df74e361a35
     name: catalog
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/catalog-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/catalog-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.797452002-04:00
+    created: 2017-08-21T16:51:43.679678021-04:00
     description: BlueCompute Catalog Microservice
     digest: 5943bf174fa59f6bffafb011c2d35349324907c6c105e0b2f05dea39c59869c1
     name: catalog
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/catalog-0.1.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/catalog-0.1.1.tgz
     version: 0.1.1
   customer:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.798906868-04:00
+    created: 2017-08-21T16:51:43.68117708-04:00
     description: BlueCompute Customer Microservice
-    digest: 1d49c5899dd24d666a788841e8a593da80e4d90317fda6d646f89aab783ea567
+    digest: e7422148b1749835e145b91b102d776fdccef6121b4896f62c276df1a648209b
     name: customer
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/customer-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/customer-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.798218878-04:00
+    created: 2017-08-21T16:51:43.680619177-04:00
     description: BlueCompute Customer Microservice
     digest: c637de164bd9267688eddd122476551f84712cf14f55f2f0681cb20770b70b5b
     name: customer
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/customer-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/customer-0.1.0.tgz
     version: 0.1.0
   grafana-bc:
-  - created: 2017-08-21T16:40:36.799417309-04:00
+  - created: 2017-08-21T16:51:43.681706436-04:00
     description: The leading tool for querying and visualizing time series and metrics.
     digest: 41e9b7e0e2532428ac273edf9ef0e0980199cf097dd9b76a9239045752a5c040
     engine: gotpl
@@ -85,93 +85,93 @@ entries:
     sources:
     - https://github.com/grafana/grafana
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/grafana-bc-0.3.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/grafana-bc-0.3.1.tgz
     version: 0.3.1
   ibmcase-bluemix-service:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.799636157-04:00
+    created: 2017-08-21T16:51:43.68193874-04:00
     description: Deploy a service in Bluemix and bind to my cluster
     digest: a6b0320dbcb2bd79642bcc12424f423116e367c02dc2b0a2ebadb181b6cd90d8
     name: ibmcase-bluemix-service
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-bluemix-service-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/ibmcase-bluemix-service-0.1.0.tgz
     version: 0.1.0
   ibmcase-couchdb:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.79993093-04:00
+    created: 2017-08-21T16:51:43.682161226-04:00
     description: A Helm chart for Kubernetes
     digest: 38571a8d5651b245c662bc56a0a8f1d1110dbde0ea5c86286ace77615f2bd12e
     name: ibmcase-couchdb
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-couchdb-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/ibmcase-couchdb-0.1.0.tgz
     version: 0.1.0
   ibmcase-elasticsearch:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.800104223-04:00
+    created: 2017-08-21T16:51:43.682321484-04:00
     description: BlueCompute ElasticSearch for Catalog
     digest: b6c4d60bd93996f23ffb88525ff08a5fdb41e4299b204d5163f6982fd4d1983a
     name: ibmcase-elasticsearch
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-elasticsearch-0.1.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/ibmcase-elasticsearch-0.1.1.tgz
     version: 0.1.1
   ibmcase-mysql:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.800325569-04:00
+    created: 2017-08-21T16:51:43.682594455-04:00
     description: resilient MySQL deployment
     digest: 12a1940fd55c716ef1c1511a9c9561eaa8a9fa4340e7ec3554404281442c0ac8
     name: ibmcase-mysql
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-mysql-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/ibmcase-mysql-0.1.0.tgz
     version: 0.1.0
   inventory:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.801326758-04:00
+    created: 2017-08-21T16:51:43.683627426-04:00
     description: BlueCompute Inventory Microservice
-    digest: a0186f1dbe5c87ce54833150e8fd66ae1d7b3cf77cbe581df93e18b3980616c3
+    digest: 812bb2fe2ea825a4b8e614c6de11661c53c98ffd7d24dc95b1ce4606374f3876
     name: inventory
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/inventory-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/inventory-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.800840889-04:00
+    created: 2017-08-21T16:51:43.683136347-04:00
     description: BlueCompute Inventory Microservice
     digest: 27099b492c0de3ff363a2eafc79a823a14adf2f4ef1667ae7fad0b2b8287e1bf
     name: inventory
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/inventory-0.1.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/inventory-0.1.1.tgz
     version: 0.1.1
   orders:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.802542315-04:00
+    created: 2017-08-21T16:51:43.68473669-04:00
     description: Bluecompute Orders Microservice
     digest: 96e005eb4237e5f05a9b07f9e2ea20431b1d2574b2c5aefc0f0edc176beb5f6a
     name: orders
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/orders-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/orders-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.802013889-04:00
+    created: 2017-08-21T16:51:43.684248512-04:00
     description: Bluecompute Orders Microservice
     digest: e80032e4c5cd126bfe542f55fcf53994c1728a4b4b52336fa93198c20b02718b
     name: orders
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/orders-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/orders-0.1.0.tgz
     version: 0.1.0
   web:
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.80307598-04:00
+    created: 2017-08-21T16:51:43.685239013-04:00
     description: BlueCompute Web BFF app
     digest: cc8cfa6ae2516d7061289f38090fa1db2a5a0e16945c1f426674cf43281b97c4
     name: web
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/web-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/web-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2017-08-21T16:40:36.802813183-04:00
+    created: 2017-08-21T16:51:43.684990101-04:00
     description: BlueCompute Web BFF app
     digest: 578c75f83599b095fb0bd9e95034930442198c1e830dd4eea50c8cf62a460b15
     name: web
     urls:
-    - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/web-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/web-0.1.0.tgz
     version: 0.1.0
-generated: 2017-08-21T16:40:36.790963752-04:00
+generated: 2017-08-21T16:51:43.672337726-04:00
