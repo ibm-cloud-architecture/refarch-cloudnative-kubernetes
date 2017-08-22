@@ -1,45 +1,49 @@
-# Run a Cloud Native Microservices Application on Bluemix using IBM Container Services as Kubernetes Cluster
+# Run a Cloud Native Microservices Application on a Kubernetes Cluster
 
-## Table of Contents
-- **[Introduction](#architecture)**
-- **[Run the reference application in IBM Cloud](#run-the-reference-application-in-ibm-cloud)**
-    - **[Step 1: Environment Setup](#step-1-environment-setup)**
-        - [Prerequisites](#prerequisites)
-        - [Install IBM Bluemix CLI and Container Service Plugin, Kubernetes CLI and Helm](#install-ibm-bluemix-cli-and-container-service-plugin-kubernetes-cli-and-helm)
-        - [Create a New Space in Bluemix](#create-a-new-space-in-bluemix)
-        - [Create a Bluemix API Key](#create-a-bluemix-api-key)
-    - **[Step 2: Provision a Kubernetes cluster on IBM Bluemix Container service](#step-2-provision-a-kubernetes-cluster-on-ibm-bluemix-container-service)**
-        - [Lite Cluster](#lite-cluster)
-        - [Paid Cluster](#paid-cluster)
-    - **[Step 3: Deploy reference implementation to Kubernetes Cluster](#step-3-deploy-reference-implementation-to-kubernetes-cluster)**
-        - [Deploy Bluecompute Community Edition to Lite Cluster](#deploy-bluecompute-community-edition-to-lite-cluster)
-            - [Delete Bluecompute Community Edition from Lite Cluster](#delete-bluecompute-community-edition-from-lite-cluster)
-        - [Deploy Bluecompute Community Edition to Local Minikube Cluster](#deploy-bluecompute-community-edition-to-local-minikube-cluster)
-            - [Delete Bluecompute Community Edition from Local Minikube Cluster](#delete-bluecompute-community-edition-from-local-minikube-cluster)
-        - [Deploy Bluecompute to Paid Cluster](#deploy-bluecompute-to-paid-cluster)
-            - [Delete Bluecompute from Paid Cluster](#delete-bluecompute-from-paid-cluster)
-- **[DevOps automation, Resiliency and Cloud Management and Monitoring](#devops-automation-resiliency-and-cloud-management-and-monitoring)**
+
+* [Run a Cloud Native Microservices Application on a Kubernetes Cluster](#run-a-cloud-native-microservices-application-on-a-kubernetes-cluster)
+  * [Introduction](#introduction)
+  * [Application Overview](#application-overview)
+  * [Project repositories](#project-repositories)
+  * [Deploy the Application](#deploy-the-application)
+    * [Download required CLIs](#download-required-clis)
+    * [Get application source code (optional)](#get-application-source-code-optional)
+    * [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
+    * [Deploy reference implementation to Kubernetes Cluster](#deploy-reference-implementation-to-kubernetes-cluster)
+  * [Validating the Application](#validating-the-application)
+  * [Delete the Application](#delete-the-application)
+  * [Optional Deployments](#optional-deployments)
+    * [Deploy BlueCompute to IBM Bluemix Container Service using IBM Bluemix Services](#deploy-bluecompute-to-ibm-bluemix-container-service-using-ibm-bluemix-services)
+    * [Deploy BlueCompute to IBM Cloud private using the App Center](#deploy-bluecompute-to-ibm-cloud-private-using-the-app-center)
+  * [DevOps automation, Resiliency and Cloud Management and Monitoring](#devops-automation-resiliency-and-cloud-management-and-monitoring)
+    * [DevOps](#devops)
+    * [Cloud Management and monitoring](#cloud-management-and-monitoring)
+    * [Making Microservices Resilient](#making-microservices-resilient)
+    * [Secure The Application](#secure-the-application)
 
 
 ## Introduction
 
-This project provides a reference implementation for running a Cloud Native Mobile and Web Application using a Microservices architecture on Bluemix Container Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.  
+This project provides a reference implementation for running a Cloud Native Mobile and Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.  
 
    ![Application Architecture](static/imgs/app_architecture.png?raw=true)
 
 ## Application Overview
 
-The application is a simple store front shopping application that displays a catalog of antique computing devices, where users can search and buy products.  It has Web and Mobile interface, both the Mobile App and Web App rely on separate BFF (Backend for Frontend) services to interact with the backend data.  
+The application is a simple store front shopping application that displays a catalog of antique computing devices, where users can search and buy products.  It has both Web and Mobile interface, both the Mobile App and Web App rely on separate BFF (Backend for Frontend) services to interact with the backend data.  
 (Note: the Mobile app is not currently supported at this release)
 
 There are several components of this architecture.  
 
 - This OmniChannel application contains both a [Native iOS Application](https://developer.apple.com/library/content/referencelibrary/GettingStarted/DevelopiOSAppsSwift/) and an [AngularJS](https://angularjs.org/) based web application.  The diagram depicts them as a Device and Browser.  
 - The iOS application uses the [IBM Mobile Analytics Service](https://new-console.ng.bluemix.net/catalog/services/mobile-analytics/) to collect device analytics for operations and business
-- The Web and Mobile app invoke their own backend Microservices to fetch data, we call this component BFFs following the [Backend for Frontends](http://samnewman.io/patterns/architectural/bff/) pattern.  In this Layer, front end developers usually write backend logic for their front end.  The Web BFF is implemented using the Node.js Express Framework.  The Mobile iOS BFF is implemented using Server side [Swift](https://www.ibm.com/cloud-computing/bluemix/swift).  These Microservices are packaged as Docker containers and managed by Bluemix Kubernetes cluster.  
-- These BFFs invoke another layer of reusable Java Microservices.  In a real world project, this is sometimes written by a different team.  These reusable microservices are written in Java.  They run inside [IBM Bluemix Container Service](https://www.ibm.com/cloud-computing/bluemix/containers) using [Docker](https://www.docker.com/).
-- BFFs uses [Hystrix open source library](https://github.com/Netflix/hystrix) to provide an implementation of the [Circuit Breaker Pattern](http://martinfowler.com/bliki/CircuitBreaker.html).  This component runs as library inside the Java Applications.  This component then forward Service Availability information to the Hystrix Dashboard.  
-- The Java Microservices retrieve their data from databases.  The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/). The Inventory Service using [MySQL](https://www.mysql.com/).  In this example, we run MySQL in a Docker Container for Development (In a production environment, it runs on our Infrastructure as a Service layer, [Bluemix Infrastructure](https://console.ng.bluemix.net/catalog/?category=infrastructure))  The resiliency and DevOps section will explain that.
+- The Web and Mobile app invoke their own backend Microservices to fetch data, we call this component BFFs following the [Backend for Frontends](http://samnewman.io/patterns/architectural/bff/) pattern.  In this Layer, front end developers usually write backend logic for their front end.  The Web BFF is implemented using the Node.js Express Framework.  The Mobile iOS BFF is implemented using Server side [Swift](https://www.ibm.com/cloud-computing/bluemix/swift).  These Microservices are packaged as Docker containers and managed by Kubernetes cluster.  
+- These BFFs invoke another layer of reusable Java Microservices.  In a real world project, this is sometimes written by different teams.  The reusable microservices are written in Java.  They run inside a Kubernetes cluster, for example the [IBM Bluemix Container Service](https://www.ibm.com/cloud-computing/bluemix/containers) or [IBM Cloud private](https://www.ibm.com/cloud-computing/products/ibm-cloud-private/), using [Docker](https://www.docker.com/).
+- BFFs uses [Hystrix open source library](https://github.com/Netflix/hystrix) to provide an implementation of the [Circuit Breaker Pattern](http://martinfowler.com/bliki/CircuitBreaker.html).  This component runs as a library inside the Java Applications.  This component then forward Service Availability information to the Hystrix Dashboard.  
+- The Java Microservices retrieve their data from the following databases:  
+  - The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/). In a development environment, Elasticsearch runs in a container.  In production, it uses [Compose for Elasticsearch](https://www.compose.com/databases/elasticsearch) as a managed Elasticsearch instance instead.
+  - The Customer service stores and retrieves Customer data from a searchable JSON datasource using [CouchDB](http://couchdb.apache.org/).  In the development environment, it runs CouchDB in a Docker container.  In a production environment, it uses [IBM Cloudant](https://www.ibm.com/analytics/us/en/technology/cloud-data-services/cloudant/) as a managed CouchDB instance instead.
+  - The Inventory and Orders Services use [MySQL](https://www.mysql.com/).  In this example, we run MySQL in a Docker Container for Development (In a production environment, it runs on our Infrastructure as a Service layer, [Bluemix Infrastructure](https://console.ng.bluemix.net/catalog/?category=infrastructure))  The resiliency and DevOps section will explain that.
 
 ## Project repositories
 
@@ -55,317 +59,137 @@ This project organized itself like a microservice project, as such each componen
  - [refarch-cloudnative-micro-customer](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/kube-int)    - The microservices (Java) app to fetch customer profile from identity store    
 
 
-This project contains tutorials for setting up CI/CD pipeline for the scenarios. The tutorial is shown below.  
- - [refarch-cloudnative-devops-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes)             - The DevOps assets are managed here
+This project contains tutorials for setting up CI/CD pipeline for the scenarios. The tutorial is shown below.
+
+- [refarch-cloudnative-devops-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes)             - The DevOps assets are managed here
 
 This project contains tutorials for setting up Resiliency such as High Availability, Failover, and Disaster Recovery for the above application.
- - [refarch-cloudnative-resiliency](https://github.com/ibm-cloud-architecture/refarch-cloudnative-resiliency/tree/kube-int)   - The Resiliency Assets will be managed here
- - [refarch-cloudnative-kubernetes-csmo](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes-csmo)   - The BlueCompute application end-to-end cloud service management for Kubernetes based deployment  
 
-## Run the reference application in IBM Cloud
+- [refarch-cloudnative-resiliency](https://github.com/ibm-cloud-architecture/refarch-cloudnative-resiliency/tree/kube-int)   - The Resiliency Assets will be managed here
+- [refarch-cloudnative-kubernetes-csmo](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes-csmo)   - The BlueCompute application end-to-end cloud service management for Kubernetes based deployment  
 
-To run the sample applications you will need to configure your Bluemix environment for the Kubernetes and Microservices
+## Deploy the Application
+
+To run the sample applications you will need to configure your environment for the Kubernetes and Microservices
 runtimes.  
 
-### Step 1: Environment Setup
+### Download required CLIs
 
-#### Prerequisites
+To deploy the application, you require the following tools:
 
-You must have a Bluemix account. The account is free and provides access to everything you need to develop, track, plan, and deploy apps. [Sign up for a trial of Bluemix](https://bluemix.net/registration). The account requires an IBMid. If you don't have an IBMid, you can create one when you register.
+- [kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it on your platform.
+- [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
 
-
-#### Get application source code
+### Get application source code (optional)
 
 - Clone the base repository:  
-    **`$ git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes`**
+  
+  **`$ git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes`**
 
 - Clone the peer repositories:  
-    **`$ cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**
+  
+  **`$ cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**
 
-#### Install IBM Bluemix CLI and Container Service Plugin, Kubernetes CLI and Helm
+### Create a Kubernetes Cluster
 
-To install and test BlueCompute stack in IBM Bluemix, you need the following tools:
-- [Bluemix CLI](http://clis.ng.bluemix.net/ui/home.html)
-- [Bluemix Container Service plugin](https://console.ng.bluemix.net/docs/containers/container_cli_cfic.html)
-- [Kubernetes cli](https://kubernetes.io/docs/tasks/kubectl/install/) (`kubectl`)
-- [Helm](https://github.com/kubernetes/helm) (Helm is Kubernetes package manager)
+The following clusters have been tested with this sample application:
 
-We have developed a wrapper script to install all above tools on your Mac or Linux machine. In your root directory, execute the following command:
+- [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) - Create a single node virtual cluster on your workstation
+- [IBM Bluemix Container Service](https://www.ibm.com/cloud-computing/bluemix/containers) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
+- [IBM Cloud private](https://www.ibm.com/cloud-computing/products/ibm-cloud-private/) - Create a Kubernetes cluster in an on-premise datacenter.  The community edition (IBM Cloud private-ce) is free of charge.  Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_1.2.0/installing/install_containers_CE.html) to install IBM Cloud private-ce.
 
-```
-$ ./install_cli.sh
-```
-This script will install the CLIs for Bluemix, Container Service, Kubernetes, Helm, and jq for configuration parsing.
-It will ignore what's already installed.
+### Deploy reference implementation to Kubernetes Cluster
 
-#### Create a New Space in Bluemix
+We have packaged all the application components as Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the application, follow the instructions configure `kubectl` for access to the Kubernetes cluster.
 
-1. Click on the Bluemix account in the top right corner of the web interface.
-2. Click Create a new space.
-3. Enter "cloudnative-dev" for the space name and complete the wizard.
+1. Initialize `helm` in your cluster.
+   
+   ```
+   $ helm init
+   ```
+   
+   This initializs the `helm` client as well as the server side component called Tiller.
+   
+2. Add the `helm` package repository containing the reference application:
 
-#### Create a Bluemix API Key
+   ```
+   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/
+   ```
+   
+3. Install the reference application:
 
-1. Click on the Bluemix account in the top right corner of the web interface.
-2. Click Create a new space.
-3. Enter "cloudnative-dev" for the space name and complete the wizard.
+   ```
+   $ helm install --name bluecompute ibmcase/bluecompute-ce
+   ```
+   
+   After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
-```
-$ bx login
-$ bx iam api-key-create <api-key-name>
-```
+## Validating the Application
 
-Please keep this API key as it WILL BE NEEDED in future steps.
-
-### Step 2: Provision a Kubernetes cluster on IBM Bluemix Container service
-
-Once you created Bluemix account and space, you will be able to provision/create a Kubernetes cluster with following instructions:
-
-```
-$ bx login
-$ bx cs init
-```
-
-#### Lite Cluster
-
-The Lite tier of Bluemix Container Service is free of charge and allows users to provision a cluster with one worker node of type `u1c.2x4` (2 core, 4GB memory, 100GB storage, 100Mbps network).  This should be sufficient to run the entire BlueCompute stack.
-
-```
-$ bx cs cluster-create --name <cluster-name>
-```
-
-#### Paid Cluster
-
-The Paid tier of Bluemix Container Service allows users to provision a cluster in a user-selected datacenter, with configurable number of worker nodes and configurable number of worker node sizes.  The cluster is provisioned in the linked IBM Bluemix Infrastructure Account.  With a paid cluster, the Ingress Controller and Load Balancer are enabled.
-
-First, retrieve the list of valid locations:
-
-```
-$ bx cs locations
-```
-
-Choose a location to discover the available worker node sizes:
-
-```
-$ bx cs machine-types <location>
-```
-
-(Optional) If you already have devices in Bluemix Infrastructure, you may select a specific public/private VLAN pair to place the worker nodes on.
-
-```
-$ bx cs vlans <location>
-```
-
-Make note of the `Router` of each VLAN; you must select a *private* and a *public* VLAN behind the same physical *router* in Bluemix Infrastructure.  These look like `fcr01a.dal10` for a public VLAN, and `bcr01a.dal10` for a private VLAN; ensure that the number in the router's name (e.g. `01`) matches for the public and private VLAN.
-
-The final command looks like:
-
-```
-$ bx cs cluster-create \
-    --name <cluster-name> \
-    --location <location> \
-    --machine-type <machine-type> \
-    --private-vlan <private-vlan-id> \
-    --public-vlan <public-vlan-id> \
-    --workers <number-of-workers>
-```
-
-For example:
-
-```
-$ bx cs cluster-create \
-    --name my-kube \
-    --location dal10 \
-    --machine-type b1c.16x64 \
-    --private-vlan 1221455 \
-    --public-vlan 1325142 \
-    --workers 3
-```
-
-The entire process may take a few minutes, as the automation creates a master node in the IBM managed Bluemix Infrastructure account , then worker node(s) in your Bluemix Infrastructure account.  Monitor the cluster creation using:
-
-```
-$ bx cs clusters
-$ bx cs cluster-get <cluster-name>
-```
-
-and the individual cluster node statuses:
-
-```
-$ bx cs workers <cluster-name>
-```
-
-### Step 3: Deploy reference implementation to Kubernetes Cluster
-
-We packaged all the application components as Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the Bluecompute solution, please follow the instructions in the following sections.
-
-#### Deploy BlueCompute Community Edition to Lite Cluster
-
-We created a couple of handy scripts to deploy the Bluecompute Stack for you in the Lite Cluster. If you haven't done so, please [Create a New Bluemix Space](#create-a-new-space-in-bluemix) and [Create a Bluemix API Key](#create-a-bluemix-api-key). Then, run the following command:
-
-```
-# Supported Regions:
-# ng
-#  - (US South) - Default
-# eu-de
-#  - (Germany)
-
-$ ./install_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
-```
-
-Once the actual install of Bluecompute takes place, it takes about 5-10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place. Please wait a minute or two to access the web app since some of the Microservices Pods are still initializing.
-
-At the very end you will get a **URL** (i.e. http://169.48.138.137:31469) to access the Bluecompute Web App.    
-
-![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)  
 You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.  
 
-Login Credentials: Once you are on the Bluecompute Web App, use the following test credentials to login:
-- **Username:** user
-- **Password:** passw0rd
-
-That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command:
-
-`$ kubectl proxy`
-
-Then open a browser and paste the following URL to see the **Services** created by Bluecompute charts:
-
-  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
-
-If you like to see **installation progress** as it occurs, open a browser window and paste the following URL to see the Installation Jobs. About 17 jobs will be created in sequence:
-
-  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/job?namespace=default
-
-Be mindful that jobs come and go as new charts are getting installed.
-
-**Notes:**
-
-The *install_bluecompute_ce.sh* script will do the following:
-1. Ask you login to Bluemix.
-2. Initialize Container Plugin (bx cs init).
-3. Unless already provided, it will create a Bluemix API Key
-    * Not needed to deploy the reference application stack but will be needed for [DevOps and CI/CD](#devops-automation-resiliency-and-cloud-management-and-monitoring)
-4. Get cluster configuration and set your terminal context to the cluster.
-5. Initialize Helm.
-6. Install the entire *Reference Application* Stack by installing the individual Helm charts. i.e.
-    * `cd docs/charts`
-    * `$ helm install chart_name --name release_name`
-    * It will create all the necessary configurations before deploying any pods.
-7. Cleanup Jobs and Pods used to deploy dependencies.
-
-##### Delete Bluecompute Community Edition from Lite Cluster
-To delete the Bluecompute Stack from your cluster, run the following script:
-
-```
-# Supported Regions:
-# ng
-#  - (US South) - Default
-# eu-de
-#  - (Germany)
-
-$ ./delete_bluecompute_ce.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
-```
-
-#### Deploy BlueCompute Community Edition to Local Minikube Cluster
-
-We created a couple of handy scripts to deploy the Bluecompute Stack for you in your [Local Minikube Cluster](https://kubernetes.io/docs/tasks/tools/install-minikube/). Please run the following command.
-
-```
-$ ./install_bluecompute_ce.sh minikube
-```
-
-Once the actual install of Bluecompute takes place, it takes about 5-10 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place. Please wait a minute or two to access the web app since some of the Microservices Pods are still initializing.
-
-At the very end you will get a **URL** (i.e. http://192.168.99.100:31469) to access the Bluecompute Web App.    
-
 ![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)  
-You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.  
 
-Login Credentials: Once you are on the Bluecompute Web App, use the following test credentials to login:
+Use the following test credentials to login:
+
 - **Username:** user
 - **Password:** passw0rd
 
-That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command which will open a new browser window:
+## Delete the Application
 
-`$ minikube dashboard`
-
-Then navigate to the **Services and discovery** section to see all the **Services** created by Bluecompute charts.
-
-If you like to see **installation progress** as it occurs, use the `minikube dashboard` command to open a new browser window, then navigate to the `Jobs` section to see Installation jobs.
-
-Be mindful that jobs come and go as new charts are getting installed.
-
-**Notes:**
-
-The *install_bluecompute_ce.sh* script will do the following:
-1. Ask you login to Bluemix.
-2. Initialize Container Plugin (bx cs init).
-3. Unless already provided, it will create a Bluemix API Key
-    * Not needed to deploy the reference application stack but will be needed for [DevOps and CI/CD](#devops-automation-resiliency-and-cloud-management-and-monitoring)
-4. Get cluster configuration and set your terminal context to the cluster.
-5. Initialize Helm.
-6. Install the entire *Reference Application* Stack by installing the individual Helm charts. i.e.
-    * `cd docs/charts`
-    * `$ helm install chart_name --name release_name`
-    * It will create all the necessary configurations before deploying any pods.
-7. Cleanup Jobs and Pods used to deploy dependencies.
-
-##### Delete Bluecompute Community Edition from Local Minikube Cluster
-To delete the Bluecompute Stack from your Local Minikube Cluster, run the following script:
+To delete the application from your cluster, run the following:
 
 ```
-$ ./delete_bluecompute_ce.sh minikube
+$ helm delete --purge bluecompute
 ```
 
-#### Deploy Bluecompute to Paid Cluster
 
-Just like in the [Deploy Bluecompute to Lite Cluster](#deploy-bluecompute-to-lite-cluster) section, we created a couple of handy scripts to deploy the Bluecompute Stack for you. If you haven't done so, please [Create a New Bluemix Space](#create-a-new-space-in-bluemix) and [Create a Bluemix API Key](#create-a-bluemix-api-key). Then, run the following command:
+## Optional Deployments
 
-```
-# Supported Regions:
-# ng
-#  - (US South) - Default
-# eu-de
-#  - (Germany)
+### Deploy BlueCompute to IBM Bluemix Container Service using IBM Bluemix Services
 
-$ ./install_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
-```
+We have also prepared a chart that uses managed database services from the IBM Bluemix catalog instead of local docker containers, to be used when deploying the application on a cluster in the IBM Bluemix Container Service.  To install this version, please be aware that this will incur a cost in your IBM Bluemix account.  The services are instantiated with the helm chart, including:
 
-Once the actual install of Bluecompute takes place, it takes about 10~15 minutes to be fully deployed. So it might look like it's stuck, but it's not. Once you start to see output, look for the `Bluecompute was successfully installed!` text in green, which indicates that the deploy was successful and cleanup of jobs and installation pods will now take place.
+- [Compose for Elasticsearch](https://www.compose.com/databases/elasticsearch) (one instance for the Catalog microservice is created)
+- [IBM Cloudant](https://www.ibm.com/analytics/us/en/technology/cloud-data-services/cloudant/) (a free Lite instance is created for the Customer Microservice)
+- [Compose for MySQL](https://www.compose.com/databases/mysql) (two instances, one for Orders microservice and one for Inventory microservice)
+- [IBM Message Hub](http://www-03.ibm.com/software/products/en/ibm-message-hub) - (for asynchronous communication between Orders and Inventory microservices; a topic named `orders` is created)
 
-At the very end you will get a **URL** to access the Bluecompute Web App.
-That's it! **Bluecompute is now installed** in your Kubernetes Cluster. To see the Kubernetes dashboard, run the following command:
-
-`$ kubectl proxy`
-
-Then open a browser and paste the following URL to see the **Services** created by Bluecompute charts:
-
-  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace=default
-
-If you like to see **installation progress** as it occurs, open a browser window and paste the following URL to see the Installation Jobs:
-
-  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/job?namespace=default
-
-Be mindful that jobs come and go as new charts are getting installed.
-
-**Login Credentials:** Once you are on the Bluecompute Web App, use the following test credentials to login:
-- **Username:** user
-- **Password:** passw0rd
-
-
-##### Delete Bluecompute from Paid Cluster
-
-To delete the Bluecompute Stack from your cluster, run the following script:
+To install, use the following command to install the chart:
 
 ```
-# Supported Regions:
-# ng
-#  - (US South) - Default
-# eu-de
-#  - (Germany)
-
-$ ./delete_bluecompute.sh <cluster-name> <bluemix-space-name> <bluemix-api-key> <Optional:region>
+$ helm install --name bluecompute ibmcase/bluecompute \
+    --set global.bluemix.target.endpoint=<Bluemix API endpoint> \
+    --set global.bluemix.target.org=<Bluemix Org> \
+    --set global.bluemix.target.space=<Bluemix Space> \
+    --set global.bluemix.clusterName=<Name of cluster> \
+    --set global.bluemix.apiKey=<Bluemix API key for user account>
 ```
+
+Where,
+
+- `<Bluemix API endpoint>` specifies an API endpoint (e.g. `api.ng.bluemix.net`).  This controls which region the Bluemix services are created.
+- `<Bluemix Org>` and `<Bluemix Space>` specifies a space where the Bluemix Services are created.
+- `<Name of cluster>` specifies the name of the cluster as created in the IBM Bluemix Container Service
+- `<Bluemix API key for user account>` is an API key used to authenticate against Bluemix.  To create an API key, follow [these instructions](https://console.bluemix.net/docs/iam/apikeys.html#creating-an-api-key).
+
+When deleting the application, note that the services are not automatically removed from Bluemix with the chart.
+
+### Deploy BlueCompute to IBM Cloud private using the App Center
+
+IBM Cloud private contains integration with Helm that allows you to install the application without the need to go to a command line.  This can be done as an administrator using the following steps:
+
+1. Click on the three bars in the top left corner, and go to *System*.
+2. Click on the *Repositories* tab
+3. Click on *Add Repository*.  Use the following values:
+
+   - Repository Name: *ibmcase*
+   - URL: *https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/*
+   
+   Click *Add* to add the repository.
+4. Click on the three bars in the top left corner again, and go to *App Center*.
+5. Under *Packages*, locate `ibmcase/bluecompute-ce`, and click *Install Package*.
+6. Click *Review and Install*, then *Install* to install the application.
 
 ## DevOps automation, Resiliency and Cloud Management and Monitoring
 
