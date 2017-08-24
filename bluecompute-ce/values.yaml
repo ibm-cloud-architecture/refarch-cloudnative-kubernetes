@@ -8,7 +8,7 @@ web:
 global:
   persistence:
     volume:
-      size:
+      size: 1Gi
       storageClass:
     enabled: false
   hs256key:
