@@ -9,8 +9,8 @@
     * [Download required CLIs](#download-required-clis)
     * [Get application source code (optional)](#get-application-source-code-optional)
     * [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
-    * [Deploy reference implementation to Kubernetes Cluster](#deploy-reference-implementation-to-kubernetes-cluster)
-  * [Validating the Application](#validating-the-application)
+    * [Deploy to Kubernetes Cluster](#deploy-to-kubernetes-cluster)
+  * [Validate the Application](#validate-the-application)
   * [Delete the Application](#delete-the-application)
   * [Optional Deployments](#optional-deployments)
     * [Deploy BlueCompute to IBM Bluemix Container Service using IBM Bluemix Services](#deploy-bluecompute-to-ibm-bluemix-container-service-using-ibm-bluemix-services)
@@ -20,6 +20,7 @@
     * [Cloud Management and monitoring](#cloud-management-and-monitoring)
     * [Making Microservices Resilient](#making-microservices-resilient)
     * [Secure The Application](#secure-the-application)
+
 
 
 ## Introduction
@@ -43,7 +44,7 @@ There are several components of this architecture.
 - The Java Microservices retrieve their data from the following databases:  
   - The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/). In a development environment, Elasticsearch runs in a container.  In production, it uses [Compose for Elasticsearch](https://www.compose.com/databases/elasticsearch) as a managed Elasticsearch instance instead.
   - The Customer service stores and retrieves Customer data from a searchable JSON datasource using [CouchDB](http://couchdb.apache.org/).  In the development environment, it runs CouchDB in a Docker container.  In a production environment, it uses [IBM Cloudant](https://www.ibm.com/analytics/us/en/technology/cloud-data-services/cloudant/) as a managed CouchDB instance instead.
-  - The Inventory and Orders Services use [MySQL](https://www.mysql.com/).  In this example, we run MySQL in a Docker Container for Development (In a production environment, it runs on our Infrastructure as a Service layer, [Bluemix Infrastructure](https://console.ng.bluemix.net/catalog/?category=infrastructure))  The resiliency and DevOps section will explain that.
+  - The Inventory and Orders Services use separate instances of [MySQL](https://www.mysql.com/).  In this example, we run MySQL in Docker Containers for Development.  In a production environment, it runs using [Compose for MySQL](https://www.compose.com/databases/mysql) as a managed resilient MySQL instance instead.
 
 ## Project repositories
 
@@ -98,7 +99,7 @@ The following clusters have been tested with this sample application:
 - [IBM Bluemix Container Service](https://www.ibm.com/cloud-computing/bluemix/containers) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
 - [IBM Cloud private](https://www.ibm.com/cloud-computing/products/ibm-cloud-private/) - Create a Kubernetes cluster in an on-premise datacenter.  The community edition (IBM Cloud private-ce) is free of charge.  Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_1.2.0/installing/install_containers_CE.html) to install IBM Cloud private-ce.
 
-### Deploy reference implementation to Kubernetes Cluster
+### Deploy to Kubernetes Cluster
 
 We have packaged all the application components as Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the application, follow the instructions configure `kubectl` for access to the Kubernetes cluster.
 
@@ -108,7 +109,7 @@ We have packaged all the application components as Kubernetes [Charts](https://g
    $ helm init
    ```
    
-   This initializs the `helm` client as well as the server side component called Tiller.
+   This initializes the `helm` client as well as the server side component called `tiller`.
    
 2. Add the `helm` package repository containing the reference application:
 
@@ -122,9 +123,9 @@ We have packaged all the application components as Kubernetes [Charts](https://g
    $ helm install --name bluecompute ibmcase/bluecompute-ce
    ```
    
-   After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
+   After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
 
-## Validating the Application
+## Validate the Application
 
 You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.  
 
@@ -148,7 +149,7 @@ $ helm delete --purge bluecompute
 
 ### Deploy BlueCompute to IBM Bluemix Container Service using IBM Bluemix Services
 
-We have also prepared a chart that uses managed database services from the IBM Bluemix catalog instead of local docker containers, to be used when deploying the application on a cluster in the IBM Bluemix Container Service.  To install this version, please be aware that this will incur a cost in your IBM Bluemix account.  The services are instantiated with the helm chart, including:
+We have also prepared a chart that uses managed database services from the IBM Bluemix catalog instead of local docker containers, to be used when deploying the application on a cluster in the IBM Bluemix Container Service.  Please be aware that this will incur a cost in your IBM Bluemix account.  The following services are instantiated by the helm chart:
 
 - [Compose for Elasticsearch](https://www.compose.com/databases/elasticsearch) (one instance for the Catalog microservice is created)
 - [IBM Cloudant](https://www.ibm.com/analytics/us/en/technology/cloud-data-services/cloudant/) (a free Lite instance is created for the Customer Microservice)
