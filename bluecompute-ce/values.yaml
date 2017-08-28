@@ -20,28 +20,28 @@ global:
 auth:
   resources:
     limits:
-      memory: 256Mi
+      memory: 384Mi
 
 catalog:
   tags:
     localdb: true
   resources:
     limits:
-      memory: 256Mi
+      memory: 384Mi
 
 customer:
   tags:
     localdb: true
   resources:
     limits:
-      memory: 256Mi
+      memory: 384Mi
 
 inventory:
   tags:
     localdb: true
   resources:
     limits:
-      memory: 256Mi
+      memory: 384Mi
   ibmcase-mysql:
     resources:
       limits:
