@@ -50,5 +50,5 @@ The following variables influence chart behaviors, and can be passed using the `
     
 - `web.ingress.path=<path>`
 
-  This variable controls the path that the web BFF is available on in the ingress controller.  For example, if set to `/web`, the web application becomes available at `http://<ingress hostname>/web`.  The path is set to `/` by default, which means that the web application is served out of the root of the Ingress Controller.
+  This variable controls the path that the web BFF is available on in the ingress controller.  For example, if set to `/web`, the web application becomes available at `http://<ingress hostname>/web`.  The path is set to `/bluecompute` by default, which means that the web application is served at the path `/bluecompute` of the Ingress Controller.
   
