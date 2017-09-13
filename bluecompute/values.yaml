@@ -1,36 +1,74 @@
 # Declare variables to be passed into your templates.
 global:
   hs256key:
+    secretName: bluecompute-hs256key
     secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
+  bluemix:
+    apiKey:
 
-auth-ce:
+    target:
+      endpoint: api.ng.bluemix.net
+      org:
+      space:
+    
+    clusterName:
+
+
+auth:
   image:
     pullPolicy: Always
-    tag: kube-int
+    tag: jkwong-dev
+  tags:
+    bluemix: true
 
-catalog-ce:
+catalog:
   image:
     pullPolicy: Always
-    tag: kube-int
+    tag: jkwong-dev
+  tags:
+    bluemix: true
 
-customer-ce:
+customer:
   image:
     pullPolicy: Always
-    tag: kube-int
+    tag: jkwong-dev
+  tags:
+    bluemix: true
 
-inventory-ce:
+inventory:
   image:
     pullPolicy: Always
-    tag: kube-int
+    tag: jkwong-dev
+  tags:
+    bluemix: true
 
-orders-ce:
+orders:
   image:
     pullPolicy: Always
-    tag: kube-int
+    tag: jkwong-dev
+  tags:
+    bluemix: true
 
-web-ce:
-  cluster_name: Fabio
+web:
   image:
     pullPolicy: Always
-    tag: kube-int
-  region: eu-de
+    tag: jkwong-dev
+
+tags:
+  bluemix: true
+
+bluemix-messagehub:
+  apiKey:
+
+  target:
+    endpoint: api.ng.bluemix.net
+    org:
+    space:
+
+  clusterName:
+  
+  service:
+    name: orders-messagehub
+    type: messagehub
+    plan: standard
+ 

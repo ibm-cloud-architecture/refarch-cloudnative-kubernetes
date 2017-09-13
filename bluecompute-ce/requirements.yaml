@@ -17,11 +17,3 @@ dependencies:
   - name: web
     version: 0.2.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts
-  - name: ibmcase-bluemix-service
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts
-    version: 0.1.0
-    alias: bluemix-messagehub
-    condition: bluemix-messagehub.enabled
-    tags:
-    - bluemix
-
