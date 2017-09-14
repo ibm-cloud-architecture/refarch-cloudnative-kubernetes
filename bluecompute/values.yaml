@@ -17,42 +17,42 @@ global:
 auth:
   image:
     pullPolicy: Always
-    tag: jkwong-dev
+    tag: latest
   tags:
     bluemix: true
 
 catalog:
   image:
     pullPolicy: Always
-    tag: jkwong-dev
+    tag: latest
   tags:
     bluemix: true
 
 customer:
   image:
     pullPolicy: Always
-    tag: jkwong-dev
+    tag: latest
   tags:
     bluemix: true
 
 inventory:
   image:
     pullPolicy: Always
-    tag: jkwong-dev
+    tag: latest
   tags:
     bluemix: true
 
 orders:
   image:
     pullPolicy: Always
-    tag: jkwong-dev
+    tag: latest
   tags:
     bluemix: true
 
 web:
   image:
     pullPolicy: Always
-    tag: jkwong-dev
+    tag: latest
 
 tags:
   bluemix: true
