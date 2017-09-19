@@ -114,7 +114,7 @@ We have packaged all the application components as Kubernetes [Charts](https://g
 2. Add the `helm` package repository containing the reference application:
 
    ```
-   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/
+   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/
    ```
    
 3. Install the reference application:
@@ -185,7 +185,7 @@ IBM Cloud private contains integration with Helm that allows you to install the 
 3. Click on *Add Repository*.  Use the following values:
 
    - Repository Name: *ibmcase*
-   - URL: *https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/*
+   - URL: *https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/*
    
    Click *Add* to add the repository.
 4. Click on the three bars in the top left corner again, and go to *App Center*.
