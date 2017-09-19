@@ -50,14 +50,14 @@ There are several components of this architecture.
 
 This project organized itself like a microservice project, as such each component in the architecture has its own Git Repository and tutorial listed below.  
 
- - [refarch-cloudnative-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/kube-int)                    - The root repository (Current repository)
- - [refarch-cloudnative-bluecompute-mobile](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-mobile/tree/kube-int) - The BlueCompute client iOS and Android applications
- - [refarch-cloudnative-bluecompute-web](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int)    - The BlueCompute Web application with BFF services
- - [refarch-cloudnative-bluecompute-bff-ios](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-bff-ios/tree/kube-int)   - The Swift based BFF application for the iOS application  
- - [refarch-cloudnative-auth](https://github.com/ibm-cloud-architecture/refarch-cloudnative-auth/tree/kube-int)               - The security authentication artifact
- - [refarch-cloudnative-micro-inventory](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/tree/kube-int)    - The microservices (Java) app for Catalog (ElasticSearch) and Inventory data service (MySQL)
- - [refarch-cloudnative-micro-orders](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders/tree/kube-int)    - The microservices (Java) app for Order data service (MySQL)
- - [refarch-cloudnative-micro-customer](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/kube-int)    - The microservices (Java) app to fetch customer profile from identity store    
+ - [refarch-cloudnative-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/master)                    - The root repository (Current repository)
+ - [refarch-cloudnative-bluecompute-mobile](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-mobile/tree/master) - The BlueCompute client iOS and Android applications
+ - [refarch-cloudnative-bluecompute-web](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/master)    - The BlueCompute Web application with BFF services
+ - [refarch-cloudnative-bluecompute-bff-ios](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-bff-ios/tree/master)   - The Swift based BFF application for the iOS application  
+ - [refarch-cloudnative-auth](https://github.com/ibm-cloud-architecture/refarch-cloudnative-auth/tree/master)               - The security authentication artifact
+ - [refarch-cloudnative-micro-inventory](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/tree/master)    - The microservices (Java) app for Catalog (ElasticSearch) and Inventory data service (MySQL)
+ - [refarch-cloudnative-micro-orders](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders/tree/master)    - The microservices (Java) app for Order data service (MySQL)
+ - [refarch-cloudnative-micro-customer](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/master)    - The microservices (Java) app to fetch customer profile from identity store    
 
 
 This project contains tutorials for setting up CI/CD pipeline for the scenarios. The tutorial is shown below.
@@ -66,7 +66,7 @@ This project contains tutorials for setting up CI/CD pipeline for the scenarios.
 
 This project contains tutorials for setting up Resiliency such as High Availability, Failover, and Disaster Recovery for the above application.
 
-- [refarch-cloudnative-resiliency](https://github.com/ibm-cloud-architecture/refarch-cloudnative-resiliency/tree/kube-int)   - The Resiliency Assets will be managed here
+- [refarch-cloudnative-resiliency](https://github.com/ibm-cloud-architecture/refarch-cloudnative-resiliency/tree/master)   - The Resiliency Assets will be managed here
 - [refarch-cloudnative-kubernetes-csmo](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes-csmo)   - The BlueCompute application end-to-end cloud service management for Kubernetes based deployment  
 
 ## Deploy the Application
@@ -114,7 +114,7 @@ We have packaged all the application components as Kubernetes [Charts](https://g
 2. Add the `helm` package repository containing the reference application:
 
    ```
-   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/
+   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/
    ```
    
 3. Install the reference application:
@@ -185,7 +185,7 @@ IBM Cloud private contains integration with Helm that allows you to install the 
 3. Click on *Add Repository*.  Use the following values:
 
    - Repository Name: *ibmcase*
-   - URL: *https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/*
+   - URL: *https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/*
    
    Click *Add* to add the repository.
 4. Click on the three bars in the top left corner again, and go to *App Center*.
