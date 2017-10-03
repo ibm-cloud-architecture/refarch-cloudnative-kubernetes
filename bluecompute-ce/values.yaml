@@ -4,6 +4,8 @@ web:
   region: myregion
   service:
     type: ClusterIP
+    nodeport:
+      port: 31337
   ingress:
     path: /bluecompute
 
