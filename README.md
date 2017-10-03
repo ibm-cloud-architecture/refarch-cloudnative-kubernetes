@@ -84,18 +84,27 @@ To deploy the application, you require the following tools:
 ### Get application source code (optional)
 
 - Clone the base repository:  
-  
+
   **`$ git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes`**
 
 - Clone the peer repositories:  
-  
+
   **`$ cd refarch-cloudnative-kubernetes && sh clonePeers.sh`**
 
 ### Create a Kubernetes Cluster
 
 The following clusters have been tested with this sample application:
 
-- [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) - Create a single node virtual cluster on your workstation
+- [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) - Create a single node virtual cluster on your workstation.  
+
+  By default minikube defaults to 2048M RAM which is not enough to start the application.  To provision 8G:
+
+  **`$ minikube start --memory 8192`**
+
+  Enable the ingress controller with:
+
+  **`$ minikube addons enable ingress`**  
+
 - [IBM Bluemix Container Service](https://www.ibm.com/cloud-computing/bluemix/containers) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
 - [IBM Cloud private](https://www.ibm.com/cloud-computing/products/ibm-cloud-private/) - Create a Kubernetes cluster in an on-premise datacenter.  The community edition (IBM Cloud private-ce) is free of charge.  Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_1.2.0/installing/install_containers_CE.html) to install IBM Cloud private-ce.
 
@@ -104,25 +113,25 @@ The following clusters have been tested with this sample application:
 We have packaged all the application components as Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the application, follow the instructions configure `kubectl` for access to the Kubernetes cluster.
 
 1. Initialize `helm` in your cluster.
-   
+
    ```
    $ helm init
    ```
-   
+
    This initializes the `helm` client as well as the server side component called `tiller`.
-   
+
 2. Add the `helm` package repository containing the reference application:
 
    ```
    $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/
    ```
-   
+
 3. Install the reference application:
 
    ```
    $ helm install --name bluecompute ibmcase/bluecompute-ce
    ```
-   
+
    After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
 
 ## Validate the Application
@@ -130,6 +139,21 @@ We have packaged all the application components as Kubernetes [Charts](https://g
 You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.  
 
 ![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)  
+
+### Minikube
+
+If you've installed on `minikube` you can find the IP by issuing:
+
+**`$ minikube ip`**
+
+In your browser navigate to **`https://<IP>/bluecompute`**.
+
+For additional information, you can also use the command:
+
+**`$ kubectl describe ingress bluecompute-web`**
+
+
+### Login
 
 Use the following test credentials to login:
 
@@ -186,7 +210,7 @@ IBM Cloud private contains integration with Helm that allows you to install the 
 
    - Repository Name: *ibmcase*
    - URL: *https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/*
-   
+
    Click *Add* to add the repository.
 4. Click on the three bars in the top left corner again, and go to *App Center*.
 5. Under *Packages*, locate `ibmcase/bluecompute-ce`, and click *Install Package*.

@@ -21,7 +21,7 @@ entries:
   - apiVersion: v1
     created: 2017-09-13T17:23:07.001862122-04:00
     description: Bluecompute Application Chart
-    digest: cb00e9445791084b2499fc5c2c7c88551746325e509302b43ded76148d65fd60
+    digest: 310743ad7c16274fd548a06922ae4a401c2fee48e47ee84f747cab33ff608ce9
     name: bluecompute
     urls:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/bluecompute-0.0.1.tgz
@@ -30,7 +30,7 @@ entries:
   - apiVersion: v1
     created: 2017-09-13T17:23:07.005698345-04:00
     description: Bluecompute Application Chart
-    digest: b3ca68052cac057b3e7f2ce5676aed202687c84b7f9319fc840e1ca19f0f15d8
+    digest: f2e8a444af6ba8c54e2de31893923af5f2905ff6b4b55991d88bb57a9fec3870
     name: bluecompute-ce
     urls:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/bluecompute-ce-0.0.1.tgz
@@ -39,7 +39,7 @@ entries:
   - apiVersion: v1
     created: 2017-09-13T17:23:07.008668788-04:00
     description: BlueCompute Catalog Microservice
-    digest: 735bb8d19c0744cbbfd5c82121c275f3f6c91c14a04a4a23f3c1a4786f1f5c33
+    digest: a7c4c551352b311144ee6da216d28a6aa55d74f53cd35288b5700fa736429406
     name: catalog
     urls:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/dev/docs/charts/catalog-0.2.0.tgz
