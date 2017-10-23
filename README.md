@@ -1,27 +1,24 @@
 # Run a Cloud Native Microservices Application on a Kubernetes Cluster
-
-
-* [Run a Cloud Native Microservices Application on a Kubernetes Cluster](#run-a-cloud-native-microservices-application-on-a-kubernetes-cluster)
-  * [Introduction](#introduction)
-  * [Application Overview](#application-overview)
-  * [Project repositories](#project-repositories)
-  * [Deploy the Application](#deploy-the-application)
-    * [Download required CLIs](#download-required-clis)
-    * [Get application source code (optional)](#get-application-source-code-optional)
-    * [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
-    * [Deploy to Kubernetes Cluster](#deploy-to-kubernetes-cluster)
-  * [Validate the Application](#validate-the-application)
-  * [Delete the Application](#delete-the-application)
-  * [Optional Deployments](#optional-deployments)
-    * [Deploy BlueCompute to IBM Bluemix Container Service using IBM Bluemix Services](#deploy-bluecompute-to-ibm-bluemix-container-service-using-ibm-bluemix-services)
-    * [Deploy BlueCompute to IBM Cloud private using the App Center](#deploy-bluecompute-to-ibm-cloud-private-using-the-app-center)
-  * [DevOps automation, Resiliency and Cloud Management and Monitoring](#devops-automation-resiliency-and-cloud-management-and-monitoring)
-    * [DevOps](#devops)
-    * [Cloud Management and monitoring](#cloud-management-and-monitoring)
-    * [Making Microservices Resilient](#making-microservices-resilient)
-    * [Secure The Application](#secure-the-application)
-
-
+* [Introduction](#introduction)
+* [Application Overview](#application-overview)
+* [Project repositories](#project-repositories)
+* [Deploy the Application](#deploy-the-application)
+  + [Download required CLIs](#download-required-clis)
+  + [Get application source code (optional)](#get-application-source-code-optional)
+  + [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
+  + [Deploy to Kubernetes Cluster](#deploy-to-kubernetes-cluster)
+* [Validate the Application](#validate-the-application)
+  + [Minikube](#minikube)
+  + [Login](#login)
+* [Delete the Application](#delete-the-application)
+* [Optional Deployments](#optional-deployments)
+  + [Deploy BlueCompute to IBM Bluemix Container Service using IBM Bluemix Services](#deploy-bluecompute-to-ibm-bluemix-container-service-using-ibm-bluemix-services)
+  + [Deploy BlueCompute to IBM Cloud Private](#deploy-bluecompute-to-ibm-cloud-private)
+* [DevOps automation, Resiliency and Cloud Management and Monitoring](#devops-automation-resiliency-and-cloud-management-and-monitoring)
+  + [DevOps](#devops)
+  + [Cloud Management and monitoring](#cloud-management-and-monitoring)
+  + [Making Microservices Resilient](#making-microservices-resilient)
+  + [Secure The Application](#secure-the-application)
 
 ## Introduction
 
@@ -200,21 +197,41 @@ Where,
 
 When deleting the application, note that the services are not automatically removed from Bluemix with the chart.
 
-### Deploy BlueCompute to IBM Cloud private using the App Center
+### Deploy BlueCompute to IBM Cloud Private
 
-IBM Cloud private contains integration with Helm that allows you to install the application without the need to go to a command line.  This can be done as an administrator using the following steps:
+IBM Cloud Private contains integration with Helm that allows you to install the application and all of its components in a few steps. This can be done as an administrator using the following steps:
 
-1. Click on the three bars in the top left corner, and go to *System*.
-2. Click on the *Repositories* tab
-3. Click on *Add Repository*.  Use the following values:
+1. Click on the user icon on the top right corner and then click on `Configure client`.
+2. Copy the displayed `kubectl` configuration, paste it in your terminal, and press Enter on your keyboard.
+3. Initialize `helm` in your cluster.
 
-   - Repository Name: *ibmcase*
-   - URL: *https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/*
+   ```
+   $ helm init
+   ```
 
-   Click *Add* to add the repository.
-4. Click on the three bars in the top left corner again, and go to *App Center*.
-5. Under *Packages*, locate `ibmcase/bluecompute-ce`, and click *Install Package*.
-6. Click *Review and Install*, then *Install* to install the application.
+    This initializes the `helm` client as well as the server side component called `tiller`.
+
+4. Add the `helm` package repository containing the reference application:
+
+   ```
+   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/
+   ```
+
+5. Install the reference application:
+
+   ```
+   $ helm install --name bluecompute ibmcase/bluecompute-ce
+   ```
+
+   After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
+
+#### Helm Version
+If Chart installation fails, it usually has to do with the version of helm in your workstation being incompatible with the one installed in the IBM Cloud Private Cluster. To verify installed versions of helm, use the following command:
+```
+$ helm version
+```
+
+If the versions are different, you might want to delete the current helm client and install a version of helm client that matches the server one. To do so, please refer to Helm's guide [here](https://github.com/kubernetes/helm/blob/master/docs/install.md).
 
 ## DevOps automation, Resiliency and Cloud Management and Monitoring
 
