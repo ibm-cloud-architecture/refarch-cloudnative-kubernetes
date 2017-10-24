@@ -107,7 +107,7 @@ The following clusters have been tested with this sample application:
 
 ### Deploy to Kubernetes Cluster
 
-We have packaged all the application components as Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the application, follow the instructions configure `kubectl` for access to the Kubernetes cluster.
+We have packaged all the application components as Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the application, follow the instructions to configure `kubectl` for access to the Kubernetes cluster.
 
 1. Initialize `helm` in your cluster.
 
@@ -224,6 +224,8 @@ IBM Cloud Private contains integration with Helm that allows you to install the 
    ```
 
    After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
+   
+Note that the ElasticSearch service requires the `IPC_LOCK` capability to lock shared memory.  If deploying BlueCompute to a namespace other than `default`, the default [PodSecurityPolicy](https://kubernetes.io/docs/concepts/policy/pod-security-policy/) does not permit this.  Follow [these instructions](PodSecurityPolicy/PodSecurityPolicy.md) to enable BlueCompute to run in a non-`default` namespace.
 
 #### Helm Version
 If Chart installation fails, it usually has to do with the version of helm in your workstation being incompatible with the one installed in the IBM Cloud Private Cluster. To verify installed versions of helm, use the following command:

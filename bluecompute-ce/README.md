@@ -52,3 +52,6 @@ The following variables influence chart behaviors, and can be passed using the `
 
   This variable controls the path that the web BFF is available on in the ingress controller.  For example, if set to `/web`, the web application becomes available at `http://<ingress hostname>/web`.  The path is set to `/bluecompute` by default, which means that the web application is served at the path `/bluecompute` of the Ingress Controller.
   
+
+NOTE: if deploying BlueCompute to a namespace other than `default` in IBM Cloud Private, please see [this note](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/PodSecurityPolicy/PodSecurityPolicy.md) on PodSecurityPolicy.
+  
