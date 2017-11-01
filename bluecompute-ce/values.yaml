@@ -3,7 +3,7 @@ web:
   clusterName: mycluster
   region: myregion
   service:
-    type: ClusterIP
+    type: NodePort
     nodeport:
       port: 31337
   ingress:

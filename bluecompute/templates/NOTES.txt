@@ -4,27 +4,24 @@
 
 To view the Bluecompute Web Application in your browser please do the following, please follow the steps below:
 
-1. To get the IP Address (nodeip) for the Web Application, run the following command:
-  kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}';echo
-  
-  For Windows:
-  kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}'&echo.
+1. To get the IP Address for the Web Application, run one the following commands based on your environment:
+  IBM Cloud Container Service:
+  nodeip=$(bx cs workers YOUR_CLUSTER_NAME | grep -v '^*' | egrep -v "(ID|OK)" | awk '{print $2;}' | head -n1)
 
-2. To get the Web Port (port) for the Web Application, run the following command:
-  kubectl --namespace {{ .Release.Namespace }} get service bluecompute-web -o jsonpath='{.spec.ports[0].nodePort}';echo
-  
-  For Windows:
-  kubectl --namespace {{ .Release.Namespace }} get service bluecompute-web -o jsonpath='{.spec.ports[0].nodePort}'&echo.
+  IBM Cloud Private:
+  nodeip=PROXY_NODE_EXTERNAL_IP
 
-3. Open a new web browser window and enter the App URL using the following format:
-  http://<nodeip>:<port>
+  Minikube:
+  nodeip=$(minikube ip)
 
+  Others:
+  nodeip=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' | awk '{print $1}')
 
-To view the installed Bluecompute resources in the Kubernetes Dashboard, please follow the steps below:
+2. To get the Web Port for the Web Application, run the following command:
+  port=$(kubectl --namespace {{ .Release.Namespace }} get service bluecompute-web -o jsonpath='{.spec.ports[0].nodePort}')
 
-1. To serve the Kubernetes Dashboard locally, run the following command:
-  kubectl proxy
+3. To get the entire URL for the Web Application, run the following command:
+  echo "http://${nodeip}:${port}"
 
-2. Open a new browser window and paste the following URL:
-  http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/service?namespace={{ .Release.Namespace }}
+4. Open a new web browser window and paste the URL above.
 
