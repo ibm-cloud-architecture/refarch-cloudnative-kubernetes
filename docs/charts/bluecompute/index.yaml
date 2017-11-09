@@ -24,7 +24,7 @@ entries:
     digest: 3322a36d23da44e316a0faf719697eb861ff5320463fcceaa740356f0405fcc2
     name: bluecompute
     urls:
-    - https://raw.githubusercontent.com/ssibm/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute/bluecompute-0.0.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute/bluecompute-0.0.1.tgz
     version: 0.0.1
   catalog:
   - apiVersion: v1
