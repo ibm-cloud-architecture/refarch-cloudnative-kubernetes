@@ -3,11 +3,6 @@ kind: Job
 metadata:
   name: "{{ .Release.Name }}-audit-{{ randAlphaNum 5 | lower }}"
   namespace: "{{ .Release.Namespace }}"
-  annotations:
-    # This is what defines this resource as a hook. Without this line, the
-    # job is considered part of the release.
-    "helm.sh/hook": post-install
-    "helm.sh/hook-weight": "99"
   labels:
     name: audit
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
