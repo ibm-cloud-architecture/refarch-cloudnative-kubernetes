@@ -24,7 +24,7 @@ entries:
     digest: f23647fb9829819ca7f27662acdad8891fc345323d49cd5597e643ffe6554afa
     name: bluecompute-ce
     urls:
-    - https://raw.githubusercontent.com/ssibm/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce/bluecompute-ce-0.0.2.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce/bluecompute-ce-0.0.2.tgz
     version: 0.0.2
   catalog:
   - apiVersion: v1
