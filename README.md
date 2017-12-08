@@ -120,7 +120,7 @@ We have packaged all the application components as Kubernetes [Charts](https://g
 2. Add the `helm` package repository containing the reference application:
 
    ```
-   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/
+   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce
    ```
 
 3. Install the reference application:
@@ -177,9 +177,11 @@ We have also prepared a chart that uses managed database services from the IBM B
 - [Compose for MySQL](https://www.compose.com/databases/mysql) (two instances, one for Orders microservice and one for Inventory microservice)
 - [IBM Message Hub](http://www-03.ibm.com/software/products/en/ibm-message-hub) - (for asynchronous communication between Orders and Inventory microservices; a topic named `orders` is created)
 
-To install, use the following command to install the chart:
+Use the following commands to install the chart:
 
 ```
+$ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute
+
 $ helm install --name bluecompute ibmcase/bluecompute \
     --set global.bluemix.target.endpoint=<Bluemix API endpoint> \
     --set global.bluemix.target.org=<Bluemix Org> \
@@ -214,7 +216,7 @@ IBM Cloud Private contains integration with Helm that allows you to install the 
 4. Add the `helm` package repository containing the reference application:
 
    ```
-   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/
+   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce
    ```
 
 5. Install the reference application:
