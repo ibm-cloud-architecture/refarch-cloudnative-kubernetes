@@ -1,15 +1,6 @@
 # Declare variables to be passed into your templates.
-web:
-  clusterName: mycluster
-  region: myregion
-  service:
-    type: NodePort
-    nodeport:
-      port: 31337
-  ingress:
-    path: /bluecompute
-
 global:
+  useICPPrivateImages: false
   persistence:
     volume:
       size: 1Gi
@@ -18,13 +9,42 @@ global:
   hs256key:
     secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
     secretName: bluecompute-hs256key
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  mysql:
+    image:
+      repository: ibmcase/bluecompute-mysql
+      tag: latest
+    resources:
+      limits:
+        memory: 256Mi
 
 auth:
+  image:
+    repository: ibmcase/bluecompute-auth
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
   resources:
     limits:
       memory: 384Mi
 
 catalog:
+  image:
+    repository: ibmcase/bluecompute-catalog
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  elasticsearch:
+    image:
+      repository: ibmcase/bluecompute-elasticsearch
+      tag: latest
   tags:
     localdb: true
   resources:
@@ -32,6 +52,21 @@ catalog:
       memory: 384Mi
 
 customer:
+  image:
+    repository: ibmcase/bluecompute-customer
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  bash:
+    image:
+      repository: ibmcase/bluecompute-bash-curl-ssl
+      tag: latest
+  couchdb:
+    image:
+      repository: ibmcase/bluecompute-couchdb
+      tag: latest
   tags:
     localdb: true
   resources:
@@ -39,26 +74,59 @@ customer:
       memory: 384Mi
 
 inventory:
+  image:
+    repository: ibmcase/bluecompute-inventory
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  mysql:
+    image:
+      repository: ibmcase/bluecompute-mysql
+      tag: latest
+    resources:
+      limits:
+        memory: 256Mi
   tags:
     localdb: true
   resources:
     limits:
       memory: 384Mi
-  ibmcase-mysql:
-    resources:
-      limits:
-        memory: 256Mi
 
 orders:
+  image:
+    repository: ibmcase/bluecompute-orders
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  mysql:
+    image:
+      repository: ibmcase/bluecompute-mysql
+      tag: latest
+    resources:
+      limits:
+        memory: 256Mi
   tags:
     localdb: true
   resources:
     limits:
       memory: 384Mi
-  ibmcase-mysql:
-    resources:
-      limits:
-        memory: 256Mi
+
+web:
+  image:
+    repository: ibmcase/bluecompute-web
+    tag: latest
+  clusterName: mycluster
+  region: myregion
+  service:
+    type: NodePort
+    nodeport:
+      port: 31337
+  ingress:
+    path: /bluecompute
 
 tags:
   localdb: true
