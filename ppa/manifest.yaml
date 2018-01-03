@@ -7,18 +7,19 @@ charts:
   - auth.dataloader.image.repository
   - catalog.image.repository
   - catalog.dataloader.image.repository
-  - catalog.elasticsearch.image.repository
+  - ibmcase-elasticsearch.image.repository
   - customer.image.repository
   - customer.dataloader.image.repository
   - customer.bash.image.repository
-  - customer.couchdb.image.repository
+  - ibmcase-couchdb.image.repository
   - inventory.image.repository
   - inventory.dataloader.image.repository
-  - inventory.mysql.image.repository
+  - ibmcase-inventory-mysql.image.repository
   - orders.image.repository
   - orders.dataloader.image.repository
-  - orders.mysql.image.repository
+  - ibmcase-orders-mysql.image.repository
   - web.image.repository
+
 images:
 - image: ibmcase/bluecompute-auth:latest
   references:

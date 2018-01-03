@@ -5,20 +5,20 @@
       "archive": "charts/bluecompute-ce-0.0.3.tgz",
       "images": [
         "auth.image.repository",
-        "auth.dataloaderimage.repository",
+        "auth.dataloader.image.repository",
         "catalog.image.repository",
         "catalog.dataloader.image.repository",
-        "catalog.elasticsearch.image.repository",
+        "ibmcase-elasticsearch.image.repository",
         "customer.image.repository",
         "customer.dataloader.image.repository",
         "customer.bash.image.repository",
-        "customer.couchdb.image.repository",
+        "ibmcase-couchdb.image.repository",
         "inventory.image.repository",
         "inventory.dataloader.image.repository",
-        "inventory.mysql.image.repository",
+        "ibmcase-inventory-mysql.image.repository",
         "orders.image.repository",
         "orders.dataloader.image.repository",
-        "orders.mysql.image.repository",
+        "ibmcase0orders-mysql.image.repository",
         "web.image.repository"
       ]
     }
