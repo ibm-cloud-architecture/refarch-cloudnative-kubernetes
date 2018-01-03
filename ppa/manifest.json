@@ -25,82 +25,82 @@
   ],
   "images": [
     {
-      "image": "bluecompute-auth",
+      "image": "ibmcase/bluecompute-auth",
       "tag": "latest",
       "archive": "images/bluecompute-auth.tar.gz"
     },
     {
-      "image": "bluecompute-dataloader",
+      "image": "ibmcase/bluecompute-dataloader",
       "tag": "latest",
       "archive": "images/bluecompute-dataloader.tar.gz"
     },
     {
-      "image": "bluecompute-catalog",
+      "image": "ibmcase/bluecompute-catalog",
       "tag": "latest",
       "archive": "images/bluecompute-catalog.tar.gz"
     },
     {
-      "image": "bluecompute-dataloader",
+      "image": "ibmcase/bluecompute-dataloader",
       "tag": "latest",
       "archive": "images/bluecompute-dataloader.tar.gz"
     },
     {
-      "image": "bluecompute-elasticsearch",
+      "image": "ibmcase/bluecompute-elasticsearch",
       "tag": "latest",
       "archive": "images/bluecompute-elasticsearch.tar.gz"
     },
     {
-      "image": "bluecompute-customer",
+      "image": "ibmcase/bluecompute-customer",
       "tag": "latest",
       "archive": "images/bluecompute-customer.tar.gz"
     },
     {
-      "image": "bluecompute-dataloader",
+      "image": "ibmcase/bluecompute-dataloader",
       "tag": "latest",
       "archive": "images/bluecompute-dataloader.tar.gz"
     },
     {
-      "image": "bluecompute-bash-curl-ssl",
+      "image": "ibmcase/bluecompute-bash-curl-ssl",
       "tag": "latest",
       "archive": "images/bluecompute-bash-curl-ssl.tar.gz"
     },
     {
-      "image": "bluecompute-couchdb",
+      "image": "ibmcase/bluecompute-couchdb",
       "tag": "latest",
       "archive": "images/bluecompute-couchdb.tar.gz"
     },
     {
-      "image": "bluecompute-inventory",
+      "image": "ibmcase/bluecompute-inventory",
       "tag": "latest",
       "archive": "images/bluecompute-inventory.tar.gz"
     },
     {
-      "image": "bluecompute-dataloader",
+      "image": "ibmcase/bluecompute-dataloader",
       "tag": "latest",
       "archive": "images/bluecompute-dataloader.tar.gz"
     },
     {
-      "image": "bluecompute-mysql",
+      "image": "ibmcase/bluecompute-mysql",
       "tag": "latest",
       "archive": "images/bluecompute-mysql.tar.gz"
     },
     {
-      "image": "bluecompute-orders",
+      "image": "ibmcase/bluecompute-orders",
       "tag": "latest",
       "archive": "images/bluecompute-orders.tar.gz"
     },
     {
-      "image": "bluecompute-dataloader",
+      "image": "ibmcase/bluecompute-dataloader",
       "tag": "latest",
       "archive": "images/bluecompute-dataloader.tar.gz"
     },
     {
-      "image": "bluecompute-mysql",
+      "image": "ibmcase/bluecompute-mysql",
       "tag": "latest",
       "archive": "images/bluecompute-mysql.tar.gz"
     },
     {
-      "image": "bluecompute-web",
+      "image": "ibmcase/bluecompute-web",
       "tag": "latest",
       "archive": "images/bluecompute-web.tar.gz"
     }

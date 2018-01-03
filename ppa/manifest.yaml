@@ -1,7 +1,7 @@
 revision: "1.0"
 output-filename: ""
 charts:
-- archive: charts/bluecompute-ce-0.0.3.tgz
+- archive: charts/ibmcase/bluecompute-ce-0.0.3.tgz
   repository-keys:
   - auth.image.repository
   - auth.dataloader.image.repository
@@ -20,51 +20,51 @@ charts:
   - orders.mysql.image.repository
   - web.image.repository
 images:
-- image: bluecompute-auth:latest
+- image: ibmcase/bluecompute-auth:latest
   references:
-  - repository: bluecompute-auth:latest
-- image: bluecompute-dataloader:latest
+  - repository: ibmcase/bluecompute-auth:latest
+- image: ibmcase/bluecompute-dataloader:latest
   references:
-  - repository: bluecompute-dataloader:latest
-- image: bluecompute-catalog:latest
+  - repository: ibmcase/bluecompute-dataloader:latest
+- image: ibmcase/bluecompute-catalog:latest
   references:
-  - repository: bluecompute-catalog:latest
-- image: bluecompute-dataloader:latest
+  - repository: ibmcase/bluecompute-catalog:latest
+- image: ibmcase/bluecompute-dataloader:latest
   references:
-  - repository: bluecompute-dataloader:latest
-- image: bluecompute-elasticsearch:latest
+  - repository: ibmcase/bluecompute-dataloader:latest
+- image: ibmcase/bluecompute-elasticsearch:latest
   references:
-  - repository: bluecompute-elasticsearch:latest
-- image: bluecompute-customer:latest
+  - repository: ibmcase/bluecompute-elasticsearch:latest
+- image: ibmcase/bluecompute-customer:latest
   references:
-  - repository: bluecompute-customer:latest
-- image: bluecompute-dataloader:latest
+  - repository: ibmcase/bluecompute-customer:latest
+- image: ibmcase/bluecompute-dataloader:latest
   references:
-  - repository: bluecompute-dataloader:latest
-- image: bluecompute-bash-curl-ssl:latest
+  - repository: ibmcase/bluecompute-dataloader:latest
+- image: ibmcase/bluecompute-bash-curl-ssl:latest
   references:
-  - repository: bluecompute-bash-curl-ssl:latest
-- image: bluecompute-couchdb:latest
+  - repository: ibmcase/bluecompute-bash-curl-ssl:latest
+- image: ibmcase/bluecompute-couchdb:latest
   references:
-  - repository: bluecompute-couchdb:latest
-- image: bluecompute-inventory:latest
+  - repository: ibmcase/bluecompute-couchdb:latest
+- image: ibmcase/bluecompute-inventory:latest
   references:
-  - repository: bluecompute-inventory:latest
-- image: bluecompute-dataloader:latest
+  - repository: ibmcase/bluecompute-inventory:latest
+- image: ibmcase/bluecompute-dataloader:latest
   references:
-  - repository: bluecompute-dataloader:latest
-- image: bluecompute-mysql:latest
+  - repository: ibmcase/bluecompute-dataloader:latest
+- image: ibmcase/bluecompute-mysql:latest
   references:
-  - repository: bluecompute-mysql:latest
-- image: bluecompute-orders:latest
+  - repository: ibmcase/bluecompute-mysql:latest
+- image: ibmcase/bluecompute-orders:latest
   references:
-  - repository: bluecompute-orders:latest
-- image: bluecompute-dataloader:latest
+  - repository: ibmcase/bluecompute-orders:latest
+- image: ibmcase/bluecompute-dataloader:latest
   references:
-  - repository: bluecompute-dataloader:latest
-- image: bluecompute-mysql:latest
+  - repository: ibmcase/bluecompute-dataloader:latest
+- image: ibmcase/bluecompute-mysql:latest
   references:
-  - repository: bluecompute-mysql:latest
-- image: bluecompute-web:latest
+  - repository: ibmcase/bluecompute-mysql:latest
+- image: ibmcase/bluecompute-web:latest
   references:
-  - repository: bluecompute-web:latest
+  - repository: ibmcase/bluecompute-web:latest
