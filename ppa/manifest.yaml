@@ -1,0 +1,70 @@
+revision: "1.0"
+output-filename: ""
+charts:
+- archive: charts/bluecompute-ce-0.0.3.tgz
+  repository-keys:
+  - auth.image.repository
+  - auth.dataloader.image.repository
+  - catalog.image.repository
+  - catalog.dataloader.image.repository
+  - catalog.elasticsearch.image.repository
+  - customer.image.repository
+  - customer.dataloader.image.repository
+  - customer.bash.image.repository
+  - customer.couchdb.image.repository
+  - inventory.image.repository
+  - inventory.dataloader.image.repository
+  - inventory.mysql.image.repository
+  - orders.image.repository
+  - orders.dataloader.image.repository
+  - orders.mysql.image.repository
+  - web.image.repository
+images:
+- image: bluecompute-auth:latest
+  references:
+  - repository: bluecompute-auth:latest
+- image: bluecompute-dataloader:latest
+  references:
+  - repository: bluecompute-dataloader:latest
+- image: bluecompute-catalog:latest
+  references:
+  - repository: bluecompute-catalog:latest
+- image: bluecompute-dataloader:latest
+  references:
+  - repository: bluecompute-dataloader:latest
+- image: bluecompute-elasticsearch:latest
+  references:
+  - repository: bluecompute-elasticsearch:latest
+- image: bluecompute-customer:latest
+  references:
+  - repository: bluecompute-customer:latest
+- image: bluecompute-dataloader:latest
+  references:
+  - repository: bluecompute-dataloader:latest
+- image: bluecompute-bash-curl-ssl:latest
+  references:
+  - repository: bluecompute-bash-curl-ssl:latest
+- image: bluecompute-couchdb:latest
+  references:
+  - repository: bluecompute-couchdb:latest
+- image: bluecompute-inventory:latest
+  references:
+  - repository: bluecompute-inventory:latest
+- image: bluecompute-dataloader:latest
+  references:
+  - repository: bluecompute-dataloader:latest
+- image: bluecompute-mysql:latest
+  references:
+  - repository: bluecompute-mysql:latest
+- image: bluecompute-orders:latest
+  references:
+  - repository: bluecompute-orders:latest
+- image: bluecompute-dataloader:latest
+  references:
+  - repository: bluecompute-dataloader:latest
+- image: bluecompute-mysql:latest
+  references:
+  - repository: bluecompute-mysql:latest
+- image: bluecompute-web:latest
+  references:
+  - repository: bluecompute-web:latest

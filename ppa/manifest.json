@@ -1,0 +1,108 @@
+{
+  "manifest-revision": "1.0",
+  "charts": [
+    {
+      "archive": "charts/bluecompute-ce-0.0.3.tgz",
+      "images": [
+        "auth.image.repository",
+        "auth.dataloaderimage.repository",
+        "catalog.image.repository",
+        "catalog.dataloader.image.repository",
+        "catalog.elasticsearch.image.repository",
+        "customer.image.repository",
+        "customer.dataloader.image.repository",
+        "customer.bash.image.repository",
+        "customer.couchdb.image.repository",
+        "inventory.image.repository",
+        "inventory.dataloader.image.repository",
+        "inventory.mysql.image.repository",
+        "orders.image.repository",
+        "orders.dataloader.image.repository",
+        "orders.mysql.image.repository",
+        "web.image.repository"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "image": "bluecompute-auth",
+      "tag": "latest",
+      "archive": "images/bluecompute-auth.tar.gz"
+    },
+    {
+      "image": "bluecompute-dataloader",
+      "tag": "latest",
+      "archive": "images/bluecompute-dataloader.tar.gz"
+    },
+    {
+      "image": "bluecompute-catalog",
+      "tag": "latest",
+      "archive": "images/bluecompute-catalog.tar.gz"
+    },
+    {
+      "image": "bluecompute-dataloader",
+      "tag": "latest",
+      "archive": "images/bluecompute-dataloader.tar.gz"
+    },
+    {
+      "image": "bluecompute-elasticsearch",
+      "tag": "latest",
+      "archive": "images/bluecompute-elasticsearch.tar.gz"
+    },
+    {
+      "image": "bluecompute-customer",
+      "tag": "latest",
+      "archive": "images/bluecompute-customer.tar.gz"
+    },
+    {
+      "image": "bluecompute-dataloader",
+      "tag": "latest",
+      "archive": "images/bluecompute-dataloader.tar.gz"
+    },
+    {
+      "image": "bluecompute-bash-curl-ssl",
+      "tag": "latest",
+      "archive": "images/bluecompute-bash-curl-ssl.tar.gz"
+    },
+    {
+      "image": "bluecompute-couchdb",
+      "tag": "latest",
+      "archive": "images/bluecompute-couchdb.tar.gz"
+    },
+    {
+      "image": "bluecompute-inventory",
+      "tag": "latest",
+      "archive": "images/bluecompute-inventory.tar.gz"
+    },
+    {
+      "image": "bluecompute-dataloader",
+      "tag": "latest",
+      "archive": "images/bluecompute-dataloader.tar.gz"
+    },
+    {
+      "image": "bluecompute-mysql",
+      "tag": "latest",
+      "archive": "images/bluecompute-mysql.tar.gz"
+    },
+    {
+      "image": "bluecompute-orders",
+      "tag": "latest",
+      "archive": "images/bluecompute-orders.tar.gz"
+    },
+    {
+      "image": "bluecompute-dataloader",
+      "tag": "latest",
+      "archive": "images/bluecompute-dataloader.tar.gz"
+    },
+    {
+      "image": "bluecompute-mysql",
+      "tag": "latest",
+      "archive": "images/bluecompute-mysql.tar.gz"
+    },
+    {
+      "image": "bluecompute-web",
+      "tag": "latest",
+      "archive": "images/bluecompute-web.tar.gz"
+    }
+  ]
+}
