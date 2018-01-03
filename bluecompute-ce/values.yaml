@@ -42,11 +42,8 @@ catalog:
       repository: ibmcase/bluecompute-dataloader
       tag: latest
   elasticsearch:
-    image:
-      repository: ibmcase/bluecompute-elasticsearch
-      tag: latest
-  tags:
-    localdb: true
+    binding:
+      name: binding-catalog-elasticsearch
   resources:
     limits:
       memory: 384Mi
@@ -63,15 +60,12 @@ customer:
     image:
       repository: ibmcase/bluecompute-bash-curl-ssl
       tag: latest
-  couchdb:
-    image:
-      repository: ibmcase/bluecompute-couchdb
-      tag: latest
-  tags:
-    localdb: true
   resources:
     limits:
       memory: 384Mi
+  couchdb:
+    binding:
+      name: binding-customer-couchdb
 
 inventory:
   image:
@@ -81,18 +75,12 @@ inventory:
     image:
       repository: ibmcase/bluecompute-dataloader
       tag: latest
-  mysql:
-    image:
-      repository: ibmcase/bluecompute-mysql
-      tag: latest
-    resources:
-      limits:
-        memory: 256Mi
-  tags:
-    localdb: true
   resources:
     limits:
       memory: 384Mi
+  mysql:
+    binding:
+      name: binding-inventorydb-mysql
 
 orders:
   image:
@@ -102,18 +90,12 @@ orders:
     image:
       repository: ibmcase/bluecompute-dataloader
       tag: latest
-  mysql:
-    image:
-      repository: ibmcase/bluecompute-mysql
-      tag: latest
-    resources:
-      limits:
-        memory: 256Mi
-  tags:
-    localdb: true
   resources:
     limits:
       memory: 384Mi
+  mysql:
+    binding:
+      name: binding-ordersdb-mysql
 
 web:
   image:
@@ -130,3 +112,91 @@ web:
 
 tags:
   localdb: true
+
+customer-couchdb:
+  image:
+    repository: ibmcase/bluecompute-couchdb
+    tag: latest
+  user:
+  password:
+  service:
+    name: customer-couchdb
+    type: ClusterIP
+    externalPort: 5984
+    internalPort: 5984
+  binding:
+    name: binding-customer-couchdb
+  resources:
+    limits:
+      memory: 128Mi
+    requests:
+      memory: 64Mi
+  existingPVCName:
+  labels:
+    app: bluecompute
+    micro: customer
+    tier: data
+  nodename: customerdb
+
+inventory-mysql:
+  binding:
+    name: binding-inventorydb-mysql
+  image:
+    repository: ibmcase/bluecompute-mysql
+    tag: latest
+  resources:
+    limits:
+      memory: 256Mi
+  labels:
+    app: bluecompute
+    tier: data
+    micro: inventory
+
+  dbname: inventorydb
+
+  service:
+    name: inventory-mysql
+
+orders-mysql:
+  binding:
+    name: binding-ordersdb-mysql
+  image:
+    repository: ibmcase/bluecompute-mysql
+    tag: latest
+  resources:
+    limits:
+      memory: 256Mi
+  labels:
+    app: bluecompute
+    tier: data
+    micro: inventory
+
+  dbname: inventorydb
+
+  service:
+    name: inventory-mysql
+
+catalog-elasticsearch:
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-elasticsearch
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  clustername: catalogdb
+
+  service:
+    name: catalog-elasticsearch
+
+  labels:
+    app: bluecompute
+    micro: catalog
+    tier: data
+
+  resources:
+    limits:
+      memory: 700Mi
+    requests:
+      memory: 350Mi
+
+  secretName: binding-catalog-elasticsearch
