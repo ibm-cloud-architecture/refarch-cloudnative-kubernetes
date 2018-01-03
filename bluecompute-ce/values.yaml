@@ -1,6 +1,5 @@
 # Declare variables to be passed into your templates.
 global:
-  useICPPrivateImages: false
   persistence:
     volume:
       size: 1Gi
@@ -9,17 +8,6 @@ global:
   hs256key:
     secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
     secretName: bluecompute-hs256key
-  dataloader:
-    image:
-      repository: ibmcase/bluecompute-dataloader
-      tag: latest
-  mysql:
-    image:
-      repository: ibmcase/bluecompute-mysql
-      tag: latest
-    resources:
-      limits:
-        memory: 256Mi
 
 auth:
   image:
@@ -110,10 +98,7 @@ web:
   ingress:
     path: /bluecompute
 
-tags:
-  localdb: true
-
-customer-couchdb:
+ibmcase-couchdb:
   image:
     repository: ibmcase/bluecompute-couchdb
     tag: latest
@@ -138,7 +123,7 @@ customer-couchdb:
     tier: data
   nodename: customerdb
 
-inventory-mysql:
+ibmcase-inventory-mysql:
   binding:
     name: binding-inventorydb-mysql
   image:
@@ -151,13 +136,11 @@ inventory-mysql:
     app: bluecompute
     tier: data
     micro: inventory
-
   dbname: inventorydb
-
   service:
     name: inventory-mysql
 
-orders-mysql:
+ibmcase-orders-mysql:
   binding:
     name: binding-ordersdb-mysql
   image:
@@ -169,14 +152,12 @@ orders-mysql:
   labels:
     app: bluecompute
     tier: data
-    micro: inventory
-
-  dbname: inventorydb
-
+    micro: orders
+  dbname: ordersdb
   service:
-    name: inventory-mysql
+    name: orders-mysql
 
-catalog-elasticsearch:
+ibmcase-elasticsearch:
   replicaCount: 1
   image:
     repository: ibmcase/bluecompute-elasticsearch
