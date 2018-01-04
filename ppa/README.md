@@ -36,7 +36,7 @@ Update the `bluecompute-ce/values.yaml` so that the image repositories correspon
 | `ibmcase-orders-mysql.image.repository` | `mycluster.icp:8500/default/ibmcase/bluecompute-mysql` |
 | `web.image.repository` | `mycluster.icp:8500/default/ibmcase/bluecompute-web` |
 
-Once the `values.yaml` file is updated correctly, re-package the helm chart, which will
+Once the `values.yaml` file is updated correctly, re-package the helm chart, which will create an updated tarball containing the changes made above.
 
 ```bash
 helm package bluecompute-ce
