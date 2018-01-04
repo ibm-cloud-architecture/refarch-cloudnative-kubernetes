@@ -6,7 +6,7 @@ To generate the archive, use a machine with Internet access to clone this git re
 
 ```bash
 cd ppa
-cp ../docs/charts/bluecompute-ce-0.0.3.tgz .
+cp ../docs/charts/bluecompute-ce/bluecompute-ce-0.0.3.tgz .
 ```
 
 Unpack the chart to update the `values.yaml` to correspond to the local cluster.  
