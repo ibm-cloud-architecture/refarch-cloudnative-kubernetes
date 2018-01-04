@@ -2,19 +2,19 @@ apiVersion: v1
 entries:
   bluecompute-ce:
   - apiVersion: v1
-    created: 2018-01-04T00:12:59.154368-05:00
+    created: 2018-01-04T00:16:12.635329-05:00
     description: Bluecompute Application Chart
-    digest: 9f1ec506022a7a0564e5577bbfca6d72aaaee07e2993cd430af85224db4713a2
+    digest: a02e9f0df10ed58fa2b5c4a030db3a59dffa1c7a34e53ac98efffb69b0d2434a
     name: bluecompute-ce
     urls:
     - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce/bluecompute-ce-0.0.3.tgz
     version: 0.0.3
   - apiVersion: v1
-    created: 2018-01-04T00:12:59.152559-05:00
+    created: 2018-01-04T00:16:12.633699-05:00
     description: Bluecompute Application Chart
     digest: f23647fb9829819ca7f27662acdad8891fc345323d49cd5597e643ffe6554afa
     name: bluecompute-ce
     urls:
     - https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce/bluecompute-ce-0.0.2.tgz
     version: 0.0.2
-generated: 2018-01-04T00:12:59.148009-05:00
+generated: 2018-01-04T00:16:12.629862-05:00
