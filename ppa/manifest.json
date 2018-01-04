@@ -18,7 +18,7 @@
         "ibmcase-inventory-mysql.image.repository",
         "orders.image.repository",
         "orders.dataloader.image.repository",
-        "ibmcase0orders-mysql.image.repository",
+        "ibmcase-orders-mysql.image.repository",
         "web.image.repository"
       ]
     }
