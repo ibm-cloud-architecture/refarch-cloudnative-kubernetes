@@ -46,7 +46,6 @@ rm -rf bluecompute-ce
 Execute the script to create the PPA archive:
 
 ```bash
-cd ppa
 ./build_ppa_archive.sh
 ```
 
