@@ -10,9 +10,8 @@ global:
       endpoint: api.ng.bluemix.net
       org:
       space:
-    
-    clusterName:
 
+    clusterName:
 
 auth:
   image:
@@ -25,37 +24,107 @@ catalog:
   image:
     pullPolicy: Always
     tag: latest
-  tags:
-    bluemix: true
+  elasticsearch:
+    binding:
+      name: binding-catalog-elasticsearch
+
+catalog-bluemix-compose-elasticsearch:
+  apiKey:
+
+  target:
+    endpoint: api.ng.bluemix.net
+    org:
+    space:
+
+  clusterName:
+
+  service:
+    name: catalog-elasticsearch
+    type: compose-for-elasticsearch
+    plan: Standard
 
 customer:
   image:
     pullPolicy: Always
     tag: latest
-  tags:
-    bluemix: true
+  couchdb:
+    binding:
+      name: binding-customer-cloudantdb
+
+customer-bluemix-cloudantdb:
+  apiKey:
+
+  target:
+    endpoint: api.ng.bluemix.net
+    org:
+    space:
+
+  clusterName:
+
+  service:
+    name: customer-cloudantdb
+    type: cloudantNoSQLDB
+    plan: Lite
 
 inventory:
   image:
     pullPolicy: Always
     tag: latest
-  tags:
-    bluemix: true
+
+  mysql:
+    binding:
+      name: binding-inventorydb-mysql
+
+  messagehub:
+    binding:
+      name: binding-orders-messagehub
+
+inventorydb-bluemix-compose-mysql:
+  apiKey:
+
+  target:
+    endpoint: api.ng.bluemix.net
+    org:
+    space:
+
+  clusterName:
+
+  service:
+    name: inventorydb-mysql
+    type: compose-for-mysql
+    plan: Standard
 
 orders:
   image:
     pullPolicy: Always
     tag: latest
-  tags:
-    bluemix: true
+  mysql:
+    binding:
+      name: binding-ordersdb-mysql
+
+  messagehub:
+    binding:
+      name: binding-orders-messagehub
+
+ordersdb-bluemix-compose-mysql:
+  apiKey:
+
+  target:
+    endpoint: api.ng.bluemix.net
+    org:
+    space:
+
+  clusterName:
+
+  service:
+    name: ordersdb-mysql
+    type: compose-for-mysql
+    plan: Standard
 
 web:
   image:
     pullPolicy: Always
     tag: latest
-
-tags:
-  bluemix: true
 
 bluemix-messagehub:
   apiKey:
@@ -66,9 +135,8 @@ bluemix-messagehub:
     space:
 
   clusterName:
-  
+
   service:
     name: orders-messagehub
     type: messagehub
     plan: standard
- 

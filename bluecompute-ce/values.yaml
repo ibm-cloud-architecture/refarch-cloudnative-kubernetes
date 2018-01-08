@@ -1,14 +1,4 @@
 # Declare variables to be passed into your templates.
-web:
-  clusterName: mycluster
-  region: myregion
-  service:
-    type: NodePort
-    nodeport:
-      port: 31337
-  ingress:
-    path: /bluecompute
-
 global:
   persistence:
     volume:
@@ -20,45 +10,174 @@ global:
     secretName: bluecompute-hs256key
 
 auth:
+  image:
+    repository: ibmcase/bluecompute-auth
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
   resources:
     limits:
       memory: 384Mi
 
 catalog:
-  tags:
-    localdb: true
+  image:
+    repository: ibmcase/bluecompute-catalog
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  elasticsearch:
+    binding:
+      name: binding-catalog-elasticsearch
   resources:
     limits:
       memory: 384Mi
 
 customer:
-  tags:
-    localdb: true
+  image:
+    repository: ibmcase/bluecompute-customer
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  bash:
+    image:
+      repository: ibmcase/bluecompute-bash-curl-ssl
+      tag: latest
   resources:
     limits:
       memory: 384Mi
+  couchdb:
+    binding:
+      name: binding-customer-couchdb
 
 inventory:
-  tags:
-    localdb: true
+  image:
+    repository: ibmcase/bluecompute-inventory
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
   resources:
     limits:
       memory: 384Mi
-  ibmcase-mysql:
-    resources:
-      limits:
-        memory: 256Mi
+  mysql:
+    binding:
+      name: binding-inventorydb-mysql
 
 orders:
-  tags:
-    localdb: true
+  image:
+    repository: ibmcase/bluecompute-orders
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
   resources:
     limits:
       memory: 384Mi
-  ibmcase-mysql:
-    resources:
-      limits:
-        memory: 256Mi
+  mysql:
+    binding:
+      name: binding-ordersdb-mysql
 
-tags:
-  localdb: true
+web:
+  image:
+    repository: ibmcase/bluecompute-web
+    tag: latest
+  clusterName: mycluster
+  region: myregion
+  service:
+    type: NodePort
+    nodeport:
+      port: 31337
+  ingress:
+    path: /bluecompute
+
+ibmcase-couchdb:
+  image:
+    repository: ibmcase/bluecompute-couchdb
+    tag: latest
+  user:
+  password:
+  service:
+    name: customer-couchdb
+    type: ClusterIP
+    externalPort: 5984
+    internalPort: 5984
+  binding:
+    name: binding-customer-couchdb
+  resources:
+    limits:
+      memory: 128Mi
+    requests:
+      memory: 64Mi
+  existingPVCName:
+  labels:
+    app: bluecompute
+    micro: customer
+    tier: data
+  nodename: customerdb
+
+ibmcase-inventory-mysql:
+  binding:
+    name: binding-inventorydb-mysql
+  image:
+    repository: ibmcase/bluecompute-mysql
+    tag: latest
+  resources:
+    limits:
+      memory: 256Mi
+  labels:
+    app: bluecompute
+    tier: data
+    micro: inventory
+  dbname: inventorydb
+  service:
+    name: inventory-mysql
+
+ibmcase-orders-mysql:
+  binding:
+    name: binding-ordersdb-mysql
+  image:
+    repository: ibmcase/bluecompute-mysql
+    tag: latest
+  resources:
+    limits:
+      memory: 256Mi
+  labels:
+    app: bluecompute
+    tier: data
+    micro: orders
+  dbname: ordersdb
+  service:
+    name: orders-mysql
+
+ibmcase-elasticsearch:
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-elasticsearch
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  clustername: catalogdb
+
+  service:
+    name: catalog-elasticsearch
+
+  labels:
+    app: bluecompute
+    micro: catalog
+    tier: data
+
+  resources:
+    limits:
+      memory: 700Mi
+    requests:
+      memory: 350Mi
+
+  secretName: binding-catalog-elasticsearch
