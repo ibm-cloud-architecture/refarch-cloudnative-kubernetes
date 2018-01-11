@@ -15,15 +15,20 @@ charts:
   - inventory.image.repository
   - inventory.dataloader.image.repository
   - ibmcase-inventory-mysql.image.repository
+  - ibmcase-inventory-mysql.busybox.image.repository
   - orders.image.repository
   - orders.dataloader.image.repository
   - ibmcase-orders-mysql.image.repository
+  - ibmcase-orders-mysql.busybox.image.repository
   - web.image.repository
 
 images:
 - image: ibmcase/bluecompute-auth:latest
   references:
   - repository: ibmcase/bluecompute-auth:latest
+- image: ibmcase/bluecompute-busybox:latest
+  references:
+  - repository: ibmcase/bluecompute-busybox:latest
 - image: ibmcase/bluecompute-dataloader:latest
   references:
   - repository: ibmcase/bluecompute-dataloader:latest
