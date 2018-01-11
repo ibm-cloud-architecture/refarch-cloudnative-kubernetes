@@ -18,14 +18,14 @@ dependencies:
     version: 0.3.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: ibmcase-couchdb
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
     version: 0.2.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: ibmcase-inventory-mysql
+    version: 0.3.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
-    version: 0.2.0
   - name: ibmcase-orders-mysql
+    version: 0.3.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
-    version: 0.2.0
   - name: ibmcase-elasticsearch
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
     version: 0.2.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
