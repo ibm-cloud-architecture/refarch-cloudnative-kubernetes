@@ -7,6 +7,14 @@ entries:
     digest: f062029c5b56ef738327b30cc11458a8e645204c58bbf2fd05bc614e4c10767f
     name: bluecompute-ce
     urls:
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce/bluecompute-ce-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v1
+    created: 2018-01-04T00:43:43.434993-05:00
+    description: Bluecompute Application Chart
+    digest: f062029c5b56ef738327b30cc11458a8e645204c58bbf2fd05bc614e4c10767f
+    name: bluecompute-ce
+    urls:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce/bluecompute-ce-0.0.3.tgz
     version: 0.0.3
   - apiVersion: v1
