@@ -2,7 +2,7 @@
   "manifest-revision": "1.0",
   "charts": [
     {
-      "archive": "charts/bluecompute-ce-0.0.3.tgz",
+      "archive": "charts/bluecompute-ce-0.0.5.tgz",
       "images": [
         "auth.image.repository",
         "auth.dataloader.image.repository",
