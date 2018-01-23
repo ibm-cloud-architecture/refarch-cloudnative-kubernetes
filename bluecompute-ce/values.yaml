@@ -96,6 +96,7 @@ web:
     nodeport:
       port: 31337
   ingress:
+    hostname:
     path: /bluecompute
 
 ibmcase-couchdb:
