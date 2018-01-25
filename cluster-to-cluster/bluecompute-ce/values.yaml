@@ -1,0 +1,157 @@
+# Declare variables to be passed into your templates.
+global:
+  persistence:
+    volume:
+      size: 1Gi
+      storageClass: ""
+    enabled: false
+  hs256key:
+    secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
+    secretName: bluecompute-hs256key
+
+auth:
+  image:
+    repository: ibmcase/bluecompute-auth
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  resources:
+    limits:
+      memory: 384Mi
+
+catalog:
+  image:
+    repository: ibmcase/bluecompute-catalog
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  elasticsearch:
+    binding:
+      name: binding-catalog-elasticsearch
+  resources:
+    limits:
+      memory: 384Mi
+
+customer:
+  image:
+    repository: ibmcase/bluecompute-customer
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  bash:
+    image:
+      repository: ibmcase/bluecompute-bash-curl-ssl
+      tag: latest
+  resources:
+    limits:
+      memory: 384Mi
+  couchdb:
+    binding:
+      name: binding-customer-couchdb
+
+inventory:
+  image:
+    repository: ibmcase/bluecompute-inventory
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  resources:
+    limits:
+      memory: 384Mi
+  mysql:
+    binding:
+      name: binding-inventorydb-mysql
+
+orders:
+  loadBalancerIp: PUT_PRIVATE_APPLICATION_LOAD_BALANCER_IP_HERE
+  port: 8080
+  targetPort: 80
+
+web:
+  image:
+    repository: ibmcase/bluecompute-web
+    tag: latest
+  clusterName: fabio-dal-12
+  region: ng
+  service:
+    type: NodePort
+    nodeport:
+      port: 31337
+  ingress:
+    path: /bluecompute
+
+ibmcase-couchdb:
+  image:
+    repository: ibmcase/bluecompute-couchdb
+    tag: latest
+  user:
+  password:
+  service:
+    name: customer-couchdb
+    type: ClusterIP
+    externalPort: 5984
+    internalPort: 5984
+  binding:
+    name: binding-customer-couchdb
+  resources:
+    limits:
+      memory: 128Mi
+    requests:
+      memory: 64Mi
+  existingPVCName:
+  labels:
+    app: bluecompute
+    micro: customer
+    tier: data
+  nodename: customerdb
+
+ibmcase-inventory-mysql:
+  binding:
+    name: binding-inventorydb-mysql
+  image:
+    repository: ibmcase/bluecompute-mysql
+    tag: latest
+    pullPolicy: Always
+  resources:
+    limits:
+      memory: 384Mi
+  labels:
+    app: bluecompute
+    tier: data
+    micro: inventory
+  dbname: inventorydb
+  service:
+    name: inventory-mysql
+  busybox:
+    image:
+      repository: ibmcase/bluecompute-busybox
+      tag: latest
+      pullPolicy: IfNotPresent
+
+ibmcase-elasticsearch:
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-elasticsearch
+    tag: latest
+    pullPolicy: IfNotPresent
+  clustername: catalogdb
+  service:
+    name: catalog-elasticsearch
+  labels:
+    app: bluecompute
+    micro: catalog
+    tier: data
+  resources:
+    limits:
+      memory: 700Mi
+    requests:
+      memory: 350Mi
+  secretName: binding-catalog-elasticsearch

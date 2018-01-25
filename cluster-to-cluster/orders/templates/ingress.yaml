@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  annotations:
+    ingress.bluemix.net/ALB-ID: {{ .Values.ingress.loadBalancerID | quote }}
+  labels:
+    release: {{ .Release.Name | quote }}
+    chart: {{ .Chart.Name}}-{{ .Chart.Version }}
+spec:
+  #tls:
+  #- hosts:
+  #  - {{ template "ordersServiceName" . }}
+  #  secretName: {{ .Values.ingress.tlsSecretName }}
+  rules:
+  - host: {{ template "ordersServiceName" . }}
+    http:
+      paths:
+      - path: /micro/orders
+        backend:
+          serviceName: {{ template "ordersServiceName" . }}
+          servicePort: {{ .Values.service.externalPort }}

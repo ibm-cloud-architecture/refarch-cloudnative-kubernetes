@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-orders
+spec:
+  ports:
+   - protocol: TCP
+     port: {{ .Values.orders.port }}
+     targetPort: {{ .Values.orders.targetPort }}
