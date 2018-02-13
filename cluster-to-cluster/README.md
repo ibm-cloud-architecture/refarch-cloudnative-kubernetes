@@ -127,7 +127,7 @@ NOTE: For details on the contents of the orders chart, see the files in the `ord
 ### 3. Validate the Application
 You can reference [this link](https://github.com/fabiogomezdiaz/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.
 
-![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)
+![BlueCompute Detail](https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/static/imgs/bluecompute_web_home.png)
 
 The main thing we want to validate is that, once you are logged in, you are able to `Buy` items and see the orders listed in the `Profile` section. This means that the web app in the `web-cluster` is able to communicate with the `orders` service in the `orders-cluster`.
 
