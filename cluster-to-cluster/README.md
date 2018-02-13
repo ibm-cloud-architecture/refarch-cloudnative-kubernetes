@@ -1,14 +1,6 @@
 # Microservice to Microservice Communication across clusters using Private Network
 Deploying microservices works great inside a single Kubernetes cluster. But what if your microservices need to communicate with other microservices that are deployed in a separate cluster? Better yet, how can you talk with those microservices using an encrypted connection through a private network for added security? Let's see how you can do that with IBM Cloud Container Service (ICCS).
 
-- Overview: Mention how we are going to use Bluecompute CE
-    * We are going to deploy orders and orders mysql in one cluster
-    * Then deploy rest of Bluecompute in another cluster
-    * Will be using custom resources for Bluecompute. TODO: Put link to templates file in bluecompute templates folder
-    * Will be using ingress controller. TODO: Put link to ingress controller template in orders
-    * Will be using TLS. TODO: Put link to TLS secret template
-    * Then will be using TLS
-
 ## Pre-requisites
 - Install the following CLIs:
     * [IBM Cloud account](https://www.ibm.com/cloud-computing/bluemix/containers)
@@ -22,10 +14,19 @@ $ git clone https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes
 $ refarch-cloudnative-kubernetes/cluster-to-cluster
 ```
 
+## Architecture Overview
+COMING SOON
+
+We are going to deploy the `bluecompute-ce` chart as follows:
+- Deploy the `orders` chart, which contains `ibmcase-orders-mysql` as a dependency chart, into one cluster, which we are going to call `orders-cluster`
+- Deploy the `bluecompute-ce`, which does not contain neither `orders` nor its dependent `ibmcase-mysql` chart, into a separate cluster, which we are going to call `web-cluster`.
+- The `orders` service in the `orders-cluster` will be exposed privately to the `web` service in the `web-cluster` via a `Private Application Load Balancer` (ALB) 
+- We will be enabling TLS on the `orders-cluster` Private ALB to add an extra layer of security.
+
+
 ## Setup
 ### 1. Enable VLAN Spanning
 In order for the clusters to talk to each other via Private Network, we need to turn on `VLAN Spanning`.
-
 - Use [these](https://knowledgelayer.softlayer.com/procedure/enable-or-disable-vlan-spanning) instructions to turn on VLAN Spanning.
 
 
@@ -73,7 +74,7 @@ ALB ID                                                Enabled   Status     Type 
 private-cr708a92bffbde4569a04273eb64b3ff04-alb1       true      enabled    private   10.184.13.192
 ```
 
-- Paste it in the `loadBalancerID` field inside the `orders/values.yaml` file and save it.
+- Paste it in the `loadBalancerID` field inside the [orders/values.yaml](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml) file and save it.
 - Deploy the orders chart:
 
 ```bash
@@ -112,7 +113,7 @@ ALB ID                                                Enabled   Status     Type 
 private-cr708a92bffbde4569a04273eb64b3ff04-alb1       true      enabled    private   10.184.13.192
 ```
 
-- Paste it in the `loadBalancerIp` in the `orders` section inside the [`bluecompute-ce/values.yaml`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/templates/ordersEndpoint.yaml) file and save it.
+- Paste it in the `loadBalancerIp` in the `orders` section inside the [`bluecompute-ce/values.yaml`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml) file and save it.
 
 - Now go to the `web-cluster` terminal window.
     - Get kubectl context for the `web-cluster` if you have not done so already.
@@ -134,7 +135,19 @@ The main thing we want to validate is that, once you are logged in, you are able
 If you are able to do the above, then `CONGRATULATIONS`, you have successfully deployed a microservice application across 2 clusters!!!
 
 ### 4. Delete the Application
+To delete the bluecompute application, follow these instructions:
+- Go to the `web-cluster` terminal window and run the following command:
+
+```bash
+$ helm delete bluecompute --purge
+```
+
+- Go to the `orders-cluster` terminal window and run the following command:
+
+```bash
+$ helm delete bluecompute --purge
+```
 
 
 ### Enable TLS
-- Also change the protocol in the web app, or in the bluecompute values yaml file
+COMING SOON
