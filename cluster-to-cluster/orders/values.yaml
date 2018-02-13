@@ -31,8 +31,13 @@ service:
   internalPort: 8080
 
 ingress:
+  enabled: true
   loadBalancerID: PUT_PRIVATE_APPLICATION_LOAD_BALANCER_ID_HERE
-  tlsSecretName: PUT_TLS_SECRET_NAME_HERE
+
+tls:
+  enabled: false
+  crt: PUT_BASE64_ENCODED_CERTIFICATE_HERE
+  key: PUT_BASE64_ENCODED_KEY_HERE
 
 mysql:
   binding:

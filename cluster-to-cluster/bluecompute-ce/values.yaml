@@ -78,15 +78,19 @@ orders:
 web:
   image:
     repository: ibmcase/bluecompute-web
-    tag: latest
-  clusterName: fabio-dal-12
-  region: ng
+    tag: fabio
+  clusterName: PUT_YOUR_CLUSTER_NAME_HERE
+  region: PUT_YOUR_CLUSTER_REGION_HERE
   service:
     type: NodePort
     nodeport:
       port: 31337
   ingress:
     path: /bluecompute
+  services:
+    orders:
+      port: 8080
+      protocol: http
 
 ibmcase-couchdb:
   image:

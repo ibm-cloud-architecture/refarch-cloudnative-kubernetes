@@ -1,3 +1,4 @@
+{{ if .Values.ingress.enabled }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -8,10 +9,12 @@ metadata:
     release: {{ .Release.Name | quote }}
     chart: {{ .Chart.Name}}-{{ .Chart.Version }}
 spec:
-  #tls:
-  #- hosts:
-  #  - {{ template "ordersServiceName" . }}
-  #  secretName: {{ .Values.ingress.tlsSecretName }}
+  {{ if .Values.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ template "ordersServiceName" . }}
+    secretName: {{ .Release.Name }}-{{ .Chart.Name }}-tls
+  {{ end }}
   rules:
   - host: {{ template "ordersServiceName" . }}
     http:
@@ -20,3 +23,4 @@ spec:
         backend:
           serviceName: {{ template "ordersServiceName" . }}
           servicePort: {{ .Values.service.externalPort }}
+{{ end }}
