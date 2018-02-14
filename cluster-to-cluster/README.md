@@ -58,7 +58,7 @@ For this demo, we are going to create `2 Standard Clusters`:
 - Let's call the 2nd cluster `web-cluster`.
     * In here, we are going to deploy the `bluecompute-ce` chart, which includes the charts for the rest of the microservices, minus the `orders` chart
 
-To provision the 2 Standard Cluster, follow [these](https://console.bluemix.net/docs/containers/cs_clusters.html#clusters_ui) instructions.
+To provision the 2 Standard Clusters, follow [these](https://console.bluemix.net/docs/containers/cs_clusters.html#clusters_ui) instructions.
 
 Once the 2 clusters are provisioned, do the following:
 - Open 2 terminal windows.
@@ -123,8 +123,8 @@ In order to accomplish cluster to cluster communication without changing any app
 
 #### b. Deploy the `bluecompute-ce` chart
 To deploy the `bluecompute-ce` chart, follow the instructions below:
-- Go to the `orders-cluster` terminal window.
-- Get the `ALB IP` address for the Private ALB:
+- Now go to the `web-cluster` terminal window.
+- Get the `ALB IP` address for the `orders-cluster` Private ALB:
 
 ```bash
 $ bx cs albs --cluster <orders-cluster-name>
@@ -136,8 +136,6 @@ private-cr708a92bffbde4569a04273eb64b3ff04-alb1       true      enabled    priva
 
 - Paste it in the [`loadBalancerIp`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L74) in the `orders` section inside the [`bluecompute-ce/values.yaml`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L74) file and save it.
 
-- Now go to the `web-cluster` terminal window.
-    - Get kubectl context for the `web-cluster` if you have not done so already.
 - Deploy the `bluecompute-ce` chart:
 
 ```bash
@@ -255,3 +253,19 @@ Now that TLS is enabled in the `orders` chart, we can tell the `bluecompute-ce` 
 3. Change value of [`web.services.orders.protocol`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L93) to `https`.
 
 You have successfully enabled TLS between the `web` application in the `web-cluster` and the `orders` service in the `orders-cluster`. Now you can proceed to deploy both the `orders` and `bluecompute-ce` charts as instructed [`here`](#deploy-bluecompute-across-different-clusters).
+
+If you had already deployed `orders` and `bluecompute-ce`, you can upgrade the chart releases as follows:
+
+1. Go to the `orders-cluster` terminal window and run the following command:
+
+```bash
+$ helm upgrade bluecompute orders
+```
+
+2. Go to the `web-cluster` terminal window and run the following command:
+
+```bash
+$ helm upgrade bluecompute bluecompute-ce
+```
+
+Wait a couple of minutes, then you can validate the application as explained [`here`](#3-validate-the-application).
