@@ -1,6 +1,27 @@
 # Microservice to Microservice Communication across clusters using Private Network
 Deploying microservices works great inside a single Kubernetes cluster. But what if your microservices need to communicate with other microservices that are deployed in a separate cluster? Better yet, how can you talk with those microservices using an encrypted connection through a private network for added security? Let's see how you can do that with IBM Cloud Container Service (ICCS).
 
+## Table of Contents
+* [Table of Contents](#table-of-contents)
+* [Pre-requisites](#pre-requisites)
+* [Architecture Overview](#architecture-overview)
+* [Setup](#setup)
+    + [1. Enable VLAN Spanning](#1-enable-vlan-spanning)
+    + [2. Deploy 2 standard clusters](#2-deploy-2-standard-clusters)
+    + [3. Enable Private Application Load Balancer (ALB)](#3-enable-private-application-load-balancer-alb)
+* [Deploy Bluecompute across different clusters](#deploy-bluecompute-across-different-clusters)
+    + [1. Deploy the `orders` chart in the `orders-cluster`](#1-deploy-the-orders-chart-in-the-orders-cluster)
+    + [2. Deploy the `bluecompute-ce` chart in the `web-cluster`](#2-deploy-the-bluecompute-ce-chart-in-the-web-cluster)
+      - [a. Custom Endpoints Overview](#a-custom-endpoints-overview)
+      - [b. Deploy the `bluecompute-ce` chart](#b-deploy-the-bluecompute-ce-chart)
+    + [3. Validate the Application](#3-validate-the-application)
+    + [4. Delete the Application](#4-delete-the-application)
+* [Enable TLS](#enable-tls)
+    + [1. Create a TLS certificate](#1-create-a-tls-certificate)
+    + [2. Put the TLS certificate and key into `orders/values.yaml`](#2-put-the-tls-certificate-and-key-into-ordersvaluesyaml)
+    + [3. Enable TLS in `orders` chart](#3-enable-tls-in-orders-chart)
+    + [4. Enable TLS for `orders` service in the `bluecompute-ce` chart](#4-enable-tls-for-orders-service-in-the-bluecompute-ce-chart)
+
 ## Pre-requisites
 - Install the following CLIs:
     * [IBM Cloud account](https://www.ibm.com/cloud-computing/bluemix/containers)
@@ -11,11 +32,11 @@ Deploying microservices works great inside a single Kubernetes cluster. But what
 
 ```
 $ git clone https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes
-$ refarch-cloudnative-kubernetes/cluster-to-cluster
+$ cd refarch-cloudnative-kubernetes/cluster-to-cluster
 ```
 
 ## Architecture Overview
-COMING SOON
+DIAGRAM COMING SOON
 
 We are going to deploy the `bluecompute-ce` chart as follows:
 - Deploy the `orders` chart, which contains `ibmcase-orders-mysql` as a dependency chart, into one cluster, which we are going to call `orders-cluster`
@@ -74,7 +95,7 @@ ALB ID                                                Enabled   Status     Type 
 private-cr708a92bffbde4569a04273eb64b3ff04-alb1       true      enabled    private   10.184.13.192
 ```
 
-- Paste it in the `loadBalancerID` field inside the [orders/values.yaml](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml) file and save it.
+- Paste it in the [`loadBalancerID`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L35) field inside the [orders/values.yaml](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L35) file and save it.
 - Deploy the orders chart:
 
 ```bash
@@ -113,7 +134,7 @@ ALB ID                                                Enabled   Status     Type 
 private-cr708a92bffbde4569a04273eb64b3ff04-alb1       true      enabled    private   10.184.13.192
 ```
 
-- Paste it in the `loadBalancerIp` in the `orders` section inside the [`bluecompute-ce/values.yaml`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml) file and save it.
+- Paste it in the [`loadBalancerIp`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L74) in the `orders` section inside the [`bluecompute-ce/values.yaml`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L74) file and save it.
 
 - Now go to the `web-cluster` terminal window.
     - Get kubectl context for the `web-cluster` if you have not done so already.
@@ -148,6 +169,89 @@ $ helm delete bluecompute --purge
 $ helm delete bluecompute --purge
 ```
 
+NOTE: The releases are both called `bluecompute`.
 
-### Enable TLS
-COMING SOON
+## Enable TLS
+In some scenarios, just having private microservice communication between services across clusters is enough security-wise. But in some scenarios, private and `encrypted` communication is required to add that extra layer of security. For that we can use `Transport Layer Security` (TLS) encryption.
+
+To enable TLS, you need to do a few things, then you can proceed to deploy the applications as outlined in the sections above. In later sections you will see all the details to enable TLS, but here is an overview of the steps you will have to go through:
+- Create a TLS certificate
+- Put the TLS certificate and TLS key in the `orders/values.yaml` file, which will create a secret
+- Enable TLS in the orders ingress resource via `orders/values.yaml`
+- In the `bluecompute-ce/values.yaml` file, you need to update the `orders` protocol to `https` and the orders ports to `443` to fully enable TLS
+
+DIAGRAM COMING SOON
+
+To enable TLS, the only additional Kubernetes resource that we are creating is a secret to hold the TLS certificate, which is used by the Ingress resource to enforce TLS.
+
+### 1. Create a TLS certificate
+The first thing to do to enable TLS is to create a certificate using OpenSSL, which you might to install on your workstation. Here is the command to create a TLS certificate:
+
+```bash
+$ openssl req -newkey rsa:4096 -nodes -sha512 -x509 -days 3650 -nodes -out tls.crt -keyout tls.key
+```
+
+The above command will generate a key and ask you a series of questions, as shown below:
+
+```bash
+Generating a 4096 bit RSA private key
+..................++
+.........................................................................................................................................................................++
+writing new private key to 'tls.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) []:US
+State or Province Name (full name) []:Texas
+Locality Name (eg, city) []:Austin
+Organization Name (eg, company) []:IBM
+Organizational Unit Name (eg, section) []:CASE
+Common Name (eg, fully qualified host name) []:bluecompute-orders
+Email Address []:you@email.com
+```
+
+Feel free to enter the values shown above, but the most important thing to enter is a value of `bluecompute-orders` for the `Common Name` field. This will allow the Private Ingress/ALB in `orders-cluster` to route requests for `bluecompute-orders` domain name to the `orders` service in the `orders-cluster`.
+
+You may ask yourself whether you need to go to a domain registrar first and register this domain name, but since we are leveraging [kube-dns](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/) and the Private Ingress/ALB domain routing features, we can avoid this step.
+
+### 2. Put the TLS certificate and key into `orders/values.yaml`
+Now that we have your TLS certificate, we need to put it in the `orders/values.yaml` as follows:
+
+1. Get the contents of the `tls.crt` file and then encode it in base64 format:
+
+```bash
+$ cat tls.crt | base64
+```
+
+2. Copy the output of the above command into the [`crt`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L39) field in the `tls` section of [orders/values.yaml](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L39) file and save it.
+
+3. Get the contents of the `tls.key` file and then encode it in base64 format:
+
+```bash
+$ cat tls.key | base64
+```
+
+4. Copy the output of the above command into the [`key`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L40) field in the `tls` section of [orders/values.yaml](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L40) file and save it.
+
+The steps above are needed to create a Kubernetes Secrets for the TLS Certificate and Key, which the Ingress resource requires to enforce TLS and traffic rules for the `bluecompute-orders` domain name.
+
+### 3. Enable TLS in `orders` chart
+To enable TLS in the `orders` chart's ingress controller, change the value of [`enabled`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L38) field in the `tls` section to `true` in [orders/values.yaml](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L38) file and save it.
+
+The above will enable TLS in the Ingress resource, which will use the TLS secret created in the previous step to encorce TLS and traffic rules for the `bluecompute-orders` domain name.
+
+Once the `orders` chart is deployed, TLS will be fully enabled.
+
+### 4. Enable TLS for `orders` service in the `bluecompute-ce` chart
+Now that TLS is enabled in the `orders` chart, we can tell the `bluecompute-ce` chart to start using `https` protocol when commnicating with the `bluecompute-orders` service. To do so, you need to do the following in the `bluecompute-ce/values.yaml`
+
+1. Change value both [`orders.port`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L75) and [`orders.targetPort`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L76) to `443`.
+2. Change value of [`web.services.orders.port`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L92) to `443`.
+3. Change value of [`web.services.orders.protocol`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L93) to `https`.
+
+You have successfully enabled TLS between the `web` application in the `web-cluster` and the `orders` service in the `orders-cluster`. Now you can proceed to deploy both the `orders` and `bluecompute-ce` charts as instructed [`here`](#deploy-bluecompute-across-different-clusters).
