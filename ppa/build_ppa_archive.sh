@@ -1,10 +1,11 @@
 #!/bin/bash
 
-CHART_VERSION=0.0.3
+CHART_VERSION=0.0.5
 
 _images="\
 ibmcase/bluecompute-dataloader:latest \
 ibmcase/bluecompute-bash-curl-ssl:latest \
+ibmcase/bluecompute-busybox:latest \
 ibmcase/bluecompute-mysql:latest \
 ibmcase/bluecompute-elasticsearch:latest \
 ibmcase/bluecompute-couchdb:latest \

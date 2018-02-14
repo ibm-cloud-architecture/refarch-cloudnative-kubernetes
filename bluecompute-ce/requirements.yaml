@@ -1,31 +1,31 @@
 dependencies:
   - name: auth
     version: 0.3.0
-    repository: https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: catalog
     version: 0.3.0
-    repository: https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: customer
     version: 0.3.0
-    repository: https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: inventory
     version: 0.3.0
-    repository: https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: orders
     version: 0.3.0
-    repository: https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: web
     version: 0.3.0
-    repository: https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: ibmcase-couchdb
-    repository: https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts
     version: 0.2.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: ibmcase-inventory-mysql
-    repository: https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts
-    version: 0.2.0
+    version: 0.3.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: ibmcase-orders-mysql
-    repository: https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts
-    version: 0.2.0
+    version: 0.3.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
   - name: ibmcase-elasticsearch
-    repository: https://raw.githubusercontent.com/jkwong888/refarch-cloudnative-kubernetes/master/docs/charts
     version: 0.2.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts

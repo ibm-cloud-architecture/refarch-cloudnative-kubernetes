@@ -96,6 +96,7 @@ web:
     nodeport:
       port: 31337
   ingress:
+    hostname:
     path: /bluecompute
 
 ibmcase-couchdb:
@@ -139,6 +140,11 @@ ibmcase-inventory-mysql:
   dbname: inventorydb
   service:
     name: inventory-mysql
+  busybox:
+    image:
+      repository: ibmcase/bluecompute-busybox
+      tag: latest
+      pullPolicy: IfNotPresent
 
 ibmcase-orders-mysql:
   binding:
@@ -156,6 +162,11 @@ ibmcase-orders-mysql:
   dbname: ordersdb
   service:
     name: orders-mysql
+  busybox:
+    image:
+      repository: ibmcase/bluecompute-busybox
+      tag: latest
+      pullPolicy: IfNotPresent
 
 ibmcase-elasticsearch:
   replicaCount: 1
@@ -163,21 +174,16 @@ ibmcase-elasticsearch:
     repository: ibmcase/bluecompute-elasticsearch
     tag: latest
     pullPolicy: IfNotPresent
-
   clustername: catalogdb
-
   service:
     name: catalog-elasticsearch
-
   labels:
     app: bluecompute
     micro: catalog
     tier: data
-
   resources:
     limits:
       memory: 700Mi
     requests:
       memory: 350Mi
-
   secretName: binding-catalog-elasticsearch
