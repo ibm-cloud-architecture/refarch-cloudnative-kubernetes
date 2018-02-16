@@ -2,7 +2,6 @@
 Deploying microservices works great inside a single Kubernetes cluster. But what if your microservices need to communicate with other microservices that are deployed in a separate cluster? Better yet, how can you talk with those microservices using an encrypted connection through a private network for added security? Let's see how you can do that with IBM Cloud Container Service (ICCS).
 
 ## Table of Contents
-* [Table of Contents](#table-of-contents)
 * [Pre-requisites](#pre-requisites)
 * [Architecture Overview](#architecture-overview)
 * [Setup](#setup)
@@ -12,8 +11,8 @@ Deploying microservices works great inside a single Kubernetes cluster. But what
 * [Deploy Bluecompute across different clusters](#deploy-bluecompute-across-different-clusters)
     + [1. Deploy the `orders` chart in the `orders-cluster`](#1-deploy-the-orders-chart-in-the-orders-cluster)
     + [2. Deploy the `bluecompute-ce` chart in the `web-cluster`](#2-deploy-the-bluecompute-ce-chart-in-the-web-cluster)
-      - [a. Custom Endpoints Overview](#a-custom-endpoints-overview)
-      - [b. Deploy the `bluecompute-ce` chart](#b-deploy-the-bluecompute-ce-chart)
+        - [a. Custom Endpoints Overview](#a-custom-endpoints-overview)
+        - [b. Deploy the `bluecompute-ce` chart](#b-deploy-the-bluecompute-ce-chart)
     + [3. Validate the Application](#3-validate-the-application)
     + [4. Delete the Application](#4-delete-the-application)
 * [Enable TLS](#enable-tls)
@@ -21,6 +20,7 @@ Deploying microservices works great inside a single Kubernetes cluster. But what
     + [2. Put the TLS certificate and key into `orders/values.yaml`](#2-put-the-tls-certificate-and-key-into-ordersvaluesyaml)
     + [3. Enable TLS in `orders` chart](#3-enable-tls-in-orders-chart)
     + [4. Enable TLS for `orders` service in the `bluecompute-ce` chart](#4-enable-tls-for-orders-service-in-the-bluecompute-ce-chart)
+    + [5. Validate TLS in the Application](#5-validate-tls-in-the-application)
 
 ## Pre-requisites
 - Install the following CLIs:
@@ -268,4 +268,19 @@ $ helm upgrade bluecompute orders
 $ helm upgrade bluecompute bluecompute-ce
 ```
 
-Wait a couple of minutes, then you can validate the application as explained [`here`](#3-validate-the-application).
+### 5. Validate TLS in the Application
+After waiting a few minutes after the install/upgrade you can validate the basic application functionality as explained [`here`](#3-validate-the-application). To validate that the web app is communicating with the orders microservice using TLS, do the following:
+
+1. Login to the bluecompute app using `user` as username and `passw0rd` for password.
+2. Click on any of the catalog items and place an order.
+    + You should see a confirmation that the order was placed successfully.
+3. Click on the `Profile` icon to retrieve the order you just placed.
+    + You should be able to see the item you ordered, the amount, and the date.
+
+The above steps should have triggered some logs in the `web` pod that shows the networking request to the `orders` microservice. Open the logs of the `web` pod and you should see logs that look as follows:
+
+![POST logs](imgs/logs_post.png?raw=true)
+
+![GET logs](imgs/logs_get.png?raw=true)
+
+The above images show the POST request that was made when making a purchase followed by the GET request that was made when retrieving the orders in the Profile section. Notice that each requests uses `https://bluecompute-orders:443` as the URL for the orders microservice, showing that it's using TLS as indicated by the `https` protocol and the `443` port.
