@@ -31,12 +31,12 @@ Deploying microservices works great inside a single Kubernetes cluster. But what
 - Clone the repo and cd to `cluster-to-cluster`:
 
 ```
-$ git clone https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes
+$ git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes
 $ cd refarch-cloudnative-kubernetes/cluster-to-cluster
 ```
 
 ## Architecture Overview
-DIAGRAM COMING SOON
+![Architecture](imgs/cluster_to_cluster.png?raw=true)
 
 We are going to deploy the `bluecompute-ce` chart as follows:
 - Deploy the `orders` chart, which contains `ibmcase-orders-mysql` as a dependency chart, into one cluster, which we are going to call `orders-cluster`
@@ -95,7 +95,7 @@ ALB ID                                                Enabled   Status     Type 
 private-cr708a92bffbde4569a04273eb64b3ff04-alb1       true      enabled    private   10.184.13.192
 ```
 
-- Paste it in the [`loadBalancerID`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L35) field inside the [orders/values.yaml](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L35) file and save it.
+- Paste it in the [`loadBalancerID`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L35) field inside the [orders/values.yaml](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L35) file and save it.
 - Deploy the orders chart:
 
 ```bash
@@ -113,12 +113,12 @@ We want the `web` application to communicate with the `orders` service in the `o
 In order to accomplish cluster to cluster communication without changing any application code or edit the existing YAML files in the `web` chart, we created the following in the `bluecompute-ce` chart's templates folder:
 - A custom `Service` for `orders` service:
     * This service will point to a custom `Endpoint` for `orders` service in `orders-cluster`, explained below.
-    * For details on the custom endpoint, checkout the [`bluecompute-ce/templates/ordersEndpoint.yaml`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/templates/ordersService.yaml) file.
+    * For details on the custom endpoint, checkout the [`bluecompute-ce/templates/ordersEndpoint.yaml`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/templates/ordersService.yaml) file.
 - A custom `Endpoint` for `orders` service:
     * This endpoint contains the IP address of the Private ALB in the `orders-cluster` and port 80 for the Ingress.
         + We are leveraging a Kubernetes feature called `Headless services Without selectors`, which you can learn about [here](https://kubernetes.io/docs/concepts/services-networking/service/#without-selectors)
     * Since we are not enabling `Transport Layer Security` (TLS) in the `orders-cluster` ingress yet (which will do in a later section) the endpoint will contain port 80 for the Ingress.
-    * For details on the custom endpoint, checkout the [`bluecompute-ce/templates/ordersEndpoint.yaml`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/templates/ordersEndpoint.yaml) file.
+    * For details on the custom endpoint, checkout the [`bluecompute-ce/templates/ordersEndpoint.yaml`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/templates/ordersEndpoint.yaml) file.
 
 
 #### b. Deploy the `bluecompute-ce` chart
@@ -134,7 +134,7 @@ ALB ID                                                Enabled   Status     Type 
 private-cr708a92bffbde4569a04273eb64b3ff04-alb1       true      enabled    private   10.184.13.192
 ```
 
-- Paste it in the [`loadBalancerIp`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L74) in the `orders` section inside the [`bluecompute-ce/values.yaml`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L74) file and save it.
+- Paste it in the [`loadBalancerIp`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L74) in the `orders` section inside the [`bluecompute-ce/values.yaml`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L74) file and save it.
 
 - Deploy the `bluecompute-ce` chart:
 
@@ -145,9 +145,9 @@ $ helm install --name bluecompute bluecompute-ce
 NOTE: For details on the contents of the orders chart, see the files in the `orders` folder. Particularly, check out `orders/templates/ingress.yaml` to check out the ingress resource.
 
 ### 3. Validate the Application
-You can reference [this link](https://github.com/fabiogomezdiaz/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.
+You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.
 
-![BlueCompute Detail](https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/static/imgs/bluecompute_web_home.png)
+![BlueCompute Detail](https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/static/imgs/bluecompute_web_home.png)
 
 The main thing we want to validate is that, once you are logged in, you are able to `Buy` items and see the orders listed in the `Profile` section. This means that the web app in the `web-cluster` is able to communicate with the `orders` service in the `orders-cluster`.
 
@@ -178,7 +178,7 @@ To enable TLS, you need to do a few things, then you can proceed to deploy the a
 - Enable TLS in the orders ingress resource via `orders/values.yaml`
 - In the `bluecompute-ce/values.yaml` file, you need to update the `orders` protocol to `https` and the orders ports to `443` to fully enable TLS
 
-DIAGRAM COMING SOON
+![Architecture](imgs/cluster_to_cluster_with_tls.png?raw=true)
 
 To enable TLS, the only additional Kubernetes resource that we are creating is a secret to hold the TLS certificate, which is used by the Ingress resource to enforce TLS.
 
@@ -226,7 +226,7 @@ Now that we have your TLS certificate, we need to put it in the `orders/values.y
 $ cat tls.crt | base64
 ```
 
-2. Copy the output of the above command into the [`crt`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L39) field in the `tls` section of [orders/values.yaml](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L39) file and save it.
+2. Copy the output of the above command into the [`crt`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L39) field in the `tls` section of [orders/values.yaml](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L39) file and save it.
 
 3. Get the contents of the `tls.key` file and then encode it in base64 format:
 
@@ -234,12 +234,12 @@ $ cat tls.crt | base64
 $ cat tls.key | base64
 ```
 
-4. Copy the output of the above command into the [`key`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L40) field in the `tls` section of [orders/values.yaml](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L40) file and save it.
+4. Copy the output of the above command into the [`key`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L40) field in the `tls` section of [orders/values.yaml](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L40) file and save it.
 
 The steps above are needed to create a Kubernetes Secrets for the TLS Certificate and Key, which the Ingress resource requires to enforce TLS and traffic rules for the `bluecompute-orders` domain name.
 
 ### 3. Enable TLS in `orders` chart
-To enable TLS in the `orders` chart's ingress controller, change the value of [`enabled`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L38) field in the `tls` section to `true` in [orders/values.yaml](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L38) file and save it.
+To enable TLS in the `orders` chart's ingress controller, change the value of [`enabled`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L38) field in the `tls` section to `true` in [orders/values.yaml](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/orders/values.yaml#L38) file and save it.
 
 The above will enable TLS in the Ingress resource, which will use the TLS secret created in the previous step to encorce TLS and traffic rules for the `bluecompute-orders` domain name.
 
@@ -248,9 +248,9 @@ Once the `orders` chart is deployed, TLS will be fully enabled.
 ### 4. Enable TLS for `orders` service in the `bluecompute-ce` chart
 Now that TLS is enabled in the `orders` chart, we can tell the `bluecompute-ce` chart to start using `https` protocol when commnicating with the `bluecompute-orders` service. To do so, you need to do the following in the `bluecompute-ce/values.yaml`
 
-1. Change value both [`orders.port`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L75) and [`orders.targetPort`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L76) to `443`.
-2. Change value of [`web.services.orders.port`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L92) to `443`.
-3. Change value of [`web.services.orders.protocol`](https://github.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L93) to `https`.
+1. Change value both [`orders.port`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L75) and [`orders.targetPort`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L76) to `443`.
+2. Change value of [`web.services.orders.port`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L92) to `443`.
+3. Change value of [`web.services.orders.protocol`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/cluster-to-cluster/bluecompute-ce/values.yaml#L93) to `https`.
 
 You have successfully enabled TLS between the `web` application in the `web-cluster` and the `orders` service in the `orders-cluster`. Now you can proceed to deploy both the `orders` and `bluecompute-ce` charts as instructed [`here`](#deploy-bluecompute-across-different-clusters).
 
