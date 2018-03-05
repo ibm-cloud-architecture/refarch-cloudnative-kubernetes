@@ -55,7 +55,7 @@ This will pull all the pre-requisite Docker images and the chart into a single t
 docker login mycluster.icp:8500
 ```
 
-Authenticate with the `bx pr` CLI using the following command.  For a cluster named `mycluster.icp`, use the following:
+Authenticate with the `bx pr` CLI (which you can install using [these](#installing-the-bx-pr-cli) instructions) using the following command.  For a cluster named `mycluster.icp`, use the following:
 
 ```bash
 bx pr login -a https://mycluster.icp:8443 --skip-ssl-validation
@@ -70,3 +70,10 @@ bx pr load-ppa-archive --archive bluecompute-ce-ppa-0.0.5.tgz --clustername mycl
 This will push all of the images into the private registry under the `default` namespace and load the chart to the `local-charts` helm chart repository in ICP.  You can install the chart from the catalog in the `local-charts` repository.
 
 For more information on this procedure in ICP, see the [documentation](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0/app_center/add_package_offline.html).
+
+## Installing the `bx pr` CLI
+Navigate to the `Cloud Private CLI` page in the ICP dashboard (as shown below) and download the CLI for your platform.
+
+![bx pr cli install instructions](imgs/bx_pr_cli.png?raw=true)
+
+Once downloaded, you can install the `Cloud Private CLI` using [these](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0/manage_cluster/install_cli.html) instructions.
