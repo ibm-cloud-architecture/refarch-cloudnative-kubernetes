@@ -77,6 +77,7 @@ To deploy the application, you require the following tools:
 
 - [kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it on your platform.
 - [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
+  + If using `IBM Cloud Private` version `2.1.0.2` or newer, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0.2/app_center/create_helm_cli.html) to install `helm`.
 
 ### Get application source code (optional)
 
@@ -153,9 +154,9 @@ For additional information, you can also use the command:
 ### Login
 
 Use the following test credentials to login:
-
 - **Username:** user
 - **Password:** passw0rd
+
 
 ## Delete the Application
 
@@ -202,11 +203,9 @@ When deleting the application, note that the services are not automatically remo
 ### Deploy BlueCompute to IBM Cloud Private
 
 IBM Cloud Private contains integration with Helm that allows you to install the application and all of its components in a few steps. This can be done as an administrator using the following steps:
-
 1. Click on the user icon on the top right corner and then click on `Configure client`.
 2. Copy the displayed `kubectl` configuration, paste it in your terminal, and press Enter on your keyboard.
-3. Initialize `helm` in your cluster.
-
+3. Initialize `helm` in your cluster. If you are using `IBM Cloud Private` version `2.1.0.2` or newer, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0.2/app_center/create_helm_cli.html) to install and initialize `helm`. If you are using an earlier version (2.1.0.1 or earlier) of IBM Cloud Private, please use the following command:
    ```
    $ helm init
    ```
