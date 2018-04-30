@@ -9,7 +9,4 @@ REQUIRED_REPOS=(
          refarch-cloudnative-micro-inventory
          refarch-cloudnative-micro-orders
          refarch-cloudnative-micro-customer
-         refarch-cloudnative-devops-kubernetes
-         refarch-cloudnative-resiliency 
-         refarch-cloudnative-kubernetes-csmo
 )
