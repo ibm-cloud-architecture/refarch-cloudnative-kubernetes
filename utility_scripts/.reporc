@@ -1,0 +1,15 @@
+#################################################################################
+## Required repositories
+## Utility scripts will process these repos in order.
+#################################################################################
+
+REQUIRED_REPOS=(
+         refarch-cloudnative-bluecompute-web
+         refarch-cloudnative-auth
+         refarch-cloudnative-micro-inventory
+         refarch-cloudnative-micro-orders
+         refarch-cloudnative-micro-customer
+         refarch-cloudnative-devops-kubernetes
+         refarch-cloudnative-resiliency 
+         refarch-cloudnative-kubernetes-csmo
+)

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.ibm.case.microservices.bluecompute</groupId>
+  <artifactId>project</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>project</name>
+
+  <modules>
+        <module>../refarch-cloudnative-micro-inventory/inventory</module>
+        <module>../refarch-cloudnative-micro-inventory/catalog</module>
+        <module>../refarch-cloudnative-auth</module>
+        <module>../refarch-cloudnative-micro-customer</module>
+        <module>../refarch-cloudnative-micro-orders</module>
+  </modules>
+
+<build>
+<plugins>
+  <!-- Enable liberty-maven plugin -->
+  <plugin>
+      <groupId>net.wasdev.wlp.maven.plugins</groupId>
+      <artifactId>liberty-maven-plugin</artifactId>
+      <version>1.2</version>
+      <executions>
+        <execution>
+            <id>stop-server</id>
+            <phase>post-integration-test</phase>
+            <goals>
+                <goal>stop-server</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+      <skip>true</skip>
+    </configuration>
+  </plugin>
+
+</plugins>
+</build>
+
+</project>
