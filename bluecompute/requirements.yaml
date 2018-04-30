@@ -1,0 +1,4 @@
+dependencies:
+  - name: inventory
+    version: 0.1.0
+    repository: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile/docs/charts

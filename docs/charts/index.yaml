@@ -1,0 +1,9 @@
+apiVersion: v1
+entries:
+  inventory:
+  - apiVersion: v1
+    description: BlueCompute Inventory Microservice
+    name: inventory
+    urls:
+    - https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/docs/charts/inventory-1.0.0.tgz
+    version: 0.1.0
