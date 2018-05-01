@@ -2,8 +2,11 @@ apiVersion: v1
 entries:
   inventory:
   - apiVersion: v1
-    description: BlueCompute Inventory Microservice Microprofile
+    created: 2018-05-01T09:15:00.295389-05:00
+    description: A Helm chart for Kubernetes
+    digest: a326c14002093435a33d31e4fefd48ad2a045ab544883418803f96f4ff92d5dd
     name: inventory
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/bluecompute-mp/inventory-1.0.0.tgz
+    - inventory-1.0.0.tgz
     version: 1.0.0
+generated: 2018-05-01T09:15:00.292639-05:00
