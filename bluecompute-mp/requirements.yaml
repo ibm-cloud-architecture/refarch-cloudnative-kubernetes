@@ -1,0 +1,4 @@
+dependencies:
+  - name: bluecompute
+    version: 0.0.1
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp

@@ -20,3 +20,6 @@ dependencies:
   - name: ibmcase-elasticsearch
     version: 0.2.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/bluecompute-mp
+  - name: keystore
+    version: 1.0.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/bluecompute-mp

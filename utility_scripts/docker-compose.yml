@@ -2,76 +2,28 @@ version: '3'
 services:
   inventory:
    build: ../../refarch-cloudnative-micro-inventory/inventory
-   image: ${WFD_DOCKER_REPO:-ibmcase}/inventory:microprofile
-   depends_on:
-    - mysql
-   ports:
-    - "9180:9080"
-   env_file:
-    - wfd.env
-
-  mysql:
-   build: ../../refarch-cloudnative-micro-inventory/mysql
-   image: ${WFD_DOCKER_REPO:-ibmcase}/mysql:microprofile
-   environment:
-     - MYSQL_ROOT_PASSWORD=password
-   ports:
-    - "9041:3306"
+   image: inventory:v1.0.0
 
   catalog:
    build: ../../refarch-cloudnative-micro-inventory/catalog
-   image: ${WFD_DOCKER_REPO:-ibmcase}/catalog:microprofile
-   depends_on:
-    - elasticsearch
-    - inventory
-   ports:
-    - "9280:9080"
-   environment:
-     - elasticsearch_url=http://elasticsearch:9200
-     - elasticsearch_index=micro
-     - elasticsearch_doc_type=items
-     - elasticsearch_user=<user name>
-     - elasticsearch_password=<password>
-     - inventory_url=http://inventory:9080/inventory/rest/inv/inventory
-     - inventory_health=http://inventory:9080/inventory/rest/inv/health
-     - application.rest.CatalogService/getInventory/Retry/maxRetries=5
+   image: catalog:v1.0.0
 
   orders:
    build: ../../refarch-cloudnative-micro-orders
-   image: ${WFD_DOCKER_REPO:-ibmcase}/orders:microprofile
-   depends_on:
-    - rabbitmq
-   ports:
-    - "9380:9080"
-    - "7443:9443"
-   environment:
-     - jdbcURL=jdbc:mysql://mysql:3306/ordersdb?useSSL=false
-     - dbuser=root
-     - dbpassword=password
-     - inventory_url=http://inventory:9080/inventory/rest/inv/stock
+   image: orders:v1.0.0
+
+  customer:
+   build: ../../refarch-cloudnative-micro-customer
+   image: customer:v1.0.0
 
   auth:
    build: ../../refarch-cloudnative-auth
-   image: ${WFD_DOCKER_REPO:-ibmcase}/auth:microprofile
-   ports:
-    - "9580:9080"
-    - "8443:9443"
-
-  elasticsearch:
-   image: ${WFD_DOCKER_REPO:-ibmcase}/bluecompute-elasticsearch
-   ports:
-    - "9200:9200"
-   env_file:
-    - wfd.env
-
-  rabbitmq:
-   image: ${WFD_DOCKER_REPO:-ibmcase}/rabbitmq
-   ports:
-    - "5672:5672"
-    - "15672:15672"
+   image: auth:v1.0.0
 
   web:
    build: ../../refarch-cloudnative-bluecompute-web
-   image: ${WFD_DOCKER_REPO:-ibmcase}/web:microprofile
-   ports:
-    - "8000:8000"
+   image: bc-web:v1.0.0
+
+  keystore:
+   build: ../Kube_Jobs
+   image: keygen:latest
