@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   auth:
   - apiVersion: v1
-    created: 2018-05-02T15:07:49.092975-05:00
+    created: 2018-05-02T16:13:47.971665-05:00
     description: A Helm chart for Kubernetes
     digest: 49d7637579fa4bb9f832f0517f2b12045c1fef8d149fc7e270e1918ad82a76ff
     name: auth
@@ -11,7 +11,7 @@ entries:
     version: 1.0.0
   catalog:
   - apiVersion: v1
-    created: 2018-05-02T15:07:49.093754-05:00
+    created: 2018-05-02T16:13:47.972218-05:00
     description: A Helm chart for Kubernetes
     digest: 66b35eac405d0685787a68ac1de8809442a31a1b6109c61e1632aedf0dc7bb72
     name: catalog
@@ -20,7 +20,7 @@ entries:
     version: 1.0.0
   customer:
   - apiVersion: v1
-    created: 2018-05-02T15:07:49.094427-05:00
+    created: 2018-05-02T16:13:47.97284-05:00
     description: A Helm chart for Kubernetes
     digest: f765a960f30a140c41af2af8644b85289d377ae93a50adcdfaaa62a22944134d
     name: customer
@@ -29,17 +29,17 @@ entries:
     version: 1.0.0
   ibmcase-elasticsearch:
   - apiVersion: v1
-    created: 2018-05-02T15:07:49.095146-05:00
+    created: 2018-05-02T16:13:47.973091-05:00
     description: ElasticSearch
-    digest: a6a588f77cb55217a3a2870dbffe2d300b4f10662e90ecd5d84daec7cd70114c
+    digest: 0a28e3587dad578fe58636011804b733a2a7a8b894eae460f2ea9534071307bf
     icon: https://static-www.elastic.co/assets/blt9a26f88bfbd20eb5/icon-elasticsearch-bb.svg
-    name: es
+    name: ibmcase-elasticsearch
     urls:
     - ibmcase-elasticsearch-0.2.0.tgz
     version: 0.2.0
   inventory:
   - apiVersion: v1
-    created: 2018-05-02T15:07:49.095707-05:00
+    created: 2018-05-02T16:13:47.973663-05:00
     description: A Helm chart for Kubernetes
     digest: a326c14002093435a33d31e4fefd48ad2a045ab544883418803f96f4ff92d5dd
     name: inventory
@@ -48,7 +48,7 @@ entries:
     version: 1.0.0
   keystore:
   - apiVersion: v1
-    created: 2018-05-02T15:07:49.096393-05:00
+    created: 2018-05-02T16:13:47.974411-05:00
     description: A Helm chart for keystore
     digest: 8d0c5eaba565e590da10885300654c7c7227b44b1ab36e4d6aa8089f090590b6
     name: keystore
@@ -57,21 +57,21 @@ entries:
     version: 1.0.0
   mysql:
   - appVersion: 1.0.0
-    created: 2018-05-02T15:07:49.097437-05:00
+    created: 2018-05-02T16:13:47.975446-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
-    digest: 20680a901fe20b6b906fd8de9b3ef7331a019361a662ac8442ed56bb0b5ab4ac
-    name: bc
+    digest: b2b6fe008f5a930fb2b26a9fc514d626fa00431e5b0b6b33cb338cfbd33aea6d
+    name: mysql
     urls:
     - mysql-1.0.0.tgz
     version: 1.0.0
   web:
   - apiVersion: v1
-    created: 2018-05-02T15:07:49.098073-05:00
+    created: 2018-05-02T16:13:47.976046-05:00
     description: BlueCompute Web BFF app
     digest: 3ee56ac8aef9922913faee5239e3435b8d3fda171aaab42d24edc152ddda6494
     name: web
     urls:
     - web-0.3.0.tgz
     version: 0.3.0
-generated: 2018-05-02T15:07:49.090394-05:00
+generated: 2018-05-02T16:13:47.969363-05:00
