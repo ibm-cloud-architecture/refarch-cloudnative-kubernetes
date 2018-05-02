@@ -83,10 +83,17 @@ If it is a success, you will see the below output.
 Successfully built b984978b74h2
 Successfully tagged keygen:latest
 ```
-2. Run the kubernetes job.
+2. Run the helm chart.
 
-`kubectl create -f ./job.yaml`
+`helm install --name=keystore chart/keystore`
 
 3. To validate, check if the secrets are created as below.
 
 `kubectl get secrets`
+
+You will see something like below.
+
+```
+NAME                                        TYPE                                  DATA      AGE
+keystoresecret                              Opaque                                2         6m
+```
