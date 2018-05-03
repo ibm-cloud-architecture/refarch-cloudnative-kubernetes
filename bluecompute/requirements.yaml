@@ -23,3 +23,9 @@ dependencies:
   - name: keystore
     version: 1.0.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/bluecompute-mp
+  - name: mysql
+    version: 2.0.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/bluecompute-mp
+  - name: orders
+    version: 1.0.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/bluecompute-mp
