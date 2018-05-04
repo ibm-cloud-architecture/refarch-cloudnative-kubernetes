@@ -4,3 +4,5 @@
 
 bluecompute/charts/
 bluecompute/requirements.lock
+bluecompute-icp/charts/
+bluecompute-icp/requirements.lock
