@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   bluecompute-icp:
   - apiVersion: v1
-    created: 2018-05-04T11:46:28.537184-05:00
+    created: 2018-05-04T12:24:50.259152-05:00
     description: Bluecompute Microprofile Application Chart
-    digest: e6efc9bd2ecc6bf1eeb53f21c3c80627264e0a53b9ce3ba258c8bb324d7c5e2f
+    digest: 64411453bd2a402b83d3a2140d1fe8f2fe987dafc2144b3f67a56160af6a4c5e
     name: bluecompute-icp
     urls:
     - bluecompute-icp-0.0.1.tgz
     version: 0.0.1
-generated: 2018-05-04T11:46:28.535142-05:00
+generated: 2018-05-04T12:24:50.257297-05:00
