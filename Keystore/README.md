@@ -1,3 +1,9 @@
+# Keystore Generation
+
+1. [Locally in Minikube](#locally-in-minikube)
+2. [Remotely in ICP](#remotely-in-icp)
+
+
 ### Locally in Minikube
 
 #### Setting up your environment
@@ -97,3 +103,117 @@ You will see something like below.
 NAME                                        TYPE                                  DATA      AGE
 keystoresecret                              Opaque                                2         6m
 ```
+
+### Remotely in ICP
+
+[IBM Cloud Private](https://www.ibm.com/cloud/private)
+
+IBM Private Cloud has all the advantages of public cloud but is dedicated to single organization. You can have your own security requirements and customize the environment as well. Basically it has tight security and gives you more control along with scalability and easy to deploy options. You can run it externally or behind the firewall of your organization.
+
+Basically this is an on-premise platform.
+
+Includes docker container manager
+Kubernetes based container orchestrator
+Graphical user interface
+You can find the detailed installation instructions for IBM Cloud Private [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html)
+
+#### Pushing the image to Private Registry
+
+1. Now run the docker build.
+
+`docker build -t keygen .`
+
+If it is a success, you will see the below output.
+
+```
+Successfully built c763478b74k1
+Successfully tagged keygen:latest
+```
+
+2. Tag the image to your private registry.
+
+`docker tag keygen:latest <Your ICP registry>/keygen:latest`
+
+3. Push the image to your private registry.
+
+`docker push <Your ICP registry>/keygen:latest`
+
+You should see something like below.
+
+```
+latest: digest: sha256:7f3deb2c43854df725efde5b0a3e6977cc7b6e8e26865b484d8cb20c2e4a6dd0 size: 3873
+```
+
+#### Running the application on ICP
+
+1. Your [IBM Cloud Private Cluster](https://www.ibm.com/cloud/private) should be up and running.
+
+2. Log in to the IBM Cloud Private. 
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/icp_dashboard.png">
+</p>
+
+3. Go to `admin > Configure Client`.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/client_config.png">
+</p>
+
+4. Grab the kubectl configuration commands.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/kube_cmds.png">
+</p>
+
+5. Run those commands in your terminal.
+
+6. If successful, you should see something like below.
+
+```
+Switched to context "xxx-cluster.icp-context".
+```
+7. Run the below command.
+
+`helm init --client-only`
+
+You will see the below
+
+```
+$HELM_HOME has been configured at /Users/user@ibm.com/.helm.
+Not installing Tiller due to 'client-only' flag having been set
+Happy Helming!
+```
+
+8. Verify the helm version
+
+`helm version --tls`
+
+You will see something like below.
+
+```
+Client: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca57d3972bcad3351801", GitTreeState:"dirty"}
+Server: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca57d3972bcad3351801", GitTreeState:"dirty"}
+```
+
+9. Before running the helm chart in minikube, access [values.yaml](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/blob/microprofile/catalog/chart/catalog/values.yaml) and replace the repository with the below.
+
+`repository: <Your IBM Cloud Private Docker registry>`
+
+Then run the helm chart.
+
+`helm install --name=keystore chart/keystore --tls`
+
+3. To validate, check if the secrets are created as below.
+
+`kubectl get secrets`
+
+You will see something like below.
+
+```
+NAME                                        TYPE                                  DATA      AGE
+keystoresecret                              Opaque                                2         6m
+```
+
+**NOTE**: If you are using a version of ICP older than 2.1.0.2, you don't need to add the --tls at the end of the helm command.
+
