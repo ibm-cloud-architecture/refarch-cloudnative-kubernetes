@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   bluecompute:
   - apiVersion: v1
-    created: 2018-05-07T11:05:11.852011-05:00
+    created: 2018-05-07T11:34:47.025369-05:00
     description: Bluecompute Microprofile Application Chart
-    digest: a410efe552b9627240655b52fa0b0022fc9d70eae4298482e695a83a84bbb84b
+    digest: d0cdc9b281e87f32859faaf7a1789ec75d8340557dc1f1d61af36934094d73ac
     name: bluecompute
     urls:
     - bluecompute-0.0.1.tgz
     version: 0.0.1
-generated: 2018-05-07T11:05:11.850211-05:00
+generated: 2018-05-07T11:34:47.023216-05:00
