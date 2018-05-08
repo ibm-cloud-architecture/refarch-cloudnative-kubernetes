@@ -1,0 +1,54 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  #annotations:
+  #  ingress.kubernetes.io/rewrite-target: /
+  labels:
+    release: {{ .Release.Name | quote }}
+    chart: {{ .Chart.Name}}-{{ .Chart.Version }}
+spec:
+  {{- if .Values.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ .Values.ingress.app.hostname }}
+    - {{ .Values.ingress.api.hostname }}
+    {{- if .Values.tls.secretName }}
+    secretName: {{ .Values.tls.secretName }}
+    {{- else }}
+    secretName: {{ .Release.Name }}-{{ .Chart.Name }}-tls
+    {{- end }}
+  {{- end }}
+  rules:
+  - host: {{ .Values.ingress.app.hostname }}
+    http:
+      paths:
+      - path: {{ .Values.web.ingress.path }}
+        backend:
+          serviceName: "{{- .Release.Name }}-{{ .Values.web.service.name }}"
+          servicePort: {{ .Values.web.service.externalPort }}
+  - host: {{ .Values.ingress.api.hostname }}
+    http:
+      paths:
+      - path: {{ .Values.auth.ingress.path }}
+        backend:
+          serviceName: "{{- .Release.Name }}-{{ .Values.auth.service.name }}"
+          servicePort: {{ .Values.auth.service.externalPort }}
+      - path: {{ .Values.catalog.ingress.path }}
+        backend:
+          serviceName: "{{- .Release.Name }}-{{ .Values.catalog.service.name }}"
+          servicePort: {{ .Values.catalog.service.externalPort }}
+      - path: {{ .Values.customer.ingress.path }}
+        backend:
+          serviceName: "{{- .Release.Name }}-{{ .Values.customer.service.name }}"
+          servicePort: {{ .Values.customer.service.externalPort }}
+      - path: {{ .Values.inventory.ingress.path }}
+        backend:
+          serviceName: "{{- .Release.Name }}-{{ .Values.inventory.service.name }}"
+          servicePort: {{ .Values.inventory.service.externalPort }}
+      - path: {{ .Values.orders.ingress.path }}
+        backend:
+          serviceName: "{{- .Release.Name }}-{{ .Values.orders.service.name }}"
+          servicePort: {{ .Values.orders.service.externalPort }}
+{{- end }}

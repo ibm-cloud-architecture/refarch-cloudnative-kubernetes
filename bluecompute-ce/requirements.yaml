@@ -1,31 +1,71 @@
 dependencies:
   - name: auth
-    version: 0.3.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    version: 0.4.0
+    repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
+    condition: auth.enabled, global.auth.enabled
+    tags:
+      - back-end
+      - auth
   - name: catalog
+    version: 0.4.0
+    repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
+    condition: catalog.enabled, global.catalog.enabled
+    tags:
+      - back-end
+      - catalog
+  - name: catalogelasticsearch
     version: 0.3.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
+    condition: catalogelasticsearch.enabled, global.catalogelasticsearch.enabled
+    tags:
+      - data
+      - catalogelasticsearch
   - name: customer
+    version: 0.4.0
+    repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
+    condition: customer.enabled, global.customer.enabled
+    tags:
+      - back-end
+      - customer
+  - name: customercouchdb
     version: 0.3.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
+    condition: customercouchdb.enabled, global.customercouchdb.enabled
+    tags:
+      - data
+      - customercouchdb
   - name: inventory
-    version: 0.3.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    version: 0.4.0
+    repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
+    condition: inventory.enabled, global.inventory.enabled
+    tags:
+      - back-end
+      - inventory
+  - name: inventorymysql
+    version: 0.4.0
+    repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
+    condition: inventorymysql.enabled, global.inventorymysql.enabled
+    tags:
+      - data
+      - inventorymysql
   - name: orders
-    version: 0.3.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    version: 0.4.0
+    repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
+    condition: orders.enabled, global.orders.enabled
+    tags:
+      - back-end
+      - orders
+  - name: ordersmysql
+    version: 0.4.0
+    repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
+    condition: ordersmysql.enabled, global.ordersmysql.enabled
+    tags:
+      - data
+      - ordersmysql
   - name: web
-    version: 0.3.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
-  - name: ibmcase-couchdb
-    version: 0.2.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
-  - name: ibmcase-inventory-mysql
-    version: 0.3.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
-  - name: ibmcase-orders-mysql
-    version: 0.3.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
-  - name: ibmcase-elasticsearch
-    version: 0.2.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    version: 0.4.0
+    repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
+    condition: web.enabled, global.web.enabled
+    tags:
+      - front-end
+      - web

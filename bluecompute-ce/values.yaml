@@ -9,7 +9,21 @@ global:
     secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
     secretName: bluecompute-hs256key
 
+ingress:
+  enabled: true
+  app:
+    hostname: bluecompute.com
+  api:
+    hostname: api.bluecompute.com
+
+tls:
+  enabled: true
+  secretName:
+  crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZtRENDQTRBQ0NRQ3lxcTRtcDYxVFlqQU5CZ2txaGtpRzl3MEJBUTBGQURDQmpURUxNQWtHQTFVRUJoTUMKVlZNeERqQU1CZ05WQkFnTUJWUmxlR0Z6TVE4d0RRWURWUVFIREFaQmRYTjBhVzR4RERBS0JnTlZCQW9NQTBsQwpUVEVOTUFzR0ExVUVDd3dFUTBGVFJURWFNQmdHQTFVRUF3d1JLaTVpYkhWbFkyOXRjSFYwWlM1amIyMHhKREFpCkJna3Foa2lHOXcwQkNRRVdGV1poWW1sdloyOXRaWHBBZFhNdWFXSnRMbU52YlRBZUZ3MHhPREExTURneU1qVXoKTWpaYUZ3MHlPREExTURVeU1qVXpNalphTUlHTk1Rc3dDUVlEVlFRR0V3SlZVekVPTUF3R0ExVUVDQXdGVkdWNApZWE14RHpBTkJnTlZCQWNNQmtGMWMzUnBiakVNTUFvR0ExVUVDZ3dEU1VKTk1RMHdDd1lEVlFRTERBUkRRVk5GCk1Sb3dHQVlEVlFRRERCRXFMbUpzZFdWamIyMXdkWFJsTG1OdmJURWtNQ0lHQ1NxR1NJYjNEUUVKQVJZVlptRmkKYVc5bmIyMWxla0IxY3k1cFltMHVZMjl0TUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQwpBZ0VBbVliUTZGTDIrQ1dUTndyRmlkKzVYVmVSaE1OVWFoN1BNL2tlNVJlQS9zZ2p3dXR0cTVMN3lzYWRHSng5ClJwVlViQitLaG1RN3I4MzJEZU0rRXB4Nk1nZGdTNmgzQUJoTzVJQ0Fac3BNbFNaamNwL2NIMXBkMUVQU2R3SkkKMThxQkloUTdwS25acllEWFVZT0JHc2IxMGVtZ25adHl6KzVUZ2ZoUWwyWEd6V1hqcldGTmczeWpBN1lpZVJGVwo5STNwSGZ0R0JRZGMrcW1hQ3ZSR1lham1QdFpLN2RoZUxIb2w5bFJweGE2Nk5tOXQ4dVVqam12N0ptY3diVTZLCnI1UlJQTzJqRXF3NEVidVpMTFFJaTVxeTk5U2lqRUJKREVQeDg0dE9XYVBCR3YxTHZJdVJOWDB6a3pmQ3greVEKdisxRmx1Vjg0VDh3N21vRDN5SG5TV2RTWmtsWDliNEN0QW1nMExNRE5MbkhlaHNOL3FuWXJJOHd4T3BybFpuYgowS1ZWVjMvWnh1QUVZVU9yYjlyeUpUTjU4SGVVYUd4VGlqdnlTd0FYOUk2QmVrbDNlNWpKdmtuS3VOVUlaVEYrCjUvaGc4ZnFGRWc4ei9jZzRUcy9QS2JvS1pScWRUdkNNNkFwQVlhQVcrYzQyclVnWjVFSGVNTmtwWjdaMXBQYUIKWUpOWHlhOXNxcXZ4eHM2aUxOZG5BcFd5V0xIYUwwYWEwR1MwNURvYXJtSFViZVNpeWtxYy9EYkJUd20rMkFlTwphNktuMkVIMW1qd0xlc0VRb0dqaU5HdVlHTFdIL0MyaFV5ZG9qK1VnSGdBMEpQcTk2c3NYK2NzRE5aQmFlUWY3CkxiaHlrY29NV3NIL01mMG9KWHZ3OFF6M2I5RkZGTzJIbGhhbzZ5NzJldC9LRUlrQ0F3RUFBVEFOQmdrcWhraUcKOXcwQkFRMEZBQU9DQWdFQURDYURMZWNwYUh2YWpRd2w5RkM2a1lTYVVCRHljOXF3N0tVMWl6Y25zd211cmkrYQpLM09Hb0JBTGJPVW55eklXdVFyMUpoeWtqTk41RGtBY2pBVlJoNlJYOHVIUGFvVWNEQUVUQ2F6RUhZWUEyUnd5Cjc0RnRtZkF3YzU2QXFwLzZZbEk3aHgrakJMM01YMCs1OEhIODdqS25rNGZqa2hSSk9xWlM1Ymk1TTE1YldrV3MKQmZFaFlvS1ZLL2dOYzRGTTlNM0N1QXB0b2U4V0d6NElOMGk3TXhqSnRPUGw1VUZLR21uWXhuUU1oSlNJbVFkKwovUUVPK2hLUFViWkVacE5vMTFXRnBBWTJ6ZnBNdllWOUMxRnhYODBrQ3VjOWdkUXBhOFpIa2hKUlVSQ2JvRWlnCmVJV2VBNHJoU2xDcENSU1ByY1l3ZnZKN01GY0ZzTjB1MElCSm5UMUVFV2hZOGJrMkNPZk9GT1BIZzlXS0FMUUMKQ1lKalZYSVdGeTFuQ0lhdllOOC9oVXA5TnhzYkhBQWcwRThXYUl2aHIvZXFnSi9wUGFNZ0J3L2tGbVF5VmpVYwpidXNJSTExcEVURWJGbEViak80VVhSWTNlSkFPRDBERXdaMUo5QTh6RmpwTXZHN3lIMlA0VlExYmx5T3NqdXo5Ckw4WTVMbXlEbjRGQ3czd3E1ZHB2TnMxZXJGL0NWL2NOWFNLbSt4cXpxNDZ4TlN2eVRUQjhPeW1LQzRuQnNlTjIKTVJwbk52MDRDVDA0TXFqcXZMbUNjRTFZVUdsOEYrUitObzBmd25sbWZ3YnA3MkRFWXAvMWF4Wi9tdVRpeDIwZAplWkxYb1FrK0xzUmZpZ3U5dzJJbGZ3azFEZ2N0SXY3TFViM2NoM1pGR1B5ZW51Y3FTbStlUmhRTXlYND0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUpRd0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQ1Mwd2dna3BBZ0VBQW9JQ0FRQ1podERvVXZiNEpaTTMKQ3NXSjM3bGRWNUdFdzFScUhzOHorUjdsRjREK3lDUEM2MjJya3Z2S3hwMFluSDFHbFZSc0g0cUdaRHV2emZZTgo0ejRTbkhveUIyQkxxSGNBR0U3a2dJQm15a3lWSm1OeW45d2ZXbDNVUTlKM0Fralh5b0VpRkR1a3FkbXRnTmRSCmc0RWF4dlhSNmFDZG0zTFA3bE9CK0ZDWFpjYk5aZU90WVUyRGZLTUR0aUo1RVZiMGpla2QrMFlGQjF6NnFab0sKOUVaaHFPWSsxa3J0MkY0c2VpWDJWR25GcnJvMmIyM3k1U09PYS9zbVp6QnRUb3F2bEZFODdhTVNyRGdSdTVrcwp0QWlMbXJMMzFLS01RRWtNUS9IemkwNVpvOEVhL1V1OGk1RTFmVE9UTjhMSDdKQy83VVdXNVh6aFB6RHVhZ1BmCkllZEpaMUptU1ZmMXZnSzBDYURRc3dNMHVjZDZHdzMrcWRpc2p6REU2bXVWbWR2UXBWVlhmOW5HNEFSaFE2dHYKMnZJbE0zbndkNVJvYkZPS08vSkxBQmYwam9GNlNYZDdtTW0rU2NxNDFRaGxNWDduK0dEeCtvVVNEelA5eURoTwp6ODhwdWdwbEdwMU84SXpvQ2tCaG9CYjV6amF0U0Jua1FkNHcyU2xudG5XazlvRmdrMWZKcjJ5cXEvSEd6cUlzCjEyY0NsYkpZc2RvdlJwclFaTFRrT2hxdVlkUnQ1S0xLU3B6OE5zRlBDYjdZQjQ1cm9xZllRZldhUEF0NndSQ2cKYU9JMGE1Z1l0WWY4TGFGVEoyaVA1U0FlQURRaytyM3F5eGY1eXdNMWtGcDVCL3N0dUhLUnlneGF3Zjh4L1NnbAplL0R4RFBkdjBVVVU3WWVXRnFqckx2WjYzOG9RaVFJREFRQUJBb0lDQURwNG5oZmRnVElCSFpCWkNlTDQwaUE2CnViRldzMCszYkRMZkxtVVNEbzc2cXFRU0JqTFNTQk55a1dKT04yZ3FkM3kyaG91b29STFQzbUpycWJoczRCMHQKc2Y4ZXFqUGZEaXo0dys1aUhjaXdWaS9Sc29RK1puM3hWcmI4cDhHSDNxYWNEaHNvbFQ3L1V3STRrM01mVTRBZQorbzBNSnk0S0ZzUHBUc2hhZXR5L2NYY1hGKzU4Q1puZ1JFRFgyY1pLUmY2bE5JVzF5RE92Wkh2SGpRYWt6UXdoCmtXZ0VmOWx3ckFTbElhT29hRU5UTFF6Vk9EV0Y2cUUxcTd2MXJkd3hJTCtUd2dmYWo0QXhjcVVUN0MwL1Blb2wKa2NMWXVQbHk1ek5hV3Z6STRVTG1OWEladGJRcGV2c1d3WmhqQUw0WUgrallmamRMV2RkemlRWHlZNlFSTmRBbwpGVmUzbmtBNzJvaWtlUGlRRThvSUFuMUpYcDlxQ29MNjdOYmY0eFFhMGNqeFB3RTN2cjdqblF1WUlmNUJrRVJaClFPNk9WTXJjdU5ReDlqck9OdEphODJMK2JCWU9qVWRlODQzMGpGbXI3RnhsN05GSEcvazhFUm5jOEZPdld3aysKbnlWUmFMb2o2N0tRc1BuS1hXMnhueDNkd3pIU3ZoYTZKTEJENDFISGVUbXN3dm44MndWSXI5QlZETjdLbG5kcAo4TEVoOCtXaU1aVUFWd0FVcnExVUNWaEFQNWQ1cSs5MkdReFZqSWJmaDNid0VIRWlWVDZSZkZhbi8zbFdKYlhaCjJPZlF6TTJDbkZEZk83VjZUZ21iRjQvWFFJcTNTUGdEOU9oWE5BZUp4RHVJU1dmMkFyNlFJcGdPNXZIYXUzdTMKMkZLK1JtUUk0TGZUME1CQ1JwNEJBb0lCQVFES0JkNzJmbk80TS9MTkg3Q1BleEx5OFp4WElZN0VIZXpvZWpMZgpzcTlDNUgrcHNWeVRUODBoaVcySmwwdHBuTFVDaGwrQVlHbXNjbHJpbEtJUHl3N3g5bWR0Y29Fb2VIK0J1SWZlCm9YT3B4MmpBUFdUQUhhbUlybWRQUldrMFBjV0hOdkhMY3JKWVVpVjFrNXZ6RW5GR1RranA5QU1OVFhsMUF6WFEKSk0ya3p4VDNHNzlhNjUreFVQUGlRRmRqdDJBL2FFVjBuYkdFZFdpbTk0M1hRU1J3UzFaTyt1ZkI3Zm00S2JNYgpUY1FEQ1liYTlzVmE5RlVjRWZQTHpPZDJEU3N0OGoyY2NSOUVTcFlFcGJBY2JDbzNkd1NXU0ZhTXhrVW5Gc2NDClZuYW9nSEprTWZYVWYvSEYrZ3J0aUk4VVNxRXdBQ0dISFJWZG55VFVNRDFYRktWZkFvSUJBUURDaTlycHdMbDgKZVVyZlR0Nm9NOWtXUW1iTDNXMGhTaTFKQUV6dlpGU2JLTzEzamFRb21tc1ZYK0pEd2xWOFFrSkFmT05aaVMvTwplaTlaSTY4QTFFZTJuL04rak5xNVB2YVRDU3NHYzZCZG9xUHo4eGNkWkhBNkxuQTRPbnZ1V0lPK1R3VllLSWhGCjVDaUN3NVphNTBVSzJvdWZIOWc4N1RwNm1ncE5pNXorMU5aMnRadmtnRGtndGcyVnJBdHlhekkwL010dkpiMkEKTEltQTlueWxxajJjZW5IcVVta3p6bEVIK2pUYTdrL2VmSnhSNmlSd3gySkxIbTA1dlAvditSVHJOVHdyajdwTApEcTNIWjlaY2hreGthZWV5QkhWZzAyMm5LYVFjKzdQTmh4TE1NOVBkOWkya2RlV0pLcXdnNkU5cWxPeWFxOHE5CmxaVTl6ZWxSZitzWEFvSUJBUUNiY2ZjRVhYbzNBeW5ROFpCT1pwbkcrMmVibDRPZG5aVWJzR01Td3crZC9lbkoKTFdLWkt1OGczZmk5eFA5T3pUaHVMK3l1QUFGdm9qSVNZK0ZyRzRodFgzWm52WkpxRElXM3o4QWo2c0R2b3pNVApzR21rZFc1c2NCMm4zalc3NzhmY2FjZVZEclR4eG90eU05anNLSVdtWGpnMlkvNHhMeXJFZ1dyWHRHblRaVSt4CmI5VkdaVVRrRC9FSVp3K1c5NU9FVm53UzVmK2dkeUxHVG5jQ2FPcGJ5V3dvcTJER1ZKRXdSazI5TlpJYjhDbW0Kcy9oWkt1V09DclkzVzN2QjF4SWhjV0k4ek1JTkx3TE5vcHVtMHdlTTAvUmdtbHFXU1QwT2ZiVTFORWhyRVNKegp2QWwycjlmZHlLNjk1TFNMSFgxM1RMSi9uejVBWW1MWkxpRVVyeHNyQW9JQkFGNmpmRDNrTkJkYVJkTDE0aGkvCkNDYnM3R2JWODRXVE9RNWZLQTM0cDdQSEtDWFZjSHNVQzIyZGRFdDBHUFBXbzdZTlN1ZStkZFFpMmkrcHpUTkIKRVJYRkg4VjdMZGVaeW9kaW1WeU5HUUVUNG1BRTdFU3ZIRzBoTkJRV1Z6MXVMOEIvWG1FeGJvRlphVitiVitRbQp4dzV0bkNndmJKak82bmpEd0tsU2RtLzlCOHM5czNWbjd1Sjd6WVgyNkthamdRd0h3Y3J5K0FtSElPanNmMXh6CndYOENqYkhvbnliRmdlTzRrc2ZCMEhheDliVmZpcFNXV2Jtak5vMDA1T2hQS2g3MWlhekRRV1BMNHp1eXhyUEIKM1IybjZ6OU5MZkNKU2JsYzUybjJBOVRDbGFGaXdQa2tEYllJYUQzZTFWYzR5NUZVbXZqdkF6UlF0UVlZeWh5TQpkc2NDZ2dFQkFMeUJteWMrbEtucG1oNHF6Q3hWNGM3QTN6WGh3N3h6VEJlcmpXamNJbmNnZ1NlUUwvTmtsQXByCnVDVGlMWm1WajYwRXBYQmIzRzZOVWR5S1FiMVBMblk1V0ZBSFN0NytmbFpCUWJkYmQ0K0l4czlFaENuSmhpSUcKZkZoUjZOVFF2YkpwMXY1NSt1RlgzaFptMTEranNMaklYaGtPVm5Pa25BaWJldnMwZnJTUHVybmtFNndpN3dnQgprRkVQS01TTEZpWE5XL2pmWlQreXh2cnMzTXVLK3BJSjV0SzhpYzc4b05mU3Z2b250VUg5dkZNaXAxMCtiejlXCjVQMEsxWjZ4UkFnQlI4cG9JOWtBWTFDL3Q3a3BicytpQkhCMmVvNVFMenBRTmx4aW5UUVRhTndzTTY2RloyK2oKdGdjZTkrRkY5NnB0SFJFZDdMRTlsZ0xkSUZVUFUzUT0KLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLQo=
+
 auth:
+  enabled: true
   image:
     repository: ibmcase/bluecompute-auth
     tag: latest
@@ -17,11 +31,17 @@ auth:
     image:
       repository: ibmcase/bluecompute-dataloader
       tag: latest
+  service:
+    name: auth
+    externalPort: 8080
+  ingress:
+    path: /oath
   resources:
     limits:
       memory: 384Mi
 
 catalog:
+  enabled: true
   image:
     repository: ibmcase/bluecompute-catalog
     tag: latest
@@ -29,14 +49,40 @@ catalog:
     image:
       repository: ibmcase/bluecompute-dataloader
       tag: latest
-  elasticsearch:
-    binding:
-      name: binding-catalog-elasticsearch
+  service:
+    name: catalog
+    externalPort: 8081
+  ingress:
+    path: /micro/items
+  catalogelasticsearch:
+    secretName: binding-catalog-elasticsearch
   resources:
     limits:
       memory: 384Mi
 
+catalogelasticsearch:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-elasticsearch
+    tag: latest
+    pullPolicy: IfNotPresent
+  clustername: catalogdb
+  service:
+    name: catalog-elasticsearch
+  labels:
+    app: bluecompute
+    micro: catalog
+    tier: data
+  resources:
+    limits:
+      memory: 700Mi
+    requests:
+      memory: 350Mi
+  secretName: binding-catalog-elasticsearch
+
 customer:
+  enabled: true
   image:
     repository: ibmcase/bluecompute-customer
     tag: latest
@@ -44,6 +90,11 @@ customer:
     image:
       repository: ibmcase/bluecompute-dataloader
       tag: latest
+  service:
+    name: customer
+    externalPort: 8080
+  ingress:
+    path: /micro/customer
   bash:
     image:
       repository: ibmcase/bluecompute-bash-curl-ssl
@@ -51,55 +102,12 @@ customer:
   resources:
     limits:
       memory: 384Mi
-  couchdb:
+  customercouchdb:
     binding:
       name: binding-customer-couchdb
 
-inventory:
-  image:
-    repository: ibmcase/bluecompute-inventory
-    tag: latest
-  dataloader:
-    image:
-      repository: ibmcase/bluecompute-dataloader
-      tag: latest
-  resources:
-    limits:
-      memory: 384Mi
-  mysql:
-    binding:
-      name: binding-inventorydb-mysql
-
-orders:
-  image:
-    repository: ibmcase/bluecompute-orders
-    tag: latest
-  dataloader:
-    image:
-      repository: ibmcase/bluecompute-dataloader
-      tag: latest
-  resources:
-    limits:
-      memory: 384Mi
-  mysql:
-    binding:
-      name: binding-ordersdb-mysql
-
-web:
-  image:
-    repository: ibmcase/bluecompute-web
-    tag: latest
-  clusterName: mycluster
-  region: myregion
-  service:
-    type: NodePort
-    nodeport:
-      port: 31337
-  ingress:
-    hostname:
-    path: /bluecompute
-
-ibmcase-couchdb:
+customercouchdb:
+  enabled: true
   image:
     repository: ibmcase/bluecompute-couchdb
     tag: latest
@@ -124,7 +132,29 @@ ibmcase-couchdb:
     tier: data
   nodename: customerdb
 
-ibmcase-inventory-mysql:
+inventory:
+  enabled: true
+  image:
+    repository: ibmcase/bluecompute-inventory
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  service:
+    name: inventory
+    externalPort: 8080
+  ingress:
+    path: /micro/inventory
+  resources:
+    limits:
+      memory: 384Mi
+  inventorymysql:
+    binding:
+      name: binding-inventorydb-mysql
+
+inventorymysql:
+  enabled: true
   binding:
     name: binding-inventorydb-mysql
   image:
@@ -146,7 +176,29 @@ ibmcase-inventory-mysql:
       tag: latest
       pullPolicy: IfNotPresent
 
-ibmcase-orders-mysql:
+orders:
+  enabled: true
+  image:
+    repository: ibmcase/bluecompute-orders
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  service:
+    name: orders
+    externalPort: 8080
+  ingress:
+    path: /micro/orders
+  resources:
+    limits:
+      memory: 384Mi
+  ordersmysql:
+    binding:
+      name: binding-ordersdb-mysql
+
+ordersmysql:
+  enabled: true
   binding:
     name: binding-ordersdb-mysql
   image:
@@ -168,22 +220,18 @@ ibmcase-orders-mysql:
       tag: latest
       pullPolicy: IfNotPresent
 
-ibmcase-elasticsearch:
-  replicaCount: 1
+web:
+  enabled: true
   image:
-    repository: ibmcase/bluecompute-elasticsearch
-    tag: latest
-    pullPolicy: IfNotPresent
-  clustername: catalogdb
+    repository: ibmcase/bluecompute-web
+    tag: test
+  clusterName: mycluster
+  region: myregion
   service:
-    name: catalog-elasticsearch
-  labels:
-    app: bluecompute
-    micro: catalog
-    tier: data
-  resources:
-    limits:
-      memory: 700Mi
-    requests:
-      memory: 350Mi
-  secretName: binding-catalog-elasticsearch
+    name: web
+    type: NodePort
+    externalPort: 80
+    nodeport:
+      port: 31337
+  ingress:
+    path: /

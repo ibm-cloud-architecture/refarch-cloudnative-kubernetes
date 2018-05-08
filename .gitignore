@@ -32,3 +32,7 @@ bluecompute/requirements.lock
 
 bluecompute-ce/charts
 bluecompute-ce/requirements.lock
+
+# SSL Certificates
+*.crt
+*.key
