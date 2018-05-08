@@ -3,7 +3,7 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: registry.csplab.cloudns.cx/microprofile/keygen-mp
+  repository: ibmcase/keygen-mp
   tag: v1.0.0
   pullPolicy: IfNotPresent
   resources:
