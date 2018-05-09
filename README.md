@@ -1,101 +1,48 @@
-## Run the application
+# Run a Cloud Native Microservices Application using Microprofile on a Kubernetes Cluster
+* [Introduction](#introduction)
+* [Application Overview](#application-overview)
+* [Project repositories](#project-repositories)
+* [Deploy the Application](#deploy-the-application)
+  + [Pre-requisites](#pre-requisites)
+  + [Get application source code (optional)](#get-application-source-code-optional)
+  + [Locally in Minikube](#locally-in-minikube)
+  + [Remotely in ICP](#remotely-in-icp)
+* [Validate the Application](#validate-the-application)
+  + [Minikube](#minikube)
+  + [ICP](#icp)
+  + [How the app works](#How the app works)
+* [Delete the Application](#delete-the-application)
 
-This application can be run in several forms and shapes, going from running each component locally on your laptop as the first development stage to running them as a production-like application and hosting it in production-ready environments such as IBM Cloud Public or IBM Cloud Private.
+## Introduction
 
-In this section, we will describe how to run the Java MicroProfile based BlueCompute application at different development-like/production-like levels.
+This project provides a reference implementation for running a Cloud Native Microprofile Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below. 
 
-### Pre-requisites
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/static/imgs/app_architecture.png">
+</p>
 
-In order to work with the BlueCompute application, we need first to download the source code for each of its components and build it.
+## Application Overview
 
-#### Source code
+The application is a simple store front shopping application that displays a catalog of antique computing devices, where users can search and buy products.  It has a Web interface, and it relies on BFF (Backend for Frontend) services to interact with the backend data.
 
-There are two ways to get the code for each of the application's components:
+There are several components of this architecture.
 
-1. Manually executing `git clone <app-component-github-repo-uri>` and checking out the respective `microprofile` branch for each of the BlueCompute application's components (listed [here](#project-component-repositories)).
+- This OmniChannel application contains an [AngularJS](https://angularjs.org/) based web application. The diagram depicts it as a Browser.
+- The Web app invoke its own backend Microservices to fetch data, we call this component BFFs following the [Backend for Frontends](http://samnewman.io/patterns/architectural/bff/) pattern. The Web BFF is implemented using the Node.js Express Framework. These Microservices are packaged as Docker containers and managed by Kubernetes cluster. 
+- These BFFs invoke another layer of reusable Java Microservices. The reusable microservices are written in Java.  They run inside a Kubernetes cluster, for example the [IBM Bluemix Container Service](https://www.ibm.com/cloud-computing/bluemix/containers) or [IBM Cloud private](https://www.ibm.com/cloud-computing/products/ibm-cloud-private/), using [Docker](https://www.docker.com/).
+- The Java Microservices retrieve their data from the following databases:  
+  - The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/).
+  - The Customer service stores and retrieves Customer data from a searchable JSON datasource using [IBMCloudant](https://www.ibm.com/cloud/cloudant)
+  - The Inventory and Orders Services use separate instances of [MySQL](https://www.mysql.com/).  
+  
+## Project repositories
 
-2. Execute `sh clone_peers.sh` within the `utility_scripts` folder provided in this repository and it will clone all BleCompute components' github repos and checkout their `microprofile` branch for you.
+This project organized itself like a microservice project, as such each component in the architecture has its own Git Repository and tutorial listed below.
 
-```
-user-MacBook-Pro:utility_scripts user@ibm.com$ ./clone_peers.sh 
-Cloning from GitHub Organization or User Account of "ibm-cloud-architecture".
---> To override this value, run "export CUSTOM_GITHUB_ORG=your-github-org" prior to running this script.
-Cloning from repository branch "microprofile".
---> To override this value, pass in the desired branch as a parameter to this script. E.g "./clone-peers.sh master"
-Press ENTER to continue
-
-
-Cloning refarch-cloudnative-bluecompute-web project
-Cloning into '../../refarch-cloudnative-bluecompute-web'...
-remote: Counting objects: 2097, done.
-remote: Compressing objects: 100% (79/79), done.
-remote: Total 2097 (delta 65), reused 91 (delta 42), pack-reused 1972
-Receiving objects: 100% (2097/2097), 2.18 MiB | 2.45 MiB/s, done.
-Resolving deltas: 100% (1231/1231), done.
-
-Cloning refarch-cloudnative-auth project
-Cloning into '../../refarch-cloudnative-auth'...
-remote: Counting objects: 856, done.
-remote: Compressing objects: 100% (144/144), done.
-remote: Total 856 (delta 88), reused 214 (delta 68), pack-reused 607
-Receiving objects: 100% (856/856), 476.68 KiB | 363.00 KiB/s, done.
-Resolving deltas: 100% (377/377), done.
-
-Cloning refarch-cloudnative-micro-inventory project
-Cloning into '../../refarch-cloudnative-micro-inventory'...
-remote: Counting objects: 3507, done.
-remote: Compressing objects: 100% (3/3), done.
-remote: Total 3507 (delta 0), reused 0 (delta 0), pack-reused 3504
-Receiving objects: 100% (3507/3507), 757.70 KiB | 429.00 KiB/s, done.
-Resolving deltas: 100% (1905/1905), done.
-
-Cloning refarch-cloudnative-micro-orders project
-Cloning into '../../refarch-cloudnative-micro-orders'...
-remote: Counting objects: 1151, done.
-remote: Total 1151 (delta 0), reused 0 (delta 0), pack-reused 1151
-Receiving objects: 100% (1151/1151), 356.04 KiB | 329.00 KiB/s, done.
-Resolving deltas: 100% (549/549), done.
-
-Cloning refarch-cloudnative-micro-customer project
-Cloning into '../../refarch-cloudnative-micro-customer'...
-remote: Counting objects: 1339, done.
-remote: Total 1339 (delta 0), reused 0 (delta 0), pack-reused 1339
-Receiving objects: 100% (1339/1339), 28.89 MiB | 3.00 MiB/s, done.
-Resolving deltas: 100% (708/708), done.
-```
-
-#### Build code
-
-Again, there are two ways of building the code for each of the BlueCompute application's components:
-
-1. Manually executing `cd ../<app-component-name> && mvn install` for each of the BlueCompute's components (listed [here](#project-component-repositories)).
-
-2. We are using Apache Maven for managing the build processes for each of the microservices making up the BlueCompute application as well as the overall/project build process for building the entire application altogether at once. Therefore, in order to build the source code for each of the microservices making up the BlueCompute application you just need to execute:
-
-`mvn clean package`
-
-You should see the following output:
-
-```
-[INFO] ------------------------------------------------------------------------
-[INFO] Building project 0.1.0-SNAPSHOT
-[INFO] ------------------------------------------------------------------------
-[INFO] 
-[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ project ---
-[INFO] ------------------------------------------------------------------------
-[INFO] Reactor Summary:
-[INFO] 
-[INFO] inventory .......................................... SUCCESS [01:01 min]
-[INFO] catalog ............................................ SUCCESS [ 57.074 s]
-[INFO] Auth ............................................... SUCCESS [01:30 min]
-[INFO] customer ........................................... SUCCESS [01:05 min]
-[INFO] orders ............................................. SUCCESS [ 55.541 s]
-[INFO] project ............................................ SUCCESS [  0.002 s]
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 05:30 min
-[INFO] Finished at: 2018-04-30T14:11:33-05:00
-[INFO] Final Memory: 38M/463M
-[INFO] ------------------------------------------------------------------------
-```
+- [refarch-cloudnative-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile)                    - The root repository (Current repository)
+ - [refarch-cloudnative-bluecompute-web](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/microprofile)    - The BlueCompute Web application with BFF services
+ - [refarch-cloudnative-auth](https://github.com/ibm-cloud-architecture/refarch-cloudnative-auth/tree/microprofile)               - The security authentication artifact
+ - [refarch-cloudnative-micro-inventory](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/tree/microprofile)    - The microservices (Java) app for Catalog (ElasticSearch) and Inventory data service (MySQL)
+ - [refarch-cloudnative-micro-orders](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders/tree/microprofile)    - The microservices (Java) app for Orders data service (MySQL)
+ - [refarch-cloudnative-micro-customer](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/microprofile)    - The microservices (Java) app to fetch customer profile from identity store
+ 
