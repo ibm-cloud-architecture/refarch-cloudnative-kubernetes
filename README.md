@@ -7,6 +7,7 @@
   + [Get application source code (optional)](#get-application-source-code-optional)
   + [Locally in Minikube](#locally-in-minikube)
   + [Remotely in ICP](#remotely-in-icp)
+  + [Login](#login)
 * [Validate the Application](#validate-the-application)
   + [Minikube](#minikube)
   + [ICP](#icp)
@@ -157,6 +158,83 @@ Server: &version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
+### Remotely in ICP
+
+[IBM Cloud Private](https://www.ibm.com/cloud/private)
+
+IBM Private Cloud has all the advantages of public cloud but is dedicated to single organization. You can have your own security requirements and customize the environment as well. Basically it has tight security and gives you more control along with scalability and easy to deploy options. You can run it externally or behind the firewall of your organization.
+
+Basically this is an on-premise platform.
+
+Includes docker container manager
+Kubernetes based container orchestrator
+Graphical user interface
+You can find the detailed installation instructions for IBM Cloud Private [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html)
+
+#### Setting up your environment
+
+1. Your [IBM Cloud Private Cluster](https://www.ibm.com/cloud/private) should be up and running.
+
+2. Log in to the IBM Cloud Private. 
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/icp_dashboard.png">
+</p>
+
+3. Go to `admin > Configure Client`.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/client_config.png">
+</p>
+
+4. Grab the kubectl configuration commands.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/kube_cmds.png">
+</p>
+
+5. Run those commands in your terminal.
+
+6. If successful, you should see something like below.
+
+```
+Switched to context "xxx-cluster.icp-context".
+```
+7. Run the below command.
+
+`helm init --client-only`
+
+You will see the below
+
+```
+$HELM_HOME has been configured at /Users/user@ibm.com/.helm.
+Not installing Tiller due to 'client-only' flag having been set
+Happy Helming!
+```
+
+8. Verify the helm version
+
+`helm version --tls`
+
+You will see something like below.
+
+```
+Client: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca57d3972bcad3351801", GitTreeState:"dirty"}
+Server: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca57d3972bcad3351801", GitTreeState:"dirty"}
+```
+
+#### Running the application on ICP
+
+1. Add the `helm` package repository containing the reference application.
+
+`helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp-icp`
+
+2. Install the reference application.
+
+`helm install --name bluecompute-icp ibmcase/bluecompute-icp --tls`
+
+After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
+
 ## Validate the Application 
 
 <p align="center">
@@ -189,6 +267,102 @@ bluecompute-web   NodePort   10.102.2.220   <none>        80:30240/TCP   9m
 In your browser navigate to **`http://<IP>:<Port>`**. 
 
 In the above case, the access url will be `http://192.168.99.100:30240`.
+
+### ICP
+
+If you've installed on `icp` you can find the IP by issuing:
+
+**`$ kubectl cluster-info`**
+
+You will see something like below.
+
+```
+Kubernetes master is running at https://172.16.40.4:8001
+catalog-ui is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/catalog-ui/proxy
+Heapster is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/heapster/proxy
+icp-management-ingress is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/icp-management-ingress/proxy
+image-manager is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/image-manager/proxy
+KubeDNS is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/kube-dns/proxy
+platform-ui is running at https://172.16.40.4:8001/api/v1/namespaces/kube-system/services/platform-ui/proxy
+```
+
+Grab the Kubernetes master ip and in this case, `<YourClusterIP>` will be `172.16.40.4`.
+
+- To get the port, run this command.
+
+**`$ kubectl get service bluecompute-icp-web`**
+
+You will see something like below.
+
+```
+NAME                  TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+bluecompute-icp-web   NodePort   10.10.10.211   <none>        80:31682/TCP   2m
+```
+In your browser navigate to **`http://<IP>:<Port>`**. 
+
+In the above case, the access url will be `http://172.16.40.4:31682`.
+
+### Login
+
+Use the following test credentials to login:
+- **Username:** foo
+- **Password:** bar
+
+### How the app works
+
+Below shows you how you can navigate across the app.
+
+- Home Screen
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
+</p>
+
+- Catalog
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/catalog.png">
+</p>
+
+- Login
+
+For our sample application, the default users are `foo` and `user`
+Credentials for **foo** - `Username: foo` and `Password: bar`
+Credentials for **user** - `Username: user` and `Password: password`
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/login.png">
+</p>
+
+- Orders
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/order.png">
+</p>
+
+- Customer Profile
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/customer.png">
+</p>
+
+## Delete the Application
+
+To delete the application from your cluster, run the following:
+
+1. In minikube, run the below command.
+
+```
+$ helm delete --purge bluecompute
+```
+
+2. In ICP, run the below command.
+
+```
+$ helm delete --purge bluecompute-icp --tls
+```
+
+
 
 
 
