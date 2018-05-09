@@ -11,7 +11,7 @@
 * [Validate the Application](#validate-the-application)
   + [Minikube](#minikube)
   + [ICP](#icp)
-  + [How the app works](#How the app works)
+  + [How the app works](#how-the-app-works)
 * [Delete the Application](#delete-the-application)
 
 ## Introduction
