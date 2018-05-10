@@ -2,34 +2,34 @@ apiVersion: v1
 entries:
   auth:
   - apiVersion: v1
-    created: 2018-05-08T16:39:17.151471-05:00
+    created: 2018-05-10T17:52:45.176106-05:00
     description: A Helm chart for Kubernetes
-    digest: 50850fa00f534d5186ebe753d3cdb2e6c25c8cc7f8126c5e819c8b73c9895ef9
+    digest: 96927219d5580c37585a02bd5484f1f973777b67ac3cee1f084623ef76ebee32
     name: auth
     urls:
     - auth-1.0.0.tgz
     version: 1.0.0
   catalog:
   - apiVersion: v1
-    created: 2018-05-08T16:39:17.152331-05:00
+    created: 2018-05-10T17:52:45.176681-05:00
     description: A Helm chart for Kubernetes
-    digest: cf57e784dab12e1f4fe98cd601402c78493ccb2b58718ebbcbc693a9eb5720bd
+    digest: 1eeceb1e58a83337976c621d50f3f07f2bf2822989b303f5359715d85f45e00f
     name: catalog
     urls:
     - catalog-1.0.0.tgz
     version: 1.0.0
   customer:
   - apiVersion: v1
-    created: 2018-05-08T16:39:17.153765-05:00
+    created: 2018-05-10T17:52:45.177271-05:00
     description: A Helm chart for Kubernetes
-    digest: bb0df0cd06e4b97cbe89d23393253b33a5319ac3c08ddffbc5b386d162a27dd4
+    digest: aa590ad42956384d605ef984568e51e812279538b37bcdf3475c86eea361725a
     name: customer
     urls:
     - customer-1.0.0.tgz
     version: 1.0.0
   ibmcase-elasticsearch:
   - apiVersion: v1
-    created: 2018-05-08T16:39:17.154694-05:00
+    created: 2018-05-10T17:52:45.177851-05:00
     description: ElasticSearch
     digest: 0a28e3587dad578fe58636011804b733a2a7a8b894eae460f2ea9534071307bf
     icon: https://static-www.elastic.co/assets/blt9a26f88bfbd20eb5/icon-elasticsearch-bb.svg
@@ -39,58 +39,58 @@ entries:
     version: 0.2.0
   inventory:
   - apiVersion: v1
-    created: 2018-05-08T16:39:17.155585-05:00
+    created: 2018-05-10T17:52:45.178488-05:00
     description: A Helm chart for Kubernetes
-    digest: cfe3d1884c4fb7dc61e588cc880ea678ff0820eedba7e35d20b6a442e3107b97
+    digest: 9f90c8d52271cdc5069685b268136de3b2970e014575a0490ec7ab5bde48ff2f
     name: inventory
     urls:
     - inventory-1.0.0.tgz
     version: 1.0.0
   inventorydb:
   - appVersion: 1.0.0
-    created: 2018-05-08T16:39:17.156874-05:00
+    created: 2018-05-10T17:52:45.179598-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
-    digest: 2d425bf773ee1cef7acf07cdd3c35e8b3b8b45d073ab5f20fcd50eb6b2f56724
+    digest: 754838d0f96523e7b1b558dda2d5d86c913cf10e9c79720fff3b72ef89fabc2d
     name: inventorydb
     urls:
     - inventorydb-1.0.0.tgz
     version: 1.0.0
   keystore:
   - apiVersion: v1
-    created: 2018-05-08T16:39:17.157123-05:00
+    created: 2018-05-10T17:52:45.180029-05:00
     description: A Helm chart for keystore
-    digest: 45e0f9dc795553e3e72d9f07b04ed5c7dd521b0411af9716c72daea5ad9f16f6
+    digest: 9ad390b66dd0730741d711f1a6d079f2cdb6e9839495d8f0aab1ee4cb0a62570
     name: keystore
     urls:
     - keystore-1.0.0.tgz
     version: 1.0.0
   orders:
   - apiVersion: v1
-    created: 2018-05-08T16:39:17.157413-05:00
+    created: 2018-05-10T17:52:45.180516-05:00
     description: BlueCompute Orders Microservice
-    digest: fd2818563bc46f39dcca29537f753b04b34cb169400d7e76183cfe0082e3ffca
+    digest: dc5f7ea7b0b6800df78fade5761a91782583f4620290605accf420ebc6925a31
     name: orders
     urls:
     - orders-1.0.0.tgz
     version: 1.0.0
   ordersdb:
   - appVersion: 1.0.0
-    created: 2018-05-08T16:39:17.15855-05:00
+    created: 2018-05-10T17:52:45.18121-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
-    digest: b4c7e611cad58c5fc15df13df92e1dfb5933ac43740141eebd86de1c7dd02874
+    digest: 05539a6d2701071badbbbb667581f9c66f729a7c0a96037dc44a0bd3b9a315b0
     name: ordersdb
     urls:
     - ordersdb-1.0.0.tgz
     version: 1.0.0
   web:
   - apiVersion: v1
-    created: 2018-05-08T16:39:17.159832-05:00
+    created: 2018-05-10T17:52:45.181879-05:00
     description: BlueCompute Web BFF app
-    digest: 3ddf30790ce5511f7592211df6d66c370fe22e2b7f561336fde48651551ab663
+    digest: 88ee12fb1d20347ed32ff5c2b0b99b216f74a9f0c652db51a0222eacfb96b109
     name: web
     urls:
-    - web-0.3.0.tgz
-    version: 0.3.0
-generated: 2018-05-08T16:39:17.149414-05:00
+    - web-1.0.0.tgz
+    version: 1.0.0
+generated: 2018-05-10T17:52:45.173623-05:00
