@@ -16,7 +16,7 @@
 
 ## Introduction
 
-This project provides a reference implementation for running a Cloud Native Microprofile Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below. 
+This project provides a reference implementation for running a Cloud Native Microprofile Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.
 
 <p align="center">
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/static/imgs/app_architecture.png">
@@ -29,24 +29,24 @@ The application is a simple store front shopping application that displays a cat
 There are several components of this architecture.
 
 - This OmniChannel application contains an [AngularJS](https://angularjs.org/) based web application. The diagram depicts it as a Browser.
-- The Web app invoke its own backend Microservices to fetch data, we call this component BFFs following the [Backend for Frontends](http://samnewman.io/patterns/architectural/bff/) pattern. The Web BFF is implemented using the Node.js Express Framework. These Microservices are packaged as Docker containers and managed by Kubernetes cluster. 
-- These BFFs invoke another layer of reusable Java Microservices. The reusable microservices are written in Java.  They run inside a Kubernetes cluster, for example the [IBM Bluemix Container Service](https://www.ibm.com/cloud-computing/bluemix/containers) or [IBM Cloud private](https://www.ibm.com/cloud-computing/products/ibm-cloud-private/), using [Docker](https://www.docker.com/).
-- The Java Microservices retrieve their data from the following databases:  
+- The Web app invoke its own backend Microservices to fetch data, we call these components BFFs, following the [Backend for Frontends](http://samnewman.io/patterns/architectural/bff/) pattern. The Web BFF is implemented using the Node.js Express Framework. These Microservices are packaged as Docker containers and managed by the Kubernetes cluster.
+- These BFFs invoke another layer of reusable Java Microservices.  They run inside a Kubernetes cluster, for example the [IBM Cloud Container Service](https://www.ibm.com/cloud-computing/bluemix/containers) or [IBM Cloud Private](https://www.ibm.com/cloud-computing/products/ibm-cloud-private/), using [Docker](https://www.docker.com/).
+- The Java Microservices retrieve their data from the following databases:
   - The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/).
-  - The Customer service stores and retrieves Customer data from a searchable JSON datasource using [IBMCloudant](https://www.ibm.com/cloud/cloudant)
-  - The Inventory and Orders Services use separate instances of [MySQL](https://www.mysql.com/).  
-  
+  - The Customer service stores and retrieves Customer data from a searchable JSON datasource using [IBM Cloudant](https://www.ibm.com/cloud/cloudant)
+  - The Inventory and Orders Services use separate instances of [MySQL](https://www.mysql.com/).
+
 ## Project repositories
 
 This project organized itself like a microservice project, as such each component in the architecture has its own Git Repository and tutorial listed below.
 
 - [refarch-cloudnative-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile)                    - The root repository (Current repository)
  - [refarch-cloudnative-bluecompute-web](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/microprofile)    - The BlueCompute Web application with BFF services
- - [refarch-cloudnative-auth](https://github.com/ibm-cloud-architecture/refarch-cloudnative-auth/tree/microprofile)               - The security authentication artifact 
+ - [refarch-cloudnative-auth](https://github.com/ibm-cloud-architecture/refarch-cloudnative-auth/tree/microprofile)               - The security authentication artifact
  - [refarch-cloudnative-micro-inventory](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/tree/microprofile)    - The microservices (Java) app for Catalog (ElasticSearch) and Inventory data service (MySQL, RabbitMQ)
  - [refarch-cloudnative-micro-orders](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders/tree/microprofile)    - The microservices (Java) app for Orders data service (MySQL, RabbitMQ)
- - [refarch-cloudnative-micro-customer](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/microprofile)    - The microservices (Java) app to fetch customer profile from identity store (IBMCloudant)
- 
+ - [refarch-cloudnative-micro-customer](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/microprofile)    - The microservices (Java) app to fetch customer profile from identity store (IBM Cloudant)
+
 ## Deploy the Application
 
 To run the sample applications you will need to configure your environment for the Kubernetes and Microservices
@@ -54,7 +54,7 @@ runtimes.
 
 ### Pre-requisites
 
-1. Locally in Minikube
+#### Locally in Minikube
 
 To run the BlueCompute application locally on your laptop on a Kubernetes-based environment such as Minikube (which is meant to be a small development environment) we first need to get few tools installed:
 
@@ -65,16 +65,16 @@ Finally, we must create a Kubernetes Cluster. As already said before, we are goi
 
 - [Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) - Create a single node virtual cluster on your workstation. Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-minikube/) to get Minikube installed on your workstation.
 
-We not only recommend to complete the three Minikube installation steps on the link above but also read the [Running Kubernetes Locally via Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) page for getting more familiar with Minikube. 
- 
-Alternatively, you can also use [Docker Edge](https://www.docker.com/kubernetes)
+We not only recommend to complete the three Minikube installation steps on the link above but also read the [Running Kubernetes Locally via Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) page for getting more familiar with Minikube.
 
-2. Remotely in ICP
+Alternatively, you can also use the Kubernetes support provided in [Docker Edge](https://www.docker.com/kubernetes).
+
+#### Remotely in ICP
 
 [IBM Cloud Private Cluster](https://www.ibm.com/cloud/private)
 
-Create a Kubernetes cluster in an on-premise datacenter. The community edition (IBM Cloud private-ce) is free of charge.
-Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html) to install IBM Cloud private-ce.
+Create a Kubernetes cluster in an on-premise datacenter. The community edition (IBM Cloud Private-ce) is free of charge.
+Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html) to install IBM Cloud Private-ce.
 
 [Helm](https://github.com/kubernetes/helm) (Kubernetes package manager)
 
@@ -83,18 +83,18 @@ If using IBM Cloud Private version 2.1.0.2 or newer, we recommend you follow the
 
 ### Get application source code (optional)
 
-- Clone the base repository:  
+- Clone the base repository:
 
   **`$ git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes`**
 
-- Clone the peer repositories:  
+- Clone the peer repositories:
 
   **`$ cd refarch-cloudnative-kubernetes`**
-  
+
   **`$ git checkout microprofile`**
-  
+
   **`sh clone_peers.sh`**
-  
+
 ### Locally in Minikube
 
 #### Setting up your environment
@@ -112,7 +112,7 @@ Setting up kubeconfig...
 Starting cluster components...
 Kubectl is now configured to use the cluster.
 ```
-2. To install Tiller which is a server side component of Helm, initialize helm. Run the below command.
+2. To install Tiller, which is the server side component of Helm, initialize helm. Run the below command.
 
 `helm init`
 
@@ -162,20 +162,15 @@ After a minute or so, the containers will be deployed to the cluster.  The outpu
 
 [IBM Cloud Private](https://www.ibm.com/cloud/private)
 
-IBM Private Cloud has all the advantages of public cloud but is dedicated to single organization. You can have your own security requirements and customize the environment as well. Basically it has tight security and gives you more control along with scalability and easy to deploy options. You can run it externally or behind the firewall of your organization.
+IBM Private Cloud has all the advantages of public cloud but is dedicated to single organization. You can have your own security requirements and customize the environment as well. It has tight security and gives you more control along with scalability and easy to deploy options, whether you require it on public cloud infrastructure or in an on-premises environment behind your firewall.
 
-Basically this is an on-premise platform.
-
-Includes docker container manager
-Kubernetes based container orchestrator
-Graphical user interface
-You can find the detailed installation instructions for IBM Cloud Private [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html)
+You can find the detailed installation instructions for IBM Cloud Private [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html).
 
 #### Setting up your environment
 
 1. Your [IBM Cloud Private Cluster](https://www.ibm.com/cloud/private) should be up and running.
 
-2. Log in to the IBM Cloud Private. 
+2. Log in to the IBM Cloud Private.
 
 <p align="center">
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/icp_dashboard.png">
@@ -235,7 +230,7 @@ Server: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca5
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
-## Validate the Application 
+## Validate the Application
 
 <p align="center">
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
@@ -253,7 +248,7 @@ You will see something like below.
 192.168.99.100
 ```
 
-To get the port 
+To get the port
 
 **`$ kubectl get service bluecompute-web`**
 
@@ -264,7 +259,7 @@ NAME              TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
 bluecompute-web   NodePort   10.102.2.220   <none>        80:30240/TCP   9m
 ```
 
-In your browser navigate to **`http://<IP>:<Port>`**. 
+In your browser navigate to **`http://<IP>:<Port>`**.
 
 In the above case, the access url will be `http://192.168.99.100:30240`.
 
@@ -298,7 +293,7 @@ You will see something like below.
 NAME                  TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
 bluecompute-icp-web   NodePort   10.10.10.211   <none>        80:31682/TCP   2m
 ```
-In your browser navigate to **`http://<IP>:<Port>`**. 
+In your browser navigate to **`http://<IP>:<Port>`**.
 
 In the above case, the access url will be `http://172.16.40.4:31682`.
 
@@ -361,9 +356,3 @@ $ helm delete --purge bluecompute
 ```
 $ helm delete --purge bluecompute-icp --tls
 ```
-
-
-
-
-
-
