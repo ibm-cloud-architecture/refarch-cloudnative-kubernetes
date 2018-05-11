@@ -2,7 +2,7 @@
 # Mac
 .DS_Store
 
-docs/charts/bluecompute-charts/charts/
-docs/charts/bluecompute-charts/requirements.lock
+docs/charts/bluecompute/charts/
+docs/charts/bluecompute/requirements.lock
 bluecompute-icp/charts/
 bluecompute-icp/requirements.lock
