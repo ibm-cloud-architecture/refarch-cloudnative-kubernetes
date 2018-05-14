@@ -2,70 +2,40 @@ dependencies:
   - name: auth
     version: 0.4.0
     repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
-    condition: auth.enabled, global.auth.enabled
-    tags:
-      - back-end
-      - auth
+    condition: auth.enabled
   - name: catalog
     version: 0.4.0
     repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
-    condition: catalog.enabled, global.catalog.enabled
-    tags:
-      - back-end
-      - catalog
+    condition: catalog.enabled
   - name: catalogelasticsearch
     version: 0.3.0
     repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
-    condition: catalogelasticsearch.enabled, global.catalogelasticsearch.enabled
-    tags:
-      - data
-      - catalogelasticsearch
+    condition: catalogelasticsearch.enabled
   - name: customer
     version: 0.4.0
     repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
-    condition: customer.enabled, global.customer.enabled
-    tags:
-      - back-end
-      - customer
+    condition: customer.enabled
   - name: customercouchdb
     version: 0.3.0
     repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
-    condition: customercouchdb.enabled, global.customercouchdb.enabled
-    tags:
-      - data
-      - customercouchdb
+    condition: customercouchdb.enabled
   - name: inventory
     version: 0.4.0
     repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
-    condition: inventory.enabled, global.inventory.enabled
-    tags:
-      - back-end
-      - inventory
+    condition: inventory.enabled
   - name: inventorymysql
     version: 0.4.0
     repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
-    condition: inventorymysql.enabled, global.inventorymysql.enabled
-    tags:
-      - data
-      - inventorymysql
+    condition: inventorymysql.enabled
   - name: orders
     version: 0.4.0
     repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
-    condition: orders.enabled, global.orders.enabled
-    tags:
-      - back-end
-      - orders
+    condition: orders.enabled
   - name: ordersmysql
     version: 0.4.0
     repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
-    condition: ordersmysql.enabled, global.ordersmysql.enabled
-    tags:
-      - data
-      - ordersmysql
+    condition: ordersmysql.enabled
   - name: web
     version: 0.4.0
     repository: https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts
-    condition: web.enabled, global.web.enabled
-    tags:
-      - front-end
-      - web
+    condition: web.enabled
