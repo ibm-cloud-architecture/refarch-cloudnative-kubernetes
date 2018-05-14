@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CHART_VERSION=0.0.5
+CHART_VERSION=0.0.6
 
 _images="\
 ibmcase/bluecompute-dataloader:latest \
