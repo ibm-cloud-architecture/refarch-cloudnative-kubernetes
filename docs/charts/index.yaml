@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   auth:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.606499808-05:00
+    created: 2018-05-14T12:09:03.569997502-05:00
     description: BlueCompute Auth Microservice
     digest: 1146305fbddef781b735422fee066a4bd2b8a95cefcd1e29b9842d08ef5e0772
     name: auth
@@ -10,7 +10,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/auth-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.606272253-05:00
+    created: 2018-05-14T12:09:03.569749848-05:00
     description: BlueCompute Auth Microservice
     digest: 5a5b5e1335566b98d5f4a1c85718e82b02c73ba9818acd16b662b43991a38006
     name: auth
@@ -18,7 +18,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/auth-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.606064188-05:00
+    created: 2018-05-14T12:09:03.569542326-05:00
     description: BlueCompute Auth Microservice
     digest: b90bd11009cd639fbb75a8a0818ce98af7b3054d0fd559a7ed9aaf59dd5eda14
     name: auth
@@ -26,7 +26,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/auth-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.605843774-05:00
+    created: 2018-05-14T12:09:03.56932621-05:00
     description: BlueCompute Auth Microservice
     digest: 055b4ab2fad15d874622b02e36ec973c789cd16beffc3baab8e966951fa49123
     name: auth
@@ -35,7 +35,7 @@ entries:
     version: 0.1.0
   bluecompute:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.60854-05:00
+    created: 2018-05-14T12:09:03.572118021-05:00
     description: Bluecompute Application Chart
     digest: aaf31e79a95f0068634bed40874cd049798675ec32b05fa81d8ec830684d4d19
     name: bluecompute
@@ -43,7 +43,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-0.0.2.tgz
     version: 0.0.2
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.623802752-05:00
+    created: 2018-05-14T12:09:03.587070986-05:00
     description: Bluecompute Application Chart
     digest: 264ae7bf3a6a39f1402c1c65265014736cad7d533a6eeb80f0dd775ebdae2aee
     name: bluecompute
@@ -52,7 +52,7 @@ entries:
     version: 0.0.1
   bluecompute-ce:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.630765694-05:00
+    created: 2018-05-14T12:09:03.593863795-05:00
     description: Bluecompute Application Chart
     digest: bb455fda7f1cca7fcec22086c1dc296cd0431f30eb2f95748930ec96d4775d42
     name: bluecompute-ce
@@ -60,7 +60,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce/bluecompute-ce-0.0.6.tgz
     version: 0.0.6
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.629042569-05:00
+    created: 2018-05-14T12:09:03.592202146-05:00
     description: Bluecompute Application Chart
     digest: ad408ea385ae64492c05745e550a053765e3b51dfbfa4e629e17d220d3c56668
     name: bluecompute-ce
@@ -68,7 +68,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce/bluecompute-ce-0.0.5.tgz
     version: 0.0.5
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.627708223-05:00
+    created: 2018-05-14T12:09:03.590896778-05:00
     description: Bluecompute Application Chart
     digest: 8319d3a883008b387459b21d883f110fa2ba73a28a4c2144fea888849a09edab
     name: bluecompute-ce
@@ -76,7 +76,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce/bluecompute-ce-0.0.4.tgz
     version: 0.0.4
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.626407351-05:00
+    created: 2018-05-14T12:09:03.589586427-05:00
     description: Bluecompute Application Chart
     digest: f062029c5b56ef738327b30cc11458a8e645204c58bbf2fd05bc614e4c10767f
     name: bluecompute-ce
@@ -84,7 +84,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce/bluecompute-ce-0.0.3.tgz
     version: 0.0.3
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.625190889-05:00
+    created: 2018-05-14T12:09:03.588383702-05:00
     description: Bluecompute Application Chart
     digest: f23647fb9829819ca7f27662acdad8891fc345323d49cd5597e643ffe6554afa
     name: bluecompute-ce
@@ -93,7 +93,7 @@ entries:
     version: 0.0.2
   bluemixservice:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.608974308-05:00
+    created: 2018-05-14T12:09:03.572573913-05:00
     description: Deploy a service in Bluemix and bind to my cluster
     digest: 22b34e23233cbf3583cb4f28d4d1e623d182b2066d8c71208899635711f00911
     icon: http://www-05.ibm.com/il/gtu/img/BluemixLogo_172x203.png
@@ -102,7 +102,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/bluemixservice-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.60875799-05:00
+    created: 2018-05-14T12:09:03.57234771-05:00
     description: Deploy a service in Bluemix and bind to my cluster
     digest: 2d85c24e3119272809ce6abce7bda4d7bce3a1f8615bba26c88de143ac538836
     icon: http://www-05.ibm.com/il/gtu/img/BluemixLogo_172x203.png
@@ -112,7 +112,7 @@ entries:
     version: 0.2.0
   catalog:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.610015543-05:00
+    created: 2018-05-14T12:09:03.573500868-05:00
     description: BlueCompute Catalog Microservice
     digest: 03769a0ffbbacae4d7615bfee4d46fa7c6974a80453f8a0c0e9e7e0c4927baec
     name: catalog
@@ -120,7 +120,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/catalog-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.609804286-05:00
+    created: 2018-05-14T12:09:03.573305433-05:00
     description: BlueCompute Catalog Microservice
     digest: dddf4bf63798f7fafd17df8971ec1c9d788c7a36acee6307c01af8db413efada
     name: catalog
@@ -128,7 +128,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/catalog-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.609598144-05:00
+    created: 2018-05-14T12:09:03.573123237-05:00
     description: BlueCompute Catalog Microservice
     digest: edc36cf1605f407ed55078b9e3cd458b533185b2df33af67a9daca879b46faaa
     name: catalog
@@ -136,7 +136,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/catalog-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.609365837-05:00
+    created: 2018-05-14T12:09:03.572948141-05:00
     description: BlueCompute Catalog Microservice
     digest: 5943bf174fa59f6bffafb011c2d35349324907c6c105e0b2f05dea39c59869c1
     name: catalog
@@ -145,7 +145,7 @@ entries:
     version: 0.1.1
   catalogelasticsearch:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.610216893-05:00
+    created: 2018-05-14T12:09:03.573719781-05:00
     description: ElasticSearch
     digest: 0e0e5e6a7786141423e93aed3aa9468a2b468f31b8e6b85e3f268e56b422163e
     icon: https://static-www.elastic.co/assets/blt9a26f88bfbd20eb5/icon-elasticsearch-bb.svg
@@ -155,7 +155,7 @@ entries:
     version: 0.3.0
   couchdb:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.610518499-05:00
+    created: 2018-05-14T12:09:03.573953465-05:00
     description: CouchDB
     digest: 2cc895678087b66e883b10b1698220ced93311317e6b7f899f1037cbdc166829
     icon: http://couchdb.apache.org/image/couch@2x.png
@@ -165,7 +165,7 @@ entries:
     version: 0.2.0
   customer:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.61247863-05:00
+    created: 2018-05-14T12:09:03.575787286-05:00
     description: BlueCompute Customer Microservice
     digest: dfbe786097f59551161a2e10ae90e1a30e86a09b46438d821cf5f087780e0fe5
     name: customer
@@ -173,7 +173,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/customer-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.612081482-05:00
+    created: 2018-05-14T12:09:03.575136852-05:00
     description: BlueCompute Customer Microservice
     digest: 3c8c7144dafc9ebe92de7c328a7a3871c504350e0ac79d165afdbb804b0a52c8
     name: customer
@@ -181,7 +181,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/customer-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.611454605-05:00
+    created: 2018-05-14T12:09:03.574572013-05:00
     description: BlueCompute Customer Microservice
     digest: edf2fb1c98f4dfbf6d9a6f17742c6e92993a2051ef37bbebca110890a2e8447d
     name: customer
@@ -189,7 +189,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/customer-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.610917391-05:00
+    created: 2018-05-14T12:09:03.574288374-05:00
     description: BlueCompute Customer Microservice
     digest: c637de164bd9267688eddd122476551f84712cf14f55f2f0681cb20770b70b5b
     name: customer
@@ -198,7 +198,7 @@ entries:
     version: 0.1.0
   customercouchdb:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.61271723-05:00
+    created: 2018-05-14T12:09:03.576035281-05:00
     description: CouchDB
     digest: 1a8aa676af92640a050dedf1d686450f2cabcd7a091c0a7b27a51fce76d79afd
     icon: http://couchdb.apache.org/image/couch@2x.png
@@ -208,7 +208,7 @@ entries:
     version: 0.3.0
   elasticsearch:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.612917399-05:00
+    created: 2018-05-14T12:09:03.576239697-05:00
     description: ElasticSearch
     digest: fa85f91ceb19577260af60aba4e5d6a30e8c1378b2d0916bd2d8d146e38b7c53
     icon: https://static-www.elastic.co/assets/blt9a26f88bfbd20eb5/icon-elasticsearch-bb.svg
@@ -217,7 +217,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/elasticsearch-0.2.0.tgz
     version: 0.2.0
   grafana-bc:
-  - created: 2018-05-14T12:05:29.613437115-05:00
+  - created: 2018-05-14T12:09:03.576718765-05:00
     description: The leading tool for querying and visualizing time series and metrics.
     digest: 41e9b7e0e2532428ac273edf9ef0e0980199cf097dd9b76a9239045752a5c040
     engine: gotpl
@@ -236,7 +236,7 @@ entries:
     version: 0.3.1
   ibmcase-bluemix-service:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.613888058-05:00
+    created: 2018-05-14T12:09:03.577165427-05:00
     description: Deploy a service in Bluemix and bind to my cluster
     digest: 891d48212d4c87809ea2c04ae4b168f0ad72697a621a5748e3fef36ce46420ee
     icon: http://www-05.ibm.com/il/gtu/img/BluemixLogo_172x203.png
@@ -245,7 +245,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-bluemix-service-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.613660998-05:00
+    created: 2018-05-14T12:09:03.576934679-05:00
     description: Deploy a service in Bluemix and bind to my cluster
     digest: 7165656bb88cf6eb4e4ca945d11680dc7cad672234ba3d54bd9e29aca6124db8
     icon: http://www-05.ibm.com/il/gtu/img/BluemixLogo_172x203.png
@@ -255,7 +255,7 @@ entries:
     version: 0.1.0
   ibmcase-couchdb:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.614335478-05:00
+    created: 2018-05-14T12:09:03.577632499-05:00
     description: CouchDB
     digest: 825f516452839bd9f1645dd63a3832ee581cd13ea854521867a5f273c69a4377
     icon: http://couchdb.apache.org/image/couch@2x.png
@@ -264,7 +264,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-couchdb-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.614112605-05:00
+    created: 2018-05-14T12:09:03.577405902-05:00
     description: CouchDB
     digest: 915098959aacf3c0600e7b7270a27ee87912cb98ad11625c1866a9b8b4744535
     icon: http://couchdb.apache.org/image/couch@2x.png
@@ -274,7 +274,7 @@ entries:
     version: 0.1.0
   ibmcase-elasticsearch:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.614747865-05:00
+    created: 2018-05-14T12:09:03.578044406-05:00
     description: ElasticSearch
     digest: 7134d432b05c97c2327af7c151145d9c4b3b306b94ac908a8f4609d5fa4be802
     icon: https://static-www.elastic.co/assets/blt9a26f88bfbd20eb5/icon-elasticsearch-bb.svg
@@ -283,7 +283,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-elasticsearch-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.614532586-05:00
+    created: 2018-05-14T12:09:03.577843175-05:00
     description: ElasticSearch
     digest: 65ffe22f17fcc2583ae4ba2b41727938276b68514f785bd954fd0d574f4c4785
     icon: https://static-www.elastic.co/assets/blt9a26f88bfbd20eb5/icon-elasticsearch-bb.svg
@@ -292,7 +292,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-elasticsearch-0.1.1.tgz
     version: 0.1.1
   ibmcase-inventory-mysql:
-  - created: 2018-05-14T12:05:29.615235592-05:00
+  - created: 2018-05-14T12:09:03.57850244-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: 4594adb258e9559da115aa7135436561cbbad1633a76433bfc8f6a89afc097ba
@@ -314,7 +314,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-inventory-mysql-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.614980945-05:00
+    created: 2018-05-14T12:09:03.578252127-05:00
     description: Resilient MySQL deployment
     digest: 3e2bfd8fb46e9510f11c75518e841eb389fc5d1e6cd213884fc4d654f6465db5
     icon: https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Octicons-database.svg/200px-Octicons-database.svg.png
@@ -323,7 +323,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-inventory-mysql-0.2.0.tgz
     version: 0.2.0
   ibmcase-mysql:
-  - created: 2018-05-14T12:05:29.615938633-05:00
+  - created: 2018-05-14T12:09:03.579424544-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: d8310a9ec892201ae6c6c6ea8a7b3171c5239fa2e60c28737164d03912bdcff7
@@ -345,7 +345,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-mysql-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.615694195-05:00
+    created: 2018-05-14T12:09:03.579125273-05:00
     description: Resilient MySQL deployment
     digest: 2797b83e092e8951719637f211e156b566b0e1d56d38de3777e4d54275788e10
     icon: https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Octicons-database.svg/200px-Octicons-database.svg.png
@@ -354,7 +354,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-mysql-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.615456532-05:00
+    created: 2018-05-14T12:09:03.578845484-05:00
     description: Resilient MySQL deployment
     digest: 1d86b7df0cf578eca21dc46e0fd056344d1eb41572801097b3ae8dcefac12a4d
     icon: https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Octicons-database.svg/200px-Octicons-database.svg.png
@@ -363,7 +363,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-mysql-0.1.0.tgz
     version: 0.1.0
   ibmcase-orders-mysql:
-  - created: 2018-05-14T12:05:29.616418133-05:00
+  - created: 2018-05-14T12:09:03.579899916-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: 81bc4982cfb819be66b33418fd660581c500e5ca7319ef373992c3f9419eca68
@@ -385,7 +385,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-orders-mysql-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.616149814-05:00
+    created: 2018-05-14T12:09:03.579643646-05:00
     description: Resilient MySQL deployment
     digest: 1e73e4cff77e12b278cc1006c7a796ce2f96deac86f6dabd6cd4ccb44acc945d
     icon: https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Octicons-database.svg/200px-Octicons-database.svg.png
@@ -395,7 +395,7 @@ entries:
     version: 0.2.0
   inventory:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.61760098-05:00
+    created: 2018-05-14T12:09:03.581042741-05:00
     description: BlueCompute Inventory Microservice
     digest: bb37c74c9eee3e08f744c6befbe6142af8e76f61baf318a165c1c0c6adbfa19a
     name: inventory
@@ -403,7 +403,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/inventory-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.617345191-05:00
+    created: 2018-05-14T12:09:03.580821193-05:00
     description: BlueCompute Inventory Microservice
     digest: 4b2cb79db25c6cef26251a1b64ba67388518375327a8817ee1f09ec80c1dc58b
     name: inventory
@@ -411,7 +411,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/inventory-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.617123702-05:00
+    created: 2018-05-14T12:09:03.580577878-05:00
     description: BlueCompute Inventory Microservice
     digest: ff3cf76e411f12d97a260eb30646c0451aa6ad2e9f4fd7633fee92e33ec0db35
     name: inventory
@@ -419,7 +419,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/inventory-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.61691767-05:00
+    created: 2018-05-14T12:09:03.580381257-05:00
     description: BlueCompute Inventory Microservice
     digest: 27099b492c0de3ff363a2eafc79a823a14adf2f4ef1667ae7fad0b2b8287e1bf
     name: inventory
@@ -427,7 +427,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/inventory-0.1.1.tgz
     version: 0.1.1
   inventorymysql:
-  - created: 2018-05-14T12:05:29.617857281-05:00
+  - created: 2018-05-14T12:09:03.581307782-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: bd6774dbb1cbe81a9e69143e997714c68ae1d14d20a179d7043fb7c94b59e7d0
@@ -450,7 +450,7 @@ entries:
     version: 0.4.0
   mysql:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.618087086-05:00
+    created: 2018-05-14T12:09:03.58159661-05:00
     description: Resilient MySQL deployment
     digest: 3e906fc650fee7406ec0c8629968ceabe28af0e337cf8e403259b7983f529e24
     icon: https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Octicons-database.svg/200px-Octicons-database.svg.png
@@ -460,7 +460,7 @@ entries:
     version: 0.2.0
   orders:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.619576284-05:00
+    created: 2018-05-14T12:09:03.583098349-05:00
     description: Bluecompute Orders Microservice
     digest: 849b0acbae8bbac1ab944d1bac093610b39d536f252e76580db11cc94a028a4b
     name: orders
@@ -468,7 +468,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/orders-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.619339122-05:00
+    created: 2018-05-14T12:09:03.58285378-05:00
     description: Bluecompute Orders Microservice
     digest: b2a14f301797334aeaad321d02fca1297dd0927bcd43b57e8cf06145e979c4b8
     name: orders
@@ -476,7 +476,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/orders-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.619108486-05:00
+    created: 2018-05-14T12:09:03.582625674-05:00
     description: Bluecompute Orders Microservice
     digest: f7fe5f945a164da69c2d782f993fa95fd8f00d386a56c58369bb2fe6f7c3b637
     name: orders
@@ -484,7 +484,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/orders-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.61863472-05:00
+    created: 2018-05-14T12:09:03.582137974-05:00
     description: Bluecompute Orders Microservice
     digest: e80032e4c5cd126bfe542f55fcf53994c1728a4b4b52336fa93198c20b02718b
     name: orders
@@ -492,7 +492,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/orders-0.1.0.tgz
     version: 0.1.0
   ordersmysql:
-  - created: 2018-05-14T12:05:29.619850599-05:00
+  - created: 2018-05-14T12:09:03.583357582-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: 61df30b8c6b0d3bbd22a53fd4ad66c83bdf75a41e6af5f7b5c4f7b4156938b2d
@@ -515,7 +515,7 @@ entries:
     version: 0.4.0
   web:
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.621322956-05:00
+    created: 2018-05-14T12:09:03.584367712-05:00
     description: BlueCompute Web BFF app
     digest: 57b8eb6ae77c2f4ac171661b7fa779b3891973df7cce794ace7b745a22890892
     name: web
@@ -523,7 +523,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/web-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.620643751-05:00
+    created: 2018-05-14T12:09:03.584111539-05:00
     description: BlueCompute Web BFF app
     digest: 8b87fc0c2a7aa98eaaefe6ef97ea145c2a6cad903f8f0ed8e6c5c9a9cd9eb162
     name: web
@@ -531,7 +531,7 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/web-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.620370525-05:00
+    created: 2018-05-14T12:09:03.583870478-05:00
     description: BlueCompute Web BFF app
     digest: 31f11c627273cfe348904201001bdab124fad03a55552b17e3e79cb2213a99a9
     name: web
@@ -539,11 +539,11 @@ entries:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/web-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-05-14T12:05:29.620105505-05:00
+    created: 2018-05-14T12:09:03.5836184-05:00
     description: BlueCompute Web BFF app
     digest: 578c75f83599b095fb0bd9e95034930442198c1e830dd4eea50c8cf62a460b15
     name: web
     urls:
     - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/master/docs/charts/web-0.1.0.tgz
     version: 0.1.0
-generated: 2018-05-14T12:05:29.605325655-05:00
+generated: 2018-05-14T12:09:03.56881398-05:00
