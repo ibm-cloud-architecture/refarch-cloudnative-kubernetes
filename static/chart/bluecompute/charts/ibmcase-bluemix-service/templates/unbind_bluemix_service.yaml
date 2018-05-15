@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ (cat .Release.Name "-unbind-bluemix-service-" ( .Values.service.name | lower | replace " " "-") "-" ( randAlphaNum 5 | lower )) | nospace | trunc 63 }} 
+  namespace: {{ .Release.Namespace }}
+  labels:
+    bluemixService: {{ .Values.service.name | lower | replace " " "-" }}
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "34"
+spec:
+  template:
+    metadata:
+      name: {{.Release.Name}}-unbind-bluemix-service-{{ .Values.service.name | lower | replace " " "-" }}
+      labels:
+        bluemixService: {{ .Values.service.name | lower | replace " " "-" }}
+        heritage: {{.Release.Service | quote }}
+        release: {{.Release.Name | quote }}
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: bind-service
+        image: ibmcase/bluemix-cluster-deployer
+        command: [ "/bin/bash", "-c" ]
+        args: 
+        - >
+          set -x;
+          source /scripts/bx_login.sh; 
+          bx cs init;
+
+          bx cs cluster-services {{ template "bluemixClusterName" . }} -n {{ .Release.Namespace }} -s | grep "{{ .Values.service.name }}"
+
+          if [ $? -eq 0 ]; then
+            BOUND_GUID=$(bx cs cluster-services {{ template "bluemixClusterName" . }} -n {{ .Release.Namespace }} -s | grep "{{ .Values.service.name }}" | tail -1 | awk '{print $2}');
+            bx cs cluster-service-unbind {{ template "bluemixClusterName" . }} {{ .Release.Namespace }} "${BOUND_GUID}"
+          fi
+        imagePullPolicy: Always
+        env:
+        - name: BX_ORG
+          value: {{ template "bluemixOrg" . }}
+        - name: BX_SPACE
+          value: {{ template "bluemixSpace" . }}
+        - name: BX_API_ENDPOINT
+          value: {{ template "bluemixEndpoint" . }}
+        - name: BLUEMIX_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "bluemixApiKeySecretName" . }} 
+              key: api-key

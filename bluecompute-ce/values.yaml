@@ -9,7 +9,20 @@ global:
     secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
     secretName: bluecompute-hs256key
 
+ingress:
+  enabled: false
+  hostnames:
+    app: app.bluecompute.com
+    api: api.bluecompute.com
+
+tls:
+  enabled: false
+  secretName:
+  crt: PUT_BASE64_ENCODED_TLS_CERTIFICATE_HERE
+  key: PUT_BASE64_ENCODED_TLS_KEY_HERE
+
 auth:
+  enabled: true
   image:
     repository: ibmcase/bluecompute-auth
     tag: latest
@@ -17,11 +30,17 @@ auth:
     image:
       repository: ibmcase/bluecompute-dataloader
       tag: latest
+  service:
+    name: auth
+    externalPort: 8080
+  ingress:
+    path: /oauth
   resources:
     limits:
       memory: 384Mi
 
 catalog:
+  enabled: true
   image:
     repository: ibmcase/bluecompute-catalog
     tag: latest
@@ -29,14 +48,40 @@ catalog:
     image:
       repository: ibmcase/bluecompute-dataloader
       tag: latest
-  elasticsearch:
-    binding:
-      name: binding-catalog-elasticsearch
+  service:
+    name: catalog
+    externalPort: 8081
+  ingress:
+    path: /micro/items
+  catalogelasticsearch:
+    secretName: binding-catalog-elasticsearch
   resources:
     limits:
       memory: 384Mi
 
+catalogelasticsearch:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-elasticsearch
+    tag: latest
+    pullPolicy: IfNotPresent
+  clustername: catalogdb
+  service:
+    name: catalog-elasticsearch
+  labels:
+    app: bluecompute
+    micro: catalog
+    tier: data
+  resources:
+    limits:
+      memory: 700Mi
+    requests:
+      memory: 350Mi
+  secretName: binding-catalog-elasticsearch
+
 customer:
+  enabled: true
   image:
     repository: ibmcase/bluecompute-customer
     tag: latest
@@ -44,6 +89,11 @@ customer:
     image:
       repository: ibmcase/bluecompute-dataloader
       tag: latest
+  service:
+    name: customer
+    externalPort: 8080
+  ingress:
+    path: /micro/customer
   bash:
     image:
       repository: ibmcase/bluecompute-bash-curl-ssl
@@ -51,55 +101,12 @@ customer:
   resources:
     limits:
       memory: 384Mi
-  couchdb:
+  customercouchdb:
     binding:
       name: binding-customer-couchdb
 
-inventory:
-  image:
-    repository: ibmcase/bluecompute-inventory
-    tag: latest
-  dataloader:
-    image:
-      repository: ibmcase/bluecompute-dataloader
-      tag: latest
-  resources:
-    limits:
-      memory: 384Mi
-  mysql:
-    binding:
-      name: binding-inventorydb-mysql
-
-orders:
-  image:
-    repository: ibmcase/bluecompute-orders
-    tag: latest
-  dataloader:
-    image:
-      repository: ibmcase/bluecompute-dataloader
-      tag: latest
-  resources:
-    limits:
-      memory: 384Mi
-  mysql:
-    binding:
-      name: binding-ordersdb-mysql
-
-web:
-  image:
-    repository: ibmcase/bluecompute-web
-    tag: latest
-  clusterName: mycluster
-  region: myregion
-  service:
-    type: NodePort
-    nodeport:
-      port: 31337
-  ingress:
-    hostname:
-    path: /bluecompute
-
-ibmcase-couchdb:
+customercouchdb:
+  enabled: true
   image:
     repository: ibmcase/bluecompute-couchdb
     tag: latest
@@ -124,7 +131,29 @@ ibmcase-couchdb:
     tier: data
   nodename: customerdb
 
-ibmcase-inventory-mysql:
+inventory:
+  enabled: true
+  image:
+    repository: ibmcase/bluecompute-inventory
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  service:
+    name: inventory
+    externalPort: 8080
+  ingress:
+    path: /micro/inventory
+  resources:
+    limits:
+      memory: 384Mi
+  inventorymysql:
+    binding:
+      name: binding-inventorydb-mysql
+
+inventorymysql:
+  enabled: true
   binding:
     name: binding-inventorydb-mysql
   image:
@@ -146,7 +175,29 @@ ibmcase-inventory-mysql:
       tag: latest
       pullPolicy: IfNotPresent
 
-ibmcase-orders-mysql:
+orders:
+  enabled: true
+  image:
+    repository: ibmcase/bluecompute-orders
+    tag: latest
+  dataloader:
+    image:
+      repository: ibmcase/bluecompute-dataloader
+      tag: latest
+  service:
+    name: orders
+    externalPort: 8080
+  ingress:
+    path: /micro/orders
+  resources:
+    limits:
+      memory: 384Mi
+  ordersmysql:
+    binding:
+      name: binding-ordersdb-mysql
+
+ordersmysql:
+  enabled: true
   binding:
     name: binding-ordersdb-mysql
   image:
@@ -168,22 +219,18 @@ ibmcase-orders-mysql:
       tag: latest
       pullPolicy: IfNotPresent
 
-ibmcase-elasticsearch:
-  replicaCount: 1
+web:
+  enabled: true
   image:
-    repository: ibmcase/bluecompute-elasticsearch
+    repository: ibmcase/bluecompute-web
     tag: latest
-    pullPolicy: IfNotPresent
-  clustername: catalogdb
+  clusterName: mycluster
+  region: myregion
   service:
-    name: catalog-elasticsearch
-  labels:
-    app: bluecompute
-    micro: catalog
-    tier: data
-  resources:
-    limits:
-      memory: 700Mi
-    requests:
-      memory: 350Mi
-  secretName: binding-catalog-elasticsearch
+    name: web
+    type: NodePort
+    externalPort: 80
+    nodeport:
+      port: 31337
+  ingress:
+    path: /

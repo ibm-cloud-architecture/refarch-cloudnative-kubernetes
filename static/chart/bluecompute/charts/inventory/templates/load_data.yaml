@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ cat .Release.Name "-" .Chart.Name "-populate-mysql-" (randAlphaNum 5 | lower) | nospace | trunc 63 }}
+  labels:
+    app: bluecompute
+    micro: inventory
+    heritage: {{.Release.Service | quote }}
+    release: {{.Release.Name | quote }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+spec:
+  template:
+    metadata:
+      name: {{ cat .Release.Name "-" .Chart.Name "-populate-mysql-" (randAlphaNum 5 | lower) | nospace }}
+      labels:
+        app: bluecompute
+        micro: inventory
+        heritage: {{.Release.Service | quote }}
+        release: {{.Release.Name | quote }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+      annotations:
+        pod.beta.kubernetes.io/init-containers: '[
+          {
+            "name": "test-mysql",
+            "image": "{{ .Values.dataloader.image.repository }}:{{ .Values.dataloader.image.tag }}",
+            "imagePullPolicy": "Always",
+            "command": ["/bin/bash", "-c"],
+            "args": ["source /helper.sh; mysql_uri=`echo ${mysql} | jq -r .uri`; uri_parser ${mysql_uri}; until mysql -h ${uri_host} -P ${uri_port} -u${uri_user} -p${uri_password} -e status `echo ${uri_path} | cut -d/ -f2`; do echo waiting for mysql; sleep 1; done"],
+            "env": [{
+              "name": "mysql",
+              "valueFrom": {
+                "secretKeyRef": {
+                  "name": "{{ .Values.mysql.binding.name }}",
+                  "key": "binding"
+                }
+              }
+            }]
+          }
+        ]'
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: populate-mysql
+        image: {{ .Values.dataloader.image.repository }}:{{ .Values.dataloader.image.tag }}
+        imagePullPolicy: Always
+        env:
+        - name: mysql
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.mysql.binding.name }}
+              key: binding

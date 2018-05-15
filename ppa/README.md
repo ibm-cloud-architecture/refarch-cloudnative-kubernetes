@@ -6,13 +6,13 @@ To generate the archive, use a machine with Internet access to clone this git re
 
 ```bash
 cd ppa
-cp ../docs/charts/bluecompute-ce/bluecompute-ce-0.0.5.tgz .
+cp ../docs/charts/bluecompute-ce/bluecompute-ce-0.0.6.tgz .
 ```
 
 Unpack the chart to update the `values.yaml` to correspond to the local cluster.  
 
 ```bash
-tar zxvf bluecompute-ce-0.0.5.tgz
+tar zxvf bluecompute-ce-0.0.6.tgz
 ```
 
 Update the `bluecompute-ce/values.yaml` so that the image repositories correspond to the private registry in ICP.  For example, if the cluster is named `mycluster.icp`, you can update the yaml keys like this:
@@ -35,6 +35,14 @@ Update the `bluecompute-ce/values.yaml` so that the image repositories correspon
 | `orders.dataloader.image.repository` | `mycluster.icp:8500/default/ibmcase/bluecompute-dataloader` |
 | `ibmcase-orders-mysql.image.repository` | `mycluster.icp:8500/default/ibmcase/bluecompute-mysql` |
 | `web.image.repository` | `mycluster.icp:8500/default/ibmcase/bluecompute-web` |
+
+You can also use the following following command to update the image repository location:
+```bash
+$ sed -i 's/ibmcase/mycluster.icp:8500\/default\/ibmcase/g' bluecompute-ce/values.yaml
+
+# If using MacOS
+$ sed -i.bak 's/ibmcase/mycluster.icp:8500\/default\/ibmcase/g' bluecompute-ce/values.yaml
+```
 
 Once the `values.yaml` file is updated correctly, re-package the helm chart, which will create an updated tarball containing the changes made above.
 
@@ -61,10 +69,10 @@ Authenticate with the `bx pr` CLI (which you can install using [these](#installi
 bx pr login -a https://mycluster.icp:8443 --skip-ssl-validation
 ```
 
-Once you are authenticated, use the following command to import all of the images in the PPA archive named `bluecompute-ce-ppa-0.0.5.tgz`, for a cluster named `mycluster.icp`:
+Once you are authenticated, use the following command to import all of the images in the PPA archive named `bluecompute-ce-ppa-0.0.6.tgz`, for a cluster named `mycluster.icp`:
 
 ```bash
-bx pr load-ppa-archive --archive bluecompute-ce-ppa-0.0.5.tgz --clustername mycluster.icp
+bx pr load-ppa-archive --archive bluecompute-ce-ppa-0.0.6.tgz --clustername mycluster.icp
 ```
 
 This will push all of the images into the private registry under the `default` namespace and load the chart to the `local-charts` helm chart repository in ICP.  You can install the chart from the catalog in the `local-charts` repository.

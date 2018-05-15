@@ -32,3 +32,8 @@ bluecompute/requirements.lock
 
 bluecompute-ce/charts
 bluecompute-ce/requirements.lock
+bluecompute-ce/values.yaml.*
+
+# SSL Certificates
+*.crt
+*.key

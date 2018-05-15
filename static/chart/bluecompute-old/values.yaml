@@ -1,0 +1,30 @@
+# Declare variables to be passed into your templates.
+configMap:
+  bluemixAPIEndpoint: api.ng.bluemix.net
+  bluemixOrg: PUT_YOUR_BLUEMIX_ORG_HERE
+  bluemixSpace: PUT_YOUR_BLUEMIX_SPACE_HERE
+  bluemixRegistry: registry.ng.bluemix.net
+  bluemixRegistryNamespace: PUT_YOUR_BLUEMIX_REGISTRY_NAMESPACE_HERE
+  kubeClusterName: PUT_YOUR_CLUSTER_NAME_HERE
+
+# All values pasted here will be base64 encoded by the charts
+secret:
+  apiKey: PUT_YOUR_API_KEY_HERE
+
+bluecompute-auth:
+  replicaCount: 1
+
+bluecompute-catalog:
+  replicaCount: 1
+
+bluecompute-customer:
+  replicaCount: 1
+
+bluecompute-inventory:
+  replicaCount: 1
+
+bluecompute-orders:
+  replicaCount: 1
+
+bluecompute-web:
+  replicaCount: 1
