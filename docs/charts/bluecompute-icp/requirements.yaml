@@ -12,7 +12,7 @@ dependencies:
     version: 1.0.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp-icp
   - name: web
-    version: 0.3.0
+    version: 1.0.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp-icp
   - name: inventorydb
     version: 1.0.0
