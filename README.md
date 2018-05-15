@@ -19,7 +19,7 @@
 This project provides a reference implementation for running a Cloud Native Microprofile Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.
 
 <p align="center">
-    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/static/imgs/app_architecture.png">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/app_architecture.png">
 </p>
 
 ## Application Overview
