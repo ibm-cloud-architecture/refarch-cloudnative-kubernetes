@@ -143,6 +143,7 @@ Use the following test credentials to login:
 - **Username:** user
 - **Password:** passw0rd
 
+
 ## Delete the Application
 To delete the application from your cluster, run the following:
 ```bash
