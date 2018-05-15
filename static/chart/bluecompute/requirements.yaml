@@ -1,19 +1,39 @@
 dependencies:
-  - name: bluecompute-auth
-    version: 0.1.0
-    repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
-  - name: bluecompute-catalog
-    version: 0.1.1
-    repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
-  - name: bluecompute-customer
-    version: 0.1.0
-    repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
-  - name: bluecompute-inventory
-    version: 0.1.1
-    repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
-  - name: bluecompute-orders
-    version: 0.1.0
-    repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
-  - name: bluecompute-web
-    version: 0.1.0
-    repository: https://fabiogomezdiaz.github.io/refarch-cloudnative-kubernetes/charts
+  - name: auth
+    version: 0.3.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+  - name: catalog
+    version: 0.3.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+  - name: customer
+    version: 0.3.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+  - name: inventory
+    version: 0.4.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+  - name: orders
+    version: 0.3.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+  - name: web
+    version: 0.3.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+  - name: ibmcase-bluemix-service
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    version: 0.2.0
+    alias: bluemix-messagehub
+  - name: ibmcase-bluemix-service
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    version: 0.2.0
+    alias: customer-bluemix-cloudantdb
+  - name: ibmcase-bluemix-service
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    version: 0.2.0
+    alias: inventorydb-bluemix-compose-mysql
+  - name: ibmcase-bluemix-service
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    version: 0.2.0
+    alias: ordersdb-bluemix-compose-mysql
+  - name: ibmcase-bluemix-service
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts
+    version: 0.2.0
+    alias: catalog-bluemix-compose-elasticsearch

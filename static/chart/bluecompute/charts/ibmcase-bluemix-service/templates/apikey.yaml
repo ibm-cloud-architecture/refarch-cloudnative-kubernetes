@@ -1,0 +1,16 @@
+{{- if .Values.apiKey -}}
+apiVersion: v1
+kind: Secret
+type: Opaque
+data:
+  api-key: {{ template "bluemixApiKey" . }}
+metadata:
+  labels:
+        bluemixService: {{ .Values.service.name | lower | replace " " "-" }}
+        heritage: {{.Release.Service | quote }}
+        release: {{.Release.Name | quote }}
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+  name: {{ .Release.Name }}-{{ .Values.service.name | lower | replace " " "-" }}-bluemix-api-key
+  namespace: {{ .Release.Namespace }}
+
+{{- end -}}

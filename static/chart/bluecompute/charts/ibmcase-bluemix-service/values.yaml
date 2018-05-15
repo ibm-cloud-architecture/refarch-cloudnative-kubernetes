@@ -1,0 +1,30 @@
+# bluemix API key
+apiKey:
+
+# bluemix target
+target:
+  endpoint: api.ng.bluemix.net
+  org:
+  space:
+
+# name of armada cluster to bind the service to
+clusterName:
+
+# type and plan of bluemix service to create, will be named service.name
+service:
+  name:
+  type:
+  plan:
+
+global:
+  bluemix:
+     # global defined bluemix API key
+    apiKey:
+    
+    # global defined bluemix target
+    target:
+      endpoint:
+      org:
+      space:
+    
+   
