@@ -81,13 +81,13 @@ export DOCKER_API_VERSION="1.23"
 
 - Now run the docker build.
 
-`docker build -t keygen .`
+`docker build -t keygen-mp:v1.0.0 .`
 
 If it is a success, you will see the below output.
 
 ```
 Successfully built b984978b74h2
-Successfully tagged keygen:latest
+Successfully tagged keygen-mp:v1.0.0
 ```
 2. Run the helm chart.
 
@@ -121,13 +121,13 @@ You can find the detailed installation instructions for IBM Cloud Private [here]
 
 1. Now run the docker build.
 
-`docker build -t keygen .`
+`docker build -t keygen-mp:v1.0.0 .`
 
 If it is a success, you will see the below output.
 
 ```
 Successfully built c763478b74k1
-Successfully tagged keygen:latest
+Successfully tagged keygen-mp:v1.0.0
 ```
 
 2. Tag the image to your private registry.
