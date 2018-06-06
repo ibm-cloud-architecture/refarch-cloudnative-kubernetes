@@ -12,6 +12,7 @@
 * [Validate the Application](#validate-the-application)
   + [Minikube](#minikube)
   + [Login](#login)
+  + [Troubleshooting Deployments](#troubleshooting-deployments)
 * [Delete the Application](#delete-the-application)
 * [Optional Deployments](#optional-deployments)
   + [Deploy BlueCompute to IBM Cloud Container Service](#deploy-bluecompute-to-ibm-cloud-container-service)
@@ -143,12 +144,18 @@ Use the following test credentials to login:
 - **Username:** user
 - **Password:** passw0rd
 
+### Troubleshooting Deployments
+
+#### Deploying to non-default namespaces
+When deploying to non-`default` namespaces, BlueCompute requires additional container capabilities for the Elasticsearch image that is being used.  Please refer to [PodSecurityPolicy](PodSecurityPolicy/PodSecurityPolicy.md) for the necessary configuration instructions.
+
 
 ## Delete the Application
 To delete the application from your cluster, run the following:
 ```bash
 $ helm delete bluecompute --purge
 ```
+
 
 ## Optional Deployments
 
