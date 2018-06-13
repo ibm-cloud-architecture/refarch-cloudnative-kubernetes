@@ -92,6 +92,8 @@ If using IBM Cloud Private version 2.1.0.2 or newer, we recommend you follow the
   **`$ cd refarch-cloudnative-kubernetes`**
 
   **`$ git checkout microprofile`**
+  
+  **`$ cd utility_scripts`**
 
   **`sh clone_peers.sh`**
 
