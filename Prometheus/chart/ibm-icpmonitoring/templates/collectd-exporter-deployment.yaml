@@ -1,0 +1,65 @@
+{{- if or (eq .Values.mode "managed") .Values.collectdExporter.enabled -}}
+# Licensed Materials - Property of IBM
+# 5737-E67
+# @ Copyright IBM Corporation 2016, 2018. All Rights Reserved.
+# US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ template "collectdexporter.fullname" . }}
+    chart: {{ .Chart.Name }}
+    component: collectdexporter
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  name: {{ template "collectdexporter.fullname" . }}
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "collectdexporter.fullname" . }}
+        chart: {{ .Chart.Name }}
+        component: collectdexporter
+        release: {{ .Release.Name }}
+        heritage: {{ .Release.Service }}
+      name: {{ template "collectdexporter.fullname" . }}
+      annotations:
+        productName: collectd-exporter
+        productVersion: 0.3.1
+        productID: none
+    spec:
+    {{- if eq .Values.mode "managed" }}
+      tolerations:
+      - key: "dedicated"
+        operator: "Exists"
+        effect: "NoSchedule"
+    {{- end }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: beta.kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+                - ppc64le
+            {{- if eq .Values.mode "managed" }}
+              - key: management
+                operator: In
+                values:
+                - "true"
+            {{- end }}
+      containers:
+      - image: {{ .Values.collectdExporter.image.repository }}:{{ .Values.collectdExporter.image.tag }}
+        name: collectd-exporter
+        ports:
+        - containerPort: 9103
+          name: metrics
+        - containerPort: 25826
+          name: collector
+          protocol: UDP
+        args: [ "-collectd.listen-address=:25826" ]
+
+{{- end -}}
