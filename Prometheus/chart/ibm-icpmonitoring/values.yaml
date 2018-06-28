@@ -106,7 +106,7 @@ grafana:
     annotations: {}
   service:
     type: NodePort
-  elasticsearchDash: 
+  elasticsearchDash:
     enabled: false
 
 collectdExporter:
