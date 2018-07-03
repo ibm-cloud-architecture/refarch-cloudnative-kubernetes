@@ -1,34 +1,34 @@
 dependencies:
   - name: inventory
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
   - name: auth
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
   - name: catalog
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
   - name: customer
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
   - name: web
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
   - name: inventorydb
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
   - name: ibmcase-elasticsearch
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
   - name: keystore
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
   - name: ordersdb
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
   - name: orders
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
   - name: ibm-icpmonitoring
     version: 1.1.0
-    repository: https://raw.githubusercontent.com/Hemankita/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
