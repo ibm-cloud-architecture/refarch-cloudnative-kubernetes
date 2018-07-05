@@ -152,11 +152,11 @@ Server: &version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b
 
 1. Add the `helm` package repository containing the reference application.
 
-`helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp`
+`helm repo add ibmcase-mp https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp`
 
 2. Install the reference application.
 
-`helm install --name bluecompute ibmcase/bluecompute`
+`helm install --name bluecompute ibmcase-mp/bluecompute`
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
@@ -224,11 +224,11 @@ Server: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca5
 
 1. Add the `helm` package repository containing the reference application.
 
-`helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp-icp`
+`helm repo add ibmcase-mp https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp`
 
 2. Install the reference application.
 
-`helm install --name bluecompute-icp ibmcase/bluecompute-icp --tls`
+`helm install --name bluecompute ibmcase/bluecompute --tls`
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
@@ -347,14 +347,9 @@ Credentials for **user** - `Username: user` and `Password: password`
 
 To delete the application from your cluster, run the following:
 
-1. In minikube, run the below command.
+Run the below command.
 
 ```
 $ helm delete --purge bluecompute
 ```
 
-2. In ICP, run the below command.
-
-```
-$ helm delete --purge bluecompute-icp --tls
-```
