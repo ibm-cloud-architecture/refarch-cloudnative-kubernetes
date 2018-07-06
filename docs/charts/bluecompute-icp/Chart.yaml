@@ -1,4 +1,0 @@
-apiVersion: v1
-description: Bluecompute Microprofile Application Chart
-name: bluecompute-icp
-version: 0.0.1
