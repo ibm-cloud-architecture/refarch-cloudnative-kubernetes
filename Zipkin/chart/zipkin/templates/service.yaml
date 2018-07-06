@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.service.name }}
+  labels:
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    chart: "{{ .Release.Name }}-{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    implementation: "microprofile"
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: "{{ .Release.Name }}-{{  .Chart.Name }}-selector"
+  ports:
+  - name: zipkin
+    port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.port }}
