@@ -1,4 +1,5 @@
-# Run a Cloud Native Microservices Application using Microprofile on a Kubernetes Cluster
+# Cloud-native development with MicroProfile, WebSphere Liberty, and IBM Cloud Private
+
 * [Introduction](#introduction)
 * [Application Overview](#application-overview)
 * [Project repositories](#project-repositories)
@@ -65,7 +66,7 @@ Finally, we must create a Kubernetes Cluster. As already said before, we are goi
 
 - [Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) - Create a single node virtual cluster on your workstation. Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-minikube/) to get Minikube installed on your workstation.
 
-We not only recommend to complete the three Minikube installation steps on the link above but also read the [Running Kubernetes Locally via Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) page for getting more familiar with Minikube.
+We not only recommend to complete the three Minikube installation steps on the link above but also read the [Running Kubernetes Locally via Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) page to get more familiar with Minikube.
 
 Alternatively, you can also use the Kubernetes support provided in [Docker Edge](https://www.docker.com/kubernetes).
 
@@ -181,7 +182,7 @@ You can find the detailed installation instructions for IBM Cloud Private [here]
 3. Go to `admin > Configure Client`.
 
 <p align="center">
-    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/client_config.png">
+    <img width="300" height="300" src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/client_config.png">
 </p>
 
 4. Grab the kubectl configuration commands.
@@ -228,7 +229,7 @@ Server: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca5
 
 2. Install the reference application.
 
-`helm install --name bluecompute ibmcase/bluecompute --tls`
+`helm install --name bluecompute ibmcase-mp/bluecompute --tls`
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
