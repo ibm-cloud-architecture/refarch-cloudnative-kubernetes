@@ -239,6 +239,34 @@ After a minute or so, the containers will be deployed to the cluster.  The outpu
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
 </p>
 
+Before accessing the application, make sure that all the pods are up and running. Also, verify if the jobs are all completed.
+
+```
+$ kubectl get pods | grep bluecompute
+bluecompute-auth-bbd9b8ccb-5rb7r                             1/1       Running       0          4m
+bluecompute-catalog-58c9cf764c-9ng8n                         1/1       Running       0          4m
+bluecompute-cloudant-544ff745fc-ctdnf                        1/1       Running       0          4m
+bluecompute-customer-5f5684cd8d-bgpmr                        1/1       Running       0          4m
+bluecompute-default-cluster-elasticsearch-6f4fb5c94d-lhkct   1/1       Running       0          4m
+bluecompute-grafana-5fbf9b64c8-sjm4x                         1/1       Running       0          4m
+bluecompute-inventory-5bd7b8f7cd-bs4sq                       1/1       Running       0          4m
+bluecompute-inventorydb-6bcc5f4f8b-vljhx                     1/1       Running       0          4m
+bluecompute-orders-6d94dc588b-zcvhh                          1/1       Running       0          4m
+bluecompute-ordersdb-6fb4c876b5-q4p4k                        1/1       Running       0          4m
+bluecompute-prometheus-86c4dc666f-6wfj8                      2/2       Running       0          4m
+bluecompute-prometheus-alertmanager-8d9476f6-dvcr8           2/2       Running       0          4m
+bluecompute-rabbitmq-686cd78fbc-rjwgm                        1/1       Running       0          4m
+bluecompute-web-67c976678-b26gg                              1/1       Running       0          4m
+bluecompute-zipkin-7d97f85d48-pk68s                          1/1       Running       0          4m
+```
+
+```
+$ kubectl get jobs | grep bluecompute
+bluecompute-grafana-ds     1         1            4m
+bluecompute-keystore-job   1         1            4m
+bluecompute-populate       1         1            4m
+```
+
 ### Minikube
 
 If you've installed on `minikube` you can find the IP by issuing:
@@ -288,17 +316,17 @@ Grab the Kubernetes master ip and in this case, `<YourClusterIP>` will be `172.1
 
 - To get the port, run this command.
 
-**`$ kubectl get service bluecompute-icp-web`**
+**`$ kubectl get service bluecompute-web`**
 
 You will see something like below.
 
 ```
-NAME                  TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
-bluecompute-icp-web   NodePort   10.10.10.211   <none>        80:31682/TCP   2m
+NAME              TYPE       CLUSTER-IP   EXTERNAL-IP   PORT(S)        AGE
+bluecompute-web   NodePort   10.0.0.46    <none>        80:31385/TCP   1m
 ```
 In your browser navigate to **`http://<IP>:<Port>`**.
 
-In the above case, the access url will be `http://172.16.40.4:31682`.
+In the above case, the access url will be `http://172.16.40.4:31385`.
 
 ### Login
 
@@ -308,7 +336,7 @@ Use the following test credentials to login:
 
 ### How the app works
 
-Below shows you how you can navigate across the app.
+Below steps shows you how you can navigate across the app.
 
 - Home Screen
 
