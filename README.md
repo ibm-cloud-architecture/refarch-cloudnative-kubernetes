@@ -1,19 +1,26 @@
 # Cloud-native development with MicroProfile, WebSphere Liberty, and IBM Cloud Private
 
+## Table of Contents
+
 * [Introduction](#introduction)
 * [Application Overview](#application-overview)
 * [Project repositories](#project-repositories)
 * [Deploy the Application](#deploy-the-application)
-  + [Pre-requisites](#pre-requisites)
   + [Get application source code (optional)](#get-application-source-code-optional)
   + [Locally in Minikube](#locally-in-minikube)
-  + [Remotely in ICP](#remotely-in-icp)
-  + [Login](#login)
-* [Validate the Application](#validate-the-application)
-  + [Minikube](#minikube)
-  + [ICP](#icp)
-  + [How the app works](#how-the-app-works)
-* [Delete the Application](#delete-the-application)
+    * [Minikube Pre-requisites](#minikube-pre-requisites)
+    * [Set up your minikube environment](#set-up-your-minikube-environment)
+    * [Run the App on Minikube](#run-the-app-on-minikube)
+    * [Validate the App on Minikube](#validate-the-app-on-minikube)
+    * [Delete the App on Minikube](#delete-the-app-on-minikube)
+  + [Remotely on IBM Cloud Private](#remotely-on-ibm-cloud-private)
+    * [ICP Pre-requisites](#icp-pre-requisites)
+    * [Set up your ICP environment](#set-up-your-icp-environment)
+    * [Run the App on ICP](#run-the-app-on-icp)
+    * [Validate the App on ICP](#validate-the-app-on-icp)
+    * [Delete the App on ICP](#delete-the-app-on-icp)
+  + [Test Login Credentials](#test-login-credentials)
+* [How the app works](#how-the-app-works)
 
 ## Introduction
 
@@ -50,38 +57,6 @@ This project organized itself like a microservice project, as such each componen
 
 ## Deploy the Application
 
-To run the sample applications you will need to configure your environment for the Kubernetes and Microservices
-runtimes.
-
-### Pre-requisites
-
-#### Locally in Minikube
-
-To run the BlueCompute application locally on your laptop on a Kubernetes-based environment such as Minikube (which is meant to be a small development environment) we first need to get few tools installed:
-
-- [Kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it on your platform.
-- [Helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
-
-Finally, we must create a Kubernetes Cluster. As already said before, we are going to use Minikube:
-
-- [Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) - Create a single node virtual cluster on your workstation. Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-minikube/) to get Minikube installed on your workstation.
-
-We not only recommend to complete the three Minikube installation steps on the link above but also read the [Running Kubernetes Locally via Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) page to get more familiar with Minikube.
-
-Alternatively, you can also use the Kubernetes support provided in [Docker Edge](https://www.docker.com/kubernetes).
-
-#### Remotely in ICP
-
-[IBM Cloud Private Cluster](https://www.ibm.com/cloud/private)
-
-Create a Kubernetes cluster in an on-premise datacenter. The community edition (IBM Cloud Private-ce) is free of charge.
-Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html) to install IBM Cloud Private-ce.
-
-[Helm](https://github.com/kubernetes/helm) (Kubernetes package manager)
-
-Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
-If using IBM Cloud Private version 2.1.0.2 or newer, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0.2/app_center/create_helm_cli.html) to install helm.
-
 ### Get application source code (optional)
 
 - Clone the base repository:
@@ -100,7 +75,22 @@ If using IBM Cloud Private version 2.1.0.2 or newer, we recommend you follow the
 
 ### Locally in Minikube
 
-#### Setting up your environment
+#### Minikube Pre-requisites
+
+To run the BlueCompute application locally on your laptop on a Kubernetes-based environment such as Minikube (which is meant to be a small development environment) we first need to get few tools installed:
+
+- [Kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it on your platform.
+- [Helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
+
+Finally, we must create a Kubernetes Cluster. As already said before, we are going to use Minikube:
+
+- [Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) - Create a single node virtual cluster on your workstation. Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-minikube/) to get Minikube installed on your workstation.
+
+We not only recommend to complete the three Minikube installation steps on the link above but also read the [Running Kubernetes Locally via Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) page to get more familiar with Minikube.
+
+Alternatively, you can also use the Kubernetes support provided in [Docker Edge](https://www.docker.com/kubernetes).
+
+#### Set up your minikube environment
 
 1. Start your minikube. Run the below command.
 
@@ -149,7 +139,7 @@ Client: &version.Version{SemVer:"v2.4.2", GitCommit:"82d8e9498d96535cc6787a6a919
 Server: &version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b8dab6c2d45be6", GitTreeState:"clean"}
 ```
 
-#### Running the application on Minikube
+#### Run the App on Minikube
 
 1. Add the `helm` package repository containing the reference application.
 
@@ -161,7 +151,76 @@ Server: &version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
-### Remotely in ICP
+#### Validate the App on Minikube
+
+Before accessing the application, make sure that all the pods are up and running. Also, verify if the jobs are all completed.
+
+```
+$ kubectl get pods | grep bluecompute
+bluecompute-auth-bbd9b8ccb-5rb7r                             1/1       Running       0          4m
+bluecompute-catalog-58c9cf764c-9ng8n                         1/1       Running       0          4m
+bluecompute-cloudant-544ff745fc-ctdnf                        1/1       Running       0          4m
+bluecompute-customer-5f5684cd8d-bgpmr                        1/1       Running       0          4m
+bluecompute-default-cluster-elasticsearch-6f4fb5c94d-lhkct   1/1       Running       0          4m
+bluecompute-grafana-5fbf9b64c8-sjm4x                         1/1       Running       0          4m
+bluecompute-inventory-5bd7b8f7cd-bs4sq                       1/1       Running       0          4m
+bluecompute-inventorydb-6bcc5f4f8b-vljhx                     1/1       Running       0          4m
+bluecompute-orders-6d94dc588b-zcvhh                          1/1       Running       0          4m
+bluecompute-ordersdb-6fb4c876b5-q4p4k                        1/1       Running       0          4m
+bluecompute-prometheus-86c4dc666f-6wfj8                      2/2       Running       0          4m
+bluecompute-prometheus-alertmanager-8d9476f6-dvcr8           2/2       Running       0          4m
+bluecompute-rabbitmq-686cd78fbc-rjwgm                        1/1       Running       0          4m
+bluecompute-web-67c976678-b26gg                              1/1       Running       0          4m
+bluecompute-zipkin-7d97f85d48-pk68s                          1/1       Running       0          4m
+```
+
+```
+$ kubectl get jobs | grep bluecompute
+bluecompute-grafana-ds     1         1            4m
+bluecompute-keystore-job   1         1            4m
+bluecompute-populate       1         1            4m
+```
+
+On `minikube` you can find the IP by issuing:
+
+**`$ minikube ip`**
+
+You will see something like below.
+
+```
+192.168.99.100
+```
+
+To get the port
+
+**`$ kubectl get service bluecompute-web`**
+
+You will see something like below.
+
+```
+NAME              TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+bluecompute-web   NodePort   10.102.2.220   <none>        80:30240/TCP   9m
+```
+
+In your browser navigate to **`http://<IP>:<Port>`**.
+
+In the above case, the access url will be `http://192.168.99.100:30240`.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
+</p>
+
+#### Delete the App on Minikube
+
+To delete the application from your cluster, run the following:
+
+Run the below command.
+
+```
+$ helm delete --purge bluecompute
+```
+
+### Remotely on IBM Cloud Private
 
 [IBM Cloud Private](https://www.ibm.com/cloud/private)
 
@@ -169,7 +228,19 @@ IBM Private Cloud has all the advantages of public cloud but is dedicated to sin
 
 You can find the detailed installation instructions for IBM Cloud Private [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html).
 
-#### Setting up your environment
+#### ICP Pre-requisites
+
+[IBM Cloud Private Cluster](https://www.ibm.com/cloud/private)
+
+Create a Kubernetes cluster in an on-premise datacenter. The community edition (IBM Cloud Private-ce) is free of charge.
+Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0.2/installing/install_containers_CE.html) to install IBM Cloud Private-ce.
+
+[Helm](https://github.com/kubernetes/helm) (Kubernetes package manager)
+
+Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
+If using IBM Cloud Private version 2.1.0.2 or newer, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0.2/app_center/create_helm_cli.html) to install helm.
+
+#### Set up your ICP environment
 
 1. Your [IBM Cloud Private Cluster](https://www.ibm.com/cloud/private) should be up and running.
 
@@ -221,7 +292,7 @@ Client: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca5
 Server: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca57d3972bcad3351801", GitTreeState:"dirty"}
 ```
 
-#### Running the application on ICP
+#### Run the App on ICP
 
 1. Add the `helm` package repository containing the reference application.
 
@@ -231,72 +302,41 @@ Server: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca5
 
 `helm install --name bluecompute ibmcase-mp/bluecompute --tls`
 
+Note: If using IBM Cloud Private version older than 2.1.0.2, use `helm install --name bluecompute ibmcase-mp/bluecompute`
+
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
-## Validate the Application
-
-<p align="center">
-    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
-</p>
+#### Validate the App on ICP
 
 Before accessing the application, make sure that all the pods are up and running. Also, verify if the jobs are all completed.
 
 ```
 $ kubectl get pods | grep bluecompute
-bluecompute-auth-bbd9b8ccb-5rb7r                             1/1       Running       0          4m
-bluecompute-catalog-58c9cf764c-9ng8n                         1/1       Running       0          4m
-bluecompute-cloudant-544ff745fc-ctdnf                        1/1       Running       0          4m
-bluecompute-customer-5f5684cd8d-bgpmr                        1/1       Running       0          4m
-bluecompute-default-cluster-elasticsearch-6f4fb5c94d-lhkct   1/1       Running       0          4m
-bluecompute-grafana-5fbf9b64c8-sjm4x                         1/1       Running       0          4m
-bluecompute-inventory-5bd7b8f7cd-bs4sq                       1/1       Running       0          4m
-bluecompute-inventorydb-6bcc5f4f8b-vljhx                     1/1       Running       0          4m
-bluecompute-orders-6d94dc588b-zcvhh                          1/1       Running       0          4m
-bluecompute-ordersdb-6fb4c876b5-q4p4k                        1/1       Running       0          4m
-bluecompute-prometheus-86c4dc666f-6wfj8                      2/2       Running       0          4m
-bluecompute-prometheus-alertmanager-8d9476f6-dvcr8           2/2       Running       0          4m
-bluecompute-rabbitmq-686cd78fbc-rjwgm                        1/1       Running       0          4m
-bluecompute-web-67c976678-b26gg                              1/1       Running       0          4m
-bluecompute-zipkin-7d97f85d48-pk68s                          1/1       Running       0          4m
+bluecompute-auth-bbd9b8ccb-5dmww                             1/1       Running       0          3m
+bluecompute-catalog-58c9cf764c-84lqd                         1/1       Running       0          3m
+bluecompute-cloudant-544ff745fc-nptld                        1/1       Running       0          3m
+bluecompute-customer-777f669f79-6shw8                        1/1       Running       0          3m
+bluecompute-default-cluster-elasticsearch-6f4fb5c94d-tcgjg   1/1       Running       0          3m
+bluecompute-grafana-5fbf9b64c8-jcltl                         1/1       Running       0          3m
+bluecompute-inventory-5bd7b8f7cd-7hg5c                       1/1       Running       0          3m
+bluecompute-inventorydb-6bcc5f4f8b-bdhxn                     1/1       Running       0          3m
+bluecompute-orders-7747958847-4qtmm                          1/1       Running       0          3m
+bluecompute-ordersdb-6fb4c876b5-l78pz                        1/1       Running       0          3m
+bluecompute-prometheus-86c4dc666f-dqw5d                      2/2       Running       0          3m
+bluecompute-prometheus-alertmanager-8d9476f6-n29jz           2/2       Running       0          3m
+bluecompute-rabbitmq-686cd78fbc-dsb4h                        1/1       Running       0          3m
+bluecompute-web-67c976678-zkjxc                              1/1       Running       0          3m
+bluecompute-zipkin-7d97f85d48-hldzq                          1/1       Running       0          3m
 ```
 
 ```
 $ kubectl get jobs | grep bluecompute
-bluecompute-grafana-ds     1         1            4m
-bluecompute-keystore-job   1         1            4m
-bluecompute-populate       1         1            4m
+bluecompute-grafana-ds     1         1            3m
+bluecompute-keystore-job   1         1            3m
+bluecompute-populate       1         1            3m
 ```
 
-### Minikube
-
-If you've installed on `minikube` you can find the IP by issuing:
-
-**`$ minikube ip`**
-
-You will see something like below.
-
-```
-192.168.99.100
-```
-
-To get the port
-
-**`$ kubectl get service bluecompute-web`**
-
-You will see something like below.
-
-```
-NAME              TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
-bluecompute-web   NodePort   10.102.2.220   <none>        80:30240/TCP   9m
-```
-
-In your browser navigate to **`http://<IP>:<Port>`**.
-
-In the above case, the access url will be `http://192.168.99.100:30240`.
-
-### ICP
-
-If you've installed on `icp` you can find the IP by issuing:
+On `ICP` you can find the IP by issuing:
 
 **`$ kubectl cluster-info`**
 
@@ -328,7 +368,22 @@ In your browser navigate to **`http://<IP>:<Port>`**.
 
 In the above case, the access url will be `http://172.16.40.4:31385`.
 
-### Login
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
+</p>
+
+#### Delete the App on ICP
+
+To delete the application from your cluster, run the following:
+
+Run the below command.
+
+```
+$ helm delete --purge bluecompute --tls
+```
+Note: If using IBM Cloud Private version older than 2.1.0.2, use `helm delete --purge bluecompute`
+
+### Test Login Credentials
 
 Use the following test credentials to login:
 - **Username:** foo
@@ -372,13 +427,4 @@ Credentials for **user** - `Username: user` and `Password: password`
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/customer.png">
 </p>
 
-## Delete the Application
-
-To delete the application from your cluster, run the following:
-
-Run the below command.
-
-```
-$ helm delete --purge bluecompute
-```
 
