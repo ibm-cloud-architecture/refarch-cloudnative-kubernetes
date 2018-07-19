@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   auth:
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.830719-05:00
+    created: 2018-07-19T17:22:12.692862-05:00
     description: A Helm chart for Kubernetes
     digest: 96927219d5580c37585a02bd5484f1f973777b67ac3cee1f084623ef76ebee32
     name: auth
@@ -10,9 +10,9 @@ entries:
     - auth-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.829984-05:00
+    created: 2018-07-19T17:22:12.692355-05:00
     description: A Helm chart for Kubernetes
-    digest: cedcf8105b7411e89a991c0461b29a65b9c07b9b67760664cbd8a1b640a75ab0
+    digest: ad9012aa3d5aa36337898f1649233207821df04c5fbe40948535cf4a4e493a8b
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
     name: auth
     sources:
@@ -22,7 +22,7 @@ entries:
     version: 0.0.1
   catalog:
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.832369-05:00
+    created: 2018-07-19T17:22:12.694142-05:00
     description: A Helm chart for Kubernetes
     digest: 1eeceb1e58a83337976c621d50f3f07f2bf2822989b303f5359715d85f45e00f
     name: catalog
@@ -30,7 +30,7 @@ entries:
     - catalog-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.831572-05:00
+    created: 2018-07-19T17:22:12.693679-05:00
     description: A Helm chart for Kubernetes
     digest: 557f14732803b45e10deb323300542a6dbffd6cbd130040a3f2282fcf2fe2ba2
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -42,7 +42,7 @@ entries:
     version: 0.0.1
   customer:
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.833282-05:00
+    created: 2018-07-19T17:22:12.696272-05:00
     description: A Helm chart for Kubernetes
     digest: 321d67245c1f40573e1331eb9718ecf65acb408944b58517c8cc2f244d1d0b1c
     name: customer
@@ -50,9 +50,9 @@ entries:
     - customer-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.832716-05:00
+    created: 2018-07-19T17:22:12.695646-05:00
     description: A Helm chart for Kubernetes
-    digest: eab385da587b1859a4aa1d1e213f994f387897e703a3a1225b8083d0a911471e
+    digest: 8255f300ecf2fa6721c24ee15541452fadb39d6341553793d24c5b2029c26be9
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
     name: customer
     sources:
@@ -61,7 +61,7 @@ entries:
     - customer-0.0.1.tgz
     version: 0.0.1
   ibm-icpmonitoring:
-  - created: 2018-07-17T12:27:37.838941-05:00
+  - created: 2018-07-19T17:22:12.701978-05:00
     description: IBM monitoring service in private cloud
     digest: 68a32d65a8a37663fe5892f76258c69f1491f51dfb61365205fd2cc08c5c566d
     engine: gotpl
@@ -86,7 +86,7 @@ entries:
     version: 1.1.0
   ibmcase-elasticsearch:
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.840112-05:00
+    created: 2018-07-19T17:22:12.702974-05:00
     description: ElasticSearch
     digest: 0a28e3587dad578fe58636011804b733a2a7a8b894eae460f2ea9534071307bf
     icon: https://static-www.elastic.co/assets/blt9a26f88bfbd20eb5/icon-elasticsearch-bb.svg
@@ -95,7 +95,7 @@ entries:
     - ibmcase-elasticsearch-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.83955-05:00
+    created: 2018-07-19T17:22:12.702504-05:00
     description: ElasticSearch
     digest: 49f994fc02e8d512568a538da380cb97bffcb6ae6637caead8703414fbc27d62
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -108,7 +108,7 @@ entries:
     version: 0.0.1
   inventory:
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.841564-05:00
+    created: 2018-07-19T17:22:12.703921-05:00
     description: A Helm chart for Kubernetes
     digest: 9f90c8d52271cdc5069685b268136de3b2970e014575a0490ec7ab5bde48ff2f
     name: inventory
@@ -116,7 +116,7 @@ entries:
     - inventory-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.840807-05:00
+    created: 2018-07-19T17:22:12.703446-05:00
     description: A Helm chart for Kubernetes
     digest: 9f943c34b0175e9ee8580ba08e3f2b92b451567c914f267df509509fca0507b8
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -128,7 +128,7 @@ entries:
     version: 0.0.1
   inventorydb:
   - appVersion: 1.0.0
-    created: 2018-07-17T12:27:37.844463-05:00
+    created: 2018-07-19T17:22:12.70553-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: e5227c599e062c3424fca60a60011c943af124cff800beef435581b39d837c34
@@ -137,7 +137,7 @@ entries:
     - inventorydb-1.0.0.tgz
     version: 1.0.0
   - appVersion: 1.0.0
-    created: 2018-07-17T12:27:37.842874-05:00
+    created: 2018-07-19T17:22:12.704781-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: 9bd5579dce971a2a6457e246e08afaacbc2b71a6d74dfd0ccc2829ea89e4cc03
@@ -150,7 +150,7 @@ entries:
     version: 0.0.1
   keystore:
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.845695-05:00
+    created: 2018-07-19T17:22:12.7063-05:00
     description: A Helm chart for keystore
     digest: 9ad390b66dd0730741d711f1a6d079f2cdb6e9839495d8f0aab1ee4cb0a62570
     name: keystore
@@ -158,7 +158,7 @@ entries:
     - keystore-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.845014-05:00
+    created: 2018-07-19T17:22:12.705927-05:00
     description: A Helm chart for keystore
     digest: 93f17eaacf9713c87b584fe2ad272d9e567ebf9c7d5eef5bd96bc39e7ccf6ef5
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -170,7 +170,7 @@ entries:
     version: 0.0.1
   orders:
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.846523-05:00
+    created: 2018-07-19T17:22:12.707166-05:00
     description: BlueCompute Orders Microservice
     digest: dc5f7ea7b0b6800df78fade5761a91782583f4620290605accf420ebc6925a31
     name: orders
@@ -178,9 +178,9 @@ entries:
     - orders-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.84591-05:00
+    created: 2018-07-19T17:22:12.706707-05:00
     description: BlueCompute Orders Microservice
-    digest: 5ac063139baec334645d8ab5157a9c1f578928ac217c2200ad1c6367f3e1cad3
+    digest: cb6c62d0b311e67cae9f0dd1b2fdf52b35f131b537d431d348a497edcd7164c9
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
     name: orders
     sources:
@@ -190,7 +190,7 @@ entries:
     version: 0.0.1
   ordersdb:
   - appVersion: 1.0.0
-    created: 2018-07-17T12:27:37.849056-05:00
+    created: 2018-07-19T17:22:12.708832-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: 4c12c39de5c5c01096040fce976fba0d39784ffc2e71025fd6774dfe5452c6e8
@@ -199,7 +199,7 @@ entries:
     - ordersdb-1.0.0.tgz
     version: 1.0.0
   - appVersion: 1.0.0
-    created: 2018-07-17T12:27:37.847884-05:00
+    created: 2018-07-19T17:22:12.707972-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: 4325d6b35fa88a4bb7ce0d9f60272c87bcfd284406af455636193b978bbfcb7e
@@ -212,7 +212,7 @@ entries:
     version: 0.0.1
   web:
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.850556-05:00
+    created: 2018-07-19T17:22:12.709883-05:00
     description: BlueCompute Web BFF app
     digest: 88ee12fb1d20347ed32ff5c2b0b99b216f74a9f0c652db51a0222eacfb96b109
     name: web
@@ -220,7 +220,7 @@ entries:
     - web-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.849889-05:00
+    created: 2018-07-19T17:22:12.709331-05:00
     description: BlueCompute Web BFF app
     digest: 349fa15b77dbd01b98b82b895007ae47e17bca94860b665b6128cd2447e18d1e
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -232,7 +232,7 @@ entries:
     version: 0.0.1
   zipkin:
   - apiVersion: v1
-    created: 2018-07-17T12:27:37.85131-05:00
+    created: 2018-07-19T17:22:12.710341-05:00
     description: A Helm chart for Zipkin
     digest: ebc5f9a83ac1f475a7a716149c20201782ab48789ec9adc63f87899961cf30e5
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -242,4 +242,4 @@ entries:
     urls:
     - zipkin-0.0.1.tgz
     version: 0.0.1
-generated: 2018-07-17T12:27:37.828752-05:00
+generated: 2018-07-19T17:22:12.690049-05:00
