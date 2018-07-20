@@ -389,9 +389,11 @@ Use the following test credentials to login:
 - **Username:** foo
 - **Password:** bar
 
-### How the app works
+To login as an admin user, use the below. Admin has some extra privilages like having accessing to the monitoring data etc.
+- **Username:** user
+- **Password:** password
 
-Below steps shows you how you can navigate across the app.
+### How the app works
 
 - Home Screen
 
@@ -399,20 +401,20 @@ Below steps shows you how you can navigate across the app.
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
 </p>
 
+- Login
+
+For our sample application, the default users are `foo` and `user`(admin)
+- Credentials for **foo** - `Username: foo` and `Password: bar`
+- Credentials for **user** - `Username: user` and `Password: password`
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/login.png">
+</p>
+
 - Catalog
 
 <p align="center">
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/catalog.png">
-</p>
-
-- Login
-
-For our sample application, the default users are `foo` and `user`
-Credentials for **foo** - `Username: foo` and `Password: bar`
-Credentials for **user** - `Username: user` and `Password: password`
-
-<p align="center">
-    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/login.png">
 </p>
 
 - Orders
@@ -427,4 +429,100 @@ Credentials for **user** - `Username: user` and `Password: password`
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/customer.png">
 </p>
 
+- OpenTracing 
 
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/zipkin_traces.png">
+</p>
+
+- OpenAPI
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/inventory_openapi.png">
+</p>
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/catalog_openapi.png">
+</p>
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/customer_openapi.png">
+</p>
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/orders_openapi.png">
+</p>
+
+- Metrics
+
+  *  Only `admin` can access the metrics endpoints.
+  *  `Inventory` and `Catalog` service metrics endpoints are protected using basic auth and to hit these endpoints, you need the credentials. In our sample application, the credentials are `Username:admin` and `Password:password`.
+  * `Customer` and `Orders` services are oauth protected. So, the metrics endpoints are protected with oauth and to hit these endpoints, you need the mp-jwt token of the authorized user. In our sample application, to access it as `admin`, you need to login into the application using the credentials `Username:user` and `Password:password`.
+  
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/inventory_metrics.png">
+</p>
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/catalog_metrics.png">
+</p>
+
+For catalog and inventory, we reused the metrics as the two microservices are closely related.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/customer_metrics.png">
+</p>
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/orders_metrics.png">
+</p>
+
+To access the metrics for customer and orders, we used POSTMAN to pass the Authorization tokens.
+
+You can also integrate these metrics with Prometheus. For now, we integrate the `Inventory` and `Catalog` metrics with the Prometheus.
+
+For example, `application:inventory` is one of the defined application metrics which gives the call count. The graph shows up as below in Prometheus.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/prometheus.png">
+</p>
+
+- Health Checks 
+
+In this sample application, the health check capabilities are enabled.
+
+For example, let us consider `Customer` service. For some reason, let us assume that the `Cloudant` service is down. When the health checks are enabled, corresponding service eventually checks if the dependent services are up and running. If not, `liveness probe` fails and it keeps restarting the unhealthy service to bring it back. 
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/healthcheck_sample1.png">
+</p>
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/healthchecksample2.png">
+</p>
+
+- Fault Tolerance
+
+In this sample application, the fault tolerance capabilities are enabled as well.
+
+Let's assume we have the same scenario as above. The health checks restarts your service if it is unhealthy. It may take a while for the service to come back. So, when such things happen, it will be nice if the application keeps working.
+
+Now the `cloudant` is down and `Customer` service cannot retrieve the user profile. See what happens here in our application.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/cloudant_faulttolerance.png">
+</p>
+
+So, now the end user will clearly understand that this particular service is down and rest of them are all working.
+
+Similarly, when `Orders database` goes down, `Orders` shows up as below.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/orders_faulttolerance.png">
+</p>
+
+Likely, when `Elasticsearch` goes down, our store `Catalog` shows up as below.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/catalog_faulttolerance.png">
+</p>
