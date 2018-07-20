@@ -6,7 +6,9 @@
 * [Set up your environment](#set-up-your-environment)
 * [Run the App](#run-the-app)
 * [Validate the App](#validate-the-app)
+* [Test Login Credentials](#test-login-credentials)
 * [Delete the App](#delete-the-app)
+* [References](#references)
 
 ## Pre-requisites
 
@@ -143,11 +145,19 @@ In the above case, the access url will be `http://192.168.99.100:30240`.
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/imgs/bc_mp_ui.png">
 </p>
 
+## Test Login Credentials
+
+Use the following test credentials to login:
+- **Username:** foo
+- **Password:** bar
+
+To login as an admin user, use the below. Admin has some extra privilages like having accessing to the monitoring data etc.
+- **Username:** user
+- **Password:** password
+
 ## Delete the App
 
-To delete the application from your cluster, run the following:
-
-Run the below command.
+To delete the application from your cluster, run the below command.
 
 ```
 $ helm delete --purge bluecompute
