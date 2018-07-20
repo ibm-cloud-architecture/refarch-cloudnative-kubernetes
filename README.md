@@ -11,6 +11,7 @@
   + [Locally in Minikube](#locally-in-minikube)
   + [Test Login Credentials](#test-login-credentials)
 * [How the app works](#how-the-app-works)
+* [References](#references)
 
 ## Introduction
 
@@ -167,7 +168,7 @@ For catalog and inventory, we reused the metrics as the two microservices are cl
 
 To access the metrics for customer and orders, we used POSTMAN to pass the Authorization tokens.
 
-You can also integrate these metrics with Prometheus. For now, we integrate the `Inventory` and `Catalog` metrics with the Prometheus.
+You can also integrate these metrics with Prometheus. For now, we only integrated the `Inventory` and `Catalog` metrics with the Prometheus.
 
 For example, `application:inventory` is one of the defined application metrics which gives the call count. The graph shows up as below in Prometheus.
 
@@ -214,3 +215,9 @@ Likely, when `Elasticsearch` goes down, our store `Catalog` shows up as below.
 <p align="center">
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/static/mp_features/catalog_faulttolerance.png">
 </p>
+
+## References
+
+* [MicroProfile](https://microprofile.io/)
+* [WebSphere Liberty](https://developer.ibm.com/wasdev/websphere-liberty/)
+* [IBM Cloud Private](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0/kc_welcome_containers.html)
