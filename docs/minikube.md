@@ -80,6 +80,8 @@ Server: &version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b
 
 `helm repo add ibmcase-mp https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp`
 
+If you want to know how the helm packaging is done for this application, [here](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/bluecompute-mp/README.md) are the details.
+
 2. Install the reference application.
 
 `helm install --name bluecompute ibmcase-mp/bluecompute`
