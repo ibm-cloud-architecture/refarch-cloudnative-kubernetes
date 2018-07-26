@@ -10,3 +10,19 @@ We used `openzipkin/zipkin` as our base image and built a basic helm chart on to
 
 You can find the Zipkin Quick start guide [here](https://zipkin.io/pages/quickstart).
 
+**Setting up Zipkin locally**
+
+To set up Zipkin locally, we are running it as a docker container. You need [Docker](https://www.docker.com/) as a prerequisite.
+
+To run Zipkin on docker locally, run the below commands.
+
+`docker run -d -p 9411:9411 openzipkin/zipkin`
+
+You can find the detailed instructions [here](https://zipkin.io/pages/quickstart).
+
+Set the required environment variables as follows.
+
+```
+export zipkinHost=localhost
+export zipkinPort=9411
+```
