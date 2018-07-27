@@ -6,7 +6,7 @@
 mode: standard
 tls:
   enabled: false
-imagePullPolicy: "IfNotPresent"
+imagePullPolicy: Always
 
 prometheus:
   image:
