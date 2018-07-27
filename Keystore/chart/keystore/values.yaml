@@ -7,7 +7,7 @@ image:
   repository: ibmcase/keygen-mp
   #repository: keygen-mp
   tag: v2.0.0
-  pullPolicy: IfNotPresent
+  #pullPolicy: IfNotPresent
   resources:
     requests:
       cpu: 200m
