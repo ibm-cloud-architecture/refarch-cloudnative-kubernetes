@@ -42,7 +42,7 @@ To know more about these implementations, Click on the below images to access re
 
 
 <p align="center">
-  <a href="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/">
+  <a href="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring">
     <img src="images/spring_small.png">
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
