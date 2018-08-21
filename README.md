@@ -1,5 +1,3 @@
-***In this repo, the branches will be refactored within 14 days. The current branches will be condensed down to `master`, `spring` and `microprofile`. Existing `master` will be renamed to `spring` and the new `master` will have documentation pointing to the relevant branches.***
-
 # Run a Cloud Native Microservices Application on a Kubernetes Cluster
 
 ## Table of Contents
