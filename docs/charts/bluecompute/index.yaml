@@ -7,7 +7,7 @@ entries:
     digest: b90bd11009cd639fbb75a8a0818ce98af7b3054d0fd559a7ed9aaf59dd5eda14
     name: auth
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/auth-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/auth-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
     created: 2017-11-01T09:37:39.540587-05:00
@@ -15,7 +15,7 @@ entries:
     digest: 055b4ab2fad15d874622b02e36ec973c789cd16beffc3baab8e966951fa49123
     name: auth
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/auth-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/auth-0.1.0.tgz
     version: 0.1.0
   bluecompute:
   - apiVersion: v1
@@ -24,7 +24,7 @@ entries:
     digest: 306332e201642d0af77649715a91f16c5cf25d952eac02a3ff92e38a18445974
     name: bluecompute
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute/bluecompute-0.0.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute/bluecompute-0.0.1.tgz
     version: 0.0.1
   catalog:
   - apiVersion: v1
@@ -33,7 +33,7 @@ entries:
     digest: a7c4c551352b311144ee6da216d28a6aa55d74f53cd35288b5700fa736429406
     name: catalog
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/catalog-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/catalog-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
     created: 2017-11-01T09:37:39.547032-05:00
@@ -41,7 +41,7 @@ entries:
     digest: 5943bf174fa59f6bffafb011c2d35349324907c6c105e0b2f05dea39c59869c1
     name: catalog
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/catalog-0.1.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/catalog-0.1.1.tgz
     version: 0.1.1
   customer:
   - apiVersion: v1
@@ -50,7 +50,7 @@ entries:
     digest: 2c5efa1b721fce36d68913b37640b323b0e112110612279fb7a6dd26c01257bd
     name: customer
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/customer-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/customer-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
     created: 2017-11-01T09:37:39.548252-05:00
@@ -58,7 +58,7 @@ entries:
     digest: c637de164bd9267688eddd122476551f84712cf14f55f2f0681cb20770b70b5b
     name: customer
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/customer-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/customer-0.1.0.tgz
     version: 0.1.0
   grafana-bc:
   - created: 2017-11-01T09:37:39.549938-05:00
@@ -76,7 +76,7 @@ entries:
     sources:
     - https://github.com/grafana/grafana
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/grafana-bc-0.3.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/grafana-bc-0.3.1.tgz
     version: 0.3.1
   ibmcase-bluemix-service:
   - apiVersion: v1
@@ -86,7 +86,7 @@ entries:
     icon: http://www-05.ibm.com/il/gtu/img/BluemixLogo_172x203.png
     name: ibmcase-bluemix-service
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-bluemix-service-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/ibmcase-bluemix-service-0.1.0.tgz
     version: 0.1.0
   ibmcase-couchdb:
   - apiVersion: v1
@@ -96,7 +96,7 @@ entries:
     icon: http://couchdb.apache.org/image/couch@2x.png
     name: ibmcase-couchdb
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-couchdb-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/ibmcase-couchdb-0.1.0.tgz
     version: 0.1.0
   ibmcase-elasticsearch:
   - apiVersion: v1
@@ -106,7 +106,7 @@ entries:
     icon: https://static-www.elastic.co/assets/blt9a26f88bfbd20eb5/icon-elasticsearch-bb.svg
     name: ibmcase-elasticsearch
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-elasticsearch-0.1.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/ibmcase-elasticsearch-0.1.1.tgz
     version: 0.1.1
   ibmcase-mysql:
   - apiVersion: v1
@@ -116,7 +116,7 @@ entries:
     icon: https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Octicons-database.svg/200px-Octicons-database.svg.png
     name: ibmcase-mysql
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/ibmcase-mysql-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/ibmcase-mysql-0.1.0.tgz
     version: 0.1.0
   inventory:
   - apiVersion: v1
@@ -125,7 +125,7 @@ entries:
     digest: 007979f85aacb5b822b01bcc4137be39d0ee26835c99d436160705f4e2101f60
     name: inventory
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/inventory-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/inventory-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
     created: 2017-11-01T09:37:39.552918-05:00
@@ -133,7 +133,7 @@ entries:
     digest: 27099b492c0de3ff363a2eafc79a823a14adf2f4ef1667ae7fad0b2b8287e1bf
     name: inventory
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/inventory-0.1.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/inventory-0.1.1.tgz
     version: 0.1.1
   orders:
   - apiVersion: v1
@@ -142,7 +142,7 @@ entries:
     digest: f7fe5f945a164da69c2d782f993fa95fd8f00d386a56c58369bb2fe6f7c3b637
     name: orders
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/orders-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/orders-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
     created: 2017-11-01T09:37:39.55454-05:00
@@ -150,7 +150,7 @@ entries:
     digest: e80032e4c5cd126bfe542f55fcf53994c1728a4b4b52336fa93198c20b02718b
     name: orders
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/orders-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/orders-0.1.0.tgz
     version: 0.1.0
   web:
   - apiVersion: v1
@@ -159,7 +159,7 @@ entries:
     digest: 31f11c627273cfe348904201001bdab124fad03a55552b17e3e79cb2213a99a9
     name: web
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/web-0.2.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/web-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
     created: 2017-11-01T09:37:39.555471-05:00
@@ -167,6 +167,6 @@ entries:
     digest: 578c75f83599b095fb0bd9e95034930442198c1e830dd4eea50c8cf62a460b15
     name: web
     urls:
-    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/web-0.1.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/web-0.1.0.tgz
     version: 0.1.0
 generated: 2017-11-01T09:37:39.539811-05:00
