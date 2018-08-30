@@ -116,7 +116,7 @@ This initializes the `helm` client as well as the server side component called `
 
 2. Add the `helm` package repository containing the reference application:
 ```bash
-$ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce
+$ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
 ```
 
 3. Install the reference application:
@@ -164,7 +164,7 @@ Deploying the Helm chart will also work on a Kubernetes cluster from IBM Cloud C
 ```bash
 $ helm init
 
-$ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce
+$ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
 
 $ helm install --name bluecompute ibmcase/bluecompute-ce
 ```
@@ -193,7 +193,7 @@ IBM Cloud Private contains integration with Helm that allows you to install the 
 3. Download and initialize helm in your cluster using [these instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0.2/app_center/create_helm_cli.html).
 4. Add the `helm` package repository containing the reference application:
   ```bash
-  $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/master/docs/charts/bluecompute-ce
+  $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
   ```
 
 5. Install the reference application:
