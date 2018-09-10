@@ -2,39 +2,36 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
-  #annotations:
-  #  ingress.kubernetes.io/rewrite-target: /
+  name: {{ template "bluecompute.fullname" . }}
   labels:
-    release: {{ .Release.Name | quote }}
-    chart: {{ .Chart.Name}}-{{ .Chart.Version }}
+    {{- include "bluecompute.labels" . | indent 4 }}
+  {{- if .Values.ingress.ibmCloud.redirectToHTTPS }}
+  annotations:
+   ingress.bluemix.net/redirect-to-https: "True"
+  {{- end }}
 spec:
   {{- if .Values.tls.enabled }}
   tls:
-  {{- if .Values.web.enabled }}
-  {{- if .Values.ingress.hostnames.app}}
+  {{- if and .Values.web.enabled .Values.ingress.hostnames.app }}
   - hosts:
     - {{ .Values.ingress.hostnames.app }}
-    secretName: "{{ template "tlsSecretName" . }}"
-  {{- end }}
+    secretName: "{{ template "bluecompute.tls.secretName" . }}"
   {{- end }}
   {{- if .Values.ingress.hostnames.api }}
   - hosts:
     - {{ .Values.ingress.hostnames.api }}
-    secretName: "{{ template "tlsSecretName" . }}"
+    secretName: "{{ template "bluecompute.tls.secretName" . }}"
   {{- end }}
   {{- end }}
   rules:
-  {{- if .Values.web.enabled }}
-  {{- if .Values.ingress.hostnames.app}}
+  {{- if and .Values.web.enabled .Values.ingress.hostnames.app }}
   - host: {{ .Values.ingress.hostnames.app }}
     http:
       paths:
       - path: {{ .Values.web.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-{{ .Values.web.service.name }}"
+          serviceName: "{{- .Release.Name }}-web"
           servicePort: {{ .Values.web.service.externalPort }}
-  {{- end }}
   {{- end }}
   {{- if .Values.ingress.hostnames.api }}
   - host: {{ .Values.ingress.hostnames.api }}
@@ -43,31 +40,31 @@ spec:
       {{- if .Values.auth.enabled }}
       - path: {{ .Values.auth.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-{{ .Values.auth.service.name }}"
+          serviceName: "{{- .Release.Name }}-auth"
           servicePort: {{ .Values.auth.service.externalPort }}
       {{- end }}
       {{- if .Values.catalog.enabled }}
       - path: {{ .Values.catalog.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-{{ .Values.catalog.service.name }}"
+          serviceName: "{{- .Release.Name }}-catalog"
           servicePort: {{ .Values.catalog.service.externalPort }}
       {{- end }}
-      {{- if .Values.customer.enabled }}
-      - path: {{ .Values.customer.ingress.path }}
+      {{- if .Values.auth.customer.enabled }}
+      - path: {{ .Values.auth.customer.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-{{ .Values.customer.service.name }}"
-          servicePort: {{ .Values.customer.service.externalPort }}
+          serviceName: "{{- .Release.Name }}-customer"
+          servicePort: {{ .Values.auth.customer.service.externalPort }}
       {{- end }}
-      {{- if .Values.inventory.enabled }}
-      - path: {{ .Values.inventory.ingress.path }}
+      {{- if .Values.catalog.inventory.enabled }}
+      - path: {{ .Values.catalog.inventory.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-{{ .Values.inventory.service.name }}"
-          servicePort: {{ .Values.inventory.service.externalPort }}
+          serviceName: "{{- .Release.Name }}-inventory"
+          servicePort: {{ .Values.catalog.inventory.service.externalPort }}
       {{- end }}
       {{- if .Values.orders.enabled }}
       - path: {{ .Values.orders.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-{{ .Values.orders.service.name }}"
+          serviceName: "{{- .Release.Name }}-orders"
           servicePort: {{ .Values.orders.service.externalPort }}
       {{- end }}
   {{- end }}
