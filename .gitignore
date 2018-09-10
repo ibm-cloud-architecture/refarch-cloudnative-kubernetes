@@ -37,3 +37,10 @@ bluecompute-ce/values.yaml.*
 # SSL Certificates
 *.crt
 *.key
+
+# Chart related files
+bluecompute-ce/charts
+bluecompute-ce/requirements.lock
+
+# Ignore test YAML files
+*.yaml.test
