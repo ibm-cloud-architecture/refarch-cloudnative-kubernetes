@@ -1,19 +1,19 @@
 # Declare variables to be passed into your templates.
 global:
-  persistence:
-    volume:
-      size: 1Gi
-      storageClass: ""
-    enabled: false
   hs256key:
-    secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
     secretName: bluecompute-hs256key
+    secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
+  cluster:
+    name: "my-cluster"
+    region: us-south
 
 ingress:
   enabled: false
   hostnames:
     app: app.bluecompute.com
     api: api.bluecompute.com
+  ibmCloud:
+    redirectToHTTPS: false
 
 tls:
   enabled: false
@@ -23,214 +23,224 @@ tls:
 
 auth:
   enabled: true
-  image:
-    repository: ibmcase/bluecompute-auth
-    tag: latest
-  dataloader:
-    image:
-      repository: ibmcase/bluecompute-dataloader
-      tag: latest
-  service:
-    name: auth
-    externalPort: 8080
-  ingress:
-    path: /oauth
-  resources:
-    limits:
-      memory: 384Mi
-
-catalog:
-  enabled: true
-  image:
-    repository: ibmcase/bluecompute-catalog
-    tag: latest
-  dataloader:
-    image:
-      repository: ibmcase/bluecompute-dataloader
-      tag: latest
-  service:
-    name: catalog
-    externalPort: 8081
-  ingress:
-    path: /micro/items
-  catalogelasticsearch:
-    secretName: binding-catalog-elasticsearch
-  resources:
-    limits:
-      memory: 384Mi
-
-catalogelasticsearch:
-  enabled: true
   replicaCount: 1
   image:
-    repository: ibmcase/bluecompute-elasticsearch
-    tag: latest
-    pullPolicy: IfNotPresent
-  clustername: catalogdb
+    repository: ibmcase/bluecompute-auth
+    tag: 0.5.0
+    pullPolicy: Always
   service:
-    name: catalog-elasticsearch
-  labels:
-    app: bluecompute
-    micro: catalog
-    tier: data
+    type: ClusterIP
+    externalPort: 8080
+    nodePort: 31383
   resources:
     limits:
-      memory: 700Mi
+      memory: 384Mi
     requests:
-      memory: 350Mi
-  secretName: binding-catalog-elasticsearch
-
-customer:
-  enabled: true
-  image:
-    repository: ibmcase/bluecompute-customer
-    tag: latest
-  dataloader:
+      memory: 64Mi
+  hs256key:
+    secretName:
+    secret:
+  customer:
+    enabled: true
+    replicaCount: 1
     image:
-      repository: ibmcase/bluecompute-dataloader
-      tag: latest
-  service:
-    name: customer
-    externalPort: 8080
-  ingress:
-    path: /micro/customer
+      repository: ibmcase/bluecompute-customer
+      tag: 0.5.0
+      pullPolicy: Always
+    service:
+      type: ClusterIP
+      externalPort: 8080
+      nodePort: 31382
+    resources:
+      limits:
+        memory: 384Mi
+      requests:
+        memory: 64Mi
+    testUser:
+      createUser: true
+      username: user
+      password: passw0rd
+    bash:
+      image:
+        repository: ibmcase/bluecompute-bash-curl-ssl
+        tag: latest
+        pullPolicy: IfNotPresent
+    customercouchdb:
+      enabled: true
+      image: 
+        repository: "couchdb"
+        tag: "2.1.1"
+        pullPolicy: IfNotPresent
+      # If chart is not enabled, this field can be used as external mysql host
+      fullnameOverride: bluecompute-customer
+      protocol: http
+      createAdminSecret: true
+      adminUsername: user
+      adminPassword: passw0rd
+      service:
+        externalPort: 5984
+      clusterSize: 1
+      persistentVolume:
+        enabled: false
+      helperImage:
+        repository: kocolosk/couchdb-statefulset-assembler
+        tag: 1.1.0
+        pullPolicy: IfNotPresent
   bash:
     image:
       repository: ibmcase/bluecompute-bash-curl-ssl
       tag: latest
+      pullPolicy: IfNotPresent
+
+catalog:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-catalog
+    tag: 0.5.0
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    externalPort: 8081
+    nodePort: 31381
   resources:
     limits:
       memory: 384Mi
-  customercouchdb:
-    binding:
-      name: binding-customer-couchdb
-
-customercouchdb:
-  enabled: true
-  image:
-    repository: ibmcase/bluecompute-couchdb
-    tag: latest
-  user:
-  password:
-  service:
-    name: customer-couchdb
-    type: ClusterIP
-    externalPort: 5984
-    internalPort: 5984
-  binding:
-    name: binding-customer-couchdb
-  resources:
-    limits:
-      memory: 128Mi
     requests:
       memory: 64Mi
-  existingPVCName:
-  labels:
-    app: bluecompute
-    micro: customer
-    tier: data
-  nodename: customerdb
-
-inventory:
-  enabled: true
-  image:
-    repository: ibmcase/bluecompute-inventory
-    tag: latest
-  dataloader:
+  inventory:
+    enabled: true
+    replicaCount: 1
     image:
-      repository: ibmcase/bluecompute-dataloader
-      tag: latest
-  service:
-    name: inventory
-    externalPort: 8080
-  ingress:
-    path: /micro/inventory
-  resources:
-    limits:
-      memory: 384Mi
-  inventorymysql:
-    binding:
-      name: binding-inventorydb-mysql
-
-inventorymysql:
-  enabled: true
-  binding:
-    name: binding-inventorydb-mysql
-  image:
-    repository: ibmcase/bluecompute-mysql
-    tag: latest
-  resources:
-    limits:
-      memory: 256Mi
-  labels:
-    app: bluecompute
-    tier: data
-    micro: inventory
-  dbname: inventorydb
-  service:
-    name: inventory-mysql
-  busybox:
-    image:
-      repository: ibmcase/bluecompute-busybox
-      tag: latest
+      repository: ibmcase/bluecompute-inventory
+      tag: 0.5.0
+      pullPolicy: Always
+    service:
+      type: ClusterIP
+      externalPort: 8080
+      nodePort: 31380
+    resources:
+      limits:
+        memory: 384Mi
+      requests:
+        memory: 64Mi
+    inventorymysql:
+      enabled: true
+      image: "mysql"
+      imageTag: "5.7.14"
+      imagePullPolicy: IfNotPresent
+      # If chart is not enabled, this field can be used as external mysql host
+      fullnameOverride: bluecompute-inventory-mysql
+      mysqlRootPassword: admin123
+      mysqlUser: dbuser
+      mysqlPassword: password
+      mysqlDatabase: inventorydb
+      service:
+        port: 3306
+      persistence:
+        enabled: false
+  curl:
+    image: alexeiled/curl
+    imageTag: latest
+    imagePullPolicy: IfNotPresent
+  catalogelasticsearch:
+    enabled: true
+    # If chart is not enabled, this field can be used as external elasticsearch host
+    fullnameOverride: bluecompute-catalog-elasticsearch
+    protocol: http
+    port: 9200
+    username:
+    password:
+    healthcheck: "_cat/health"
+    cacertificatebase64:
+    appVersion: 6.3.1
+    image: 
+      repository: docker.elastic.co/elasticsearch/elasticsearch-oss
+      tag: 6.3.1
       pullPolicy: IfNotPresent
+    client:
+      replicas: 1
+      serviceType: ClusterIP
+    master:
+      replicas: 2
+      persistence:
+        enabled: false
+    data:
+      replicas: 1
+      persistence:
+        enabled: false
 
 orders:
   enabled: true
+  replicaCount: 1
   image:
     repository: ibmcase/bluecompute-orders
-    tag: latest
-  dataloader:
-    image:
-      repository: ibmcase/bluecompute-dataloader
-      tag: latest
+    tag: 0.5.0
+    pullPolicy: Always
   service:
-    name: orders
+    type: ClusterIP
     externalPort: 8080
-  ingress:
-    path: /micro/orders
+    nodePort: 31384
   resources:
     limits:
       memory: 384Mi
-  ordersmysql:
-    binding:
-      name: binding-ordersdb-mysql
-
-ordersmysql:
-  enabled: true
-  binding:
-    name: binding-ordersdb-mysql
-  image:
-    repository: ibmcase/bluecompute-mysql
-    tag: latest
-  resources:
-    limits:
-      memory: 256Mi
-  labels:
-    app: bluecompute
-    tier: data
-    micro: orders
-  dbname: ordersdb
-  service:
-    name: orders-mysql
-  busybox:
-    image:
-      repository: ibmcase/bluecompute-busybox
-      tag: latest
-      pullPolicy: IfNotPresent
+    requests:
+      memory: 64Mi
+  hs256key:
+    secretName:
+    secret:
+  inventorymysql:
+    enabled: true
+    image: "mysql"
+    imageTag: "5.7.14"
+    imagePullPolicy: IfNotPresent
+    # If chart is not enabled, this field can be used as external mysql host
+    fullnameOverride: bluecompute-orders-mysql
+    mysqlRootPassword: admin123
+    mysqlUser: dbuser
+    mysqlPassword: password
+    mysqlDatabase: ordersdb
+    service:
+      port: 3306
+    persistence:
+      enabled: false
 
 web:
   enabled: true
+  replicaCount: 1
   image:
     repository: ibmcase/bluecompute-web
-    tag: latest
-  clusterName: mycluster
-  region: myregion
+    tag: 0.5.0
+    pullPolicy: Always
   service:
-    name: web
     type: NodePort
     externalPort: 80
-    nodeport:
-      port: 31337
-  ingress:
-    path: /
+    nodePort: 31337
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  services:
+    auth:
+      protocol: http
+      host:
+      port:
+    catalog:
+      protocol: http
+      host:
+      port:
+    customer:
+      protocol: http
+      host:
+      port:
+    orders:
+      protocol: http
+      host:
+      port:
+    reviews:
+      protocol: http
+      host:
+      port:
