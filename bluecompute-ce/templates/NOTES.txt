@@ -6,7 +6,7 @@ To view the Bluecompute Web Application in your browser please do the following,
 
 1. To get the IP Address for the Web Application, run one the following commands based on your environment:
   IBM Cloud Container Service:
-  NODE_IP=$(ibmcloud workers YOUR_CLUSTER_NAME | grep -v '^*' | egrep -v "(ID|OK)" | awk '{print $2;}' | head -n1)
+  NODE_IP=$(ibmcloud cs workers $YOUR_CLUSTER_NAME | grep -v '^*' | egrep -v "(ID|OK)" | awk '{print $2;}' | head -n1)
 
   IBM Cloud Private:
   NODE_IP=PROXY_NODE_EXTERNAL_IP
