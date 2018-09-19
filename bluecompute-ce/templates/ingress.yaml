@@ -3,12 +3,12 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ template "bluecompute.fullname" . }}
-  labels:
-    {{- include "bluecompute.labels" . | indent 4 }}
   {{- if .Values.ingress.ibmCloud.redirectToHTTPS }}
   annotations:
    ingress.bluemix.net/redirect-to-https: "True"
   {{- end }}
+  labels:
+    {{- include "bluecompute.labels" . | indent 4 }}
 spec:
   {{- if .Values.tls.enabled }}
   tls:
@@ -40,31 +40,31 @@ spec:
       {{- if .Values.auth.enabled }}
       - path: {{ .Values.auth.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-auth"
+          serviceName: {{ .Values.auth.fullnameOverride }}
           servicePort: {{ .Values.auth.service.externalPort }}
       {{- end }}
       {{- if .Values.catalog.enabled }}
       - path: {{ .Values.catalog.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-catalog"
+          serviceName: {{ .Values.catalog.fullnameOverride }}
           servicePort: {{ .Values.catalog.service.externalPort }}
       {{- end }}
-      {{- if .Values.auth.customer.enabled }}
-      - path: {{ .Values.auth.customer.ingress.path }}
+      {{- if .Values.customer.enabled }}
+      - path: {{ .Values.customer.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-customer"
-          servicePort: {{ .Values.auth.customer.service.externalPort }}
+          serviceName: {{ .Values.customer.fullnameOverride }}
+          servicePort: {{ .Values.customer.service.externalPort }}
       {{- end }}
-      {{- if .Values.catalog.inventory.enabled }}
-      - path: {{ .Values.catalog.inventory.ingress.path }}
+      {{- if .Values.inventory.enabled }}
+      - path: {{ .Values.inventory.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-inventory"
-          servicePort: {{ .Values.catalog.inventory.service.externalPort }}
+          serviceName: {{ .Values.inventory.fullnameOverride }}
+          servicePort: {{ .Values.inventory.service.externalPort }}
       {{- end }}
       {{- if .Values.orders.enabled }}
       - path: {{ .Values.orders.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-orders"
+          serviceName: {{ .Values.orders.fullnameOverride }}
           servicePort: {{ .Values.orders.service.externalPort }}
       {{- end }}
   {{- end }}
