@@ -7,10 +7,44 @@ metadata:
     {{- include "bluecompute.labels" . | indent 4 }}
 spec:
   repositories:
-  - name: docker.io/*
+  # BlueCompute
+  - name: docker.io/ibmcase/*
     policy:
       va:
         enabled: false
+  # Curl
+  - name: docker.io/alexeiled/*
+    policy:
+      va:
+        enabled: false
+  # CouchDB
+  - name: docker.io/couchdb/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/kocolosk/*
+    policy:
+      va:
+        enabled: false
+  # MySQL
+  - name: docker.io/mysql/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/busybox/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/prom/mysqld-exporter/*
+    policy:
+      va:
+        enabled: false
+  # MariaDB
+  - name: docker.io/bitnami/mariadb/*
+    policy:
+      va:
+        enabled: false
+  # Elasticsearch
   - name: docker.elastic.co/*
     policy:
       va:
