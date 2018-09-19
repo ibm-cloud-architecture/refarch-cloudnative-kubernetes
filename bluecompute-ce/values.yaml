@@ -7,6 +7,8 @@ global:
     name: "my-cluster"
     region: us-south
 
+createImagePolicy: false
+
 ingress:
   enabled: false
   hostnames:
