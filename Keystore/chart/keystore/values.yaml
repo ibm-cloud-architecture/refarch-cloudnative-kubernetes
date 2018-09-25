@@ -2,6 +2,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 revisionHistoryLimit: 1
+namespace: default
 image:
   #repository: registry.csplab.cloudns.cx/microprofile/keygen-mp
   repository: ibmcase/keygen-mp
