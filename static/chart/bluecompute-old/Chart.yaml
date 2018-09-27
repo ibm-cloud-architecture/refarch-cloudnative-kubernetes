@@ -1,4 +1,0 @@
-apiVersion: v1
-description: Bluecompute Application Chart
-name: bluecompute-old
-version: 0.0.1
