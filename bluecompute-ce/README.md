@@ -1,70 +1,40 @@
 # Run a Cloud Native Microservices Application on a Kubernetes Cluster
 
 ## Introduction
+This project provides a reference implementation for running a Cloud Native Web Application using a Microservices architecture on a Kubernetes cluster. The logical architecture for this reference implementation is shown in the picture below.  
 
-This helm chart provides a [reference implementation](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes) for running a Cloud Native Mobile and Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.  
+![Application Architecture](https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/static/imgs/app_architecture.png?raw=true)
 
-   ![Application Architecture](../static/imgs/bluecompute_ce.png?raw=true)
+## Application Overview
+The application is a simple store front shopping application that displays a catalog of antique computing devices, where users can search and buy products. It has a web interface that relies on separate BFF (Backend for Frontend) services to interact with the backend data.  
 
-### Deployment
+There are several components of this architecture.  
 
-To install, use the following command in the current directory to install the chart:
+* This OmniChannel application contains an [AngularJS](https://angularjs.org/) based web application. The diagram depicts it as Browser.  
+* The Web app invokes its own backend Microservices to fetch data, we call this component BFFs following the [Backend for Frontends](http://samnewman.io/patterns/architectural/bff/) pattern.  In this Layer, front end developers usually write backend logic for their front end.  The Web BFF is implemented using the Node.js Express Framework. These Microservices are packaged as Docker containers and managed by Kubernetes cluster.
+* The BFFs invokes another layer of reusable Java Microservices. In a real world project, this is sometimes written by different teams.  The reusable microservices are written in Java. They run inside a Kubernetes cluster, for example the [IBM Cloud Container Service](https://www.ibm.com/cloud/container-service) or [IBM Cloud Private](https://www.ibm.com/cloud/private), using [Docker](https://www.docker.com/).
+* The Java Microservices retrieve their data from the following databases:  
+  + The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/).
+  + The Customer service stores and retrieves Customer data from a searchable JSON datasource using [CouchDB](http://couchdb.apache.org/).
+  + The Inventory Service uses an instance of [MySQL](https://www.mysql.com/).
+  + The Orders Service uses an instance of [MariaDB](https://mariadb.org/).
 
-```
-$ helm install --name bluecompute .
-```
+## Chart Source
+The source for the `BlueCompute-CE` chart can be found at:
+* https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring/bluecompute-ce
 
-The following variables influence chart behaviors, and can be passed using the `--set` arguments passed to `helm`:
 
-- `global.persistence.enabled=true`
-  
-  Create [PersistentVolumeClaims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) for all database charts.  If this is not set, a `hostPath` is used for the volumes instead.
-  
-- `global.persistence.volume.size=<size in Gi>`
+## Deploy Inventory Application to Kubernetes Cluster from CLI
+To deploy the Inventory Chart and its MySQL dependency Chart to a Kubernetes cluster using Helm CLI, follow the instructions below:
+```bash
+# Add ibmcase Helm Repo
+$ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
 
-  This string is used to set the size of the PersistentVolumeClaim.  By default, 1Gi is requested for each of the database data volumes.  Note in the IBM Bluemix Container Service, the minimum is 20Gi.
-  
-- `global.persistence.volume.storageClass=<storageClassName>`
+# Deploy Bluecompute-CE Chart
+$ helm upgrade --install bluecompute ibmcase/bluecompute-ce
 
-  This string is used to set the storage class of the PersistentVolumeClaim being requested.  Valid values depend on the Kubernetes cluster where the application is deployed and can be retrieved using the following command:
-  
-  ```
-  $ kubectl get storageclasses
-  ```
-
-  For example, IBM Bluemix Container Service provides the following valid storage classes:
-  
-  ```
-  NAME                         TYPE
-  default                      ibm.io/ibmc-file   
-  ibmc-file-bronze (default)   ibm.io/ibmc-file   
-  ibmc-file-gold               ibm.io/ibmc-file   
-  ibmc-file-silver             ibm.io/ibmc-file   
-  ```
-  
-  By default, no storage class is provided.
-  
-- `web.ingress.hostname=<ingress hostname>`
-
-  If this variable is set, a host rule is added to the Ingress resource for the web deployment.  In IBM Bluemix Container Service, this value [is required](https://console.bluemix.net/docs/containers/cs_apps.html#ibm_domain) (see step 4b) and must be set to the Ingress hostname, otherwise the Ingress Controller will not forward traffic to the web service.
-    
-- `web.ingress.path=<path>`
-
-  This variable controls the path that the web BFF is available on in the ingress controller.  For example, if set to `/web`, the web application becomes available at `http://<ingress hostname>/web`.  The path is set to `/bluecompute` by default, which means that the web application is served at the path `/bluecompute` of the Ingress Controller.
-  
-### Deployment on IBM Cloud Private
-Deployment on IBM Cloud Private (ICP) is done the same way as describe above. However, if your ICP deployment does not have internet access, you will need to do the following:
-
-* Pull the following images from Docker Hub:
-* Tag the images as follows:
-
-```
+# Deploy Bluecompute-CE Chart to IBM Cloud Private 3.1.0
+$ helm upgrade --install bluecompute --set createImagePolicy=true ibmcase/bluecompute-ce --tls
 ```
 
-* Push the images to your ICP Private Docker Registry as follows:
-
-```
-```
-
-* Set the `useICPPrivateImages` value to `true` so that the chart pulls the new images from your ICP's Private Docker Registry.
-  + NOTE: The `useICPPrivateImages` is just a shortcut to manually passing the docker images from ICP's Private Docker Registry. Otherwise, you will have to pass them one by one.
+**NOTE:** The `createImagePolicy` flag that we set to `true` in the `helm install` command above is necessary to enable a [Cluster Image Policy](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/manage_images/image_security.html), which allows ICP 3.1.0 and newer to pull images from registries other than the ICP Private Registry. However, this flag does not need to be set if using earlier ICP versions.
