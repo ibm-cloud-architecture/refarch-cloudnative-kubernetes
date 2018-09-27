@@ -5,8 +5,8 @@ In some cases, the ICP cluster has no Internet access and cannot pull images fro
 To generate the archive, use a machine with Internet access to clone this git repository. Copy the chart for the reference architecture into this directory:
 
 ```bash
-cd ppa
-cp ../docs/charts/bluecompute-ce/bluecompute-ce-0.0.6.tgz .
+cd docs/icp-uploading-chart
+cp ../charts/bluecompute-ce/bluecompute-ce-0.0.6.tgz .
 ```
 
 Unpack the chart to update the `values.yaml` to correspond to the local cluster.  
