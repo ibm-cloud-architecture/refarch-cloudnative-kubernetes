@@ -30,8 +30,8 @@
     + [Secure The Application](#secure-the-application)
   * [Contributing](#contributing)
     + [Contributing a New Chart to the Helm Repositories](#contributing-a-new-chart-to-the-helm-repositories)
-    + [Contributing a Chart to `ibmcase` Helm Chart Repository](#contributing-a-chart-to-ibmcase-helm-chart-repository)
-    + [Contributing a Chart to `ibmcase-charts` Helm Chart Repository](#contributing-a-chart-to-ibmcase-charts-helm-chart-repository)
+      - [Contributing a Chart to `ibmcase` Helm Chart Repository](#contributing-a-chart-to-ibmcase-helm-chart-repository)
+      - [Contributing a Chart to `ibmcase-charts` Helm Chart Repository](#contributing-a-chart-to-ibmcase-charts-helm-chart-repository)
 
 ## Introduction
 This project provides a reference implementation for running a Cloud Native Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.  
@@ -255,7 +255,9 @@ We use this GitHub project to host the following 2 [Helm Chart Repositories](htt
 * **ibmcase-charts**
   + This helm chart repository (which is located at [docs/charts](docs/charts)) is used to serve the dependency charts that are used to build a new `bluecompute-ce` chart.
 
-### Contributing a Chart to `ibmcase` Helm Chart Repository
+To learn how to contribute updates to above helm chart repositories, checkout the sections below.
+
+#### Contributing a Chart to `ibmcase` Helm Chart Repository
 Remember that the `ibmcase` helm chart repository is only supposed to serve versions of the `bluecompute-ce` chart. Here is the typical workflow of updating the `bluecompute-ce` chart and adding the new chart version to the `ibmcase` helm chart repo:
 1. Making chart changes in the [bluecompute-ce](bluecompute-ce) folder.
   + Changes are typically done in the [bluecompute-ce/templates](bluecompute-ce/templates) folder.
@@ -325,7 +327,7 @@ Remember that the `ibmcase` helm chart repository is only supposed to serve vers
 
 If you are able to see the chart's latest version, then congratulations!!! You have officially contributed an update to the `ibmcase` Helm Repository.
 
-### Contributing a Chart to `ibmcase-charts` Helm Chart Repository
+#### Contributing a Chart to `ibmcase-charts` Helm Chart Repository
 Remember that the `ibmcase-charts` helm chart repository is only supposed to serve versions of charts that will be used by the `bluecompute-ce` chart. Here is the typical workflow of adding the new chart version to the `ibmcase-charts` helm chart repo:
 1. Making changes in the `chart` folder of any of the repos listed in [Project Repositories](#project-repositories).
 2. Bumping up the chart version in `Chart.yaml`.
