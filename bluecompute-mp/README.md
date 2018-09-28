@@ -5,7 +5,7 @@
 * [Introduction](#introduction)
 * [Get application source code](#get-application-source-code) 
 * [Package the individual charts](#package-the-individual-charts)
-  - [Inventory & Catalog](#inventory-&-catalog)
+  - [Inventory and Catalog](#inventory-and-catalog)
   - [Auth](#auth)
   - [Customer](#customer)
   - [Orders](#orders)
@@ -13,7 +13,7 @@
   - [Keystore](#keystore)
   - [Zipkin](#zipkin)
   - [Prometheus](#prometheus)
-* [Building the chart repository](#build-the-chart-repository)
+* [Building the chart repository](#building-the-chart-repository)
 * [Umbrella Chart](#umbrella-chart)
 
 ## Introduction
@@ -39,7 +39,7 @@ $ sh clone_peers.sh
 
 ## Package the individual charts
 
-### Inventory & Catalog
+### Inventory and Catalog
 
 1. Go to the below repository
 
@@ -207,7 +207,8 @@ $ git checkout microprofile
 ```
 $ cd Zipkin/
 $ helm package chart/zipkin/
-$ cd ..`
+$ cd ..
+```
 
 ### Prometheus
 
