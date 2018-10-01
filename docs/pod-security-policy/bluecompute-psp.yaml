@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: bluecompute
+spec:
+  allowedCapabilities:
+  - IPC_LOCK
+  fsGroup:
+    rule: RunAsAny
+  hostPorts:
+  - max: 65535
+    min: 1
+  privileged: false
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+  - '*'
