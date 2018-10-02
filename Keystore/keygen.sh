@@ -6,5 +6,5 @@ keytool -list -keystore ./BCKeyStoreFile.jks -storepass password
 keytool -export -alias bckey -file client.cer -keystore ./BCKeyStoreFile.jks
 keytool -import -v -trustcacerts -alias bckey -file client.cer -keystore ./truststore.jks -storepass password -noprompt
 kubectl version
-kubectl create secret generic keystoresecret --from-file=./BCKeyStoreFile.jks --from-file=./truststore.jks
+kubectl create secret generic keystoresecret --from-file=./BCKeyStoreFile.jks --from-file=./truststore.jks --namespace=$1
 echo done!
