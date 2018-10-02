@@ -269,7 +269,6 @@ In order to pull the dependecies, do the following.
 $ cd refarch-cloudnative-kubernetes/
 $ cd docs/charts/
 $ helm dependency update bluecompute/
-$ cd ..
 ```
 
 After getting the dependencies, package the whole application using helm.
@@ -282,7 +281,8 @@ You will see a `tar` generated here. We placed it in the [bluecompute-mp](https:
 
 We also generated an idex file here in the same repository.
 
-```cd ../..
+```
+cd ../..
 cd bluecompute-mp/
 helm repo index ./
 ```
