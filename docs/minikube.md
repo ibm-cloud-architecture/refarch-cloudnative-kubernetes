@@ -88,6 +88,10 @@ If you want to know how the helm packaging is done for this application, [here](
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
+If you want to deploy the application in a particular namespace, run the below command.
+
+`helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>`
+
 ## Validate the App
 
 Before accessing the application, make sure that all the pods are up and running. Also, verify if the jobs are all completed.
