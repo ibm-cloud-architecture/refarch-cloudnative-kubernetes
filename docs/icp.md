@@ -101,7 +101,7 @@ After a minute or so, the containers will be deployed to the cluster.  The outpu
 
 If you want to deploy the application in a particular namespace, run the below command.
 
-helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>
+`helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>`
 
 ## Validate the App 
 
