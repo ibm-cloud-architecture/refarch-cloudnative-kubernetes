@@ -1,0 +1,19 @@
+{{- if not (eq .Release.Namespace "default") }}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: {{ .Release.Name }}-cluster-role
+  labels:
+    chart: '{{ .Release.Name }}-{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    release: {{ .Release.Name }}
+    implementation: microprofile
+rules:
+- apiGroups:
+  - extensions
+  resources:
+  - podsecuritypolicies
+  resourceNames:
+  - {{ .Release.Name }}-pod-security-policy
+  verbs:
+  - use
+{{- end }}

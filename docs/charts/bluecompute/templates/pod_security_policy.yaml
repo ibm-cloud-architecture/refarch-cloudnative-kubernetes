@@ -1,7 +1,12 @@
+{{- if not (eq .Release.Namespace "default") }}
 apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: bluecompute
+  name: {{ .Release.Name }}-pod-security-policy
+  labels:
+    chart: '{{ .Release.Name }}-{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    release: {{ .Release.Name }}
+    implementation: microprofile
 spec:
   allowedCapabilities:
   - IPC_LOCK
@@ -10,7 +15,7 @@ spec:
   hostPorts:
   - max: 65535
     min: 1
-  privileged: false
+  privileged: true
   runAsUser:
     rule: RunAsAny
   seLinux:
@@ -19,3 +24,4 @@ spec:
     rule: RunAsAny
   volumes:
   - '*'
+{{- end }}
