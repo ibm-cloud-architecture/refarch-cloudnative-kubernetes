@@ -2,11 +2,7 @@
 apiVersion: securityenforcement.admission.cloud.ibm.com/v1beta1
 kind: ClusterImagePolicy
 metadata:
-  name: {{ .Release.Name }}-ibmcase-bluecompute-cluster-image-policy
-  labels:
-    chart: '{{ .Release.Name }}-{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
-    release: {{ .Release.Name }}
-    implementation: microprofile
+  name: ibmcase-bluecompute-cluster-image-policy
 spec:
   repositories:
   # BlueCompute
@@ -24,6 +20,7 @@ spec:
     policy:
       va:
         enabled: false
+  # Zipkin
   - name: docker.io/openzipkin/zipkin*
     policy:
       va:
