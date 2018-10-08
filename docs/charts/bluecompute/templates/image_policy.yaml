@@ -1,0 +1,36 @@
+{{- if .Values.createImagePolicy }}
+apiVersion: securityenforcement.admission.cloud.ibm.com/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: {{ .Release.Name }}-ibmcase-bluecompute-cluster-image-policy
+  labels:
+    chart: '{{ .Release.Name }}-{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    release: {{ .Release.Name }}
+    implementation: microprofile
+spec:
+  repositories:
+  # BlueCompute
+  - name: docker.io/ibmcase/*
+    policy:
+      va:
+        enabled: false
+  # Elastic Search
+  - name: quay.io/pires/*
+    policy:
+      va:
+        enabled: false
+  # Cloudant, Prometheus
+  - name: docker.io/ibmcom/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/openzipkin/zipkin*
+    policy:
+      va:
+        enabled: false
+  # RabbitMQ
+  - name: docker.io/rabbitmq*
+    policy:
+      va:
+        enabled: false
+{{- end }}
