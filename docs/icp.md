@@ -93,14 +93,21 @@ If you want to know how the helm packaging is done for this application, [here](
 
 2. Install the reference application.
 
-`helm install --name bluecompute ibmcase-mp/bluecompute --tls`
+`helm upgrade --install bluecompute --set createImagePolicy=true ibmcase-mp/bluecompute --tls`
 
-Note: If using IBM Cloud Private version older than 2.1.0.2, use `helm install --name bluecompute ibmcase-mp/bluecompute`
+**Note**: The `createImagePolicy` flag that we set to true in the helm install command above is necessary to enable a Cluster Image Policy, which allows ICP 3.1.0 and newer to pull images from registries other than the ICP Private Registry. However, this flag does not need to be set if using earlier ICP versions.
+- If using IBM Cloud Private versions 2.1.0.2 or 2.1.0.3, use `helm install --name bluecompute ibmcase-mp/bluecompute --tls`
+- If using IBM Cloud Private version older than 2.1.0.2, use `helm install --name bluecompute ibmcase-mp/bluecompute`
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
 If you want to deploy the application in a particular namespace, run the below command.
 
+`helm upgrade --install bluecompute --set createImagePolicy=true ibmcase-mp/bluecompute --namespace <Your_Namespace> --tls`
+
+- If using IBM Cloud Private versions 2.1.0.2 or 2.1.0.3, use 
+`helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace> --tls`
+- If using IBM Cloud Private version older than 2.1.0.2, use
 `helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>`
 
 ## Validate the App 
