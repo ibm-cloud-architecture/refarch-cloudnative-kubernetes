@@ -103,7 +103,7 @@ After a minute or so, the containers will be deployed to the cluster.  The outpu
 
 If you want to deploy the application in a particular namespace, run the below command.
 
-`helm upgrade --install bluecompute --set createImagePolicy=true ibmcase-mp/bluecompute --namespace <Your_Namespace> --tls`
+For IBM Cloud Private version 3.1, currently the application can only be deployed in the `default` namespace.
 
 - If using IBM Cloud Private versions 2.1.0.2 or 2.1.0.3, use 
 `helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace> --tls`
