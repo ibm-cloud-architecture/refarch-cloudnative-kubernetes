@@ -20,6 +20,7 @@
       - [Access and Validate the Application](#access-and-validate-the-application-1)
       - [Delete the Application](#delete-the-application-1)
       - [Helm Version](#helm-version)
+    + [Deploy BlueCompute Services on OpenLiberty](#deploy-bluecompute-services-on-openliberty)
     + [Deploy BlueCompute to IBM Cloud Private Cluster with No Internet Access](#deploy-bluecompute-to-ibm-cloud-private-cluster-with-no-internet-access)
     + [Deploy BlueCompute Across Multiple Kubernetes Cluster](#deploy-bluecompute-across-multiple-kubernetes-cluster)
   * [Conclusion](#conclusion)
@@ -217,6 +218,30 @@ $ helm version --tls
 ```
 
 If the versions are different, you might want to delete the current helm client and install a version of helm client that matches the server one. To do so, please refer to Helm's guide [here](https://github.com/kubernetes/helm/blob/master/docs/install.md).
+
+### Deploy BlueCompute Services on OpenLiberty
+
+The Spring Boot applications can be deployed on WebSphere Liberty as well. In this case, the embedded server i.e. the application server packaged up in the JAR file will be Liberty. To deploy the BlueCompute services on Open Liberty, follow the instructions below.
+
+1. Initialize `helm` in your cluster.
+ ```bash
+ $ helm init
+ ```
+
+This initializes the `helm` client as well as the server side component called `tiller`.
+
+2. Add the `helm` package repository containing the reference application:
+```bash
+$ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
+```
+
+3. Install the reference application:
+```bash
+$ cd OpenLiberty
+$ helm upgrade --install bluecompute -f openliberty.yaml ibmcase/bluecompute-ce 
+```
+
+After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md). To validate the application, have a look at [Validate the Application](#validate-the-application) for instructions.
 
 ### Deploy BlueCompute to IBM Cloud Private Cluster with No Internet Access
 Sometimes you are required to deploy services to an ICP cluster that has no internet access, which means that it can only pull docker images from ICP's Private Docker Registry. To learn how you can package the BlueCompute Chart (and all its Docker images), upload it directly to ICP, and install it without an Internet connection, checkout [Running Microservices Reference Architecture in Airgapped ICP Environments](docs/icp-uploading-chart).
