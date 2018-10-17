@@ -271,6 +271,15 @@ $ cd docs/charts/
 $ helm dependency update bluecompute/
 ```
 
+**NOTE:** If you run into an error message for the above along the lines of: 
+
+	Error: no repository definition for https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp ...
+
+Simply fix this command with by adding the helm repo with the command below and try again:
+
+    helm repo add services-bc-mp https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+
+
 After getting the dependencies, package the whole application using helm.
 
 ```
