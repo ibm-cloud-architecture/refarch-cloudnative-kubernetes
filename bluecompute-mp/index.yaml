@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   bluecompute:
   - apiVersion: v1
-    created: 2018-10-16T22:45:59.078059987-05:00
+    created: 2018-10-16T22:52:49.596813827-05:00
     description: Bluecompute Microprofile Application Chart
-    digest: ec2f4e02ae610ac6b3ee2ed45a403f6d87525ddf799c67799b12ad3f48774ec7
+    digest: 00888cd21fdbfa5082afd75bfb340294d6abe4c858a2b076117a65aba07f686c
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
     name: bluecompute
     sources:
@@ -13,7 +13,7 @@ entries:
     - bluecompute-0.0.5.tgz
     version: 0.0.5
   - apiVersion: v1
-    created: 2018-10-16T22:45:59.072860668-05:00
+    created: 2018-10-16T22:52:49.591638306-05:00
     description: Bluecompute Microprofile Application Chart
     digest: 92ae9e1b98053a86c19bba7510b34715ad8d89f698b5245dbaea1a48210dacce
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -24,7 +24,7 @@ entries:
     - bluecompute-0.0.4.tgz
     version: 0.0.4
   - apiVersion: v1
-    created: 2018-10-16T22:45:59.065953243-05:00
+    created: 2018-10-16T22:52:49.585214243-05:00
     description: Bluecompute Microprofile Application Chart
     digest: 1a60d4f501988645df3dcbfbedda0ab690c76def374d1023474e4c9a61adad43
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -35,7 +35,7 @@ entries:
     - bluecompute-0.0.3.tgz
     version: 0.0.3
   - apiVersion: v1
-    created: 2018-10-16T22:45:59.059133806-05:00
+    created: 2018-10-16T22:52:49.578865173-05:00
     description: Bluecompute Microprofile Application Chart
     digest: 98da1a0ab1bf248aa877e3f6fb62de1a3ee29276aeba2cef0137667e25aea7ee
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -46,11 +46,11 @@ entries:
     - bluecompute-0.0.2.tgz
     version: 0.0.2
   - apiVersion: v1
-    created: 2018-10-16T22:45:59.0525903-05:00
+    created: 2018-10-16T22:52:49.571712572-05:00
     description: Bluecompute Microprofile Application Chart
     digest: 31e6699836e24e8154c405afdb01045852fc368c7f5f835b9db6e864adeb2d27
     name: bluecompute
     urls:
     - bluecompute-0.0.1.tgz
     version: 0.0.1
-generated: 2018-10-16T22:45:59.050239827-05:00
+generated: 2018-10-16T22:52:49.569245528-05:00
