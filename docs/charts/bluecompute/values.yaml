@@ -1,0 +1,259 @@
+# Declare variables to be passed into your templates.
+
+auth:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ibmcase/auth-mp
+    tag: v3.0.0
+    pullPolicy: IfNotPresent
+  service:
+    name: auth
+    type: NodePort
+    servicePort: 9080
+    servicePortHttps: 9443
+  resources:
+    requests:
+      cpu: 200m
+      memory: 300Mi
+
+catalog:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ibmcase/catalog-mp
+    tag: v3.0.0
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    servicePort: 9080
+    servicePortHttps: 9443
+    zipkinPort: 9411
+    zipkinName: zipkin
+  resources:
+    requests:
+      cpu: 200m
+      memory: 300Mi
+
+elasticsearch:
+  enabled: true
+  replicaCount: 1
+  image: 
+    repository: quay.io/pires/docker-elasticsearch-kubernetes
+    pullPolicy: IfNotPresent
+    tag: 1.7.1-4
+  clustername: default-cluster
+  service:
+    name: catalog-elasticsearch
+  labels:
+    datastore: elasticsearch
+  resources:
+    limits:
+      memory: 700Mi
+    requests:
+      memory: 350Mi
+  secretName: binding-refarch-compose-for-elasticsearch
+
+customer:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ibmcase/customer-mp
+    tag: v4.0.0
+    pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 200m
+        memory: 300Mi
+  service:
+    name: customer
+    cloudantservicename: cloudant-service
+    type: NodePort
+    servicePort: 9080
+    servicePortHttps: 9443
+    auth: auth
+    zipkinHost: zipkin
+    zipkinPort: 9411
+  jwt:
+    id: myMpJwt
+  cloudant:
+    user: admin
+    password: pass
+    protocol: http
+    host: localhost
+    type: NodePort
+    port: 80
+    nodeport: 31222
+    database: customers
+    #image: registry.csplab.cloudns.cx/microprofile/populate
+    image: ibmcase/populate
+    #image: populate
+  persistence:
+    enabled: false
+    accessMode: ReadWriteOnce
+
+inventory:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ibmcase/inventory-mp
+    tag: v2.0.0
+    pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 200m
+        memory: 300Mi
+  service:
+    name: inventory
+    type: NodePort
+    servicePort: 9080
+    servicePortHttps: 9443
+    sqlport: 3306
+    dbname: inventorydb
+    rabbitmq: rabbitmq
+    zipkinPort: 9411
+    zipkinName: zipkin
+
+inventorydb:
+  image: "ibmcase/bc-inventorydb"
+  imageTag: "v2.0.0"
+  imagePullPolicy: Always
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 1
+    successThreshold: 1
+    failureThreshold: 3
+  persistence:
+    enabled: false
+    accessMode: ReadWriteOnce
+    size: 8Gi
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+  service:
+    name: inventorydb
+    type: ClusterIP
+    port: 3306
+  mysqlRootPassword: password
+  mysqlPassword: password
+
+orders:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ibmcase/orders-mp
+    tag: v4.0.0
+    resources:
+      requests:
+        cpu: 200m
+        memory: 300Mi
+  service:
+    name: orders
+    type: NodePort
+    servicePort: 9080
+    servicePortHttps: 9443
+    rabbitmq: rabbitmq
+    ordersdb: ordersdb
+    inventory: inventory
+    auth: auth
+    zipkinHost: zipkin
+    zipkinPort: 9411
+  sql:
+    user: root
+    password: password
+    port: 3306
+  jwt:
+    id: myMpJwt
+  rabbitmq:
+    mainPort: 5672
+    managePort: 15672
+
+ordersdb:
+  image: "ibmcase/bc-ordersdb"
+  imageTag: "v2.0.0"
+  imagePullPolicy: Always
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 1
+    successThreshold: 1
+    failureThreshold: 3
+  persistence:
+    enabled: false
+    accessMode: ReadWriteOnce
+    size: 8Gi
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+  service:
+    type: ClusterIP
+    port: 3306
+    servicename: ordersdb
+  mysqlRootPassword: password
+  mysqlPassword: password
+
+web:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ibmcase/bc-web-mp
+    tag: v2.0.0
+    pullPolicy: IfNotPresent
+  service:
+    name: bluecompute-web
+    type: NodePort
+    externalPort: 80
+    internalPort: 8000
+    nodeport:
+      port:
+  ingress:
+    hostname:
+    path: /bluecompute-mp
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  region:
+  clusterName:
+  services:
+    auth:
+      host:
+      port:
+    catalog:
+      host:
+      port:
+    customer:
+      host:
+      port:
+    orders:
+      host:
+      port:
+    reviews:
+      host:
+      port:
+  global:
+    bluemix:
+      apiKey:
+      target:
+        endpoint:
+        org:
+        space:
+      clusterName:
