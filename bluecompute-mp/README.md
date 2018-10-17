@@ -20,7 +20,7 @@
 
 This README demonstrates how the `bluecompute-0.0.x.tgz` is built and shows the details.
 
-## Get application source code 
+## Get the application source code
 
 Clone the base repository:
 
@@ -119,7 +119,7 @@ $ git checkout microprofile
 3. Package the chart for **customer service** using helm
 
 ```
-$ helm pacakge chart/customer
+$ helm package chart/customer
 $ cd ..
 ```
 
@@ -261,9 +261,9 @@ helm repo index ./
 
 The umbrella helm chart for this sample application resides [here](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile/docs/charts/bluecompute).
 
-We defined all the necessary dependencies in [`requirements.yaml`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/docs/charts/bluecompute/requirements.yaml). This allows you pull all the dependecies that are sitting in the chart repository you sepecified.
+We defined all the necessary dependencies in [`requirements.yaml`](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/docs/charts/bluecompute/requirements.yaml). This allows you pull all the dependencies that are sitting in the chart repository you specified.
 
-In order to pull the dependecies, do the following.
+In order to pull the dependencies, do the following.
 
 ```
 $ cd refarch-cloudnative-kubernetes/
@@ -279,7 +279,7 @@ helm package bluecompute/
 
 You will see a `tar` generated here. We placed it in the [bluecompute-mp](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile/bluecompute-mp) chart repository.
 
-We also generated an idex file here in the same repository.
+We also generated an index file here in the same repository.
 
 ```
 cd ../..
