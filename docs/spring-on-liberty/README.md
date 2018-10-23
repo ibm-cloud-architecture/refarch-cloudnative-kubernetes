@@ -1,4 +1,4 @@
-# Passing configuration at runtime to SprinBoot WAR running on WebSphere Liberty
+# Passing configuration at runtime to SpringBoot WAR running on WebSphere Liberty
 
 ### What do we need ?
 
@@ -20,7 +20,7 @@ Run `./server run` to start your application. When you do this, your application
     <img src="images/configvalues.png" height=400 width=500>
 </p>
 
-If you want to pass the configuration values other than the ones specified in the above file, you need to override these values by passing them externally. You can do this by placing the values in `jvm.options`. You can create a file names `jvm.option` under the `shared` folder that comes with the server as below.
+If you want to pass the configuration values other than the ones specified in the above file, you need to override these values by passing them externally. You can do this by placing the values in `jvm.options`. You can create a file named `jvm.option` under the `shared` folder that comes with the server as below.
 
 <p align="center">
     <img src="images/shared.png" height=500 width=500>
