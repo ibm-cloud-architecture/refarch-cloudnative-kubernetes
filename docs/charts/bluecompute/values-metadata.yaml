@@ -1,4 +1,96 @@
+# Making all image pull policies drop-down lists
+
 auth:
+  image:
+    pullPolicy:
+      __metadata:
+        label: "Docker Image Pull Policy"
+        description: "Always, Never, or IfNotPresent. Defaults to Always."
+        required: true
+        options:
+        - label: "Always"
+          value: Always
+        - label: "Never"
+          value: Never
+        - label: "IfNotPresent"
+          value: IfNotPresent
+
+catalog:
+  image:
+    pullPolicy:
+      __metadata:
+        label: "Docker Image Pull Policy"
+        description: "Always, Never, or IfNotPresent. Defaults to Always."
+        required: true
+        options:
+        - label: "Always"
+          value: Always
+        - label: "Never"
+          value: Never
+        - label: "IfNotPresent"
+          value: IfNotPresent
+
+imbcase-elasticsearch:
+  image:
+    pullPolicy:
+      __metadata:
+        label: "Docker Image Pull Policy"
+        description: "Always, Never, or IfNotPresent. Defaults to Always."
+        required: true
+        options:
+        - label: "Always"
+          value: Always
+        - label: "Never"
+          value: Never
+        - label: "IfNotPresent"
+          value: IfNotPresent
+
+customer:
+  image:
+    pullPolicy:
+      __metadata:
+        label: "Docker Image Pull Policy"
+        description: "Always, Never, or IfNotPresent. Defaults to Always."
+        required: true
+        options:
+        - label: "Always"
+          value: Always
+        - label: "Never"
+          value: Never
+        - label: "IfNotPresent"
+          value: IfNotPresent
+
+inventory:
+  image:
+    pullPolicy:
+      __metadata:
+        label: "Docker Image Pull Policy"
+        description: "Always, Never, or IfNotPresent. Defaults to Always."
+        required: true
+        options:
+        - label: "Always"
+          value: Always
+        - label: "Never"
+          value: Never
+        - label: "IfNotPresent"
+          value: IfNotPresent
+
+orders:
+  image:
+    pullPolicy:
+      __metadata:
+        label: "Docker Image Pull Policy"
+        description: "Always, Never, or IfNotPresent. Defaults to Always."
+        required: true
+        options:
+        - label: "Always"
+          value: Always
+        - label: "Never"
+          value: Never
+        - label: "IfNotPresent"
+          value: IfNotPresent
+
+web:
   image:
     pullPolicy:
       __metadata:
