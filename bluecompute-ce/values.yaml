@@ -33,8 +33,8 @@ auth:
     pullPolicy: Always
   service:
     type: ClusterIP
-    externalPort: 8080
-    nodePort: 31383
+    externalPort: 8083
+    nodePort: 32383
   resources:
     limits:
       memory: 384Mi
@@ -49,7 +49,7 @@ auth:
     secretName:
     secret:
   customer:
-    url: http://customer:8080
+    url: http://customer:8082
 
 catalog:
   enabled: true
@@ -62,7 +62,7 @@ catalog:
   service:
     type: ClusterIP
     externalPort: 8081
-    nodePort: 31381
+    nodePort: 32381
   resources:
     limits:
       memory: 384Mi
@@ -83,7 +83,6 @@ catalog:
     healthcheck: "_cat/health"
     cacertificatebase64:
 
-
 elasticsearch:
   enabled: true
   fullnameOverride: catalog-elasticsearch
@@ -98,6 +97,9 @@ elasticsearch:
     repository: docker.elastic.co/elasticsearch/elasticsearch-oss
     tag: 6.3.1
     pullPolicy: IfNotPresent
+  cluster:
+    env:
+      MINIMUM_MASTER_NODES: "2"
   client:
     replicas: 1
     serviceType: ClusterIP
@@ -120,8 +122,8 @@ customer:
     pullPolicy: Always
   service:
     type: ClusterIP
-    externalPort: 8080
-    nodePort: 31382
+    externalPort: 8082
+    nodePort: 32382
   resources:
     limits:
       memory: 384Mi
@@ -142,7 +144,7 @@ customer:
   couchdb:
     host: customer-couchdb-svc-couchdb
     protocol: http
-    port: 5984
+    port: 5985
     existingSecret:
     adminUsername: user
     adminPassword: passw0rd
@@ -159,7 +161,7 @@ couchdb:
   adminUsername: user
   adminPassword: passw0rd
   service:
-    externalPort: 5984
+    externalPort: 5985
   clusterSize: 1
   persistentVolume:
     enabled: false
@@ -179,7 +181,7 @@ inventory:
   service:
     type: ClusterIP
     externalPort: 8080
-    nodePort: 31380
+    nodePort: 32380
   resources:
     limits:
       memory: 384Mi
@@ -222,8 +224,8 @@ orders:
     pullPolicy: Always
   service:
     type: ClusterIP
-    externalPort: 8080
-    nodePort: 31384
+    externalPort: 8084
+    nodePort: 32384
   resources:
     limits:
       memory: 384Mi
@@ -239,7 +241,7 @@ orders:
   mariadb:
     # Leaving empty so it gets name form release name and nameOverride
     host: 
-    port: 3306
+    port: 3307
     existingSecret:
     user: dbuser
     password: password
@@ -253,7 +255,7 @@ mariadb:
     tag: 10.1.36-debian-9
     pullPolicy: IfNotPresent
   service:
-    port: 3306
+    port: 3307
   rootUser:
     password: admin123
   nameOverride: orders-mariadb
@@ -294,7 +296,7 @@ web:
     auth:
       protocol: http
       host: auth
-      port: 8080
+      port: 8083
     catalog:
       protocol: http
       host: catalog
@@ -302,11 +304,11 @@ web:
     customer:
       protocol: http
       host: customer
-      port: 8080
+      port: 8082
     orders:
       protocol: http
       host: orders
-      port: 8080
+      port: 8084
     reviews:
       protocol: http
       host:
