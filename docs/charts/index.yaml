@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   auth:
   - apiVersion: v1
-    created: 2018-10-30T15:14:22.280609474-05:00
+    created: 2018-10-30T17:51:02.293983524-05:00
     description: BlueCompute Auth Microservice
     digest: ea01cf46e2d30ace6e9457197d91685548fcc508f2ca17651ba5416feb878234
     name: auth
@@ -11,7 +11,7 @@ entries:
     version: 0.5.0
   bluecompute-ce:
   - apiVersion: v1
-    created: 2018-10-30T15:14:22.303195587-05:00
+    created: 2018-10-30T17:51:02.311009692-05:00
     description: Bluecompute Application Chart
     digest: bc36ed1ddc164830a7fb3c98e5e56681e71ef907ec1474f91cd8ab10d73e1c0a
     name: bluecompute-ce
@@ -19,7 +19,7 @@ entries:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce/bluecompute-ce-0.0.8.tgz
     version: 0.0.8
   - apiVersion: v1
-    created: 2018-10-30T15:14:22.295835038-05:00
+    created: 2018-10-30T17:51:02.305929565-05:00
     description: Bluecompute Application Chart
     digest: a75b17096b5ba4a410cfb05479ea7ac08e2d9b1d0f58da55fea6edcad477f606
     name: bluecompute-ce
@@ -28,16 +28,16 @@ entries:
     version: 0.0.6
   catalog:
   - apiVersion: v1
-    created: 2018-10-30T15:14:22.281682679-05:00
+    created: 2018-10-30T17:51:02.294358473-05:00
     description: BlueCompute Catalog Microservice
-    digest: c14728db17ca87343e661ee91f6647d80e31ac35e7a6b3e60827990feadd7f4b
+    digest: b1b2912d072a6a8be7c7f7a67c954a2703bd6367602cd02fabd4d596b17f3ef6
     name: catalog
     urls:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/catalog-0.5.0.tgz
     version: 0.5.0
   couchdb:
   - appVersion: 2.2.0
-    created: 2018-10-30T15:14:22.283164494-05:00
+    created: 2018-10-30T17:51:02.296058277-05:00
     description: A database featuring seamless multi-master sync, that scales from
       big data to mobile, with an intuitive HTTP/JSON API and designed for reliability.
     digest: 23c42c7dfc99d114dd5fc7abe517cb3ef76bc311ca302f05bb255420176dd93f
@@ -55,7 +55,7 @@ entries:
     version: 0.2.2
   customer:
   - apiVersion: v1
-    created: 2018-10-30T15:14:22.284550751-05:00
+    created: 2018-10-30T17:51:02.296462584-05:00
     description: BlueCompute Customer Microservice
     digest: c7f70f30ec64c8121f18bd28b3fe4e85c1cac13dd637d65abac8aec3d62c68c3
     name: customer
@@ -64,7 +64,7 @@ entries:
     version: 0.5.0
   elasticsearch:
   - appVersion: 6.4.2
-    created: 2018-10-30T15:14:22.286145279-05:00
+    created: 2018-10-30T17:51:02.298311189-05:00
     deprecated: true
     description: DEPRECATED Flexible and powerful open source, distributed real-time
       search and analytics engine.
@@ -84,7 +84,7 @@ entries:
     version: 1.10.2
   inventory:
   - apiVersion: v1
-    created: 2018-10-30T15:14:22.287549428-05:00
+    created: 2018-10-30T17:51:02.29877304-05:00
     description: BlueCompute Inventory Microservice
     digest: 97175c53f97fda66b203cda3bd3e94947dc07c0472fb34c7ca2abf0074e8d4a8
     name: inventory
@@ -93,7 +93,7 @@ entries:
     version: 0.5.0
   mariadb:
   - appVersion: 10.1.36
-    created: 2018-10-30T15:14:22.289174431-05:00
+    created: 2018-10-30T17:51:02.300229408-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system. MariaDB Server is intended for mission-critical, heavy-load
       production systems as well as for embedding into mass-deployed software. Highly
@@ -120,7 +120,7 @@ entries:
     version: 5.2.1
   mysql:
   - appVersion: 5.7.14
-    created: 2018-10-30T15:14:22.290848581-05:00
+    created: 2018-10-30T17:51:02.301695742-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: e9f786c7b21a69bbc96678ed0adb7e50f6b594b59aecb225dbce780a9099f857
@@ -145,7 +145,7 @@ entries:
     version: 0.10.1
   orders:
   - apiVersion: v1
-    created: 2018-10-30T15:14:22.292174462-05:00
+    created: 2018-10-30T17:51:02.302080453-05:00
     description: Bluecompute Orders Microservice
     digest: f324284c46195d616877987d9863616d43e6fc58204ec61b9e6bf11c8d7e22ee
     name: orders
@@ -154,11 +154,11 @@ entries:
     version: 0.5.0
   web:
   - apiVersion: v1
-    created: 2018-10-30T15:14:22.293226634-05:00
+    created: 2018-10-30T17:51:02.302414846-05:00
     description: BlueCompute Web BFF app
     digest: ea6a6c1833bbc5a331f19830b2b51eb7fac608af5763ae4ed24b7a0f5649f8b4
     name: web
     urls:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/web-0.5.0.tgz
     version: 0.5.0
-generated: 2018-10-30T15:14:22.277595347-05:00
+generated: 2018-10-30T17:51:02.292870763-05:00
