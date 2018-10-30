@@ -2,42 +2,42 @@ apiVersion: v1
 entries:
   auth:
   - apiVersion: v1
-    created: 2018-10-20T16:11:29.616251435-05:00
+    created: 2018-10-30T14:02:18.443052404-05:00
     description: BlueCompute Auth Microservice
     digest: fbfbcc1f66c5941ceaaf898515ade709ce09bf1005e0a69a60e0562ba9c3de71
     name: auth
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/auth-0.5.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/auth-0.5.0.tgz
     version: 0.5.0
   bluecompute-ce:
   - apiVersion: v1
-    created: 2018-10-20T16:11:29.634628932-05:00
+    created: 2018-10-30T14:02:18.465099201-05:00
     description: Bluecompute Application Chart
     digest: bc36ed1ddc164830a7fb3c98e5e56681e71ef907ec1474f91cd8ab10d73e1c0a
     name: bluecompute-ce
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce/bluecompute-ce-0.0.8.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce/bluecompute-ce-0.0.8.tgz
     version: 0.0.8
   - apiVersion: v1
-    created: 2018-10-20T16:11:29.628898942-05:00
+    created: 2018-10-30T14:02:18.460445086-05:00
     description: Bluecompute Application Chart
     digest: a75b17096b5ba4a410cfb05479ea7ac08e2d9b1d0f58da55fea6edcad477f606
     name: bluecompute-ce
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce/bluecompute-ce-0.0.6.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce/bluecompute-ce-0.0.6.tgz
     version: 0.0.6
   catalog:
   - apiVersion: v1
-    created: 2018-10-20T16:11:29.617579129-05:00
+    created: 2018-10-30T14:02:18.444283682-05:00
     description: BlueCompute Catalog Microservice
     digest: 343324a5e41cd2a3321afdd2eb834fe2c33fde83d6ab4894789fb92d6f1c73de
     name: catalog
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/catalog-0.5.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/catalog-0.5.0.tgz
     version: 0.5.0
   couchdb:
   - appVersion: 2.2.0
-    created: 2018-10-20T16:11:29.618155418-05:00
+    created: 2018-10-30T14:02:18.445732054-05:00
     description: A database featuring seamless multi-master sync, that scales from
       big data to mobile, with an intuitive HTTP/JSON API and designed for reliability.
     digest: 23c42c7dfc99d114dd5fc7abe517cb3ef76bc311ca302f05bb255420176dd93f
@@ -51,20 +51,20 @@ entries:
     - https://github.com/apache/couchdb
     - https://github.com/kocolosk/couchdb-statefulset-assembler
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/couchdb-0.2.2.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/couchdb-0.2.2.tgz
     version: 0.2.2
   customer:
   - apiVersion: v1
-    created: 2018-10-20T16:11:29.619467252-05:00
+    created: 2018-10-30T14:02:18.447382537-05:00
     description: BlueCompute Customer Microservice
     digest: 4a76037046e4c97f63f1b3eb4806a9e1c0fba12f3cccbac175d494f733795b56
     name: customer
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/customer-0.5.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/customer-0.5.0.tgz
     version: 0.5.0
   elasticsearch:
   - appVersion: 6.4.2
-    created: 2018-10-20T16:11:29.620172515-05:00
+    created: 2018-10-30T14:02:18.448917205-05:00
     deprecated: true
     description: DEPRECATED Flexible and powerful open source, distributed real-time
       search and analytics engine.
@@ -80,20 +80,20 @@ entries:
     - https://github.com/clockworksoul/helm-elasticsearch
     - https://github.com/pires/kubernetes-elasticsearch-cluster
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/elasticsearch-1.10.2.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/elasticsearch-1.10.2.tgz
     version: 1.10.2
   inventory:
   - apiVersion: v1
-    created: 2018-10-20T16:11:29.621474292-05:00
+    created: 2018-10-30T14:02:18.450253861-05:00
     description: BlueCompute Inventory Microservice
     digest: 944a3485e1eccb700cba2547b8ff8f6795acc7b8c6eea9aa5e757ff836e15522
     name: inventory
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/inventory-0.5.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/inventory-0.5.0.tgz
     version: 0.5.0
   mariadb:
   - appVersion: 10.1.36
-    created: 2018-10-20T16:11:29.622466833-05:00
+    created: 2018-10-30T14:02:18.451721011-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system. MariaDB Server is intended for mission-critical, heavy-load
       production systems as well as for embedding into mass-deployed software. Highly
@@ -116,11 +116,11 @@ entries:
     - https://github.com/bitnami/bitnami-docker-mariadb
     - https://github.com/prometheus/mysqld_exporter
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/mariadb-5.2.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/mariadb-5.2.1.tgz
     version: 5.2.1
   mysql:
   - appVersion: 5.7.14
-    created: 2018-10-20T16:11:29.62308113-05:00
+    created: 2018-10-30T14:02:18.453106998-05:00
     description: Fast, reliable, scalable, and easy to use open-source relational
       database system.
     digest: e9f786c7b21a69bbc96678ed0adb7e50f6b594b59aecb225dbce780a9099f857
@@ -141,24 +141,24 @@ entries:
     - https://github.com/kubernetes/charts
     - https://github.com/docker-library/mysql
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/mysql-0.10.1.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/mysql-0.10.1.tgz
     version: 0.10.1
   orders:
   - apiVersion: v1
-    created: 2018-10-20T16:11:29.624395733-05:00
+    created: 2018-10-30T14:02:18.454889096-05:00
     description: Bluecompute Orders Microservice
     digest: 0e7f2a0afee32a987ecdd2c31128d3ebb703f98d21bbb8426402dd89361e9776
     name: orders
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/orders-0.5.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/orders-0.5.0.tgz
     version: 0.5.0
   web:
   - apiVersion: v1
-    created: 2018-10-20T16:11:29.625820598-05:00
+    created: 2018-10-30T14:02:18.455838816-05:00
     description: BlueCompute Web BFF app
     digest: dd4dcba4aa8949e82bd281a11421e4b4ca2fa8b43d7e3c79dcad75235d55d150
     name: web
     urls:
-    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-cloudnative-kubernetes/spring/docs/charts/web-0.5.0.tgz
+    - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/web-0.5.0.tgz
     version: 0.5.0
-generated: 2018-10-20T16:11:29.613889965-05:00
+generated: 2018-10-30T14:02:18.438475902-05:00
