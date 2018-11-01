@@ -30,6 +30,8 @@ catalog:
     servicePortHttps: 9443
     zipkinPort: 9411
     zipkinName: zipkin
+  volumes:
+    mountPath: /opt/ibm/wlp/usr/shared
   resources:
     requests:
       cpu: 200m
