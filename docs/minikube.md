@@ -82,15 +82,25 @@ Server: &version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b
 
 If you want to know how the helm packaging is done for this application, [here](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/microprofile/bluecompute-mp/README.md) are the details.
 
+By default, the application runs on [WebSphere Liberty with Web Profile](https://developer.ibm.com/wasdev/websphere-liberty/). You can also run it on [Open Liberty](https://openliberty.io/) as follows
+
 2. Install the reference application.
 
 `helm install --name bluecompute ibmcase-mp/bluecompute`
+
+By default, the application runs on [WebSphere Liberty](https://developer.ibm.com/wasdev/websphere-liberty/). You can also run it on [Open Liberty](https://openliberty.io/) as follows.
+
+`helm install -f utility_scripts/openliberty.yml --name bluecompute ibmcase-mp/bluecompute`
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
 If you want to deploy the application in a particular namespace, run the below command.
 
 `helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>`
+
+By default, the application runs on [WebSphere Liberty](https://developer.ibm.com/wasdev/websphere-liberty/). You can also run it on [Open Liberty](https://openliberty.io/) as follows.
+
+`helm install -f utility_scripts/openliberty.yml --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>`
 
 ## Validate the App
 
