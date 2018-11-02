@@ -90,13 +90,21 @@ By default, the application runs on [WebSphere Liberty with Web Profile](https:/
 
 By default, the application runs on [WebSphere Liberty](https://developer.ibm.com/wasdev/websphere-liberty/). You can also run it on [Open Liberty](https://openliberty.io/) as follows.
 
-`helm install -f utility_scripts/openliberty.yml --name bluecompute ibmcase-mp/bluecompute`
+```
+$ cd refarch-cloudnative-kubernetes
+
+$ helm install -f utility_scripts/openliberty.yml --name bluecompute ibmcase-mp/bluecompute
+```
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
 If you want to deploy the application in a particular namespace, run the below command.
 
-`helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>`
+```
+$ cd refarch-cloudnative-kubernetes
+
+$ helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>
+```
 
 By default, the application runs on [WebSphere Liberty](https://developer.ibm.com/wasdev/websphere-liberty/). You can also run it on [Open Liberty](https://openliberty.io/) as follows.
 
