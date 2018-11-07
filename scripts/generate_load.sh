@@ -15,12 +15,12 @@ function ctrl_c() {
 
 function start_port_forwarding() {
 	echo "Forwarding customer ports 8000, 8080, 8081, 8082, 8083, 8084";
-	kubectl port-forward deployment/web-web 			8000:8000 --pod-running-timeout=1h &
-	kubectl port-forward deployment/inventory-inventory 8080:8080 --pod-running-timeout=1h &
-	kubectl port-forward deployment/catalog-catalog 	8081:8081 --pod-running-timeout=1h &
-	kubectl port-forward deployment/customer-customer 	8082:8082 --pod-running-timeout=1h &
-	kubectl port-forward deployment/auth-auth 			8083:8083 --pod-running-timeout=1h &
-	kubectl port-forward deployment/orders-orders 		8084:8084 --pod-running-timeout=1h &
+	kubectl port-forward deployment/web 	  8000:8000 --pod-running-timeout=1h &
+	kubectl port-forward deployment/inventory 8080:8080 --pod-running-timeout=1h &
+	kubectl port-forward deployment/catalog   8081:8081 --pod-running-timeout=1h &
+	kubectl port-forward deployment/customer  8082:8082 --pod-running-timeout=1h &
+	kubectl port-forward deployment/auth 	  8083:8083 --pod-running-timeout=1h &
+	kubectl port-forward deployment/orders 	  8084:8084 --pod-running-timeout=1h &
 	echo "Sleeping for 3 seconds while connection is established...";
 	sleep 3;
 }
