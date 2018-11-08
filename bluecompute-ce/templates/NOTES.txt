@@ -4,8 +4,45 @@
 
 To view the Bluecompute Web Application in your browser please do the following, please follow the steps below:
 
+{{- if .Values.global.istio.enabled }}
+1. To get the Ingress IP Address and Port for the Web Application, run one the following commands based on your environment:
+  # Assuming you are using an External Load Balancer (IBM Cloud Kubernetes Service):
+  INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}');
+  INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}');
+
+  # Assuming you are using a Node Port (IBM Cloud Private):
+  INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o 'jsonpath={.items[0].status.hostIP}');
+  INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}');
+
+  # Minikube:
+  INGRESS_HOST=$(minikube ip);
+  INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}');
+
+2. To get the entire URL for the Web Application, run the following command:
+  echo "http://${INGRESS_HOST}:${INGRESS_PORT}"
+
+3. Open a new web browser window and paste the URL above.
+
+NOTE: Because Istio is enabled, you need to manually create a user in CouchDB's customer database through the customer service
+
+  # Wait for CouchDB to be ready
+  kubectl get statefulset customer-couchdb-couchdb -w;
+
+  # Wait for the customer service to be ready
+  kubectl get deployment customer -w;
+
+  # Get the create_user.sh script
+  wget https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/scripts/create_user.sh;
+
+  # Make it executable
+  chmod +x create_user.sh;
+
+  # Run the script
+  ./create_user.sh;
+
+{{- else }}
 1. To get the IP Address for the Web Application, run one the following commands based on your environment:
-  IBM Cloud Container Service:
+  IBM Cloud Kubernetes Service:
   NODE_IP=$(ibmcloud cs workers $YOUR_CLUSTER_NAME | grep -v '^*' | egrep -v "(ID|OK)" | awk '{print $2;}' | head -n1)
 
   IBM Cloud Private:
@@ -24,3 +61,4 @@ To view the Bluecompute Web Application in your browser please do the following,
   echo "http://${NODE_IP}:${PORT}"
 
 4. Open a new web browser window and paste the URL above.
+{{- end }}

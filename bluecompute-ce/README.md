@@ -23,18 +23,21 @@ There are several components of this architecture.
 The source for the `BlueCompute-CE` chart can be found at:
 * https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring/bluecompute-ce
 
+The source for the `CouchDB` chart can be found at:
+* https://github.com/fabiogomezdiaz/charts/tree/master/incubator/couchdb
 
 ## Deploy Inventory Application to Kubernetes Cluster from CLI
 To deploy the Inventory Chart and its MySQL dependency Chart to a Kubernetes cluster using Helm CLI, follow the instructions below:
 ```bash
+# If using IBM Cloud Private 3.1 or older, create an ImagePolicy to allow images from the following Docker Registries
+# 	- docker.io/*
+# 	- docker.elastic.co/*
+# Or you can use the command below:
+$ kubectl apply -f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/static/image_policy.yaml
+
 # Add ibmcase Helm Repo
 $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
 
 # Deploy Bluecompute-CE Chart
 $ helm upgrade --install bluecompute ibmcase/bluecompute-ce
-
-# Deploy Bluecompute-CE Chart to IBM Cloud Private 3.1.0
-$ helm upgrade --install bluecompute --set createImagePolicy=true ibmcase/bluecompute-ce --tls
 ```
-
-**NOTE:** The `createImagePolicy` flag that we set to `true` in the `helm install` command above is necessary to enable a [Cluster Image Policy](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/manage_images/image_security.html), which allows ICP 3.1.0 and newer to pull images from registries other than the ICP Private Registry. However, this flag does not need to be set if using earlier ICP versions.

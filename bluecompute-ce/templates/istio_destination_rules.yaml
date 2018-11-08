@@ -1,0 +1,105 @@
+{{ if .Values.global.istio.enabled }}
+{{ if .Values.mysql.enabled }}
+# MySQL
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "bluecompute.mysql.fullname" . }}
+spec:
+  host: {{ template "bluecompute.mysql.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: {{ .Values.mysql.istio.loadBalancer }}
+    portLevelSettings:
+    - port:
+        number: {{ .Values.mysql.service.port }}
+      tls:
+        mode: {{ .Values.mysql.istio.mTLS }}
+  #subsets:
+  #- name: v1
+  #  labels:
+  #    version: v1
+{{ end }}
+---
+{{ if .Values.elasticsearch.enabled }}
+# Elasticsearch
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "bluecompute.elasticsearch.client.fullname" . }}
+spec:
+  host: {{ template "bluecompute.elasticsearch.client.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  trafficPolicy:
+    portLevelSettings:
+    - port:
+        number: 9200
+      tls:
+        mode: DISABLE
+    - port:
+        number: 9300
+      tls:
+        mode: DISABLE
+{{ end }}
+---
+{{ if .Values.couchdb.enabled }}
+# CouchDB Service
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "bluecompute.couchdb.svcname" . }}
+spec:
+  host: {{ template "bluecompute.couchdb.svcname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  trafficPolicy:
+    portLevelSettings:
+    - port:
+        number: {{ .Values.couchdb.service.externalPort }}
+      tls:
+        mode: DISABLE
+---
+# CouchDB Headless
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "bluecompute.couchdb.fullname" . }}
+spec:
+  host: {{ template "bluecompute.couchdb.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  trafficPolicy:
+    portLevelSettings:
+    - port:
+        number: 5984
+      tls:
+        mode: DISABLE
+{{ end }}
+---
+{{ if .Values.mariadb.enabled }}
+# MariaDB
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "bluecompute.mariadb.fullname" . }}
+spec:
+  host: {{ template "bluecompute.mariadb.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  trafficPolicy:
+    portLevelSettings:
+    - port:
+        number: {{ .Values.mariadb.service.port }}
+      tls:
+        mode: DISABLE
+---
+# MariaDB Slave
+{{ if .Values.mariadb.replication.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "bluecompute.mariadb.slave.fullname" . }}
+spec:
+  host: {{ template "bluecompute.mariadb.slave.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  trafficPolicy:
+    portLevelSettings:
+    - port:
+        number: {{ .Values.mariadb.service.port }}
+      tls:
+        mode: DISABLE
+{{ end }}
+{{ end }}
+{{ end }}
