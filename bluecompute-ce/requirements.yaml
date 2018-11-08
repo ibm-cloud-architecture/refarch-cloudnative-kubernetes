@@ -1,41 +1,41 @@
 dependencies:
   - name: auth
-    version: 0.5.0
+    version: 0.6.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
     condition: auth.enabled
   - name: catalog
-    version: 0.5.0
+    version: 0.6.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
     condition: catalog.enabled
   - name: customer
-    version: 0.5.0
+    version: 0.6.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
     condition: customer.enabled
   - name: inventory
-    version: 0.5.0
+    version: 0.6.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
     condition: inventory.enabled
   - name: orders
-    version: 0.5.0
+    version: 0.6.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
     condition: orders.enabled
   - name: web
-    version: 0.5.0
+    version: 0.6.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
     condition: web.enabled
   - name: mysql
-    version: 0.8.2
+    version: 0.10.2
     repository: https://kubernetes-charts.storage.googleapis.com
     condition: mysql.enabled
   - name: elasticsearch
-    version: 1.4.0
-    repository: http://storage.googleapis.com/kubernetes-charts-incubator
+    version: 1.13.2
+    repository: https://kubernetes-charts.storage.googleapis.com
     condition: elasticsearch.enabled
   - name: mariadb
-    version: 4.4.2
+    version: 5.2.2
     repository: https://kubernetes-charts.storage.googleapis.com
     condition: mariadb.enabled
   - name: couchdb
-    version: 0.1.7
-    repository: http://storage.googleapis.com/kubernetes-charts-incubator
+    version: 0.2.2
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
     condition: couchdb.enabled

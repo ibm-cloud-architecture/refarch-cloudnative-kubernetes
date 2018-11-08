@@ -184,19 +184,22 @@ IBM Cloud Private (ICP) contains integration with Helm that allows you to instal
 1. Click on the user icon on the top right corner and then click on `Configure client`.
 2. Copy the displayed `kubectl` configuration, paste it in your terminal, and press Enter on your keyboard.
 3. Download and initialize helm in your cluster using [these instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html).
-4. Add the `helm` package repository containing the reference application:
+4. **NOTE**: If using IBM Cloud Private 3.1 or older, create an ImagePolicy to allow images from the `docker.io/*` and `docker.elastic.co/*` Docker Registries:
+  ```bash
+  $ kubectl apply -f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/static/image_policy.yaml
+  ```
+
+5. Add the `helm` package repository containing the reference application:
   ```bash
   $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
   ```
 
-5. Install the reference application:
+6. Install the reference application:
   ```bash
-  $ helm upgrade --install bluecompute --set createImagePolicy=true ibmcase/bluecompute-ce --tls
+  $ helm upgrade --install bluecompute ibmcase/bluecompute-ce --tls
   ```
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
-
-**NOTE:** The `createImagePolicy` flag that we set to `true` in the `helm install` command above is necessary to enable a [Cluster Image Policy](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/manage_images/image_security.html), which allows ICP 3.1.0 and newer to pull images from registries other than the ICP Private Registry. However, this flag does not need to be set if using earlier ICP versions.
 
 #### Access and Validate the Application
 To access the application, you need to access the IP address of one of your proxy nodes. Pick the IP of any of your proxy nodes.
