@@ -1,0 +1,25 @@
+# Declare variables to be passed into your templates for openliberty.
+
+catalog:
+  image:
+    repository: ibmcase/catalog-mp-ol
+    tag: v1.0.0
+  volumes:
+    mountPath: /opt/ol/wlp/usr/shared
+
+customer:
+  image:
+    repository: ibmcase/customer-mp-ol
+    tag: v1.0.0
+  volumes:
+    mountPath: /opt/ol/wlp/usr/shared
+
+inventory:
+  image:
+    repository: ibmcase/inventory-mp-ol
+    tag: v1.0.0
+
+orders:
+  image:
+    repository: ibmcase/orders-mp-ol
+    tag: v1.0.0

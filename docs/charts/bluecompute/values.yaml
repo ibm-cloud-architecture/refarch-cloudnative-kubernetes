@@ -30,6 +30,8 @@ catalog:
     servicePortHttps: 9443
     zipkinPort: 9411
     zipkinName: zipkin
+  volumes:
+    mountPath: /opt/ibm/wlp/usr/shared
   resources:
     requests:
       cpu: 200m
@@ -38,7 +40,7 @@ catalog:
 ibmcase-elasticsearch:
   enabled: true
   replicaCount: 1
-  image: 
+  image:
     repository: quay.io/pires/docker-elasticsearch-kubernetes
     pullPolicy: IfNotPresent
     tag: 1.7.1-4
@@ -73,6 +75,8 @@ customer:
     auth: auth
     zipkinHost: zipkin
     zipkinPort: 9411
+  volumes:
+    mountPath: /opt/ibm/wlp/usr/shared
   jwt:
     id: myMpJwt
   cloudant:

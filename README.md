@@ -48,6 +48,8 @@ This project organized itself like a microservice project, as such each componen
 
 ## Deploy the Application
 
+By default, the application runs on [WebSphere Liberty](https://developer.ibm.com/wasdev/websphere-liberty/). You can also run it on [Open Liberty](https://openliberty.io/). The deployment options are provided below.
+
 ### Get application source code (optional)
 
 - Clone the base repository:
