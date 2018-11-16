@@ -30,7 +30,7 @@ spec:
       paths:
       - path: {{ .Values.web.ingress.path }}
         backend:
-          serviceName: "{{- .Release.Name }}-web"
+          serviceName: {{ .Values.web.fullnameOverride }}
           servicePort: {{ .Values.web.service.externalPort }}
   {{- end }}
   {{- if .Values.ingress.hostnames.api }}
