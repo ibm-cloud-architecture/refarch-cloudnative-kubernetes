@@ -1,0 +1,16 @@
+apiVersion: securityenforcement.admission.cloud.ibm.com/v1beta1
+kind: ImagePolicy
+metadata:
+  name: ibmcase-image-policy
+spec:
+  repositories:
+  # BlueCompute and other Docker Hub Images
+  - name: docker.io/*
+    policy:
+      va:
+        enabled: false
+  # Elasticsearch
+  - name: quay.io/*
+    policy:
+      va:
+        enabled: false

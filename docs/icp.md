@@ -85,6 +85,14 @@ Server: &version.Version{SemVer:"v2.7.2+icp", GitCommit:"d41a5c2da480efc555ddca5
 
 ## Run the App 
 
+**Note**: If you are running the application on IBM Cloud Private 3.1 or newer, create an ImagePolicy to allow images from the other docker Registries:
+
+`$ kubectl apply -f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/static/image_policy.yaml`
+
+If you are deploying it in a particular namespace, run the below command.
+
+`$ kubectl apply -f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/static/image_policy.yaml  --namespace <Your_Namespace>`
+
 1. Add the `helm` package repository containing the reference application.
 
 `helm repo add ibmcase-mp https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp`
@@ -102,24 +110,27 @@ By default, the application runs on [WebSphere Liberty](https://developer.ibm.co
 ```
 $ cd refarch-cloudnative-kubernetes
 
-$ helm install -f utility_scripts/openliberty.yml --name bluecompute ibmcase-mp/bluecompute
+$ helm install -f utility_scripts/openliberty.yml --name bluecompute ibmcase-mp/bluecompute --tls
 ```
 
-Note: If using IBM Cloud Private version older than 2.1.0.2, use `helm install --name bluecompute ibmcase-mp/bluecompute`
+Note: If using IBM Cloud Private version older than 2.1.0.2, use `helm install --name bluecompute ibmcase-mp/bluecompute`.
+If running it on Open Liberty, run `helm install -f utility_scripts/openliberty.yml --name bluecompute ibmcase-mp/bluecompute`.
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.
 
 If you want to deploy the application in a particular namespace, run the below command.
 
-`helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>`
+`helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace> --tls`
 
 By default, the application runs on [WebSphere Liberty](https://developer.ibm.com/wasdev/websphere-liberty/). You can also run it on [Open Liberty](https://openliberty.io/) as follows.
 
 ```
 $ cd refarch-cloudnative-kubernetes
 
-$ helm install -f utility_scripts/openliberty.yml --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>
+$ helm install -f utility_scripts/openliberty.yml --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace> --tls
 ```
+
+Note: If using IBM Cloud Private version older than 2.1.0.2, use `helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>`. If running it on Open Liberty, run `helm install --name bluecompute ibmcase-mp/bluecompute --namespace <Your_Namespace>`.
 
 ## Validate the App 
 
