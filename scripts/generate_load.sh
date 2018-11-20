@@ -1,29 +1,78 @@
 #!/bin/bash
+BASE_URL="$1"
+INVENTORY_URL="$2"
+CATALOG_URL="$3"
+CUSTOMER_URL="$4"
+AUTH_URL="$5"
+ORDERS_URL="$6"
+WEB_URL="$7"
+
 HS256_KEY=E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a;
 TEST_USER=user;
 TEST_PASSWORD=passw0rd;
 ITEM_ID=13401
 
-# trap ctrl-c and call ctrl_c() to stop port forwarding
-trap ctrl_c INT
+# INVENTORY_URL
+if [ -z "$INVENTORY_URL" ] && [ -z "$BASE_URL" ]; then
+	INVENTORY_URL="http://localhost:8080"
+	echo "No INVENTORY_URL or BASE_URL provided! Using ${INVENTORY_URL}"
 
-function ctrl_c() {
-	echo "** Trapped CTRL-C... Killing Port Forwarding and Stopping Load";
-	killall kubectl;
-	exit 0;
-}
+elif [ -z "$INVENTORY_URL" ]; then
+	INVENTORY_URL="${BASE_URL}"
+	echo "No INVENTORY_URL provided! Using ${INVENTORY_URL}"
+fi
 
-function start_port_forwarding() {
-	echo "Forwarding customer ports 8000, 8080, 8081, 8082, 8083, 8084";
-	kubectl port-forward deployment/web 	  8000:8000 --pod-running-timeout=1h &
-	kubectl port-forward deployment/inventory 8080:8080 --pod-running-timeout=1h &
-	kubectl port-forward deployment/catalog   8081:8081 --pod-running-timeout=1h &
-	kubectl port-forward deployment/customer  8082:8082 --pod-running-timeout=1h &
-	kubectl port-forward deployment/auth 	  8083:8083 --pod-running-timeout=1h &
-	kubectl port-forward deployment/orders 	  8084:8084 --pod-running-timeout=1h &
-	echo "Sleeping for 3 seconds while connection is established...";
-	sleep 3;
-}
+# CATALOG_URL
+if [ -z "$CATALOG_URL" ] && [ -z "$CATALOG_URL" ]; then
+	CATALOG_URL="http://localhost:8081"
+	echo "No CATALOG_URL or BASE_URL provided! Using ${CATALOG_URL}"
+
+elif [ -z "$CATALOG_URL" ]; then
+	CATALOG_URL="${BASE_URL}"
+	echo "No CATALOG_URL provided! Using ${CATALOG_URL}"
+fi
+
+# CUSTOMER_URL
+if [ -z "$CUSTOMER_URL" ] && [ -z "$BASE_URL" ]; then
+	CUSTOMER_URL="http://localhost:8082"
+	echo "No CUSTOMER_URL or BASE_URL provided! Using ${CUSTOMER_URL}"
+
+elif [ -z "$CUSTOMER_URL" ]; then
+	CUSTOMER_URL="${BASE_URL}"
+	echo "No CUSTOMER_URL provided! Using ${CUSTOMER_URL}"
+fi
+
+# AUTH_URL
+if [ -z "$AUTH_URL" ] && [ -z "$BASE_URL" ]; then
+	AUTH_URL="http://localhost:8083"
+	echo "No AUTH_URL or BASE_URL provided! Using ${AUTH_URL}"
+
+elif [ -z "$AUTH_URL" ]; then
+	AUTH_URL="${BASE_URL}"
+	echo "No AUTH_URL provided! Using ${AUTH_URL}"
+fi
+
+# ORDERS_URL
+if [ -z "$ORDERS_URL" ] && [ -z "$BASE_URL" ]; then
+	ORDERS_URL="http://localhost:8084"
+	echo "No ORDERS_URL or BASE_URL provided! Using ${ORDERS_URL}"
+
+elif [ -z "$ORDERS_URL" ]; then
+	ORDERS_URL="${BASE_URL}"
+	echo "No ORDERS_URL provided! Using ${ORDERS_URL}"
+fi
+
+# WEB_URL
+if [ -z "$WEB_URL" ] && [ -z "$BASE_URL" ]; then
+	WEB_URL="http://localhost:8000"
+	echo "No WEB_URL or BASE_URL provided! Using ${WEB_URL}"
+
+elif [ -z "$WEB_URL" ]; then
+	WEB_URL="${BASE_URL}"
+	echo "No WEB_URL provided! Using ${WEB_URL}"
+fi
+
+
 
 function create_jwt_admin() {
 	# Secret Key
@@ -59,9 +108,6 @@ function create_jwt_blue() {
 	#echo $jwt_blue
 }
 
-# Port Forwarding
-start_port_forwarding
-
 # Load Generation
 echo "Generating load for all services..."
 create_jwt_admin
@@ -69,24 +115,25 @@ create_jwt_blue
 
 while true; do
 	# Web -> Catalog -> Elasticsearch
-	curl -s localhost:8000/catalog > /dev/null;
+	curl -s "${WEB_URL}/catalog" > /dev/null;
 
 	# Inventory -> MySQL
-	curl -s localhost:8080/micro/inventory > /dev/null;
+	curl -s "${INVENTORY_URL}/micro/inventory" > /dev/null;
 
 	# Catalog -> Elasticsearch
-	curl -s localhost:8081/micro/items > /dev/null;
+	curl -s "${CATALOG_URL}/micro/items" > /dev/null;
 
 	# Customer -> CouchDB
-	curl -s -X GET "localhost:8082/micro/customer/search?username=${TEST_USER}" \
+	curl -s -X GET "${CUSTOMER_URL}/micro/customer/search?username=${TEST_USER}" \
 		-H 'Content-type: application/json' -H "Authorization: Bearer ${jwt}" > /dev/null;
 
 	# Auth -> Customer -> CouchDB
 	curl -s -X POST -u bluecomputeweb:bluecomputewebs3cret \
-		localhost:8083/oauth/token\?grant_type\=password\&username\=${TEST_USER}\&password\=${TEST_PASSWORD}\&scope\=blue > /dev/null;
+		"${AUTH_URL}/oauth/token\?grant_type\=password\&username\=${TEST_USER}\&password\=${TEST_PASSWORD}\&scope\=blue" > /dev/null;
 
 	# Orders -> MariaDB
-	curl -s -H "Authorization: Bearer ${jwt_blue}" localhost:8084/micro/orders > /dev/null;
+	curl -s -H "Authorization: Bearer ${jwt_blue}" "${ORDERS_URL}/micro/orders" > /dev/null;
 
+	echo -n .;
 	sleep 0.2;
 done
