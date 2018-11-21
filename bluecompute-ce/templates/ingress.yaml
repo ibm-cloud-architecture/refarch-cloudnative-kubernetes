@@ -3,26 +3,17 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ template "bluecompute.fullname" . }}
-  {{- if .Values.ingress.ibmCloud.redirectToHTTPS }}
+{{- if .Values.ingress.annotations }}
   annotations:
-   ingress.bluemix.net/redirect-to-https: "True"
-  {{- end }}
+{{ toYaml .Values.ingress.annotations | indent 4 }}
+{{- end }}
   labels:
     {{- include "bluecompute.labels" . | indent 4 }}
 spec:
-  {{- if .Values.tls.enabled }}
+{{- if .Values.ingress.enableTLS }}
   tls:
-  {{- if and .Values.web.enabled .Values.ingress.hostnames.app }}
-  - hosts:
-    - {{ .Values.ingress.hostnames.app }}
-    secretName: "{{ template "bluecompute.tls.secretName" . }}"
-  {{- end }}
-  {{- if .Values.ingress.hostnames.api }}
-  - hosts:
-    - {{ .Values.ingress.hostnames.api }}
-    secretName: "{{ template "bluecompute.tls.secretName" . }}"
-  {{- end }}
-  {{- end }}
+{{ toYaml .Values.ingress.TLS | indent 2 }}
+{{- end }}
   rules:
   {{- if and .Values.web.enabled .Values.ingress.hostnames.app }}
   - host: {{ .Values.ingress.hostnames.app }}
