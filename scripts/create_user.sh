@@ -1,10 +1,16 @@
 #!/bin/bash
-
+NAMESPACE=$1
 HS256_KEY=E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a;
 TEST_USER=user
 TEST_PASSWORD=passw0rd
 CUSTOMER_HOST=127.0.0.1
 CUSTOMER_PORT=8082
+
+# INVENTORY_URL
+if [ -z "$NAMESPACE" ]; then
+	NAMESPACE="default"
+	echo "No NAMESPACE provided! Using ${NAMESPACE}"
+fi
 
 function create_jwt_admin() {
 	# Secret Key
@@ -98,7 +104,7 @@ create_jwt_blue
 
 # Forward port
 echo "Forwarding customer port 8082"
-kubectl port-forward deployment/customer 8082:8082 --pod-running-timeout=1h &
+kubectl -n $NAMESPACE port-forward deployment/customer 8082:8082 --pod-running-timeout=1h &
 echo "Sleeping for 3 seconds while connection is established..."
 sleep 3
 
