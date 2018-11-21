@@ -14,7 +14,7 @@
     + [Login](#login)
   * [Delete the Application](#delete-the-application)
   * [Optional Deployments](#optional-deployments)
-    + [Deploy BlueCompute to IBM Cloud Container Service](#deploy-bluecompute-to-ibm-cloud-container-service)
+    + [Deploy BlueCompute to IBM Cloud Kubernetes Service](#deploy-bluecompute-to-IBM Cloud Kubernetes Service)
       - [Access and Validate the Application](#access-and-validate-the-application)
     + [Deploy BlueCompute to IBM Cloud Private](#deploy-bluecompute-to-ibm-cloud-private)
       - [Access and Validate the Application](#access-and-validate-the-application-1)
@@ -47,7 +47,7 @@ There are several components of this architecture.
 
 * This OmniChannel application contains an [AngularJS](https://angularjs.org/) based web application. The diagram depicts it as Browser.  
 * The Web app invokes its own backend Microservices to fetch data, we call this component BFFs following the [Backend for Frontends](http://samnewman.io/patterns/architectural/bff/) pattern.  In this Layer, front end developers usually write backend logic for their front end.  The Web BFF is implemented using the Node.js Express Framework. These Microservices are packaged as Docker containers and managed by Kubernetes cluster.
-* The BFFs invokes another layer of reusable Java Microservices. In a real world project, this is sometimes written by different teams.  The reusable microservices are written in Java. They run inside a Kubernetes cluster, for example the [IBM Cloud Container Service](https://www.ibm.com/cloud/container-service) or [IBM Cloud Private](https://www.ibm.com/cloud/private), using [Docker](https://www.docker.com/).
+* The BFFs invokes another layer of reusable Java Microservices. In a real world project, this is sometimes written by different teams.  The reusable microservices are written in Java. They run inside a Kubernetes cluster, for example the [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) or [IBM Cloud Private](https://www.ibm.com/cloud/private), using [Docker](https://www.docker.com/).
 * The Java Microservices retrieve their data from the following databases:  
   + The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/).
   + The Customer service stores and retrieves Customer data from a searchable JSON datasource using [CouchDB](http://couchdb.apache.org/).
@@ -103,7 +103,7 @@ The following clusters have been tested with this sample application:
   $ minikube addons enable ingress
   ```  
 
-- [IBM Cloud Container Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
+- [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
 - [IBM Cloud Private](https://www.ibm.com/cloud/private) - Create a Kubernetes cluster in an on-premise datacenter.  The community edition (IBM Cloud Private CE) is free of charge.  Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.0/installing/installing.html) to install IBM Cloud Private CE.
 
 ### Deploy to Kubernetes Cluster
@@ -153,8 +153,8 @@ $ helm delete bluecompute --purge
 ```
 
 ## Optional Deployments
-### Deploy BlueCompute to IBM Cloud Container Service
-Deploying the Helm chart will also work on a Kubernetes cluster from IBM Cloud Container Service. Use the following commands to install the chart:
+### Deploy BlueCompute to IBM Cloud Kubernetes Service
+Deploying the Helm chart will also work on a Kubernetes cluster from IBM Cloud Kubernetes Service. Use the following commands to install the chart:
 ```bash
 $ helm init
 

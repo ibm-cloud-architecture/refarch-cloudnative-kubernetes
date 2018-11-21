@@ -8,20 +8,32 @@ global:
     region: us-south
   istio:
     enabled: false
+    gateway:
+      enabled: false
+      name: bluecompute-gateway
+      hosts:
+        - "*.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
+        serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+        privateKey: /etc/istio/ingressgateway-certs/tls.key
+        caCertificates: /etc/istio/ingressgateway-ca-certs/ca-chain.cert.pem
 
 ingress:
   enabled: false
   hostnames:
     app: app.bluecompute.com
     api: api.bluecompute.com
-  ibmCloud:
-    redirectToHTTPS: false
-
-tls:
-  enabled: false
-  secretName:
-  crt: PUT_BASE64_ENCODED_TLS_CERTIFICATE_HERE
-  key: PUT_BASE64_ENCODED_TLS_KEY_HERE
+  annotations:
+    ingress.bluemix.net/redirect-to-https: "True"
+  enableTLS: false
+  TLS:
+  - secretName: bluecompute.com
+    hosts:
+      - bluecompute.com
 
 auth:
   enabled: true
@@ -52,8 +64,20 @@ auth:
     url: http://customer:8082
   istio:
     enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
     mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
     loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "auth.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
 
 catalog:
   enabled: true
@@ -88,8 +112,20 @@ catalog:
     cacertificatebase64:
   istio:
     enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
     mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
     loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "catalog.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
 
 elasticsearch:
   enabled: true
@@ -164,8 +200,20 @@ customer:
     adminPassword: passw0rd
   istio:
     enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
     mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
     loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "customer.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
 
 couchdb:
   enabled: true
@@ -220,8 +268,20 @@ inventory:
     imagePullPolicy: IfNotPresent
   istio:
     enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
     mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
     loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "inventory.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
 
 mysql:
   enabled: true
@@ -238,7 +298,6 @@ mysql:
   persistence:
     enabled: false
   istio:
-    enabled: false
     mTLS: ISTIO_MUTUAL
     loadBalancer: LEAST_CONN
 
@@ -276,8 +335,20 @@ orders:
     database: ordersdb
   istio:
     enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
     mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
     loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "orders.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
 
 mariadb:
   enabled: true
@@ -353,9 +424,17 @@ web:
       port:
   istio:
     enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
     mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
     loadBalancer: LEAST_CONN
-    enableGateway: true
-    httpsRedirect: false
-    # hosts:
-    # - "web.bluecompute.com"
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "web.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
