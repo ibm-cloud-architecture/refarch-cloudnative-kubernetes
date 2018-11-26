@@ -7,7 +7,7 @@ global:
     name: "my-cluster"
     region: us-south
   istio:
-    enabled: false
+    enabled: true
     gateway:
       enabled: false
       name:
@@ -27,8 +27,8 @@ ingress:
   hostnames:
     app: app.bluecompute.com
     api: api.bluecompute.com
-  #annotations:
-  #  ingress.bluemix.net/redirect-to-https: "True"
+  annotations:
+    ingress.bluemix.net/redirect-to-https: "True"
   enableTLS: false
   TLS:
   - secretName: bluecompute.com
@@ -147,20 +147,20 @@ elasticsearch:
   client:
     replicas: 1
     serviceType: ClusterIP
-    #podAnnotations:
-    #  sidecar.istio.io/inject: "false"
+    podAnnotations:
+      sidecar.istio.io/inject: "false"
   master:
     replicas: 2
     persistence:
       enabled: false
-    #podAnnotations:
-    #  sidecar.istio.io/inject: "false"
+    podAnnotations:
+      sidecar.istio.io/inject: "false"
   data:
     replicas: 1
     persistence:
       enabled: false
-    #podAnnotations:
-    #  sidecar.istio.io/inject: "false"
+    podAnnotations:
+      sidecar.istio.io/inject: "false"
 
 customer:
   enabled: true
@@ -235,8 +235,8 @@ couchdb:
     repository: kocolosk/couchdb-statefulset-assembler
     tag: 1.1.0
     pullPolicy: IfNotPresent
-  #podAnnotations:
-  #  sidecar.istio.io/inject: "false"
+  podAnnotations:
+    sidecar.istio.io/inject: "false"
 
 inventory:
   enabled: true
@@ -371,16 +371,16 @@ mariadb:
   master:
     persistence:
       enabled: false
-    #annotations:
-    #  - key: sidecar.istio.io/inject
-    #    value: "false"
+    annotations:
+      - key: sidecar.istio.io/inject
+        value: "false"
   slave:
     replicas: 1
     persistence:
       enabled: false
-    #annotations:
-    #  - key: sidecar.istio.io/inject
-    #    value: "false"
+    annotations:
+      - key: sidecar.istio.io/inject
+        value: "false"
 
 web:
   enabled: true
