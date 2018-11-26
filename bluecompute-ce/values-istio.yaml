@@ -14,7 +14,7 @@ global:
       hosts:
         - "*.bluecompute.com"
       TLS:
-        enabled: True
+        enabled: true
         # SIMPLE, MUTUAL
         mode: SIMPLE
         httpsRedirect: true
