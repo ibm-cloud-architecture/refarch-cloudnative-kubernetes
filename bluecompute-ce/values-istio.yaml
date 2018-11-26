@@ -7,17 +7,17 @@ global:
     name: "my-cluster"
     region: us-south
   istio:
-    enabled: false
+    enabled: true
     gateway:
-      enabled: false
-      name:
+      enabled: true
+      name: bluecompute-gateway
       hosts:
         - "*.bluecompute.com"
       TLS:
-        enabled: false
+        enabled: true
         # SIMPLE, MUTUAL
         mode: SIMPLE
-        httpsRedirect: false
+        httpsRedirect: true
         serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
         privateKey: /etc/istio/ingressgateway-certs/tls.key
         caCertificates: /etc/istio/ingressgateway-ca-certs/ca-chain.cert.pem
@@ -429,10 +429,10 @@ web:
     # LEAST_CONN, ROUND_ROBIN
     loadBalancer: LEAST_CONN
     gateway:
-      enabled: true
+      enabled: false
       name:
       hosts:
-        - "*"
+        - "web.bluecompute.com"
       TLS:
         enabled: false
         # SIMPLE, MUTUAL
