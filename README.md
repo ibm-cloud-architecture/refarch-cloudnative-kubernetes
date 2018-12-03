@@ -14,7 +14,7 @@
     + [Login](#login)
   * [Delete the Application](#delete-the-application)
   * [Optional Deployments](#optional-deployments)
-    + [Deploy BlueCompute to IBM Cloud Kubernetes Service](#deploy-bluecompute-to-IBM Cloud Kubernetes Service)
+    + [Deploy BlueCompute to IBM Cloud Kubernetes Service](#deploy-bluecompute-to-ibm-cloud-kubernetes-service)
       - [Access and Validate the Application](#access-and-validate-the-application)
     + [Deploy BlueCompute to IBM Cloud Private](#deploy-bluecompute-to-ibm-cloud-private)
       - [Access and Validate the Application](#access-and-validate-the-application-1)
@@ -153,6 +153,7 @@ $ helm delete bluecompute --purge
 ```
 
 ## Optional Deployments
+
 ### Deploy BlueCompute to IBM Cloud Kubernetes Service
 Deploying the Helm chart will also work on a Kubernetes cluster from IBM Cloud Kubernetes Service. Use the following commands to install the chart:
 ```bash
