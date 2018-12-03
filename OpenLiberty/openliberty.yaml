@@ -1,60 +1,18 @@
 # Declare variables to be passed into your templates.
-global:
-  hs256key:
-    secretName: bluecompute-hs256key
-    secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
-  cluster:
-    name: "my-cluster"
-    region: us-south
-
-createImagePolicy: false
-
-ingress:
-  enabled: false
-  hostnames:
-    app: app.bluecompute.com
-    api: api.bluecompute.com
-  ibmCloud:
-    redirectToHTTPS: false
-
-tls:
-  enabled: false
-  secretName:
-  crt: PUT_BASE64_ENCODED_TLS_CERTIFICATE_HERE
-  key: PUT_BASE64_ENCODED_TLS_KEY_HERE
-
 auth:
-  enabled: true
-  fullnameOverride: auth
-  replicaCount: 1
   image:
-    repository: ibmcase/bluecompute-auth
-    tag: 0.5.0
+    repository: ibmcase/liberty-auth-spring
+    tag: latest
     pullPolicy: Always
   service:
     type: ClusterIP
-    externalPort: 8080
+    externalPort: 9080
+    internalPort: 9080
     nodePort: 31383
-  resources:
-    limits:
-      memory: 384Mi
-    requests:
-      memory: 64Mi
-  bash:
-    image:
-      repository: ibmcase/bluecompute-bash-curl-ssl
-      tag: latest
-      pullPolicy: IfNotPresent
-  hs256key:
-    secretName:
-    secret:
   customer:
     url: http://customer:9080
 
 catalog:
-  enabled: true
-  fullnameOverride: catalog
-  replicaCount: 1
   image:
     repository: ibmcase/liberty-catalog-spring
     tag: latest
@@ -64,57 +22,10 @@ catalog:
     externalPort: 9080
     internalPort: 9080
     nodePort: 31381
-  resources:
-    limits:
-      memory: 384Mi
-    requests:
-      memory: 64Mi
   inventory:
     url: http://inventory:9080
-  curl:
-    image: alexeiled/curl
-    imageTag: latest
-    imagePullPolicy: IfNotPresent
-  elasticsearch:
-    protocol: http
-    host: catalog-elasticsearch-client
-    port: 9200
-    username:
-    password:
-    healthcheck: "_cat/health"
-    cacertificatebase64:
-
-
-elasticsearch:
-  enabled: true
-  fullnameOverride: catalog-elasticsearch
-  protocol: http
-  port: 9200
-  username:
-  password:
-  healthcheck: "_cat/health"
-  cacertificatebase64:
-  appVersion: 6.3.1
-  image:
-    repository: docker.elastic.co/elasticsearch/elasticsearch-oss
-    tag: 6.3.1
-    pullPolicy: IfNotPresent
-  client:
-    replicas: 1
-    serviceType: ClusterIP
-  master:
-    replicas: 2
-    persistence:
-      enabled: false
-  data:
-    replicas: 1
-    persistence:
-      enabled: false
 
 customer:
-  enabled: true
-  fullnameOverride: customer
-  replicaCount: 1
   image:
     repository: ibmcase/liberty-customer-spring
     tag: latest
@@ -124,56 +35,8 @@ customer:
     externalPort: 9080
     internalPort: 9080
     nodePort: 31382
-  resources:
-    limits:
-      memory: 384Mi
-    requests:
-      memory: 64Mi
-  testUser:
-    createUser: true
-    username: user
-    password: passw0rd
-  bash:
-    image:
-      repository: ibmcase/bluecompute-bash-curl-ssl
-      tag: latest
-      pullPolicy: IfNotPresent
-  hs256key:
-    secretName:
-    secret:
-  couchdb:
-    host: customer-couchdb-svc-couchdb
-    protocol: http
-    port: 5984
-    existingSecret:
-    adminUsername: user
-    adminPassword: passw0rd
-
-couchdb:
-  enabled: true
-  image:
-    repository: "couchdb"
-    tag: "2.1.1"
-    pullPolicy: IfNotPresent
-  fullnameOverride: customer-couchdb
-  protocol: http
-  createAdminSecret: true
-  adminUsername: user
-  adminPassword: passw0rd
-  service:
-    externalPort: 5984
-  clusterSize: 1
-  persistentVolume:
-    enabled: false
-  helperImage:
-    repository: kocolosk/couchdb-statefulset-assembler
-    tag: 1.1.0
-    pullPolicy: IfNotPresent
 
 inventory:
-  enabled: true
-  fullnameOverride: inventory
-  replicaCount: 1
   image:
     repository: ibmcase/liberty-inventory-spring
     tag: latest
@@ -183,62 +46,17 @@ inventory:
     externalPort: 9080
     internalPort: 9080
     nodePort: 31380
-  resources:
-    limits:
-      memory: 384Mi
-    requests:
-      memory: 64Mi
-  mysql:
-    host: inventory-mysql
-    port: 3306
-    existingSecret:
-    user: dbuser
-    password: password
-    database: inventorydb
-    # For mysql init container
-    image: "mysql"
-    imageTag: "5.7.14"
-    imagePullPolicy: IfNotPresent
-
-mysql:
-  enabled: true
-  image: "mysql"
-  imageTag: "5.7.14"
-  imagePullPolicy: IfNotPresent
-  fullnameOverride: inventory-mysql
-  mysqlRootPassword: admin123
-  mysqlUser: dbuser
-  mysqlPassword: password
-  mysqlDatabase: inventorydb
-  service:
-    port: 3306
-  persistence:
-    enabled: false
 
 orders:
-  enabled: true
-  fullnameOverride: orders
-  replicaCount: 1
   image:
-    repository: ibmcase/bluecompute-orders
-    tag: 0.5.0
+    repository: ibmcase/liberty-orders-spring
+    tag: latest
     pullPolicy: Always
   service:
     type: ClusterIP
-    externalPort: 8080
+    externalPort: 9080
+    internalPort: 9080
     nodePort: 31384
-  resources:
-    limits:
-      memory: 384Mi
-    requests:
-      memory: 64Mi
-  mysql:
-    image: "mysql"
-    imageTag: "5.7.14"
-    imagePullPolicy: IfNotPresent
-  hs256key:
-    secretName:
-    secret:
   mariadb:
     # Leaving empty so it gets name form release name and nameOverride
     host:
@@ -275,29 +93,11 @@ mariadb:
       enabled: false
 
 web:
-  enabled: true
-  fullnameOverride: web
-  replicaCount: 1
-  image:
-    repository: ibmcase/bluecompute-web
-    tag: 0.5.0
-    pullPolicy: Always
-  service:
-    type: NodePort
-    externalPort: 80
-    nodePort: 31337
-  resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
   services:
     auth:
       protocol: http
       host: auth
-      port: 8080
+      port: 9080
     catalog:
       protocol: http
       host: catalog
@@ -309,8 +109,4 @@ web:
     orders:
       protocol: http
       host: orders
-      port: 8080
-    reviews:
-      protocol: http
-      host:
-      port:
+      port: 9080
