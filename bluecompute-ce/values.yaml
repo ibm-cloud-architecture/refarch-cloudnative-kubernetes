@@ -137,7 +137,7 @@ elasticsearch:
   healthcheck: "_cat/health"
   cacertificatebase64:
   appVersion: 6.3.1
-  image: 
+  image:
     repository: docker.elastic.co/elasticsearch/elasticsearch-oss
     tag: 6.3.1
     pullPolicy: IfNotPresent
@@ -153,12 +153,18 @@ elasticsearch:
     replicas: 2
     persistence:
       enabled: false
+      size: 4Gi
+      storageClass:
+      accessMode: ReadWriteOnce
     #podAnnotations:
     #  sidecar.istio.io/inject: "false"
   data:
     replicas: 1
     persistence:
       enabled: false
+      size: 30Gi
+      storageClass:
+      accessMode: ReadWriteOnce
     #podAnnotations:
     #  sidecar.istio.io/inject: "false"
 
@@ -217,7 +223,7 @@ customer:
 
 couchdb:
   enabled: true
-  image: 
+  image:
     repository: "couchdb"
     tag: "2.1.1"
     pullPolicy: IfNotPresent
@@ -231,6 +237,10 @@ couchdb:
   clusterSize: 1
   persistentVolume:
     enabled: false
+    size: 10Gi
+    accessModes:
+      - ReadWriteOnce
+    storageClass:
   helperImage:
     repository: kocolosk/couchdb-statefulset-assembler
     tag: 1.1.0
@@ -297,6 +307,12 @@ mysql:
     port: 3306
   persistence:
     enabled: false
+    size: 8Gi
+    storageClass:
+    accessMode: ReadWriteOnce
+    existingClaim:
+    subPath:
+    annotations: {}
   istio:
     mTLS: ISTIO_MUTUAL
     loadBalancer: LEAST_CONN
@@ -327,7 +343,7 @@ orders:
     secret:
   mariadb:
     # Leaving empty so it gets name form release name and nameOverride
-    host: 
+    host:
     port: 3307
     existingSecret:
     user: dbuser
@@ -371,6 +387,12 @@ mariadb:
   master:
     persistence:
       enabled: false
+      existingClaim:
+      mountPath: ""
+      annotations: {}
+      storageClass:
+      accessMode: ReadWriteOnce
+      size: 8Gi
     #annotations:
     #  - key: sidecar.istio.io/inject
     #    value: "false"
@@ -378,6 +400,10 @@ mariadb:
     replicas: 1
     persistence:
       enabled: false
+      annotations: {}
+      storageClass:
+      accessMode: ReadWriteOnce
+      size: 8Gi
     #annotations:
     #  - key: sidecar.istio.io/inject
     #    value: "false"

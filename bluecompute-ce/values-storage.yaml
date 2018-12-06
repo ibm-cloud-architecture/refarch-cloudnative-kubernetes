@@ -7,17 +7,17 @@ global:
     name: "my-cluster"
     region: us-south
   istio:
-    enabled: true
+    enabled: false
     gateway:
-      enabled: true
-      name: bluecompute-gateway
+      enabled: false
+      name:
       hosts:
         - "*.bluecompute.com"
       TLS:
-        enabled: true
+        enabled: false
         # SIMPLE, MUTUAL
         mode: SIMPLE
-        httpsRedirect: true
+        httpsRedirect: false
         serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
         privateKey: /etc/istio/ingressgateway-certs/tls.key
         caCertificates: /etc/istio/ingressgateway-ca-certs/ca-chain.cert.pem
@@ -27,8 +27,8 @@ ingress:
   hostnames:
     app: app.bluecompute.com
     api: api.bluecompute.com
-  annotations:
-    ingress.bluemix.net/redirect-to-https: "True"
+  #annotations:
+  #  ingress.bluemix.net/redirect-to-https: "True"
   enableTLS: false
   TLS:
   - secretName: bluecompute.com
@@ -147,26 +147,26 @@ elasticsearch:
   client:
     replicas: 1
     serviceType: ClusterIP
-    podAnnotations:
-      sidecar.istio.io/inject: "false"
+    #podAnnotations:
+    #  sidecar.istio.io/inject: "false"
   master:
     replicas: 2
     persistence:
-      enabled: false
+      enabled: true
       size: 4Gi
       storageClass:
       accessMode: ReadWriteOnce
-    podAnnotations:
-      sidecar.istio.io/inject: "false"
+    #podAnnotations:
+    #  sidecar.istio.io/inject: "false"
   data:
     replicas: 1
     persistence:
-      enabled: false
+      enabled: true
       size: 30Gi
       storageClass:
       accessMode: ReadWriteOnce
-    podAnnotations:
-      sidecar.istio.io/inject: "false"
+    #podAnnotations:
+    #  sidecar.istio.io/inject: "false"
 
 customer:
   enabled: true
@@ -236,7 +236,7 @@ couchdb:
     externalPort: 5985
   clusterSize: 1
   persistentVolume:
-    enabled: false
+    enabled: true
     size: 10Gi
     accessModes:
       - ReadWriteOnce
@@ -245,8 +245,8 @@ couchdb:
     repository: kocolosk/couchdb-statefulset-assembler
     tag: 1.1.0
     pullPolicy: IfNotPresent
-  podAnnotations:
-    sidecar.istio.io/inject: "false"
+  #podAnnotations:
+  #  sidecar.istio.io/inject: "false"
 
 inventory:
   enabled: true
@@ -306,7 +306,7 @@ mysql:
   service:
     port: 3306
   persistence:
-    enabled: false
+    enabled: true
     size: 8Gi
     storageClass:
     accessMode: ReadWriteOnce
@@ -386,27 +386,27 @@ mariadb:
     enabled: false
   master:
     persistence:
-      enabled: false
+      enabled: true
       existingClaim:
       mountPath: ""
       annotations: {}
       storageClass:
       accessMode: ReadWriteOnce
       size: 8Gi
-    annotations:
-      - key: sidecar.istio.io/inject
-        value: "false"
+    #annotations:
+    #  - key: sidecar.istio.io/inject
+    #    value: "false"
   slave:
     replicas: 1
     persistence:
-      enabled: false
+      enabled: true
       annotations: {}
       storageClass:
       accessMode: ReadWriteOnce
       size: 8Gi
-    annotations:
-      - key: sidecar.istio.io/inject
-        value: "false"
+    #annotations:
+    #  - key: sidecar.istio.io/inject
+    #    value: "false"
 
 web:
   enabled: true
@@ -455,10 +455,10 @@ web:
     # LEAST_CONN, ROUND_ROBIN
     loadBalancer: LEAST_CONN
     gateway:
-      enabled: false
+      enabled: true
       name:
       hosts:
-        - "web.bluecompute.com"
+        - "*"
       TLS:
         enabled: false
         # SIMPLE, MUTUAL
