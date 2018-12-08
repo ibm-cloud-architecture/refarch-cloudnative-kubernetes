@@ -26,7 +26,7 @@ function create_jwt_admin() {
 	# Complete JWT
 	jwt=$(echo -n "${jwt3}.${jwt4}");
 
-	#echo $jwt	
+	#echo $jwt
 }
 
 function create_jwt_blue() {
@@ -59,7 +59,7 @@ function create_user() {
 		printf "create_user: ❌ \n${CURL}\n";
 		kill_port_forwarding;
         exit 1;
-    else 
+    else
     	echo "create_user: ✅";
     fi
 }
@@ -72,14 +72,14 @@ function search_user() {
 		echo "search_user: ❌ could not find user";
 		kill_port_forwarding;
         exit 1;
-    else 
+    else
     	echo "search_user: ✅";
     fi
 }
 
 function delete_user() {
 	CUSTOMER_ID=$(curl -s --max-time 5 -X GET "http://${CUSTOMER_HOST}:${CUSTOMER_PORT}/micro/customer/search?username=${TEST_USER}" -H 'Content-type: application/json' -H "Authorization: Bearer ${jwt}" | jq -r '.[0].customerId');
-	
+
 	#echo "Deleting customer with name: ${TEST_USER} and id: ${CUSTOMER_ID}"
 	CURL=$(curl --write-out %{http_code} --silent --output /dev/null --max-time 5 -X DELETE "http://${CUSTOMER_HOST}:${CUSTOMER_PORT}/micro/customer/${CUSTOMER_ID}" -H "Content-type: application/json" -H "Authorization: Bearer ${jwt}");
 
@@ -87,7 +87,7 @@ function delete_user() {
 	if [ "$CURL" != "200" ]; then
 		printf "delete_user: ❌ \n${CURL}\n";
         exit 1;
-    else 
+    else
     	echo "delete_user: ✅";
     fi
 }

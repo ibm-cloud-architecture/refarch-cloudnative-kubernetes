@@ -141,6 +141,10 @@ elasticsearch:
     repository: docker.elastic.co/elasticsearch/elasticsearch-oss
     tag: 6.3.1
     pullPolicy: IfNotPresent
+  initImage:
+    repository: "busybox"
+    tag: "latest"
+    pullPolicy: "Always"
   cluster:
     env:
       MINIMUM_MASTER_NODES: "2"
