@@ -4,73 +4,63 @@ charts:
 - archive: charts/ibmcase/bluecompute-ce-__CHART_VERSION__.tgz
   repository-keys:
   - auth.image.repository
-  - auth.dataloader.image.repository
+  - auth.bash.image.repository
   - catalog.image.repository
-  - catalog.dataloader.image.repository
-  - ibmcase-elasticsearch.image.repository
+  - catalog.curl.image
+  - elasticsearch.image.repository
+  - elasticsearch.initImage.repository
   - customer.image.repository
-  - customer.dataloader.image.repository
   - customer.bash.image.repository
-  - ibmcase-couchdb.image.repository
+  - couchdb.image.repository
+  - couchdb.helperImage.repository
   - inventory.image.repository
-  - inventory.dataloader.image.repository
-  - ibmcase-inventory-mysql.image.repository
-  - ibmcase-inventory-mysql.busybox.image.repository
+  - inventory.mysql.image
+  - mysql.image
   - orders.image.repository
-  - orders.dataloader.image.repository
-  - ibmcase-orders-mysql.image.repository
-  - ibmcase-orders-mysql.busybox.image.repository
+  - orders.mysql.image
+  - mariadb.image.repository
   - web.image.repository
 
 images:
-- image: ibmcase/bluecompute-auth:latest
+- image: ibmcase/bluecompute-auth:0.5.0
   references:
-  - repository: ibmcase/bluecompute-auth:latest
-- image: ibmcase/bluecompute-busybox:latest
-  references:
-  - repository: ibmcase/bluecompute-busybox:latest
-- image: ibmcase/bluecompute-dataloader:latest
-  references:
-  - repository: ibmcase/bluecompute-dataloader:latest
-- image: ibmcase/bluecompute-catalog:latest
-  references:
-  - repository: ibmcase/bluecompute-catalog:latest
-- image: ibmcase/bluecompute-dataloader:latest
-  references:
-  - repository: ibmcase/bluecompute-dataloader:latest
-- image: ibmcase/bluecompute-elasticsearch:latest
-  references:
-  - repository: ibmcase/bluecompute-elasticsearch:latest
-- image: ibmcase/bluecompute-customer:latest
-  references:
-  - repository: ibmcase/bluecompute-customer:latest
-- image: ibmcase/bluecompute-dataloader:latest
-  references:
-  - repository: ibmcase/bluecompute-dataloader:latest
+  - repository: ibmcase/bluecompute-auth:0.5.0
 - image: ibmcase/bluecompute-bash-curl-ssl:latest
   references:
   - repository: ibmcase/bluecompute-bash-curl-ssl:latest
-- image: ibmcase/bluecompute-couchdb:latest
+- image: ibmcase/bluecompute-catalog:0.5.0
   references:
-  - repository: ibmcase/bluecompute-couchdb:latest
-- image: ibmcase/bluecompute-inventory:latest
+  - repository: ibmcase/bluecompute-catalog:0.5.0
+- image: ibmcase/curl:latest
   references:
-  - repository: ibmcase/bluecompute-inventory:latest
-- image: ibmcase/bluecompute-dataloader:latest
+  - repository: ibmcase/curl:latest
+- image: ibmcase/elasticsearch:6.3.1
   references:
-  - repository: ibmcase/bluecompute-dataloader:latest
-- image: ibmcase/bluecompute-mysql:latest
+  - repository: ibmcase/elasticsearch:6.3.1
+- image: ibmcase/busybox:latest
   references:
-  - repository: ibmcase/bluecompute-mysql:latest
-- image: ibmcase/bluecompute-orders:latest
+  - repository: ibmcase/busybox:latest
+- image: ibmcase/bluecompute-customer:0.5.0
   references:
-  - repository: ibmcase/bluecompute-orders:latest
-- image: ibmcase/bluecompute-dataloader:latest
+  - repository: ibmcase/bluecompute-customer:0.5.0
+- image: ibmcase/couchdb:2.1.1
   references:
-  - repository: ibmcase/bluecompute-dataloader:latest
-- image: ibmcase/bluecompute-mysql:latest
+  - repository: ibmcase/couchdb:2.1.1
+- image: ibmcase/couchdb-statefulset-assembler:1.1.0
   references:
-  - repository: ibmcase/bluecompute-mysql:latest
-- image: ibmcase/bluecompute-web:latest
+  - repository: ibmcase/couchdb-statefulset-assembler:1.1.0
+- image: ibmcase/bluecompute-inventory:0.5.0
   references:
-  - repository: ibmcase/bluecompute-web:latest
+  - repository: ibmcase/bluecompute-inventory:0.5.0
+- image: ibmcase/mysql:5.7.14
+  references:
+  - repository: ibmcase/mysql:5.7.14
+- image: ibmcase/bluecompute-orders:0.5.0
+  references:
+  - repository: ibmcase/bluecompute-orders:0.5.0
+- image: ibmcase/mariadb:10.1.36-debian-9
+  references:
+  - repository: ibmcase/mariadb:10.1.36-debian-9
+- image: ibmcase/bluecompute-web:0.5.0
+  references:
+  - repository: ibmcase/bluecompute-web:0.5.0
