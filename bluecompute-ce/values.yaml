@@ -41,7 +41,7 @@ auth:
   replicaCount: 1
   image:
     repository: ibmcase/bluecompute-auth
-    tag: 0.5.0
+    tag: 0.6.0
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -85,7 +85,7 @@ catalog:
   replicaCount: 1
   image:
     repository: ibmcase/bluecompute-catalog
-    tag: 0.5.0
+    tag: 0.6.0
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -178,7 +178,7 @@ customer:
   replicaCount: 1
   image:
     repository: ibmcase/bluecompute-customer
-    tag: 0.5.0
+    tag: 0.6.0
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -258,7 +258,7 @@ inventory:
   replicaCount: 1
   image:
     repository: ibmcase/bluecompute-inventory
-    tag: 0.5.0
+    tag: 0.6.0
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -327,7 +327,7 @@ orders:
   replicaCount: 1
   image:
     repository: ibmcase/bluecompute-orders
-    tag: 0.5.0
+    tag: 0.6.0
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -418,7 +418,7 @@ web:
   replicaCount: 1
   image:
     repository: ibmcase/bluecompute-web
-    tag: 0.5.0
+    tag: 0.6.0
     pullPolicy: Always
   service:
     type: NodePort
