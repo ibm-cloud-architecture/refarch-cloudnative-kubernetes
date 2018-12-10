@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   auth:
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.181322474-06:00
+    created: 2018-12-10T09:20:51.221850235-06:00
     description: BlueCompute Auth Microservice
     digest: 900d2316e5f7631feaff5fa5a943948e77e9a2eac0df285a9e7add7a96b0f1d7
     name: auth
@@ -10,7 +10,7 @@ entries:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/auth-0.6.0.tgz
     version: 0.6.0
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.180891459-06:00
+    created: 2018-12-10T09:20:51.220261031-06:00
     description: BlueCompute Auth Microservice
     digest: ea01cf46e2d30ace6e9457197d91685548fcc508f2ca17651ba5416feb878234
     name: auth
@@ -19,7 +19,7 @@ entries:
     version: 0.5.0
   bluecompute-ce:
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.196934206-06:00
+    created: 2018-12-10T09:20:51.25387389-06:00
     description: Bluecompute Application Chart
     digest: 3e6c986694221c1c8cb6a148c1ffa93dbc2077620ca08cc0d6b1f4c65b15dbd1
     name: bluecompute-ce
@@ -27,7 +27,7 @@ entries:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce/bluecompute-ce-0.0.9.tgz
     version: 0.0.9
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.192933684-06:00
+    created: 2018-12-10T09:20:51.248369614-06:00
     description: Bluecompute Application Chart
     digest: 10240ca82b973ca0521827a6ba3434ada218e0a738f5c027163d5a17b94c866b
     name: bluecompute-ce
@@ -35,7 +35,7 @@ entries:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce/bluecompute-ce-0.0.8.tgz
     version: 0.0.8
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.188177059-06:00
+    created: 2018-12-10T09:20:51.24192978-06:00
     description: Bluecompute Application Chart
     digest: a75b17096b5ba4a410cfb05479ea7ac08e2d9b1d0f58da55fea6edcad477f606
     name: bluecompute-ce
@@ -44,15 +44,15 @@ entries:
     version: 0.0.6
   catalog:
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.182114247-06:00
+    created: 2018-12-10T09:20:51.2258745-06:00
     description: BlueCompute Catalog Microservice
-    digest: e39cfa829cfcafd3b8c7036017ca41a11c74b775c05922e7ead53e2ae4f95b9e
+    digest: bac1477418b4410a40e0c47884a51fcdf74290849cf99e411f4d3025a8ab3fda
     name: catalog
     urls:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/catalog-0.6.0.tgz
     version: 0.6.0
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.181693486-06:00
+    created: 2018-12-10T09:20:51.223521512-06:00
     description: BlueCompute Catalog Microservice
     digest: b1b2912d072a6a8be7c7f7a67c954a2703bd6367602cd02fabd4d596b17f3ef6
     name: catalog
@@ -61,7 +61,7 @@ entries:
     version: 0.5.0
   couchdb:
   - appVersion: 2.2.0
-    created: 2018-12-09T13:09:11.182652854-06:00
+    created: 2018-12-10T09:20:51.22806339-06:00
     description: A database featuring seamless multi-master sync, that scales from
       big data to mobile, with an intuitive HTTP/JSON API and designed for reliability.
     digest: 0c1736b655872c4fcb4264cecaf2491ae51a912f9ec289e9f434adf8ac1d4b46
@@ -79,7 +79,7 @@ entries:
     version: 0.2.2
   customer:
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.183519137-06:00
+    created: 2018-12-10T09:20:51.230565144-06:00
     description: BlueCompute Customer Microservice
     digest: bc28e35b43ba515b19b8cdab9ac41a8576b93c236ddb203b613e50fdb4cf6431
     name: customer
@@ -87,7 +87,7 @@ entries:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/customer-0.6.0.tgz
     version: 0.6.0
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.183068739-06:00
+    created: 2018-12-10T09:20:51.22937623-06:00
     description: BlueCompute Customer Microservice
     digest: c7f70f30ec64c8121f18bd28b3fe4e85c1cac13dd637d65abac8aec3d62c68c3
     name: customer
@@ -96,7 +96,7 @@ entries:
     version: 0.5.0
   inventory:
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.184562094-06:00
+    created: 2018-12-10T09:20:51.233436188-06:00
     description: BlueCompute Inventory Microservice
     digest: 8aae5bed816c00da1b7e9e922162ebd9bda65e138e5c0514670a160eb6934483
     name: inventory
@@ -104,7 +104,7 @@ entries:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/inventory-0.6.0.tgz
     version: 0.6.0
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.184019836-06:00
+    created: 2018-12-10T09:20:51.231869299-06:00
     description: BlueCompute Inventory Microservice
     digest: 97175c53f97fda66b203cda3bd3e94947dc07c0472fb34c7ca2abf0074e8d4a8
     name: inventory
@@ -113,7 +113,7 @@ entries:
     version: 0.5.0
   orders:
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.185360494-06:00
+    created: 2018-12-10T09:20:51.23603766-06:00
     description: Bluecompute Orders Microservice
     digest: 729ef79b396a8998fa0ab51d21c19e48693bc0cc594b71652cc82297cb371e7d
     name: orders
@@ -121,7 +121,7 @@ entries:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/orders-0.6.0.tgz
     version: 0.6.0
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.184938372-06:00
+    created: 2018-12-10T09:20:51.234637585-06:00
     description: Bluecompute Orders Microservice
     digest: f324284c46195d616877987d9863616d43e6fc58204ec61b9e6bf11c8d7e22ee
     name: orders
@@ -130,7 +130,7 @@ entries:
     version: 0.5.0
   web:
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.18615038-06:00
+    created: 2018-12-10T09:20:51.238830385-06:00
     description: BlueCompute Web BFF app
     digest: 018db13380c5610955058ba02290f3c9f34948bee2773cbf69d0fce60821d0ba
     name: web
@@ -138,11 +138,11 @@ entries:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/web-0.6.0.tgz
     version: 0.6.0
   - apiVersion: v1
-    created: 2018-12-09T13:09:11.185718032-06:00
+    created: 2018-12-10T09:20:51.237222642-06:00
     description: BlueCompute Web BFF app
     digest: ea6a6c1833bbc5a331f19830b2b51eb7fac608af5763ae4ed24b7a0f5649f8b4
     name: web
     urls:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/web-0.5.0.tgz
     version: 0.5.0
-generated: 2018-12-09T13:09:11.180226474-06:00
+generated: 2018-12-10T09:20:51.2159671-06:00
