@@ -1,0 +1,22 @@
+sudo: required
+language: java
+jdk:
+  - openjdk8
+stages:
+  - helm lint
+jobs:
+  include:
+    - stage: helm lint
+      install:
+        - true
+      before_script:
+      # Install helm
+      - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh && chmod 700 get_helm.sh && ./get_helm.sh && rm get_helm.sh
+      script:
+      # Go to chart directory
+      - cd bluecompute-ce
+      # Perform helm linting with all the values.yaml files
+      - helm lint -f values.yaml
+      - helm lint -f values-storage.yaml
+      - helm lint -f values-istio-basic.yaml
+      - helm lint -f values-istio-gateway.yaml

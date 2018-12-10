@@ -88,7 +88,7 @@ function create_jwt_admin() {
 	# Complete JWT
 	jwt=$(echo -n "${jwt3}.${jwt4}");
 
-	#echo $jwt	
+	#echo $jwt
 }
 
 function create_jwt_blue() {
