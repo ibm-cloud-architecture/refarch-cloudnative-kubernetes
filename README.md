@@ -36,33 +36,33 @@
       - [Contributing a Chart to `ibmcase-charts` Helm Chart Repository](#contributing-a-chart-to-ibmcase-charts-helm-chart-repository)
 
 ## Introduction
-This project provides a reference implementation for running a Cloud Native Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.  
+This project provides a reference implementation for running a Cloud Native Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.
 
 ![Application Architecture](static/imgs/app_architecture.png?raw=true)
 
 ## Application Overview
-The application is a simple store front shopping application that displays a catalog of antique computing devices, where users can search and buy products. It has a web interface that relies on separate BFF (Backend for Frontend) services to interact with the backend data.  
+The application is a simple store front shopping application that displays a catalog of antique computing devices, where users can search and buy products. It has a web interface that relies on separate BFF (Backend for Frontend) services to interact with the backend data.
 
-There are several components of this architecture.  
+There are several components of this architecture.
 
-* This OmniChannel application contains an [AngularJS](https://angularjs.org/) based web application. The diagram depicts it as Browser.  
+* This OmniChannel application contains an [AngularJS](https://angularjs.org/) based web application. The diagram depicts it as Browser.
 * The Web app invokes its own backend Microservices to fetch data, we call this component BFFs following the [Backend for Frontends](http://samnewman.io/patterns/architectural/bff/) pattern.  In this Layer, front end developers usually write backend logic for their front end.  The Web BFF is implemented using the Node.js Express Framework. These Microservices are packaged as Docker containers and managed by Kubernetes cluster.
 * The BFFs invokes another layer of reusable Java Microservices. In a real world project, this is sometimes written by different teams.  The reusable microservices are written in Java. They run inside a Kubernetes cluster, for example the [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) or [IBM Cloud Private](https://www.ibm.com/cloud/private), using [Docker](https://www.docker.com/).
-* The Java Microservices retrieve their data from the following databases:  
+* The Java Microservices retrieve their data from the following databases:
   + The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/).
   + The Customer service stores and retrieves Customer data from a searchable JSON datasource using [CouchDB](http://couchdb.apache.org/).
   + The Inventory Service uses an instance of [MySQL](https://www.mysql.com/).
   + The Orders Service uses an instance of [MariaDB](https://mariadb.org/).
 
 ## Project Repositories
-This project organized itself like a microservice project, as such each component in the architecture has its own Git Repository and tutorial listed below.  
-- [refarch-cloudnative-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/master)                    - The root repository (Current repository).
-- [refarch-cloudnative-bluecompute-web](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/master)    - The BlueCompute Web application with BFF services.
-- [refarch-cloudnative-auth](https://github.com/ibm-cloud-architecture/refarch-cloudnative-auth/tree/master)               - The security authentication artifact.
-- [refarch-cloudnative-micro-customer](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/master)    - The microservices (Java) app to fetch customer profile from identity store.  
-- [refarch-cloudnative-micro-inventory](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/tree/master)    - The microservices (Java) app for Inventory data service (MySQL).
-- [refarch-cloudnative-micro-catalog](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-catalog/tree/master)    - The microservices (Java) app for Catalog (ElasticSearch).
-- [refarch-cloudnative-micro-orders](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders/tree/master)    - The microservices (Java) app for Order data service (MariaDB).
+This project organized itself like a microservice project, as such each component in the architecture has its own Git Repository and tutorial listed below.
+- [refarch-cloudnative-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring)                    - The root repository (Current repository).
+- [refarch-cloudnative-bluecompute-web](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/spring)    - The BlueCompute Web application with BFF services.
+- [refarch-cloudnative-auth](https://github.com/ibm-cloud-architecture/refarch-cloudnative-auth/tree/spring)               - The security authentication artifact.
+- [refarch-cloudnative-micro-customer](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/tree/spring)    - The microservices (Java) app to fetch customer profile from identity store.
+- [refarch-cloudnative-micro-inventory](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/tree/spring)    - The microservices (Java) app for Inventory data service (MySQL).
+- [refarch-cloudnative-micro-catalog](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-catalog/tree/spring)    - The microservices (Java) app for Catalog (ElasticSearch).
+- [refarch-cloudnative-micro-orders](https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders/tree/spring)    - The microservices (Java) app for Order data service (MariaDB).
 
 This project contains tutorials for setting up CI/CD pipeline for the scenarios. The tutorial is shown below.
 - [refarch-cloudnative-devops-kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes)             - The DevOps assets are managed here
@@ -70,7 +70,7 @@ This project contains tutorials for setting up CI/CD pipeline for the scenarios.
 This project contains tutorials for setting up Resiliency such as High Availability, Failover, and Disaster Recovery for the above application.
 
 - [refarch-cloudnative-resiliency](https://github.com/ibm-cloud-architecture/refarch-cloudnative-resiliency/tree/master)   - The Resiliency Assets will be managed here
-- [refarch-cloudnative-kubernetes-csmo](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes-csmo)   - The BlueCompute application end-to-end cloud service management for Kubernetes based deployment  
+- [refarch-cloudnative-kubernetes-csmo](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes-csmo)   - The BlueCompute application end-to-end cloud service management for Kubernetes based deployment
 
 ## Deploy the Application
 To run the sample applications you will need to configure your environment for the Kubernetes and Microservices
@@ -83,7 +83,7 @@ To deploy the application, you require the following tools:
   + If using `IBM Cloud Private`, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html) to install `helm`.
 
 ### Get application source code (optional)
-- Clone the base repository:  
+- Clone the base repository:
   ```bash
   $ git clone -b spring --single-branch https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes
   ```
@@ -91,7 +91,7 @@ To deploy the application, you require the following tools:
 ### Create a Kubernetes Cluster
 The following clusters have been tested with this sample application:
 
-- [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) - Create a single node virtual cluster on your workstation. 
+- [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) - Create a single node virtual cluster on your workstation.
 
   By default minikube defaults to 2048M RAM which is not enough to start the application.  To provision 8G:
   ```bash
@@ -101,7 +101,7 @@ The following clusters have been tested with this sample application:
   Enable the ingress controller with:
   ```bash
   $ minikube addons enable ingress
-  ```  
+  ```
 
 - [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
 - [IBM Cloud Private](https://www.ibm.com/cloud/private) - Create a Kubernetes cluster in an on-premise datacenter.  The community edition (IBM Cloud Private CE) is free of charge.  Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.0/installing/installing.html) to install IBM Cloud Private CE.
@@ -129,9 +129,9 @@ $ helm upgrade --install bluecompute ibmcase/bluecompute-ce
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
 
 ## Validate the Application
-You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.  
+You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.
 
-![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)  
+![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)
 
 ### Minikube
 If you've installed on `minikube` you can find the IP by issuing:
@@ -243,7 +243,7 @@ $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture
 3. Install the reference application:
 ```bash
 $ cd OpenLiberty
-$ helm upgrade --install bluecompute -f openliberty.yaml ibmcase/bluecompute-ce 
+$ helm upgrade --install bluecompute -f openliberty.yaml ibmcase/bluecompute-ce
 ```
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md). To validate the application, have a look at [Validate the Application](#validate-the-application) for instructions.
@@ -282,7 +282,7 @@ If you would like to contribute to this repository, please fork it, submit a PR,
 
 ### Contributing a New Chart to the Helm Repositories
 We use this GitHub project to host the following 2 [Helm Chart Repositories](https://github.com/helm/helm/blob/master/docs/chart_repository.md):
-* **ibmcase** 
+* **ibmcase**
   + This helm chart repository (which is located at [docs/charts/bluecompute-ce](docs/charts/bluecompute-ce)) is used to serve only the `bluecompute-ce` chart, which contains all its dependencies already included.
   + The reason it only serves the `bluecompute-ce` chart is purely cosmetic, which is to avoid overcrowding the ICP Catalog with additional charts.
 * **ibmcase-charts**
@@ -294,7 +294,7 @@ To learn how to contribute updates to above helm chart repositories, checkout th
 Remember that the `ibmcase` helm chart repository is only supposed to serve versions of the `bluecompute-ce` chart. Here is the typical workflow of updating the `bluecompute-ce` chart and adding the new chart version to the `ibmcase` helm chart repo:
 1. Making chart changes in the [bluecompute-ce](bluecompute-ce) folder.
   + Changes are typically done in the [bluecompute-ce/templates](bluecompute-ce/templates) folder.
-  + Changes also typically involve updating dependency chart versions in [bluecompute-ce/requirements.yaml](bluecompute-ce/requirements.yaml). 
+  + Changes also typically involve updating dependency chart versions in [bluecompute-ce/requirements.yaml](bluecompute-ce/requirements.yaml).
 2. Bumping up the chart version in [bluecompute-ce/Chart.yaml](bluecompute-ce/Chart.yaml#L4).
   + This is to prevent overriding existing charts in the helm chart repo.
   + Bumping up the Chart version also guarantees the new chart becoming the new default version.
