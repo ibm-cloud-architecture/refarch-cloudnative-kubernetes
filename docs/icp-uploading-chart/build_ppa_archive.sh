@@ -2,20 +2,20 @@
 
 CHART_VERSION=0.0.9
 
-auth="ibmcase/bluecompute-auth:0.5.0"
+auth="ibmcase/bluecompute-auth:0.6.0"
 bash="ibmcase/bluecompute-bash-curl-ssl:latest"
-catalog="ibmcase/bluecompute-catalog:0.5.0"
+catalog="ibmcase/bluecompute-catalog:0.6.0"
 curl="alexeiled/curl:latest"
 elasticsearch="docker.elastic.co/elasticsearch/elasticsearch-oss:6.3.1"
 busybox="busybox:latest"
-customer="ibmcase/bluecompute-customer:0.5.0"
+customer="ibmcase/bluecompute-customer:0.6.0"
 couchdb="couchdb:2.1.1"
 couchdbhelper="kocolosk/couchdb-statefulset-assembler:1.1.0"
-inventory="ibmcase/bluecompute-inventory:0.5.0"
+inventory="ibmcase/bluecompute-inventory:0.6.0"
 mysql="mysql:5.7.14"
-orders="ibmcase/bluecompute-orders:0.5.0"
+orders="ibmcase/bluecompute-orders:0.6.0"
 mariadb="bitnami/mariadb:10.1.36-debian-9"
-web="ibmcase/bluecompute-web:0.5.0"
+web="ibmcase/bluecompute-web:0.6.0"
 
 _images="\
 ${auth} \
