@@ -115,26 +115,25 @@ inventory:
     zipkinPort: 9411
     zipkinName: zipkin
 
-inventorydb:
+mysql:
   enabled: true
-  replicaCount: 1
-  image: "ibmcase/bc-inventorydb"
-  imageTag: "v2.0.0"
-  imagePullPolicy: Always
+  image: "mysql"
+  imageTag: "5.7.14"
+  imagePullPolicy: IfNotPresent
+  mysqlRootPassword: password
+  mysqlUser: dbuser
+  mysqlPassword: password
+  mysqlDatabase: inventorydb
+  service:
+    port: 3306
   persistence:
     enabled: false
-    accessMode: ReadWriteOnce
     size: 8Gi
-  resources:
-    requests:
-      memory: 256Mi
-      cpu: 100m
-  service:
-    name: inventorydb
-    type: ClusterIP
-    port: 3306
-  mysqlRootPassword: password
-  mysqlPassword: password
+    storageClass:
+    accessMode: ReadWriteOnce
+    existingClaim:
+    subPath:
+    annotations: {}
 
 orders:
   enabled: true
