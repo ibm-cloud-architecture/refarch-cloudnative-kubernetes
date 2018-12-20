@@ -208,6 +208,7 @@ customer:
     existingSecret:
     adminUsername: user
     adminPassword: passw0rd
+    database: customers
   istio:
     enabled: false
     # ISTIO_MUTUAL, SIMPLE, DISABLE
