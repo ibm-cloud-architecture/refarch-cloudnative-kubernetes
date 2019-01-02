@@ -151,7 +151,7 @@ orders:
     servicePort: 9080
     servicePortHttps: 9443
     rabbitmq: rabbitmq
-    ordersdb: ordersdb
+    ordersdb: mariadb
     inventory: inventory
     auth: auth
     zipkinHost: zipkin
@@ -159,31 +159,66 @@ orders:
   sql:
     user: root
     password: password
-    port: 3306
+    port: 3307
   jwt:
     id: myMpJwt
   rabbitmq:
     mainPort: 5672
     managePort: 15672
 
-ordersdb:
-  image: "ibmcase/bc-ordersdb"
-  imageTag: "v2.0.0"
-  imagePullPolicy: Always
-  persistence:
-    enabled: false
-    accessMode: ReadWriteOnce
-    size: 8Gi
-  resources:
-    requests:
-      memory: 256Mi
-      cpu: 100m
+# ordersdb:
+#   image: "ibmcase/bc-ordersdb"
+#   imageTag: "v2.0.0"
+#   imagePullPolicy: Always
+#   persistence:
+#     enabled: false
+#     accessMode: ReadWriteOnce
+#     size: 8Gi
+#   resources:
+#     requests:
+#       memory: 256Mi
+#       cpu: 100m
+#   service:
+#     type: ClusterIP
+#     port: 3306
+#     servicename: ordersdb
+#   mysqlRootPassword: password
+#   mysqlPassword: password
+
+mariadb:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnami/mariadb
+    tag: 10.1.36-debian-9
+    pullPolicy: IfNotPresent
   service:
-    type: ClusterIP
-    port: 3306
-    servicename: ordersdb
-  mysqlRootPassword: password
-  mysqlPassword: password
+    port: 3307
+  rootUser:
+    password: password
+  db:
+    user: dbuser
+    password: password
+    name: ordersdb
+  replication:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+      existingClaim:
+      mountPath: ""
+      annotations: {}
+      storageClass:
+      accessMode: ReadWriteOnce
+      size: 8Gi
+  slave:
+    replicas: 1
+    persistence:
+      enabled: false
+      annotations: {}
+      storageClass:
+      accessMode: ReadWriteOnce
+      size: 8Gi
 
 web:
   enabled: true
