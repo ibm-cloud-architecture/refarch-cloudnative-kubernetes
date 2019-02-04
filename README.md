@@ -85,7 +85,7 @@ To deploy the application, you require the following tools:
 ### Get application source code (optional)
 - Clone the base repository:
   ```bash
-  $ git clone -b spring --single-branch https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes
+  git clone -b spring --single-branch https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes
   ```
 
 ### Create a Kubernetes Cluster
@@ -95,12 +95,12 @@ The following clusters have been tested with this sample application:
 
   By default minikube defaults to 2048M RAM which is not enough to start the application.  To provision 8G:
   ```bash
-  $ minikube start --memory 8192
+  minikube start --memory 8192
   ```
 
   Enable the ingress controller with:
   ```bash
-  $ minikube addons enable ingress
+  minikube addons enable ingress
   ```
 
 - [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
@@ -111,19 +111,19 @@ We have packaged all the application components as Kubernetes [Charts](https://g
 
 1. Initialize `helm` in your cluster.
  ```bash
- $ helm init
+ helm init
  ```
 
 This initializes the `helm` client as well as the server side component called `tiller`.
 
 2. Add the `helm` package repository containing the reference application:
 ```bash
-$ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
+helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
 ```
 
 3. Install the reference application:
 ```bash
-$ helm upgrade --install bluecompute ibmcase/bluecompute-ce
+helm upgrade --install bluecompute ibmcase/bluecompute-ce
 ```
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
@@ -136,7 +136,7 @@ You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-
 ### Minikube
 If you've installed on `minikube` you can find the IP by issuing:
 ```bash
-$ minikube ip
+minikube ip
 ```
 
 In your browser navigate to **`http://<IP>:31337`**.
@@ -149,7 +149,7 @@ Use the following test credentials to login:
 ## Delete the Application
 To delete the application from your cluster, run the following:
 ```bash
-$ helm delete bluecompute --purge
+helm delete bluecompute --purge
 ```
 
 ## Optional Deployments
@@ -157,17 +157,17 @@ $ helm delete bluecompute --purge
 ### Deploy BlueCompute to IBM Cloud Kubernetes Service
 Deploying the Helm chart will also work on a Kubernetes cluster from IBM Cloud Kubernetes Service. Use the following commands to install the chart:
 ```bash
-$ helm init
+helm init
 
-$ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
+helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
 
-$ helm upgrade --install bluecompute ibmcase/bluecompute-ce
+helm upgrade --install bluecompute ibmcase/bluecompute-ce
 ```
 
 #### Access and Validate the Application
 To access the application, you need to access the IP address of one of your worker nodes. To get the IP, use the following command:
 ```bash
-$ ibmcloud cs workers <CLUSTER_NAME>
+ibmcloud cs workers <CLUSTER_NAME>
 OK
 ID                                                 Public IP        Private IP    Machine Type        State    Status   Zone    Version
 kube-dal13-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-w1   163.77.77.72     10.77.77.71   u2c.2x4.encrypted   normal   Ready    dal13   1.10.1_1508
@@ -188,17 +188,17 @@ IBM Cloud Private (ICP) contains integration with Helm that allows you to instal
 3. Download and initialize helm in your cluster using [these instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html).
 4. **NOTE**: If using IBM Cloud Private 3.1 or older, create an ImagePolicy to allow images from the `docker.io/*` and `docker.elastic.co/*` Docker Registries:
   ```bash
-  $ kubectl apply -f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/static/image_policy.yaml
+  kubectl apply -f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/static/image_policy.yaml
   ```
 
 5. Add the `helm` package repository containing the reference application:
   ```bash
-  $ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
+  helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
   ```
 
 6. Install the reference application:
   ```bash
-  $ helm upgrade --install bluecompute ibmcase/bluecompute-ce --tls
+  helm upgrade --install bluecompute ibmcase/bluecompute-ce --tls
   ```
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
@@ -213,13 +213,13 @@ To validate the application itself, feel free to use the instructions [here](#va
 #### Delete the Application
 To delete the application from your cluster, run the following:
 ```bash
-$ helm delete bluecompute --purge --tls
+helm delete bluecompute --purge --tls
 ```
 
 #### Helm Version
 If Chart installation fails, it usually has to do with the version of helm in your workstation being incompatible with the one installed in the IBM Cloud Private Cluster. To verify installed versions of helm, use the following command:
 ```bash
-$ helm version --tls
+helm version --tls
 ```
 
 If the versions are different, you might want to delete the current helm client and install a version of helm client that matches the server one. To do so, please refer to Helm's guide [here](https://github.com/kubernetes/helm/blob/master/docs/install.md).
@@ -230,20 +230,20 @@ The Spring Boot applications can be deployed on WebSphere Liberty as well. In th
 
 1. Initialize `helm` in your cluster.
  ```bash
- $ helm init
+ helm init
  ```
 
 This initializes the `helm` client as well as the server side component called `tiller`.
 
 2. Add the `helm` package repository containing the reference application:
 ```bash
-$ helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
+helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
 ```
 
 3. Install the reference application:
 ```bash
-$ cd OpenLiberty
-$ helm upgrade --install bluecompute -f openliberty.yaml ibmcase/bluecompute-ce
+cd OpenLiberty
+helm upgrade --install bluecompute -f openliberty.yaml ibmcase/bluecompute-ce
 ```
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md). To validate the application, have a look at [Validate the Application](#validate-the-application) for instructions.
