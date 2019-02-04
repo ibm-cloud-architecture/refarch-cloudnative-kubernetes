@@ -1,37 +1,37 @@
 dependencies:
   - name: inventory
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/dshimo/refarch-cloudnative-kubernetes/charts/docs/charts/services-bc-mp
   - name: auth
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/dshimo/refarch-cloudnative-kubernetes/charts/docs/charts/services-bc-mp
   - name: catalog
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/dshimo/refarch-cloudnative-kubernetes/charts/docs/charts/services-bc-mp
   - name: customer
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/dshimo/refarch-cloudnative-kubernetes/charts/docs/charts/services-bc-mp
   - name: web
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/dshimo/refarch-cloudnative-kubernetes/charts/docs/charts/services-bc-mp
   - name: mysql
     version: 0.10.2
     repository: https://kubernetes-charts.storage.googleapis.com
   - name: ibmcase-elasticsearch
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/dshimo/refarch-cloudnative-kubernetes/charts/docs/charts/services-bc-mp
   - name: keystore
     version: 0.0.2
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/dshimo/refarch-cloudnative-kubernetes/charts/docs/charts/services-bc-mp
   - name: mariadb
     version: 5.2.2
     repository: https://kubernetes-charts.storage.googleapis.com
   - name: orders
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/dshimo/refarch-cloudnative-kubernetes/charts/docs/charts/services-bc-mp
   - name: ibm-icpmonitoring
     version: 1.1.0
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/dshimo/refarch-cloudnative-kubernetes/charts/docs/charts/services-bc-mp
   - name: zipkin
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/dshimo/refarch-cloudnative-kubernetes/charts/docs/charts/services-bc-mp
