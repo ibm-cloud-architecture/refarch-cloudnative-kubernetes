@@ -141,6 +141,18 @@ elasticsearch:
     repository: docker.elastic.co/elasticsearch/elasticsearch-oss
     tag: 6.3.1
     pullPolicy: IfNotPresent
+    #pullSecrets:
+    #- sa-default
+  serviceAccounts:
+    client:
+      create: false
+      name:
+    master:
+      create: false
+      name:
+    data:
+      create: false
+      name:
   initImage:
     repository: "busybox"
     tag: "latest"
