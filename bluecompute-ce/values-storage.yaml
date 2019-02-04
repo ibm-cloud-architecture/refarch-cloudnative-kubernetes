@@ -145,6 +145,18 @@ elasticsearch:
     repository: "busybox"
     tag: "latest"
     pullPolicy: "Always"
+    #pullSecrets:
+    #- sa-default
+  serviceAccounts:
+    client:
+      create: false
+      name:
+    master:
+      create: false
+      name:
+    data:
+      create: false
+      name:
   cluster:
     env:
       MINIMUM_MASTER_NODES: "2"
