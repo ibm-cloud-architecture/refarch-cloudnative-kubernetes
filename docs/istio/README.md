@@ -328,12 +328,12 @@ Unfortunately, Istio does not fully support StatefulSets yet, which prevents the
 In the meantime, we had to figure out another way to make the StatefulSet services work in Istio, even when Mutual TLS is enabled for the non-StatefulSet workloads. After doing some reading, we ended up doing the following:
 * Disabling automatic sidecar injection in Elasticsearch, MariaDB, and CouchDB.
 	+ We accomplished this by passing the `sidecar.istio.io/inject: "false"` annotation to their respective StatefulSets. Here is how it was done for each of those services:
-		- [bluecompute-ce/values-istio-basic.yaml#L166](../../bluecompute-ce/values.yaml#L166)
-		- [bluecompute-ce/values-istio-basic.yaml#L166](../../bluecompute-ce/values.yaml#L175)
-		- [bluecompute-ce/values-istio-basic.yaml#L166](../../bluecompute-ce/values.yaml#L184)
-		- [bluecompute-ce/values-istio-basic.yaml#L166](../../bluecompute-ce/values.yaml#L265)
-		- [bluecompute-ce/values-istio-basic.yaml#L166](../../bluecompute-ce/values.yaml#L413)
-		- [bluecompute-ce/values-istio-basic.yaml#L166](../../bluecompute-ce/values.yaml#L424)
+		- [bluecompute-ce/values-istio-basic.yaml#L166](../../bluecompute-ce/values-istio-basic.yaml#L166)
+		- [bluecompute-ce/values-istio-basic.yaml#L175](../../bluecompute-ce/values-istio-basic.yaml#L175)
+		- [bluecompute-ce/values-istio-basic.yaml#L184](../../bluecompute-ce/values-istio-basic.yaml#L184)
+		- [bluecompute-ce/values-istio-basic.yaml#L265](../../bluecompute-ce/values-istio-basic.yaml#L265)
+		- [bluecompute-ce/values-istio-basic.yaml#L413](../../bluecompute-ce/values-istio-basic.yaml#L413)
+		- [bluecompute-ce/values-istio-basic.yaml#L424](../../bluecompute-ce/values-istio-basic.yaml#L424)
 	+ This effectively takes out the services from the service mesh, which allowed them to start normally.
 	+ However, by leaving the services out from the service mesh, we are preventing the services in the service mesh from communicating with these services when Mutual TLS is enabled, which we overcame with the following.
 	+ **NOTE:** Luckily, the Elasticsearch and MariaDB helm charts had the ability to let you provide custom annotations. However, for the CouchDB, we had to fork and edit the chart to enable the ability to provide custom annotations, as shown in the commit below:
