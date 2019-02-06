@@ -14,10 +14,10 @@ global:
       hosts:
         - "*.bluecompute.com"
       TLS:
-        enabled: false
+        enabled: true
         # SIMPLE, MUTUAL
         mode: SIMPLE
-        httpsRedirect: false
+        httpsRedirect: true
         serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
         privateKey: /etc/istio/ingressgateway-certs/tls.key
         caCertificates: /etc/istio/ingressgateway-ca-certs/ca-chain.cert.pem
