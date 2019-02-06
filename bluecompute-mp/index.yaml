@@ -2,9 +2,9 @@ apiVersion: v1
 entries:
   bluecompute:
   - apiVersion: v1
-    created: 2019-02-04T15:55:18.300770358-06:00
+    created: 2019-02-06T14:06:53.876792422-06:00
     description: Bluecompute Microprofile Application Chart
-    digest: 3c32191eaa06b8d75527dd78ff1b7a1ce32776a7f03ceb80ac7cd81dee84dcee
+    digest: b700a78595940082d0c287ff3cd8262e3a5901f73e127e1a3b08c595e7c8a281
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
     name: bluecompute
     sources:
@@ -13,7 +13,7 @@ entries:
     - bluecompute-0.0.6.tgz
     version: 0.0.6
   - apiVersion: v1
-    created: 2019-02-04T15:55:18.294551901-06:00
+    created: 2019-02-06T14:06:53.869225924-06:00
     description: Bluecompute Microprofile Application Chart
     digest: a651aa9d7b0200be8fc90d67f85dda92c0711f842b33ec4cc75c1e03e378fa82
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -24,7 +24,7 @@ entries:
     - bluecompute-0.0.5.tgz
     version: 0.0.5
   - apiVersion: v1
-    created: 2019-02-04T15:55:18.288796634-06:00
+    created: 2019-02-06T14:06:53.864065973-06:00
     description: Bluecompute Microprofile Application Chart
     digest: 92ae9e1b98053a86c19bba7510b34715ad8d89f698b5245dbaea1a48210dacce
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -35,7 +35,7 @@ entries:
     - bluecompute-0.0.4.tgz
     version: 0.0.4
   - apiVersion: v1
-    created: 2019-02-04T15:55:18.282663418-06:00
+    created: 2019-02-06T14:06:53.856989264-06:00
     description: Bluecompute Microprofile Application Chart
     digest: 1a60d4f501988645df3dcbfbedda0ab690c76def374d1023474e4c9a61adad43
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -46,7 +46,7 @@ entries:
     - bluecompute-0.0.3.tgz
     version: 0.0.3
   - apiVersion: v1
-    created: 2019-02-04T15:55:18.277407151-06:00
+    created: 2019-02-06T14:06:53.850429852-06:00
     description: Bluecompute Microprofile Application Chart
     digest: 98da1a0ab1bf248aa877e3f6fb62de1a3ee29276aeba2cef0137667e25aea7ee
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -57,11 +57,11 @@ entries:
     - bluecompute-0.0.2.tgz
     version: 0.0.2
   - apiVersion: v1
-    created: 2019-02-04T15:55:18.270425681-06:00
+    created: 2019-02-06T14:06:53.843108485-06:00
     description: Bluecompute Microprofile Application Chart
     digest: 31e6699836e24e8154c405afdb01045852fc368c7f5f835b9db6e864adeb2d27
     name: bluecompute
     urls:
     - bluecompute-0.0.1.tgz
     version: 0.0.1
-generated: 2019-02-04T15:55:18.267470879-06:00
+generated: 2019-02-06T14:06:53.840517346-06:00
