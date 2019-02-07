@@ -52,7 +52,19 @@ In this document, we will deploy Istio into a Kubernetes envinronment (IBM Cloud
 As with any complex application architecture, we had to make some changes to fully support the `bluecompute-ce` application in the Istio service mesh. Luckily, those changes were minimal but were necessary to leverage most of Istio's features and follow best practices.
 
 ### Architecture
-COMING SOON
+![Architecture](../../static/imgs/istio/diagram_bluecompute_istio.png)
+
+You will notice that, compared to the original [architecture diagram](../../static/imgs/app_architecture.png), the overall application remains the same, minus a few additions:
+* Instead of an Ingress Controller or NodePort, the application is now made publicly available via the Istio Ingress Gateway.
+* All service pods now have an [Envoy Proxy](https://istio.io/docs/concepts/what-is-istio/#envoy) sidecar container, which intercepts and routes traffic from the application container to and from the other services.
+  + The exception are the [StatefulSet-Based Services](#statefulset-based-services) (Elasticsearch, CouchDB, and MariaDB), which don't work well with Istio at the moment.
+  + All details explained in the [StatefulSet-Based Services](#statefulset-based-services) section.
+  + The Envoy proxy can also be used to establish Mutual TLS connections between the services if desired, which we will explain in later sections.
+  + The Envoy proxy is also used to collect rich metrics, which will explore in later sections.
+
+As you can see, the majority of the application was successfully modified to work with and leverage Istio's features. For the services that couldn't be made to work with Istio, we were still able to expose them to the service mesh and establish connections with those services in the service mesh. More details on that in later session.
+
+Now let's go over what it took to get services to work with Istio in mode detail.
 
 ### Requirements for Pods and Services
 Istio needs basic information from each service in order to do things such routing traffic between multiple service versions and also add contextual information for its distributed tracing and telemetry features.
