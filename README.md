@@ -129,7 +129,7 @@ helm upgrade --install bluecompute ibmcase/bluecompute-ce
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
 
 ## Validate the Application
-You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/kube-int#validate-the-deployment) to validate the sample web application.
+You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/spring#validate-the-web-application) to validate the sample web application.
 
 ![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)
 
