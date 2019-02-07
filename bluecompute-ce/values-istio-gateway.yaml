@@ -12,7 +12,7 @@ global:
       enabled: true
       name: bluecompute-gateway
       hosts:
-        - "*.bluecompute.com"
+        - "*"
       TLS:
         enabled: false
         # SIMPLE, MUTUAL
@@ -72,7 +72,7 @@ auth:
       enabled: false
       name:
       hosts:
-        - "auth.bluecompute.com"
+        - "*"
       TLS:
         enabled: false
         # SIMPLE, MUTUAL
@@ -120,7 +120,7 @@ catalog:
       enabled: false
       name:
       hosts:
-        - "catalog.bluecompute.com"
+        - "*"
       TLS:
         enabled: false
         # SIMPLE, MUTUAL
@@ -231,7 +231,7 @@ customer:
       enabled: false
       name:
       hosts:
-        - "customer.bluecompute.com"
+        - "*"
       TLS:
         enabled: false
         # SIMPLE, MUTUAL
@@ -303,7 +303,7 @@ inventory:
       enabled: false
       name:
       hosts:
-        - "inventory.bluecompute.com"
+        - "*"
       TLS:
         enabled: false
         # SIMPLE, MUTUAL
@@ -376,7 +376,7 @@ orders:
       enabled: false
       name:
       hosts:
-        - "orders.bluecompute.com"
+        - "*"
       TLS:
         enabled: false
         # SIMPLE, MUTUAL
@@ -475,7 +475,7 @@ web:
       enabled: false
       name:
       hosts:
-        - "web.bluecompute.com"
+        - "*"
       TLS:
         enabled: false
         # SIMPLE, MUTUAL
