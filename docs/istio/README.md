@@ -1,90 +1,34 @@
-# Adding Microservices to the Istio Service Mesh
+# Exploring Istio Service Mesh Features with the Microservices Reference Architecture Application
 
-## TLDR
-### Installation
-Here are all the commands to install Istio and an Istiofied version of Bluecompute.
-```bash
-# If using a Helm version prior to 2.10.0, install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
-kubectl apply -f https://raw.githubusercontent.com/IBM/charts/master/stable/ibm-istio/templates/crds.yaml
-
-# Install Istio Chart and enable Grafana, Service Graph, and Jaeger (tracing)
-helm upgrade --install istio --version 1.0.4 \
-	--set grafana.enabled=true \
-	--set servicegraph.enabled=true \
-	--set tracing.enabled=true \
-	ibm-charts/ibm-istio --namespace istio-system --tls
-
-# Make sure all Istio-related pods are running before continuing
-kubectl get pods -n istio-system -w
-
-# Enable automatic sidecar injection on default namespace
-kubectl label namespace default istio-injection=enabled
-
-# If using ICP 3.1 and later, create an image policy that will allow Docker images from Docker Hub
-kubectl apply -f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/static/image_policy.yaml
-
-# Install Istio-enabled Bluecompute Chart
-# NOTE: The installation NOTES.txt will contain instructions on how to access Web app through Istio G
-helm upgrade --install bluecompute --namespace default \
-	-f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/bluecompute-ce/values-istio-basic.yaml \
-	ibmcase/bluecompute-ce --tls
-```
-
-**NOTE:** The installation output will give you instructions on how to create a user in the customer database. Wait a few minutes and run the script mentioned in the installation output.
-
-### Accessing Dashboards
-Generate some load by opening the web application, logging in using `user/passw0rd`, then attempt to purchase a few items, followed by accessing the Profile tab to see all the orders. To access all of the Telemetry dashboards, run the following commands:
-```bash
-# Port-forward: Grafana, Service Graph, Jaeger (Tracing)
-kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &;
-kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') 8088:8088 &;
-kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=jaeger -o jsonpath='{.items[0].metadata.name}') 16686:16686 &;
-
-# Open All Dashboards in your browser using the links below
-http://localhost:3000/dashboard/db/istio-mesh-dashboard
-http://localhost:8088/force/forcegraph.html
-http://localhost:16686
-
-# Kill Port-Forwarding
-killall kubectl
-```
-
-### Cleanup
-```bash
-# Disable automatic sidecar injection on default namespace
-kubectl label namespace default istio-injection-
-
-# Delete Bluecompute chart
-helm delete bluecompute --purge --tls
-
-# Delete Istio chart
-helm delete istio --purge --tls
-```
-
-## Creating Wildcard Certificate
-```bash
-# Clone Repo
-git clone https://github.com/nicholasjackson/mtls-go-example
-
-# Go to repo directory
-cd mtls-go-example
-
-# Generate Wildcard certificate
-./generate.sh "*.bluecompute.com" passw0rd
-
-# Create bluecompute folder and move all certificates to it
-mkdir bluecompute.com && mv 1_root 2_intermediate 3_application 4_client bluecompute.com
-
-# Add this entry to your /etc/hosts
-169.62.38.242 auth.bluecompute.com catalog.bluecompute.com inventory.bluecompute.com customer.bluecompute.com orders.bluecompute.com web.bluecompute.com
-```
-
-Create secret:
-```bash
-kubectl create -n istio-system secret tls istio-ingressgateway-certs --key bluecompute.com/3_application/private/*.bluecompute.com.key.pem --cert bluecompute.com/3_application/certs/*.bluecompute.com.cert.pem
-```
-
-
+## Table of Contents
+  * [Introduction](#introduction)
+  * [Requirements](#requirements)
+  * [Blue-Compute Istiofied](#blue-compute-istiofied)
+    + [Architecture](#architecture)
+    + [Requirements for Pods and Services](#requirements-for-pods-and-services)
+    + [Liveness and Readiness Probes](#liveness-and-readiness-probes)
+    + [StatefulSet-Based Services](#statefulset-based-services)
+    + [Custom Istio YAML Files](#custom-istio-yaml-files)
+      - [Authentication Policy](#authentication-policy)
+      - [Destination Rule](#destination-rule)
+      - [Virtual Service](#virtual-service)
+      - [Gateway](#gateway)
+      - [Istio YAML files in the main bluecompute-ce chart](#istio-yaml-files-in-the-main-bluecompute-ce-chart)
+      - [Recap](#recap)
+  * [Deploying Istio Helm Chart](#deploying-istio-helm-chart)
+  * [Deploy Istiofied Bluecompute Helm Chart](#deploy-istiofied-bluecompute-helm-chart)
+    + [Setup Helm Repository](#setup-helm-repository)
+    + [Deploy the Chart](#deploy-the-chart)
+    + [Manually Run the User Creation Job](#manually-run-the-user-creation-job)
+    + [Validate the Application](#validate-the-application)
+  * [Telemetry & Tracing](#telemetry--tracing)
+    + [Generating Load](#generating-load)
+    + [Access Grafana Dashboard](#access-grafana-dashboard)
+    + [Access Service Graph Dashboard](#access-service-graph-dashboard)
+    + [Access Jaeger Tracing Dashboard](#access-jaeger-tracing-dashboard)
+    + [Access Kiali Dashboard](#access-kiali-dashboard)
+  * [Cleanup](#cleanup)
+  * [Conclusion](#conclusion)
 
 ## Introduction
 The journey to cloud-native microservices comes with great technical benefits. As we saw in the microservices reference architecture (Bluecompute) we were able to individually deploy, update, test, and manage individual microservices that comprise the overall application. By leveraging `Helm`, we are able to individually package these services into charts and package those into an umbrella chart that deploys the entire application stack in under 1 minute.
@@ -95,7 +39,6 @@ Luckily, the Kubernetes community is aware of these limitations and has provided
 
 In this document, we will deploy Istio into a Kubernetes envinronment (IBM Cloud Kubernetes Service or IBM Cloud Private) and explore some of its out the box features (Routing, Mutual TLS, Ingress Gateway, and Telemetry) after deploying the Bluecompute chart into the Istio-enabled environment.
 
-
 ## Requirements
 * Kubernetes Cluster
 	+ [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
@@ -105,55 +48,11 @@ In this document, we will deploy Istio into a Kubernetes envinronment (IBM Cloud
 	+ If using `IBM Cloud Private`, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html) to install `helm`.
 	+ If using IBM Cloud Kubernetes Service (IKS), please use the most up-to-date version of helm
 
-## Deploying Istio Chart
-To deploy Istio into either an IBM Cloud Kubernetes Service (IKS) or IBM Cloud Private (ICP) cluster, we will be using IBM's official [Istio Helm Chart](https://github.com/IBM/charts/tree/master/stable/ibm-istio). The benefit of using the chart is that it's easier to toggle on/off different Istio components such as Ingress and Egress gateways. The chart also comes bundled with non-Istio components such as Grafana, Service Graph, and Kiali, which we can also toggle on/off. Today we are going to deploy the Istio chart with the following components enabled:
-* Ingress Gateway
-* Grafana
-* Service Graph
-* Jager (Tracing)
-* Kiali
-
-
-To deploy the chart we have to add the `IBM Cloud Charts` Helm repository as follows:
-```bash
-helm repo add ibm-charts https://registry.bluemix.net/helm/ibm-charts
-```
-
-If using a Helm version prior to 2.10.0, install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
-```bash
-kubectl apply -f https://raw.githubusercontent.com/IBM/charts/master/stable/ibm-istio/templates/crds.yaml
-```
-
-Now we can deploy the Istio chart in the `istio-system` namespaces as follows:
-```bash
-# Install Istio Chart and enable Grafana, Service Graph, and Jaeger (tracing)
-helm upgrade --install istio --version 1.0.4 \
-	--set grafana.enabled=true \
-	--set servicegraph.enabled=true \
-	--set tracing.enabled=true \
-	ibm-charts/ibm-istio --namespace istio-system --tls
-
-```
-
-**NOTE:** At the time of writing, Istio 1.0.4 is the latest Istio version that the Helm chart supports.
-
-Before moving forward, Make sure all Istio-related pods are running as follows:
-```bash
-kubectl get pods -n istio-system -w
-```
-
-Istio works best when you leverage its automatic sidecar injection feature, which automatically puts all of the YAML pertaining to the Istio side car into your deployments/pods upon deployment. In order to leverage Istio's automatic sidecar injection feature, we need to enable it by labeling the namespace that will leverage this feature. In our case we will use the `default` namespace, which you can label as follows:
-```bash
-kubectl label namespace default istio-injection=enabled
-```
-
-You have successfully deployed the Istio chart and enabled automatic sidecar injection on the `default` namespace! Before installing the `bluecompute-ce` helm chart, let's first take a look at the changes & considerations we had to make to make the `bluecompute-ce` chart Istio compatible
-
 ## Blue-Compute Istiofied
 As with any complex application architecture, we had to make some changes to fully support the `bluecompute-ce` application in the Istio service mesh. Luckily, those changes were minimal but were necessary to leverage most of Istio's features and follow best practices.
 
 ### Architecture
-ARCHITECTURE DIAGRAM GOES HERE
+COMING SOON
 
 ### Requirements for Pods and Services
 Istio needs basic information from each service in order to do things such routing traffic between multiple service versions and also add contextual information for its distributed tracing and telemetry features.
@@ -561,17 +460,348 @@ You have seen the basic Istio YAML files that we included on each microservice's
 
 On top of the above Istio YAML files, each individual microservice has Istio YAML files to configure settings for their individual data stores, which are optional if you are using the main `bluecompute-ce` Helm chart but are useful if you are deploying each microservice and its datastore individually.
 
-## Deploy Istiofied Bluecompute Chart
+
+## Deploying Istio Helm Chart
+To deploy Istio into either an IBM Cloud Kubernetes Service (IKS) or IBM Cloud Private (ICP) cluster, we will be using IBM's official [Istio Helm Chart](https://github.com/IBM/charts/tree/master/stable/ibm-istio). The benefit of using the chart is that it's easier to toggle on/off different Istio components such as Ingress and Egress gateways. The chart also comes bundled with non-Istio components such as Grafana, Service Graph, and Kiali, which we can also toggle on/off. Today we are going to deploy the Istio chart with the following components enabled:
+* Ingress Gateway
+* Grafana
+* Service Graph
+* Jager (Tracing)
+* Kiali
+
+To deploy the chart we have to add the `IBM Cloud Charts` Helm repository as follows:
+```bash
+helm repo add ibm-charts https://registry.bluemix.net/helm/ibm-charts
+```
+
+If using a Helm version prior to 2.10.0, install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/IBM/charts/master/stable/ibm-istio/templates/crds.yaml
+```
+
+Since we are enabling `kiali`, we also need to create the secret that contains the username and passphrase for kiali dashboard as follows:
+
+```bash
+# Username and Passphrase in base64 format
+DASHBOARD_USERNAME=$(echo -n 'admin' | base64);
+DASHBOARD_PASSPHRASE=$(echo -n 'secret' | base64);
+
+# Namespace
+NAMESPACE="istio-system";
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kiali
+  namespace: $NAMESPACE
+  labels:
+    app: kiali
+type: Opaque
+data:
+  username: $DASHBOARD_USERNAME
+  passphrase: $DASHBOARD_PASSPHRASE
+EOF
+```
+
+Now we can deploy the Istio chart in the `istio-system` namespaces as follows:
+```bash
+# Install Istio Chart and enable Grafana, Service Graph, and Jaeger (tracing)
+
+# IBM Cloud Kubernetes Service
+helm upgrade --install istio --version 1.0.4 \
+	--set grafana.enabled=true \
+	--set servicegraph.enabled=true \
+	--set tracing.enabled=true \
+	--set kiali.enabled=true \
+	ibm-charts/ibm-istio --namespace istio-system
+
+# On IBM Cloud Private Ingress should be of NodePort type
+helm upgrade --install istio --version 1.0.4 \
+	--set ingress.service.type=NodePort \
+	--set grafana.enabled=true \
+	--set servicegraph.enabled=true \
+	--set tracing.enabled=true \
+	--set kiali.enabled=true \
+	ibm-charts/ibm-istio --namespace istio-system --tls
+```
+
+**NOTE:** At the time of writing, Istio 1.0.4 is the latest Istio version that the Helm chart supports.
+
+Before moving forward, Make sure all Istio-related pods are running as follows:
+```bash
+kubectl get pods -n istio-system -w
+```
+
+Istio works best when you leverage its automatic sidecar injection feature, which automatically puts all of the YAML pertaining to the Istio side car into your deployments/pods upon deployment. In order to leverage Istio's automatic sidecar injection feature, we need to enable it by labeling the namespace that will leverage this feature. In our case we will use the `default` namespace, which you can label as follows:
+```bash
+kubectl label namespace default istio-injection=enabled
+```
+
+You have successfully deployed the Istio chart and enabled automatic sidecar injection on the `default` namespace! Before installing the `bluecompute-ce` helm chart, let's first take a look at the changes & considerations we had to make to make the `bluecompute-ce` chart Istio compatible.
+
+## Deploy Istiofied Bluecompute Helm Chart
+Now that we covered all of the basics concepts and the changes that went into making `bluecompute-ce` Istio-enabled, let's go ahead and deploy it into our Istio-enabled cluster.
+
+### Setup Helm Repository
+If you are using IBM Cloud Private 3.1 and later, create an image policy that will allow Docker images from Docker Hub as follows:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/static/image_policy.yaml
+```
+
+Now let's proceed with installing the `bluecompute-ce` chart itself as follows:
+```bash
+# Add Helm repository
+helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
+
+# Refresh Helm repositories
+helm repo update
+```
+
+### Deploy the Chart
+As mentioned earlier, to make things easier we made a separate [bluecompute-ce/values-istio-gateway.yaml](../../bluecompute-ce/values-istio-gateway.yaml) file that is pre-configured with most of the Istio settings needed to enable the chart with Istio and also create a simple Istio Ingress Gateway. If you look in [line 9](../../bluecompute-ce/values-istio-gateway.yaml#L9) you will see all of the global Istio settings, which the dependency charts will pick up to enable the Istio YAML files.
+
+Since we are not using a custom domain name for the Istio Ingress Gateway, we need to setup it up to accept requests from any domain (works for demo purposes but NOT RECOMMENDED FOR PRODUCTION USE), which we did in [line 15](../../bluecompute-ce/values-istio-gateway.yaml#L15) for the Gateway by passing `*` to the hosts list. For the Web Virtual Service to accept requests from any domain through the Istio Ingress Gateway, we need to pass the `*` to the hosts list, which we did in [line 478](../../bluecompute-ce/values-istio-gateway.yaml#L478). Feel free to explore the [Global Gateway](../../bluecompute-ce/templates/istio_gateway.yaml) and the [Web Virtual Service](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/blob/spring/chart/web/templates/istio_virtual_service.yaml) YAML files to learn how we set them up.
+
+Now, using the edited values file, install the chart with the command below:
+```bash
+# Install helm chart
+helm upgrade --install bluecompute --namespace default \
+	-f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/bluecompute-ce/values-istio-gateway.yaml \
+	ibmcase/bluecompute-ce # --tls if using IBM Cloud Private
+```
+
+It should take a few minutes for all of the pods to be up and running. Run the following command multiple times until all of the pods show a status of `RUNNING`.
+```bash
+kubectl get pods
+```
+
+### Manually Run the User Creation Job
+We run certain jobs to pre-populate some of the databases with information, such as adding a user to the `CouchDB` database through the `customers` microservice. Because we have TLS enabled, the job won't be able to run the init containers that check on the status of the `customer` microservice due to racing conditions with the Istio sidecars.
+
+Instead of trying to change the way we preload the database to take Istio into account, we just disable the job when Istio is enabled and run the following script, which does the following:
+* Creates a JWT token to authenticate against the customer service and be able to run operations on it.
+* Use `kubectl` to port-forward the customer service's ports to your local workstation.
+	+ This bypasses the Istio layers and allows for an unencrypted single connection.
+* Performs a CURL command, with the JWT token created above, that adds a user into the CouchDB customers database.
+* Searches for the newly created user to confirm that it was created successfully.
+* Kills the port-forwarding connection.
+
+The logic above is the same logic as the Kubernetes job we disabled, minus the port forwarding part. Since we are only doing this once, it's acceptable to bypass Istio's layers.
+
+To run the script that creates a user, run the commands below:
+```bash
+# Get the script
+wget https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/scripts/create_user.sh
+
+# Make the script executable
+chmod +x create_user.sh
+
+# Run the script
+./create_user.sh
+```
+
+If the script ran successfully, you should see an output similar to the following:
+
+```bash
+./create_user.sh
+No NAMESPACE provided! Using default
+Forwarding customer port 8082
+Sleeping for 3 seconds while connection is established...
+Starting Tests
+Handling connection for 8082
+create_user: ✅
+Handling connection for 8082
+search_user: ✅
+```
+
+You have successfully created a user in the customer database, which is the last part that was needed to get the Bluecompute application fully deployed.
+
+### Validate the Application
+In order to validate the application, you will need to access the IP address and port number of the Ingress Gateway, which will depend on the environment you are using. To access the IP address and port number, run the commands below based on your environment:
+```bash
+# IKS Standard Clusters
+export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+
+# IKS Free Clusters
+export INGRESS_HOST=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')
+export INGRESS_PORT=$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath='{.spec.ports[0].nodePort}')
+
+# IBM Cloud Private Cluster
+export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o 'jsonpath={.items[0].status.hostIP}')
+export INGRESS_PORT=$(kubectl get svc istio-ingressgateway -n istio-system -o 'jsonpath={.spec.ports[0].nodePort}')
+
+# Print the Gateway URL
+export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+echo $GATEWAY_URL
+```
 
 
-## Telemetry Example
+To validate the application, open a browser window and enter the gateway URL from above and press enter. You should be able to see the web application's home page, as shown below.
+
+![BlueCompute Detail](../../static/imgs/bluecompute_web_home.png?raw=true)
+
+You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/spring#validate-the-web-application) to validate the web application functionality. You should be able to see a catalog, be able to login, make orders, and see your orders listed in your profile (once you are logged in).
+
+## Telemetry & Tracing
+Now that we have deployed the `bluecompute-ce` chart into an Istio-enabled cluster and validated its functionality, let's explore Istio's telemetry and tracing features by generating some load and opening the different telemetry and tracing dashboards.
 
 ### Generating Load
+Let's generate some load by performing multiple curl requests against the web service's `/catalog` endpoint through the Istio Gateway. By doing this, we generate telemetry and tracing metrics across the gateway and the web, catalog, and elasticsearch services. To generate the workload, open a new command prompt tab and enter the following command:
 
-### Graphana
+```bash
+# Load Generation
+echo "Generating load..."
 
-### Service Graph
+while true; do
+	curl -s ${GATEWAY_URL}/catalog > /dev/null;
+	echo -n .;
+	sleep 0.2;
+done
+```
 
-### Jaeger - Tracing
+Where `${GATEWAY_URL}` is the Ingress URL we obtained earlier. This script is going to run every 0.2 seconds indefinitely, unless we press `CTRL+C` to cancel it.
 
-### Kiali
+### Access Grafana Dashboard
+To access the Grafana dashboard, you will need to run the following port-forwarding command:
+```bash
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &;
+```
+
+Now, open a new browser tab and go to http://localhost:3000 to open Grafana's home page, as shown below:
+![Architecture](../../static/imgs/istio/grafana_1_home.png)
+
+Click on the drop-down next to `Home` and click on the `Istio Service Dashboard` (as shown below) to examine networking requests for the individual services.
+![Architecture](../../static/imgs/istio/grafana_2_dashboard_select.png)
+
+On the service drop-down at the top left, select `web.default.svc.cluster.local` service. You should be presented with a dashboard similar to the following:
+![Architecture](../../static/imgs/istio/grafana_3_web_dashboard.png)
+
+I'll leave it up to you to examine all the dashboards. The main thing I want to point out is the `Incoming Requests by Source And Response Code` dashboard at the bottom left. The load you see is generated from our script. If you were to interrupt the script, you will see, upon refreshing, that the load will go down to 0. Also notice that the source for all of these requests come directly from the `istio-ingressgateway.istio-system` since we are running our load generation script against the gateway itself instead of through a port-forwarding connection.
+
+Now let's examine the `catalog` service by clicking on the Service drop-down and selecting `catalog.default.svc.cluster.local`, which will show you a dashboard similar to the one below:
+![Architecture](../../static/imgs/istio/grafana_4_catalog_dashboard.png)
+
+This is essentially the same dashboard. The traffic load should look about the same as with the `web` service. Notice in the `Incoming Requests by Source And Response Code` dashboard that all of the requests to the `catalog` service are coming from the `web.default` service, as expected.
+
+You should now have a general idea of how to use Grafana with Istio to see the networking load in your cluster. I encourage you to explore the other Grafana dashboards that come with Istio.
+
+### Access Service Graph Dashboard
+Now let's explore `Service Graph` dashboard. Even though Grafana is helpful to debug networking for individual service, sometimes its more useful to see the bigger picture and take a look at a graph of all of your services and see how they are connected together. This is specially useful for new team members to understand your application's architecture, especially if it has grown incredibly complex.
+
+To access the Service Graph dashboard, you will need to run the following port-forwarding command:
+```bash
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') 8088:8088 &;
+```
+
+Now, open a new browser tab and go to http://localhost:8088/force/forcegraph.html to open Service Graph dashboard, as shown below:
+![Architecture](../../static/imgs/istio/service_graph_1.png)
+
+You might notice that the graph is constantly moving, that's because its constantly checking for new networking request and also detecting new services, which gives you an almost real-time application architecture updates.
+
+To examine an individual service incoming and outgoing connections, you just have to click on the node, which should open up a window that looks like the following:
+![Architecture](../../static/imgs/istio/service_graph_2_web.png)
+
+The above dashboard should give you a better idea of all of the incoming and outgoing connections for an invidual service, therefore, giving you a clearer picture of your entire stack networking-wise.
+
+### Access Jaeger Tracing Dashboard
+Using Grafana and Service Graph is useful to understand your application's architecture and overall networking usage and identify bottlenecks. However, you are out of luck when it comes to debugging the individual services' actual networking calls. Luckily, Jaeger can help you with that by providing useful tracing information for each networking call in your service mesh.
+
+To access the Jaeger dashboard, you will need to run the following port-forwarding command:
+```bash
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=jaeger -o jsonpath='{.items[0].metadata.name}') 16686:16686 &;
+```
+Now, open a new browser tab and go to http://localhost:16686 to open Jaeger dashboard, as shown below:
+![Architecture](../../static/imgs/istio/jaeger_1_home.png)
+
+The above page lets you enter some criteria to start searching for traces. Let's search for traces for the `web` service by selecting `web` in the `Service` drop-down menu, followed by clicking `Find Traces`. If any traces were found, you will see a view similar to the following:
+![Architecture](../../static/imgs/istio/jaeger_2_web.png)
+
+The view above shows you a list of matching traces along with a time graph that shows you trace duration over time. To view trace details, let's click on a trace that starts with `web: catalog.default.svc.cluster.local:8081/*`, which should reveal the following view:
+![Architecture](../../static/imgs/istio/jaeger_3_web_catalog.png)
+
+In the view above you should be the number of spans. A span represents a logical unit of work in Jaeger that has an operation name, the start time of the operation, and the duration. Basically, a span is a networking step in the trace. From the above picture you see that there are 2 spans, the first is that of the request done by the `web` service to the `catalog` service. The second one is from the `catalog` service to the `elasticsearch` service.
+
+If you click on any of the spans and expand both the `Tags` and `Process` fields, you will see useful networking information for that span, including things such as request url, HTTP method, HTTP status code, amongst other things that should help you debug your services.
+
+### Access Kiali Dashboard
+Using Grafana, Service Graph, and Jaeger tracing should give you more than enough information to learn your application's networking architecture, identify bottlenecks, and debug networking calls. This information alone is plenty to out carry day-to-day operations. However, there are instances when the tracing shows that a service is working as expected, but somehow, networking calls to other services still fail. Sometimes the issue comes from a bug in the individual service's Istio configuration, which you cannot access with the above mention dashboards.
+
+Luckily, Kiali can help you with that. Kiali is an open source project that works with Istio to visualize the service mesh topology, including features like circuit breakers or request rates. Kiali even includes Jaeger Tracing out of the box.
+
+To access the Kiali dashboard, you will need to run the following port-forwarding command:
+```bash
+kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=kiali -o jsonpath='{.items[0].metadata.name}') 20001:20001 &;
+```
+
+Now, open a new browser tab and go to http://localhost:20001/kiali to open Kiali dashboard, as shown below:
+![Architecture](../../static/imgs/istio/kiali_1_login.png)
+
+Login using `admin` and `secret` as the username and password, respectively, which come from the secret that you setup earlier when deploying Istio. If successful, you will be presented with the home page, which shows a graph of the services from all of the namespaces in your cluster.
+![Architecture](../../static/imgs/istio/kiali_2_home.png)
+
+The above can be overwhelming to look at. Instead of looking at the entire cluster, let's just focus on the services in the `default` namespace, which is where `bluecompute-ce` is deployed. To view the services in the `default` namespace, click on the `Namespace` drop-down and select `default`, which should present you with the following view:
+![Architecture](../../static/imgs/istio/kiali_3_default_graph.png)
+
+You should now see a much cleaner chart showing the services pertaining to `bluecompute-ce`. I personally like this graph better compared to `Service Graph`. From this graph you can click on the individual links between microservices and explore the request volume per second. Let's see what that looks like by clicking on the link between the `istio-ingressgateway` and `web` service, which should present you with the following view:
+![Architecture](../../static/imgs/istio/kiali_4_gateway_web.png)
+
+Notice above that you can see the requests per second and graphs for different status codes. Also notice in the `Source app` and `Destination app` that you can see namespace and version of the microservices in question. Feel free to explore the other application links.
+
+If you click on the `Applications` menu on the left, followed by clicking on the `web` application, you will be able to see high level metrics for the application. Mostly the status of the health status of the deployment and the envoy side car and Inbound and Outboud metrics, as shown below:
+![Architecture](../../static/imgs/istio/kiali_5_web_status.png)
+
+If you click on the `Workloads` menu on the left, followed by clicking on the `web` workload, you will be able to see pod specific information and metrics, including labels, container name and init container names, as shown below:
+![Architecture](../../static/imgs/istio/kiali_6_workloads_web_info.png)
+
+If you click on the `Services` menu on the left, followed by clicking on the `catalog` service, you will be able to see service specific information and metrics, but also workloads that the service is associated with and source workloads from which it gets networking calls, as shown below. More importantly, you can also see the `Virtual Services` and `Destination Rules` associated with the service and their configuration. You can even click on `View YAML` to explore the actual YAML file that was used to deploy the Istio resources, which is great for debugging Istio configuration.
+![Architecture](../../static/imgs/istio/kiali_7_services_catalog_destination.png)
+
+Lastly, if you want to only see a list of Istio resources, you can click on the `Istio Config` menu on the left. You will see things like `Virtual Services`, `Destination Rules`, and even `Gateways`.
+![Architecture](../../static/imgs/istio/kiali_8_istio_config.png)
+
+The above should have provided you a high level view of Kiali's features and visibility into the Istio Service Mesh. Combined with Jaeger Tracing and even Grafana dashboard, if enabled, you should be able to use Kiali as the main entrypoint for all things service mesh.
+
+## Cleanup
+To kill all port-forwarding connections, run the following command:
+```bash
+killall kubectl
+```
+
+To delete Kiali secret, run the following command:
+```bash
+kubectl delete secret kiali -n istio-system
+```
+
+To disable automatic sidecar injection, run the following command:
+```bash
+kubectl label namespace default istio-injection-
+```
+
+To uninstall `bluecompute-ce` chart, run the following command:
+```bash
+helm delete bluecompute --purge # --tls if using IBM Cloud Private
+```
+
+Lastly, to uninstall `istio` chart, run the following command:
+```bash
+helm delete istio --purge # --tls if using IBM Cloud Private
+```
+
+## Conclusion
+Congratulations for finishing reading this document. That was a lot of information. Let's recap the stuff we learned today:
+* Minimum requirements to allow pods to benefit from the service mesh features.
+* How to properly create liveness and readiness probes that will work in a service mesh, even when Mutual TLS is enabled.
+* Istio's current limitations with StatefulSet-based services and how to to get Deployment-based Istiofied services to communicate with StatefulSet services outside of the service mesh.
+* How to create custom Istio YAML files for more granular control of Istio configuration for each microservice.
+* Deployed Istio and enabled Grafana, Service Graph, Jaeger Tracing, and Kiali dashboards.
+* Deployed the Bluecompute into Istio-enabled cluster and enabled Istio Gateway.
+* Generated networking load against Istio Gateway to generate telemetry and tracing metrics for the web and catalog services.
+* Used Grafana to visualize the networking request volume on both services.
+* Used Service Graph to visualize Bluecompute's entire network architecture and view inbound and outbound request volume on each service.
+* Used Jaeger to search and analyze network traces for calls between the web and catalog services.
+* Used Kiali to do all the above plus exploring Istio configuration for each service.
+
+By doing all the above, you now have the ability to modify existing services/applications to leverage most of the Istio service mesh features and debug running applications using Istio's telemetry and tracing information.
+
