@@ -138,28 +138,41 @@ Before accessing the application, make sure that all the pods are up and running
 
 ```
 $ kubectl get pods | grep bluecompute
-bluecompute-auth-bbd9b8ccb-5dmww                             1/1       Running       0          3m
-bluecompute-catalog-58c9cf764c-84lqd                         1/1       Running       0          3m
-bluecompute-cloudant-544ff745fc-nptld                        1/1       Running       0          3m
-bluecompute-customer-777f669f79-6shw8                        1/1       Running       0          3m
-bluecompute-default-cluster-elasticsearch-6f4fb5c94d-tcgjg   1/1       Running       0          3m
-bluecompute-grafana-5fbf9b64c8-jcltl                         1/1       Running       0          3m
-bluecompute-inventory-5bd7b8f7cd-7hg5c                       1/1       Running       0          3m
-bluecompute-inventorydb-6bcc5f4f8b-bdhxn                     1/1       Running       0          3m
-bluecompute-orders-7747958847-4qtmm                          1/1       Running       0          3m
-bluecompute-ordersdb-6fb4c876b5-l78pz                        1/1       Running       0          3m
-bluecompute-prometheus-86c4dc666f-dqw5d                      2/2       Running       0          3m
-bluecompute-prometheus-alertmanager-8d9476f6-n29jz           2/2       Running       0          3m
-bluecompute-rabbitmq-686cd78fbc-dsb4h                        1/1       Running       0          3m
-bluecompute-web-67c976678-zkjxc                              1/1       Running       0          3m
-bluecompute-zipkin-7d97f85d48-hldzq                          1/1       Running       0          3m
+bluecompute-auth-7b5c48dc45-j6tjj                            1/1       Running     0          4m53s
+bluecompute-catalog-64b7f9b868-ljv5t                         1/1       Running     0          4m53s
+bluecompute-cloudant-5db8f75ff-vnltq                         1/1       Running     0          4m53s
+bluecompute-customer-6bd6649bf-prtw5                         1/1       Running     0          4m53s
+bluecompute-default-cluster-elasticsearch-7db6db99cf-xkwd5   1/1       Running     0          4m53s
+bluecompute-grafana-698858b767-kdprj                         1/1       Running     0          4m53s
+bluecompute-grafana-ds-fdl6x                                 0/1       Completed   0          4m53s
+bluecompute-inventory-6fc5d75fb8-k2z6h                       1/1       Running     0          4m52s
+bluecompute-inventory-job-njjnp                              0/1       Completed   0          4m53s
+bluecompute-inventorydb-6f764b7d6d-rbztw                     1/1       Running     0          4m52s
+bluecompute-keystore-job-wdvmz                               0/1       Completed   0          4m52s
+bluecompute-mariadb-0                                        1/1       Running     0          4m53s
+bluecompute-mysql-69bbd4bcb6-9jhlv                           1/1       Running     0          4m52s
+bluecompute-orders-7548cb5b95-9ck9f                          1/1       Running     0          4m51s
+bluecompute-orders-job-4fqwx                                 0/1       Completed   0          4m52s
+bluecompute-ordersdb-6dd8f74c6f-5nxld                        1/1       Running     0          4m51s
+bluecompute-populate-97v55                                   0/1       Completed   0          67s
+bluecompute-populate-b57zv                                   0/1       Error       0          4m53s
+bluecompute-populate-d2lx2                                   0/1       Error       0          3m18s
+bluecompute-populate-qql4q                                   0/1       Error       0          2m27s
+bluecompute-populate-w9d9b                                   0/1       Error       0          3m8s
+bluecompute-prometheus-858b5687dc-gc562                      2/2       Running     0          4m53s
+bluecompute-prometheus-alertmanager-7986ffc4f9-cnc9k         2/2       Running     0          4m53s
+bluecompute-rabbitmq-67c6974867-s6fps                        1/1       Running     0          4m52s
+bluecompute-web-69bbc79598-blb5w                             1/1       Running     0          4m51s
+bluecompute-zipkin-65b55c4bfd-pd7jn                          1/1       Running     0          4m51s
 ```
 
 ```
 $ kubectl get jobs | grep bluecompute
-bluecompute-grafana-ds     1         1            3m
-bluecompute-keystore-job   1         1            3m
-bluecompute-populate       1         1            3m
+bluecompute-grafana-ds      1/1           118s       6m41s
+bluecompute-inventory-job   1/1           2m7s       6m41s
+bluecompute-keystore-job    1/1           79s        6m40s
+bluecompute-orders-job      1/1           98s        6m40s
+bluecompute-populate        1/1           3m49s      6m41s
 ```
 
 On `ICP` you can find the IP by issuing:
