@@ -59,11 +59,10 @@ $ git checkout microprofile
 $ cd inventory
 ```
 
-4. Package the charts for **inventory service** and **inventory database** using helm
+4. Package the charts for **inventory service** using helm. For **inventory database**, we are using MySQL official charts for Helm available [here](https://github.com/helm/charts/tree/master/stable/mysql).
 
 ```
 $ helm package chart/inventory
-$ helm package chart/inventorydb
 $ cd ..
 ```
 
@@ -137,11 +136,10 @@ $ cd refarch-cloudnative-micro-orders/
 $ git checkout microprofile
 ```
 
-3. Package the charts for **orders service** and **orders database** using helm.
+3. Package the charts for **orders service** using helm. For **orders database**, we are using MariaDB official charts for Helm available [here](https://github.com/helm/charts/tree/master/stable/mariadb).
 
 ```
 $ helm package chart/orders
-$ helm package chart/ordersdb/
 $ cd ..
 ```
 
