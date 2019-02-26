@@ -39,7 +39,7 @@ $ sh clone_peers.sh
 
 ## Package the individual charts
 
-### Inventory and Catalog
+### Inventory 
 
 1. Go to the below repository
 
@@ -53,23 +53,25 @@ $ cd refarch-cloudnative-micro-inventory/
 $ git checkout microprofile
 ```
 
-3. Go to **Inventory** repo.
-
-```
-$ cd inventory
-```
-
-4. Package the charts for **inventory service** using helm. For **inventory database**, we are using MySQL official charts for Helm available [here](https://github.com/helm/charts/tree/master/stable/mysql).
+3. Package the charts for **inventory service** using helm. For **inventory database**, we are using MySQL official charts for Helm available [here](https://github.com/helm/charts/tree/master/stable/mysql).
 
 ```
 $ helm package chart/inventory
 $ cd ..
 ```
 
-5. Go to **Catalog** repo.
+### Catalog
+
+1. Go to the below repository
 
 ```
-$ cd catalog
+$ cd refarch-cloudnative-micro-catalog/
+```
+
+2. Checkout MicroProfile branch.
+
+```
+$ git checkout microprofile
 ```
 
 6. Package the charts for **catalog service** and **elasticsearch** using helm
