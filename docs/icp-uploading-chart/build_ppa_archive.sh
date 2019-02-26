@@ -6,15 +6,15 @@ auth="ibmcase/bluecompute-auth:0.6.0"
 bash="ibmcase/bluecompute-bash-curl-ssl:latest"
 catalog="ibmcase/bluecompute-catalog:0.6.0"
 curl="alexeiled/curl:latest"
-elasticsearch="docker.elastic.co/elasticsearch/elasticsearch-oss:6.3.1"
+elasticsearch="docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1"
 busybox="busybox:latest"
 customer="ibmcase/bluecompute-customer:0.6.0"
-couchdb="couchdb:2.1.1"
-couchdbhelper="kocolosk/couchdb-statefulset-assembler:1.1.0"
+couchdb="couchdb:2.3.0"
+couchdbhelper="kocolosk/couchdb-statefulset-assembler:1.2.0"
 inventory="ibmcase/bluecompute-inventory:0.6.0"
 mysql="mysql:5.7.14"
 orders="ibmcase/bluecompute-orders:0.6.0"
-mariadb="bitnami/mariadb:10.1.36-debian-9"
+mariadb="bitnami/mariadb:10.1.38"
 web="ibmcase/bluecompute-web:0.6.0"
 
 _images="\
@@ -43,50 +43,50 @@ for i in ${_images}; do
 
   if [ "$i" == "$bash" ]; then
   	new="ibmcase/bluecompute-bash-curl-ssl:latest"
-    echo "Tagging \"${i}\" into ${new}";
+    echo "Tagging \"${i}\" into ${new}"
     docker tag ${i} ${new}
   fi
 
   if [ "$i" == "$curl" ]; then
   	new="ibmcase/curl:latest"
-    echo "Tagging \"${i}\" into ${new}";
+    echo "Tagging \"${i}\" into ${new}"
     docker tag ${i} ${new}
   fi
 
   if [ "$i" == "$elasticsearch" ]; then
-  	new="ibmcase/elasticsearch:6.3.1"
-    echo "Tagging \"${i}\" into ${new}";
+  	new="ibmcase/elasticsearch:6.6.1"
+    echo "Tagging \"${i}\" into ${new}"
     docker tag ${i} ${new}
   fi
 
   if [ "$i" == "$busybox" ]; then
-  	new="ibmcase/busybox:latest"
-    echo "Tagging \"${i}\" into ${new}";
+    new="ibmcase/busybox:latest"
+    echo "Tagging \"${i}\" into ${new}"
     docker tag ${i} ${new}
   fi
 
   if [ "$i" == "$couchdb" ]; then
-  	new="ibmcase/couchdb:2.1.1"
-    echo "Tagging \"${i}\" into ${new}";
+  	new="ibmcase/couchdb:2.3.0"
+    echo "Tagging \"${i}\" into ${new}"
     docker tag ${i} ${new}
   fi
 
   if [ "$i" == "$couchdbhelper" ]; then
-  	new="ibmcase/couchdb-statefulset-assembler:1.1.0"
-    echo "Tagging \"${i}\" into ${new}";
+  	new="ibmcase/couchdb-statefulset-assembler:1.2.0"
+    echo "Tagging \"${i}\" into ${new}"
     docker tag ${i} ${new}
   fi
 
   if [ "$i" == "$mysql" ]; then
   	new="ibmcase/mysql:5.7.14"
-    echo "Tagging \"${i}\" into ${new}";
+    echo "Tagging \"${i}\" into ${new}"
     docker tag ${i} ${new}
   fi
 
   if [ "$i" == "$mariadb" ]; then
-  	new="ibmcase/mariadb:10.1.36-debian-9"
-    echo "Tagging \"${i}\" into ${new}";
-    docker tag ${i} ${new}
+  	new="ibmcase/mariadb:10.1.38"
+    echo "Tagging \"${i}\" into ${new}"
+    docker tag ${i} ${new};
   fi
 
   _shortname=`echo ${i} | cut -d'/' -f2 | cut -d':' -f1`

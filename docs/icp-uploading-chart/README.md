@@ -41,19 +41,21 @@ Update the `bluecompute-ce/values.yaml` so that the image repositories correspon
 | `auth.bash.image.repository`				| `mycluster.icp:8500/default/ibmcase/bluecompute-bash-curl-ssl` 					|
 | `catalog.image.repository` 				| `mycluster.icp:8500/default/ibmcase/bluecompute-catalog` 							|
 | `catalog.curl.image` 						| `mycluster.icp:8500/default/ibmcase/curl` 										|
-| `elasticsearch.image.repository` 			| `mycluster.icp:8500/default/ibmcase/elasticsearch/elasticsearch-oss` 	|
-| `elasticsearch.initImage.repository` 		| `mycluster.icp:8500/default/ibmcase/busybox` 												|
+| `elasticsearch.image.repository` 			| `mycluster.icp:8500/default/ibmcase/elasticsearch/elasticsearch-oss` 				|
+| `elasticsearch.initImage.repository` 		| `mycluster.icp:8500/default/ibmcase/busybox` 										|
 | `customer.image.repository` 				| `mycluster.icp:8500/default/ibmcase/bluecompute-customer` 						|
 | `customer.bash.image.repository` 			| `mycluster.icp:8500/default/ibmcase/bluecompute-bash-curl-ssl` 					|
-| `couchdb.image.repository` 				| `mycluster.icp:8500/default/ibmcase/couchdb` 												|
+| `couchdb.image.repository` 				| `mycluster.icp:8500/default/ibmcase/couchdb` 										|
 | `couchdb.helperImage.repository`		 	| `mycluster.icp:8500/default/ibmcase/couchdb-statefulset-assembler` 				|
+| `couchdb.initImage.repository`		 	| `mycluster.icp:8500/default/ibmcase/busybox`						 				|
 | `inventory.image.repository` 				| `mycluster.icp:8500/default/ibmcase/bluecompute-inventory` 						|
-| `inventory.mysql.image` 					| `mycluster.icp:8500/default/ibmcase/mysql` 												|
-| `mysql.image` 							| `mycluster.icp:8500/default/ibmcase/mysql` 												|
+| `inventory.mysql.image` 					| `mycluster.icp:8500/default/ibmcase/mysql` 										|
+| `mysql.image` 							| `mycluster.icp:8500/default/ibmcase/mysql` 										|
+| `mysql.busybox.image` 					| `mycluster.icp:8500/default/ibmcase/busybox` 										|
 | `orders.image.repository` 				| `mycluster.icp:8500/default/ibmcase/bluecompute-orders` 							|
-| `orders.mysql.image` 						| `mycluster.icp:8500/default/ibmcase/mysql` 												|
-| `mariadb.image.registry`	 				| `mycluster.icp:8500/default` 														|
-| `mariadb.image.repository` 				| `mariadb` 																|
+| `orders.mysql.image` 						| `mycluster.icp:8500/default/ibmcase/mysql` 										|
+| `mariadb.image.registry`	 				| `mycluster.icp:8500/default/ibmcase` 												|
+| `mariadb.image.repository` 				| `mariadb` 																		|
 | `web.image.repository` 					| `mycluster.icp:8500/default/ibmcase/bluecompute-web` 								|
 
 You can also use the following following command to update the image repository location:
@@ -73,7 +75,7 @@ SED_OPTION="''";
 sed -i ${SED_OPTION} "s|ibmcase|${IMAGE_NAME_PREFIX}|g" bluecompute-ce/values.yaml;
 sed -i ${SED_OPTION} "s|alexeiled/curl|${IMAGE_NAME_PREFIX}/curl|g" bluecompute-ce/values.yaml;
 sed -i ${SED_OPTION} "s|docker.elastic.co/elasticsearch/elasticsearch-oss|${IMAGE_NAME_PREFIX}/elasticsearch|g" bluecompute-ce/values.yaml;
-sed -i ${SED_OPTION} "s|busybox|${IMAGE_NAME_PREFIX}/busybox|g" bluecompute-ce/values.yaml;
+sed -i ${SED_OPTION} "s|\"busybox\"|\"${IMAGE_NAME_PREFIX}/busybox\"|g" bluecompute-ce/values.yaml;
 sed -i ${SED_OPTION} "s|repository: \"couchdb\"|repository: \"${IMAGE_NAME_PREFIX}/couchdb\"|g" bluecompute-ce/values.yaml;
 sed -i ${SED_OPTION} "s|kocolosk/couchdb-statefulset-assembler|${IMAGE_NAME_PREFIX}/couchdb-statefulset-assembler|g" bluecompute-ce/values.yaml;
 sed -i ${SED_OPTION} "s|image: \"mysql\"|image: \"${IMAGE_NAME_PREFIX}/mysql\"|g" bluecompute-ce/values.yaml;
