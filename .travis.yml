@@ -12,11 +12,18 @@ jobs:
       before_script:
       # Install helm
       - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh && chmod 700 get_helm.sh && ./get_helm.sh && rm get_helm.sh
+      # Setup ibmcase-charts helm repository
+      - helm repo add ibmcase-charts https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
+      # Update information of available charts locally from chart repositories
+      - helm repo update
       script:
       # Go to chart directory
       - cd bluecompute-ce
+      # Install dependencies
+      - helm dependency update
       # Perform helm linting with all the values.yaml files
       - helm lint -f values.yaml
       - helm lint -f values-storage.yaml
       - helm lint -f values-istio-basic.yaml
       - helm lint -f values-istio-gateway.yaml
+      - helm lint -f values-istio-gateway-tls.yaml
