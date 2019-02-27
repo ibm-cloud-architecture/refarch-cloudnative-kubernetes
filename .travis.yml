@@ -12,6 +12,8 @@ jobs:
       before_script:
       # Install helm
       - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh && chmod 700 get_helm.sh && ./get_helm.sh && rm get_helm.sh
+      # Init helm client
+      - helm init --client-only
       # Setup ibmcase-charts helm repository
       - helm repo add ibmcase-charts https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts
       # Update information of available charts locally from chart repositories
