@@ -24,6 +24,7 @@
     + [Deploy BlueCompute to IBM Cloud Private Cluster with No Internet Access](#deploy-bluecompute-to-ibm-cloud-private-cluster-with-no-internet-access)
     + [Deploy BlueCompute Across Multiple Kubernetes Cluster](#deploy-bluecompute-across-multiple-kubernetes-cluster)
     + [Istio-enabled Version](#istio-enabled-version)
+    + [Deploy BlueCompute to an OpenShift Cluster](#deploy-bluecompute-to-an-openshift-cluster)
   * [Conclusion](#conclusion)
   * [Further Reading: DevOps automation, Resiliency and Cloud Management and Monitoring](#further-reading-devops-automation-resiliency-and-cloud-management-and-monitoring)
     + [DevOps](#devops)
@@ -255,7 +256,10 @@ Sometimes you are required to deploy services to an ICP cluster that has no inte
 Sometimes it is required for microservices in one Kubernetes cluster to communicate with services in separate Kubernetes cluster. To learn how you can deploy BlueCompute services across clusters and have them communicate with one another, checkout [Microservice to Microservice Communication across clusters using Private Network](docs/cluster-to-cluster).
 
 ### Istio-enabled Version
-To learn about adding Bluecompute to an Istio-Enabled cluster, please checkout the document located at [docs/istio/README.md](docs/istio/README.md);
+To learn about adding BlueCompute to an Istio-Enabled cluster, please checkout the document located at [docs/istio/README.md](docs/istio/README.md);
+
+### Deploy BlueCompute to an OpenShift Cluster
+To learn about deploying BlueCompute into an OpenShift cluster, please checkout the document located at [docs/openshift/README.md](docs/openshift/README.md);
 
 ## Conclusion
 You have successfully deployed a 10-Microservices application on a Kubernetes Cluster in less than 1 minute by using the power of Helm charts. With such tools you can be assured that, in the case of Disaster Recovery, you can get your entire application up an running in no time. Also, by using Helm and Kubernetes, you can deploy your app in new environments to do things such as Q/A Testing, Performance Testing, UAT Testing, and tear it down afterwards as part of an automated testing pipeline.
