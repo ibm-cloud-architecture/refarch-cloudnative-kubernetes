@@ -183,7 +183,7 @@ oc apply --recursive --filename bluecompute-os
 
 And just like that, you have deployed all of `bluecompute-ce` into an OpenShift cluster! To check on the status to see if they are up and running, run the following command:
 ```bash
-oc get pods
+oc get pods | grep -v test
 ```
 
 You may need to run the above command multiple times to get an updated status for all pods. If you get an output similar to the following, then all the pods are up and running!
@@ -194,7 +194,6 @@ auth-5dfdcb6f69-fqdct                              1/1       Running     0      
 bluecompute-customer-create-user-jxkhp-csnqb       1/1       Running     0          2m
 bluecompute-inventory-populate-mysql-rxkgz-gn4cm   0/1       Completed   0          2m
 bluecompute-mariadb-0                              1/1       Running     0          2m
-bluecompute-orders-mariadb-test-z3qi4              0/1       Error       0          2m
 catalog-ccc5d84cc-2wswh                            1/1       Running     0          2m
 catalog-elasticsearch-client-6d4ff69f66-dfhdt      1/1       Running     0          2m
 catalog-elasticsearch-data-0                       1/1       Running     0          2m
@@ -204,12 +203,9 @@ customer-78466cf844-cj9t6                          1/1       Running     0      
 customer-couchdb-couchdb-0                         2/2       Running     2          2m
 inventory-b4d69bddc-sj6dw                          1/1       Running     0          2m
 inventory-mysql-7d84694976-7msjt                   1/1       Running     0          2m
-inventory-mysql-test                               0/1       Error       0          2m
 orders-847c77d5ff-zdk9s                            1/1       Running     0          2m
 web-65d9fbc79-5lwdd                                1/1       Running     0          2m
 ```
-
-**NOTE:** Ignore all of the `*-test` pods as those are not relevant to the application.
 
 Now that all of the pods are available, it's time to expose the web service outside the OpenShift cluster in order to access the web application through a web browser.
 
@@ -241,7 +237,6 @@ You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-
 
 ## Cleanup
 To cleanup everything, run the following commands:
-
 ```bash
 # Delete route
 oc delete route web
@@ -249,6 +244,7 @@ oc delete route web
 # Delete all resources using YAML files
 oc delete --recursive --filename bluecompute-os
 ```
+
 ## Conclusion
 Congratulations, you were successfully able to deploy all `bluecompute-ce` microservices into an OpenShift cluster! Let's recap what we went over today:
 * Learned about container best practices, such as running a container as non-root
