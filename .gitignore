@@ -44,3 +44,6 @@ bluecompute-ce/requirements.lock
 
 # Ignore test YAML files
 *.yaml.test
+
+# Ignore bluecompute-os folder
+bluecompute-os
