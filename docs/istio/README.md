@@ -384,7 +384,7 @@ Where:
 	+ As you can see, in this field there is some logic that determines which FQDN to use, which can be a single hostname of multiple.
 	+ When an Istio Gateway (explained in the following section) is used to expose the service outside of the cluster, you need to provide the FQDN(s) that is used to access that service in this list so that the Virtual Service can route the external request to the correct service.
 	+ If not using a Gateway, then you need provide the internal FQDN for the service, which is in the form of `service.namespace.svc.cluster.local`.
-* * `spec.gateways` is where you provide the gateway names, if any, to bind the Virtual Service to in order to route external cluster traffic to the service.
+* `spec.gateways` is where you provide the gateway names, if any, to bind the Virtual Service to in order to route external cluster traffic to the service.
 	+ **NOTE:** You can't see `spec.gateways` field in the YAML above directly because we are using a Helm template to handle the gateway logic. Having an empty list of gateway names will cause an error.
 * `spec.http[0].match[0].uri.prefix` is where you specify the request path(s) that will be routed to the service.
 * `spec.http[0].route[0].destination.host` is the FQDN of the service to route the request path to.
@@ -471,7 +471,6 @@ Lastly, in order to avoid tweaking multiple values files or typing long commands
 You have seen the basic Istio YAML files that we included on each microservice's Helm chart. Having these files will allow each microservice to have more control of its Istio settings rather than leave it all up to Istio and potentially run into issues if certain services are not ready for Istio prime-time yet.
 
 On top of the above Istio YAML files, each individual microservice has Istio YAML files to configure settings for their individual data stores, which are optional if you are using the main `bluecompute-ce` Helm chart but are useful if you are deploying each microservice and its datastore individually.
-
 
 ## Deploying Istio Helm Chart
 To deploy Istio into either an IBM Cloud Kubernetes Service (IKS) or IBM Cloud Private (ICP) cluster, we will be using IBM's official [Istio Helm Chart](https://github.com/IBM/charts/tree/master/stable/ibm-istio). The benefit of using the chart is that it's easier to toggle on/off different Istio components such as Ingress and Egress gateways. The chart also comes bundled with non-Istio components such as Grafana, Service Graph, and Kiali, which we can also toggle on/off. Today we are going to deploy the Istio chart with the following components enabled:
@@ -649,7 +648,6 @@ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 echo $GATEWAY_URL
 ```
 
-
 To validate the application, open a browser window and enter the gateway URL from above and press enter. You should be able to see the web application's home page, as shown below.
 
 ![BlueCompute Detail](../../static/imgs/bluecompute_web_home.png?raw=true)
@@ -816,4 +814,3 @@ Congratulations for finishing reading this document. That was a lot of informati
 * Used Kiali to do all the above plus exploring Istio configuration for each service.
 
 By doing all the above, you now have the ability to modify existing services/applications to leverage most of the Istio service mesh features and debug running applications using Istio's telemetry and tracing information.
-
