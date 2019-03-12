@@ -1,4 +1,4 @@
-# Deploying the BlueCompute Microservices Reference Architecture on OpenShift
+# Easy Way of Deploying Helm Charts on OpenShift
 
 ## Table of Contents
   * [Introduction](#introduction)
@@ -8,7 +8,7 @@
   * [Adopting Container Best Practices](#adopting-container-best-practices)
     + [1. Creating Non-Root Docker Images](#1-creating-non-root-docker-images)
     + [2. Updating Helm Charts](#2-updating-helm-charts)
-  * [Introducing BlueCompute Microservices Reference Architecture](#introducing-bluecompute-microservices-reference-architecture)
+  * [Deploy Example Helm Charts on OpenShift](#deploy-example-helm-charts-on-openshift)
     + [Adopting Container Best Practices on BlueCompute](#adopting-container-best-practices-on-bluecompute)
     + [Deploy BlueCompute to OpenShift](#deploy-bluecompute-to-openshift)
       - [1. Create `bluecompute` Project in OpenShift](#1-create-bluecompute-project-in-openshift)
@@ -21,11 +21,11 @@
   * [Conclusion](#conclusion)
 
 ## Introduction
-[OpenShift](https://learn.openshift.com/) is a Kubernetes distribution from RedHat that is loaded with features that make developers' lives easier. Features such as strict security policies, routes, ImageStreams, integrated Jenkins, and many more features make OpenShift a well-rounded platform that's ready for production compared to vanilla Kubernetes, on which you would have to implement or put together all those features yourself.
+[OpenShift](https://learn.openshift.com/) is a Kubernetes distribution from RedHat, similar to [IBM Cloud Private](https://www.ibm.com/cloud/private) that is loaded with features that make developers' lives easier. Features such as strict security policies, logging and monitoring, and many more features make OpenShift a well-rounded platform that's ready for production compared to vanilla Kubernetes, on which you would have to implement or put together all those features yourself.
 
 However, there is one key feature that Kubernetes supports and OpenShift doesn't, at least officially, and that's the ability to deploy Helm charts. Helm is Kubernetes official package manager, which uses a sophisticated template engine and package versioning, is much more flexible than OpenShift templates. On top of that, the Helm community has contributed a great amount of Helm charts for common applications like Jenkins, Redis, and MySQL (among many others) that have been battle tested. [**IBM Cloud Private**](https://www.ibm.com/cloud/private), a Kubernetes-based enterprise platform for containers, has full support for Helm and the community charts. It leverages Helm to create a UI-based catalog system that makes it easier to explore the community Helm charts. The catalog also lets you install/uninstall Helm charts with just a couple clicks, which makes it much easier to stand up an entire software stack.
 
-The problem with the community Helm Charts is that some of them deploy containers with privileged access, which is not supported by OpenShift by default. Also, Helm's current architecture (Tiller component installed as Pod with huge permissions) isn’t compatible with more strict security polices in OpenShift.
+The problem with the community Helm Charts is that some of them deploy containers with privileged access, which is not supported by OpenShift. IBM Cloud Private's flexible [Pod Security Policies](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/security.html), on the other hand, let you pick and choose the level of privilege you allow your containers to have based on your requirements.
 
 Not all is lost, however, as there are workarounds that we can use that won't compromise best practices or security. If you still require the ability to run Helm Charts on OpenShift, such as those for IBM Middleware Helm Charts, I recommend you try out [IBM Cloud Private on OpenShift](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/supported_environments/openshift/overview.html) as it leverages the best of both IBM Cloud Private and OpenShift.
 
@@ -215,8 +215,10 @@ Generally speaking, this is all you need to update a Helm chart with an OpenShif
 
 With that knowledge in mind, let's move on to going over how we adapted the `bluecompute-ce` application to run its processes as non-root in order to work on OpenShift.
 
-## Introducing BlueCompute Microservices Reference Architecture
+## Deploy Example Helm Charts on OpenShift
 BlueCompute (known as `bluecompute-ce`) is IBM's Cloud-native Microservices Reference Architecture, which is used to demonstrate how clients can easily deploy and run a complex microservices application on Kubernetes based platforms such as [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) and [IBM Cloud Private](https://www.ibm.com/cloud/private), which are public and private cloud based, respectively.
+
+![Architecture](../../static/imgs/diagram_bluecompute_openshift.gif)
 
 The application itself is an [**Angular JS 2**](https://angular.io/) web front-end that communicates with multiple [**Java Spring Boot**](https://spring.io/projects/spring-boot) microservices. Each of those backend microservices communicates with its own datastore, which, in typical microservices fashion, can be whatever the developers choose to be the best tool for the job. In `bluecompute-ce`'s case, the datastores are `Elasticsearch`, `CouchDB`, `MySQL`, and `MariaDB`.
 
@@ -224,11 +226,7 @@ Each microservice has its own git repository, which contains not only the applic
 
 Lastly, to make deploying the entire application easier, we created the `bluecompute-ce` Helm chart that declares all the individual Helm charts (including the community ones) as dependencies, which lets us deploys all of them at once with a single command. Deploying the application this way takes us 2-5 minutes compared to the 30-45 minutes it used to take us before we adopted Kubernetes.
 
-Anyways, now that you know the overall architecture of `bluecompute-ce` chart, let's examine in the following GIF diagram how the architecture is going to change if we are to deploy it on OpenShift:
-
-![Architecture](../../static/imgs/diagram_bluecompute_openshift.gif)
-
-As you can see from the animation above, the application architecture hasn't changed much (check out original architecture [here](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring#introduction)) other than using an `OpenShift Route` to expose the web application outside the cluster instead of Kubernetes `Ingress` or `NodePort`. Also, instead of using `kube-dns` for service discovery, OpenShift uses `core-dns`, which we are not concerned with as developers.
+As you can see from the animation above, the application architecture doesn't change much (check out original architecture [here](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring#introduction)) when deploying it to OpenShift. The main change isSE using an `OpenShift Route` to expose the web application outside the cluster instead of Kubernetes `Ingress` or `NodePort`. Also, instead of using `kube-dns` for service discovery, OpenShift uses `core-dns`, which we are not concerned with as developers.
 
 Now that we understand the basic architecture, let's move on to learning how to deploy `bluecompute-ce` into OpenShift.
 
@@ -382,8 +380,10 @@ oc delete --recursive --filename bluecompute-os
 ```
 
 ## Conclusion
-Helm charts are not officially supported by OpenShift, therefore, the above approach is the closest you will get to deploying workloads that originated from Helm charts into OpenShift while leveraging container best practices.
+At the time of writing, Helm charts are not officially supported by OpenShift, therefore, the above approach is the closest you will get to deploying workloads that originated from Helm charts into OpenShift while leveraging container best practices.
 
-If you still require the ability to run Helm Charts on OpenShift, such as those for IBM Middleware Helm Charts, I recommend you try out [IBM Cloud Private on OpenShift](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/supported_environments/openshift/overview.html).
+If you still require the ability to run Helm Charts on OpenShift, such as those for IBM Middleware Helm Charts, I recommend you to try out [IBM Cloud Private on OpenShift](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/supported_environments/openshift/overview.html).
+
+If you already adopted IBM Cloud Private on OpenShift and/or are curious about managing Kubernetes workloads across a Hybrid Cloud architecture, then you might be interested in checking out how [`IBM Multicloud Manager`](https://www.ibm.com/cloud/multicloud-manager) can help you manage and monitor Kubernetes workloads across IBM Cloud Private on OpenShift environments (https://www.ibm.com/cloud/garage/architectures/ibm-cloud-private-red-hat-openshift/manage-icp-on-openshift-with-mcm).
 
 If you are set on the pure OpenShift path, I encourage you start converting the Kubernetes files we generated into [OpenShift Templates](https://docs.okd.io/latest/dev_guide/templates.html), which is the closest to a Helm Chart you will get in an OpenShift ecosystem.
