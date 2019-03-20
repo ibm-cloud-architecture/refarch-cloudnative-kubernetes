@@ -58,12 +58,12 @@ The first half of this guide explains the steps for applying container best prac
   + Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
 
 ## Adopting Container Best Practices
-In the following sections explain how to modify your `Dockerfile` and Helm Charts to run as non-root user, which is a container best practice recommended on Kubernetes-based platforms like OpenShift and IBM Cloud Private.
+The following sections explain how to modify your `Dockerfile` and Helm Charts to run as non-root user, which is a container best practice recommended on Kubernetes-based platforms like OpenShift and IBM Cloud Private.
 
 ### 1. Creating Non-Root Docker Images
 OpenShift enforces security best practices for containers out of the box, such as requiring Docker images to run as non-root and disallowing privileged containers, which can be harmful to the OpenShift cluster if they are compromised. In this section explains how to make a Spring Boot-based `Dockerfile` run as non-root.
 
-Let's look at the `Dockerfile` for `bluecompute-ce's` inventory service for reference. You don't need to worry about what the service does, as we are only concerned with how the `Dockerfile` packages the code, followed by how to make it run as non-root. 
+Let's look at the `Dockerfile` for `bluecompute-ce's` inventory service for reference. You don't need to worry about what the service does, as we are only concerned with how the `Dockerfile` packages the code, followed by how to make it run as non-root.
 
 **NOTE:** To learn more about `Dockerfile` options and their syntax, check out the [official documentation](https://docs.docker.com/engine/reference/builder/).
 
