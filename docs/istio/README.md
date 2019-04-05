@@ -485,10 +485,20 @@ To deploy the chart we have to add the `IBM Cloud Charts` Helm repository as fol
 helm repo add ibm-charts https://registry.bluemix.net/helm/ibm-charts
 ```
 
-If using a Helm version prior to 2.10.0, install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the CRDs to be committed in the kube-apiserver:
+If using a Helm version prior to 2.10.0, install Istio’s Custom Resource Definitions via kubectl apply, and wait a few seconds for the Custom Resource Definitions (CRDs) to be committed in the kube-apiserver:
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/IBM/charts/master/stable/ibm-istio/templates/crds.yaml
 ```
+
+>It should be that noted above that if these CRDs were applied to a version greater than 2.10.0, an error similar to `Error: customresourcedefinitions.apiextensions.k8s.io "gateways.networking.istio.io" already exists` will appear. To resolve the conflict, delete the conflicting CRDs, in this case
+>```
+>kubectl delete crd gateways.networking.istio.io
+>```
+>
+>If confident, you can delete all CRDs with a
+>```
+>kubectl delete crd --all
+>```
 
 Since we are enabling `kiali`, we also need to create the secret that contains the username and passphrase for kiali dashboard as follows:
 
