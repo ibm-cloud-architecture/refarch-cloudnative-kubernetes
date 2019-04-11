@@ -1,4 +1,5 @@
 # Enable PodSecurityPolicy for BlueCompute
+**Author:** Fabio Gomez (fabiogomez@us.ibm.com)
 
 IBM Cloud Private ships with two [PodSecurityPolicies](https://kubernetes.io/docs/concepts/policy/pod-security-policy/), `default`, and `privileged`.  In the `default` namespace, the `default` service account is given the `privileged` pod security policy and is permitted to create privileged containers.  In all other user-created namespaces, the `default` service account is given the `default` pod security policy in which privileged containers are not allowed to be created.
 

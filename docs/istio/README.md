@@ -1,4 +1,5 @@
 # Exploring Istio Service Mesh Features with the Microservices Reference Architecture Application
+**Author:** Fabio Gomez (fabiogomez@us.ibm.com)
 
 ## Table of Contents
   * [Introduction](#introduction)

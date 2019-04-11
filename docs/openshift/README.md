@@ -1,4 +1,5 @@
 # Easy Way of Deploying Helm Charts on OpenShift
+**Author:** Fabio Gomez (fabiogomez@us.ibm.com)
 
 ## Table of Contents
   * [Introduction](#introduction)

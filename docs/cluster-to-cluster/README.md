@@ -1,4 +1,6 @@
 # Microservice to Microservice Communication across clusters using Private Network
+**Author:** Fabio Gomez (fabiogomez@us.ibm.com)
+
 Deploying microservices works great inside a single Kubernetes cluster. But what if your microservices need to communicate with other microservices that are deployed in a separate cluster? Better yet, how can you talk with those microservices using an encrypted connection through a private network for added security? Let's see how you can do that with IBM Cloud Container Service (ICCS).
 
 ## Table of Contents
