@@ -5,61 +5,61 @@ metadata:
 spec:
   repositories:
   # IBM CASE Images
-  - name: docker.io/ibmcase/bluecompute-auth/*
+  - name: docker.io/ibmcase/bluecompute-auth:*
     policy:
       va:
         enabled: false
-  - name: docker.io/ibmcase/bluecompute-bash-curl-ssl/*
+  - name: docker.io/ibmcase/bluecompute-bash-curl-ssl:*
     policy:
       va:
         enabled: false
-  - name: docker.io/ibmcase/bluecompute-catalog/*
+  - name: docker.io/ibmcase/bluecompute-catalog:*
     policy:
       va:
         enabled: false
-  - name: docker.io/ibmcase/bluecompute-customer/*
+  - name: docker.io/ibmcase/bluecompute-customer:*
     policy:
       va:
         enabled: false
-  - name: docker.io/ibmcase/bluecompute-inventory/*
+  - name: docker.io/ibmcase/bluecompute-inventory:*
     policy:
       va:
         enabled: false
-  - name: docker.io/ibmcase/bluecompute-orders/*
+  - name: docker.io/ibmcase/bluecompute-orders:*
     policy:
       va:
         enabled: false
-  - name: docker.io/ibmcase/bluecompute-web/*
+  - name: docker.io/ibmcase/bluecompute-web:*
     policy:
       va:
         enabled: false
   # Other Docker Hub Community Images
-  - name: docker.io/alexeiled/curl/*
+  - name: docker.io/alexeiled/curl:*
     policy:
       va:
         enabled: false
-  - name: docker.io/busybox/*
+  - name: docker.io/busybox:*
     policy:
       va:
         enabled: false
-  - name: docker.io/couchdb/*
+  - name: docker.io/couchdb:*
     policy:
       va:
         enabled: false
-  - name: docker.io/mysql/*
+  - name: docker.io/mysql:*
     policy:
       va:
         enabled: false
-  - name: docker.io/bitnami/mariadb/*
+  - name: docker.io/bitnami/mariadb:*
     policy:
       va:
         enabled: false
-  - name: docker.io/kocolosk/couchdb-statefulset-assembler/*
+  - name: docker.io/kocolosk/couchdb-statefulset-assembler:*
     policy:
       va:
         enabled: false
   # Elasticsearch
-  - name: docker.elastic.co/elasticsearch/elasticsearch-oss/*
+  - name: docker.elastic.co/elasticsearch/elasticsearch-oss:*
     policy:
       va:
         enabled: false
