@@ -1,16 +1,65 @@
 apiVersion: securityenforcement.admission.cloud.ibm.com/v1beta1
-kind: ImagePolicy
+kind: ClusterImagePolicy
 metadata:
   name: ibmcase-image-policy
 spec:
   repositories:
-  # BlueCompute and other Docker Hub Images
-  - name: docker.io/*
+  # IBM CASE Images
+  - name: docker.io/ibmcase/bluecompute-auth/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/ibmcase/bluecompute-bash-curl-ssl/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/ibmcase/bluecompute-catalog/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/ibmcase/bluecompute-customer/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/ibmcase/bluecompute-inventory/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/ibmcase/bluecompute-orders/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/ibmcase/bluecompute-web/*
+    policy:
+      va:
+        enabled: false
+  # Other Docker Hub Community Images
+  - name: docker.io/alexeiled/curl/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/busybox/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/couchdb/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/mysql/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/bitnami/mariadb/*
+    policy:
+      va:
+        enabled: false
+  - name: docker.io/kocolosk/couchdb-statefulset-assembler/*
     policy:
       va:
         enabled: false
   # Elasticsearch
-  - name: docker.elastic.co/*
+  - name: docker.elastic.co/elasticsearch/elasticsearch-oss/*
     policy:
       va:
         enabled: false
