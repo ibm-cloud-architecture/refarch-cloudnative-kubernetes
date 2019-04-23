@@ -2,15 +2,15 @@ apiVersion: v1
 entries:
   bluecompute-ce:
   - apiVersion: v1
-    created: 2019-02-27T15:15:14.573305972-06:00
+    created: 2019-04-23T16:33:41.841814-05:00
     description: Bluecompute Application Chart
-    digest: 994bfa82241fc9015f15b1752d23ebbb99c448e7344417e56cc1a44ec102e9ad
+    digest: 9c7f631d9d3c740859acee0536ad0073f274fb3d424e09b3b8f74e21d3e08107
     name: bluecompute-ce
     urls:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce/bluecompute-ce-0.0.9.tgz
     version: 0.0.9
   - apiVersion: v1
-    created: 2019-02-27T15:15:14.567618867-06:00
+    created: 2019-04-23T16:33:41.835977-05:00
     description: Bluecompute Application Chart
     digest: 10240ca82b973ca0521827a6ba3434ada218e0a738f5c027163d5a17b94c866b
     name: bluecompute-ce
@@ -18,11 +18,11 @@ entries:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce/bluecompute-ce-0.0.8.tgz
     version: 0.0.8
   - apiVersion: v1
-    created: 2019-02-27T15:15:14.563294339-06:00
+    created: 2019-04-23T16:33:41.830034-05:00
     description: Bluecompute Application Chart
     digest: a75b17096b5ba4a410cfb05479ea7ac08e2d9b1d0f58da55fea6edcad477f606
     name: bluecompute-ce
     urls:
     - https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce/bluecompute-ce-0.0.6.tgz
     version: 0.0.6
-generated: 2019-02-27T15:15:14.55857429-06:00
+generated: 2019-04-23T16:33:41.825484-05:00
