@@ -15,18 +15,16 @@ spec:
 {{ toYaml .Values.ingress.TLS | indent 2 }}
 {{- end }}
   rules:
-  {{- if and .Values.web.enabled .Values.ingress.hostnames.app }}
-  - host: {{ .Values.ingress.hostnames.app }}
-    http:
+  - http:
       paths:
       - path: {{ .Values.web.ingress.path }}
         backend:
           serviceName: {{ .Values.web.fullnameOverride }}
           servicePort: {{ .Values.web.service.externalPort }}
+  {{- if and .Values.web.enabled .Values.ingress.hostnames.app }}
+    host: {{ .Values.ingress.hostnames.app }}
   {{- end }}
-  {{- if .Values.ingress.hostnames.api }}
-  - host: {{ .Values.ingress.hostnames.api }}
-    http:
+  - http:
       paths:
       {{- if .Values.auth.enabled }}
       - path: {{ .Values.auth.ingress.path }}
@@ -58,5 +56,7 @@ spec:
           serviceName: {{ .Values.orders.fullnameOverride }}
           servicePort: {{ .Values.orders.service.externalPort }}
       {{- end }}
+  {{- if .Values.ingress.hostnames.api }}
+    host: {{ .Values.ingress.hostnames.api }}
   {{- end }}
 {{- end }}

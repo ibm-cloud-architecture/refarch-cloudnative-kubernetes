@@ -23,10 +23,10 @@ global:
         caCertificates: /etc/istio/ingressgateway-ca-certs/ca-chain.cert.pem
 
 ingress:
-  enabled: false
+  enabled: true
   hostnames:
-    app: app.bluecompute.com
-    api: api.bluecompute.com
+    app: #app.bluecompute.com
+    api: #api.bluecompute.com
   #annotations:
   #  ingress.bluemix.net/redirect-to-https: "True"
   enableTLS: false

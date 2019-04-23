@@ -25,8 +25,8 @@ global:
 ingress:
   enabled: false
   hostnames:
-    app: app.bluecompute.com
-    api: api.bluecompute.com
+    app: #app.bluecompute.com
+    api: #api.bluecompute.com
   annotations:
     ingress.bluemix.net/redirect-to-https: "True"
   enableTLS: false
