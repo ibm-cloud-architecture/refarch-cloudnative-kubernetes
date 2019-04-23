@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
   name: bluecompute-psp-user
-rules: 
+rules:
 - apiGroups:
   - extensions
   resources:
