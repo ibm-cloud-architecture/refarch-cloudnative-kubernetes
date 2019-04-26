@@ -214,7 +214,7 @@ However, most Kubernetes users don't require admin-level access to the cluster s
 
 In order to deploy `bluecompute-ce` to a `non-default` namespace, you will need to bind that namespace's default service account to the `ibm-privileged-psp` [PodSecurityPolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/security.html). That's because the `mysql`, `elasticsearch`, `couchdb`, and `mariadb` community Helm Charts are running their processes as root because they don't specify a `numeric id` for their container users in their [SecurityContext](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) (i.e. checkout SecurityContext in [Elasticsearch Helm Chart](https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L30)) if they have any. That's unfortunate because the Dockerfiles used in the Helm charts **DO** specify a non-root username (as shown in the [MySQL Dockerfile](https://github.com/docker-library/mysql/blob/bb7ea52db4e12d3fb526450d22382d5cd8cd41ca/5.7/Dockerfile#L4)) but Kubernetes requires a **NUMERIC** instead.
 
-The Elasticsearch Helm Chart also requires the use of a root [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) (as shown [here](https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-stat-fulset.yaml#L101)) and a privileged Init Container (as shown [here](https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L79)) to manually increase lockable memory limits and disable swapping in the worker nodes for Elasticsearch to work properly, even though Elasticsearch itself does not run as root.
+The Elasticsearch Helm Chart also requires the use of a root [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) (as shown [here](https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-state-fulset.yaml#L101)) and a privileged Init Container (as shown [here](https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L79)) to manually increase lockable memory limits and disable swapping in the worker nodes for Elasticsearch to work properly, even though Elasticsearch itself does not run as root.
 
 Now that you understand why we need to authorize a non-default namespace to use the `ibm-privileged-psp` [PodSecurityPolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/security.html), let's go ahead and do that with the following commands:
 
@@ -234,7 +234,7 @@ kubectl create rolebinding bluecompute:psp:privileged -n bluecompute \
     --serviceaccount=bluecompute:default
 ```
 
-Now that the `bluecompute` namespace is authorized to use the `ibm-privileged-psp` [PodSecurityPolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/security.html), let's deploy `bluecompute-ce` chart with the following command:
+Now that the `default` service account for the `bluecompute` namespace is authorized to use the `ibm-privileged-psp` [PodSecurityPolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/security.html), let's deploy `bluecompute-ce` chart with the following command:
 
 ```bash
 helm upgrade --install bluecompute --namespace bluecompute ibmcase/bluecompute-ce --tls
