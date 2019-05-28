@@ -15,7 +15,7 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/$KUBERNETES_V
 curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.1.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
 # Start minikube
 sudo minikube start --vm-driver=none --kubernetes-version=$KUBERNETES_VERSION
-# Update minikube direcotry permissions
+# Update minikube directory permissions
 sudo chown -R travis: /home/travis/.minikube/
 # Fix the kubectl context, as it's often stale.
 minikube update-context
