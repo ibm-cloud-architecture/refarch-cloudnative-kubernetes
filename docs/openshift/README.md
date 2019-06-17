@@ -13,8 +13,8 @@
     + [Adopting Container Best Practices on BlueCompute](#adopting-container-best-practices-on-bluecompute)
     + [Deploy BlueCompute to OpenShift](#deploy-bluecompute-to-openshift)
       - [1. Create `bluecompute` Project in OpenShift](#1-create-bluecompute-project-in-openshift)
-      - [2. Generate YAML Files from Helm Charts](#2-generate-yaml-files-from-helm-charts)
-      - [3. Remove Elasticsearch Privileged Containers](#3-remove-elasticsearch-privileged-containers)
+      - [2. Add Security Context Constraints (SCC) to the default Service Account](#2-add-security-context-constraints-scc-to-the-default-service-account)
+      - [3. Generate YAML Files from Helm Charts](#3-generate-yaml-files-from-helm-charts)
       - [4. Deploy BlueCompute to OpenShift Project](#4-deploy-bluecompute-to-openshift-project)
       - [5. Expose the Web Application](#5-expose-the-web-application)
       - [6. Validate the Web Application](#6-validate-the-web-application)
@@ -280,7 +280,23 @@ Next, create a new project (OpenShift parlance for Kubernetes `namespace`) to de
 oc new-project bluecompute
 ```
 
-#### 2. Generate YAML Files from Helm Charts
+#### 2. Add Security Context Constraints (SCC) to the default Service Account
+Since both the bluecompute charts and the community helm charts (MySQL, Elasticsearch, MariaDB, and CouchDB) specify the UID that they will be running as, they are not compatible with OpenShift's default `restricted` [Security Context Constraint](https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/authorization.html#security-context-constraints), which doesn't allow this. Instead, the `restricted` SCC requires that your workloads be able to work with any random UID that OpenShift will assign. To avoid having to change the charts to support this, we can assign the `anyuid` SCC to the `default` Service Account in the `bluecompute` namespace with the following command:
+```bash
+oc adm policy add-scc-to-user anyuid system:serviceaccount:bluecompute:default
+```
+
+The reason for using `anyuid` vs `nonroot` SCC is that the Elasticsearch chart has a couple of init containers that require `root` access to the node to increase the virtual memory `max_map_count` and disable memory swapping before starting the `Elasticsearch` service. However, these containers also require `privileged` access to the host in order to perform this operation. To enable privileged mode for these containers, we can assign the `privileged` SCC to the `default` Service Account in the `bluecompute` namespace with the following command:
+
+```bash
+oc adm policy add-scc-to-user privileged system:serviceaccount:bluecompute:default
+```
+
+Now you should be ready to deploy all of `bluecompute-ce` into the `bluecompute` OpenShift Project!
+
+**NOTE:** Assigning the `privileged` SCC to the `default` service account in the `bluecompute` namespace completely relaxes the security around the pods that get deployed to this namespace. This means that any hackers that manage to compromise pods deployed to this namespace have root-level access to the cluster! So assigning the `privileged` SCC should be done with caution and it is NOT recommended for production use. Perhaps a more granular SCC can be used to assign the required capabilities without opening security holes, but that's beyond the scope of this document.
+
+#### 3. Generate YAML Files from Helm Charts
 Now generate the Kubernetes YAML files from the Helm Charts. To do so, run the following commands:
 
 ```bash
@@ -299,25 +315,6 @@ Where:
   + In this case we are using `bluecompute`.
 
 The above commands generated YAML files that can be deployed into OpenShift. However, there is still some work to be done. The next section explains the steps.
-
-#### 3. Remove Elasticsearch Privileged Containers
-Before deploying the `bluecompute-ce` YAML files, we must remove the init containers from the `Elasticsearch` community Helm chart. These containers are used to increase the virtual memory `max_map_count` and disable memory swapping before starting the `Elasticsearch` service, which require privileged access.
-
-Since privileged containers are not allowed in OpenShift and performing those operations manually is beyond the scope of this guide, we will remove the containers to allow the `Elasticsearch` containers to start. Depending on your environment, if Elasticsearch crashes or fails to start, you may be required to increase the virtual memory and disable swapping manually on each OpenShift node as explained by Elastic in [Virtual Memory](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html) and [Enable bootstrap.memory_lock](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-configuration-memory.html#mlockall).
-
-With that out of the way, let's go ahead and remove the privileged init containers from the `Elasticsearch` YAML files. To do so, assuming you exported the `bluecompute-ce` YAML files to the `bluecompute-os` folder, open the following 3 YAML files, delete the `initContainers` section, then save the files:
-
-```bash
-bluecompute-os/bluecompute-ce/charts/elasticsearch
-└── templates
-    ├── client-deployment.yaml
-    ├── data-statefulset.yaml
-    └── master-statefulset.yaml
-```
-
-Make sure to delete the entirety of the `initContainers` section, including both `sysctl` and `chown` containers and all their respective settings, if present.
-
-Now you should be ready to deploy all of `bluecompute-ce` into the `bluecompute` OpenShift Project!
 
 #### 4. Deploy BlueCompute to OpenShift Project
 To deploy the `bluecompute-ce` YAML files, use the command below:
