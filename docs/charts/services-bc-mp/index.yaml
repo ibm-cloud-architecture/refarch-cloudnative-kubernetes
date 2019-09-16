@@ -1,7 +1,7 @@
 apiVersion: v1
 entries:
   ibm-icpmonitoring:
-  - created: "2019-09-16T11:13:33.545073-05:00"
+  - created: "2019-09-16T11:22:51.333386-05:00"
     description: IBM monitoring service in private cloud
     digest: 2b872f58f2355c7d539eeb18a4ffaa252a83d074c9b41f45c03e58fdaf6e8edc
     engine: gotpl
@@ -24,22 +24,9 @@ entries:
     urls:
     - ibm-icpmonitoring-1.1.0.tgz
     version: 1.1.0
-  ibmcase-elasticsearch:
-  - apiVersion: v1
-    created: "2019-09-16T11:13:33.545433-05:00"
-    description: ElasticSearch
-    digest: 7e7ca3423c90f6c629ab2e17d2df0ec65f32c2ca29ceb54a4595a4464e03ea22
-    home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
-    icon: https://static-www.elastic.co/assets/blt9a26f88bfbd20eb5/icon-elasticsearch-bb.svg
-    name: ibmcase-elasticsearch
-    sources:
-    - https://github.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/tree/microprofile/catalog/chart/ibmcase-elasticsearch
-    urls:
-    - ibmcase-elasticsearch-0.0.1.tgz
-    version: 0.0.1
   keystore:
   - apiVersion: v1
-    created: "2019-09-16T11:13:33.545664-05:00"
+    created: "2019-09-16T11:22:51.334056-05:00"
     description: A Helm chart for keystore
     digest: e1e2df1f8ec61cd64ee2f4cf7baa0a3ac931efe597f927026cf80e55fdcbba6d
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -51,7 +38,7 @@ entries:
     version: 0.0.2
   zipkin:
   - apiVersion: v1
-    created: "2019-09-16T11:13:33.545905-05:00"
+    created: "2019-09-16T11:22:51.334389-05:00"
     description: A Helm chart for Zipkin
     digest: 0175ae6822858eee5a491773c292e4588b119bb963ba03029d607820d5321f09
     home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
@@ -61,4 +48,4 @@ entries:
     urls:
     - zipkin-0.0.1.tgz
     version: 0.0.1
-generated: "2019-09-16T11:13:33.528301-05:00"
+generated: "2019-09-16T11:22:51.326726-05:00"
