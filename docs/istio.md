@@ -1,4 +1,4 @@
-# Exploring Istio Service Mesh Features with the Microservices Reference Architecture Application
+# Exploring Istio Service Mesh Features with Bluecompute
 
 
 ## Table of Contents
@@ -6,10 +6,9 @@
   * [Requirements](#requirements)
   * [Blue-Compute Istiofied](#blue-compute-istiofied)
   * [Deploying Istio Helm Chart](#deploying-istio-helm-chart)
-  * [Deploy Istiofied Bluecompute Helm Chart](#deploy-istiofied-bluecompute-helm-chart)
-    + [Setup Helm Repository](#setup-helm-repository)
-    + [Deploy the Chart](#deploy-the-chart)
-    + [Validate the Application](#validate-the-application)
+  * [Setting up your Istio environment](#setting-up-your-istio-environment)
+  * [Deploying the Istio Bluecompute Helm Chart](#deploying-the-istio-bluecompute-helm-chart)
+  * [Visit your App](#visit-your-app)
     + [Access Kiali Dashboard](#access-kiali-dashboard)
   * [Cleanup](#cleanup)
   * [Conclusion](#conclusion)
@@ -18,12 +17,13 @@
 
 The journey to cloud-native microservices comes with great technical benefits. As we saw in the microservices reference architecture (Bluecompute) we were able to individually deploy, update, test, and manage individual microservices that comprise the overall application. By leveraging `Helm`, we are able to individually package these services into charts and package those into an umbrella chart that deploys the entire application stack conveniently and quickly.
 
-Having such flexibility comes at a price though. For example, the more microservices you have, the more complicated it becomes to manage, deploy, update, monitor, and debug. Additionally, having more microservices makes it more difficult to start introducing new things like canary releases, routing policies, and Mutual TLS encryption. Since implementing those things will vary depending on the nature of each microservice (i.e. Java vs Node.js services), this means your team will have to spend more time learning how to implement those on each technology stack.
-
-Thankfully, the Kubernetes community acknowledge these limitations and has provided us with the concept of a `Service Mesh`. As explained [here](https://istio.io/docs/concepts/what-is-istio/#what-is-a-service-mesh), the term "service mesh" describes the network of microservices that make up applications and the interactions between them. Examples of service mesh projects include [OpenShift](https://www.openshift.com/), developed by RedHat, and [`Istio`](https://istio.io/), co-developed by IBM and Google. Featured in Bluecompute, Istio aims to help you connect, secure, control, and observe your services in a standardized and language-agnostic way that doesn't require any code changes to the services.
+Having such flexibility comes at a price though. For example, the more microservices you have, the more complicated it becomes to manage, deploy, update, monitor, and debug. Thankfully, the Kubernetes community acknowledge these limitations and has provided us with the concept of a `Service Mesh`. As explained [here](https://istio.io/docs/concepts/what-is-istio/#what-is-a-service-mesh), the term "service mesh" describes the network of microservices that make up applications and the interactions between them. Examples of service mesh projects include [OpenShift](https://www.openshift.com/), developed by RedHat, and [`Istio`](https://istio.io/), co-developed by IBM and Google. Featured in Bluecompute, Istio aims to help you connect, secure, control, and observe your services in a standardized and language-agnostic way that doesn't require any code changes to the services.
 
 ## Requirements
 
+* A Kubernetes cluster 
+	+ [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
+	+ For local development/deployment, try a single-node cluster setup with [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
 * [kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it onto your platform.
 * [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
 	+ If using `IBM Cloud Private`, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html) to install `helm`.
@@ -31,7 +31,7 @@ Thankfully, the Kubernetes community acknowledge these limitations and has provi
 
 ## Blue-Compute Istiofied
 
-As with any complex application architecture, we had to make some changes to fully support the `bluecompute-ce` application in the Istio service mesh. Luckily, those changes were minimal but were necessary to leverage most of Istio's features and follow best practices.
+# TODO: Link to Master branch header
 
 ## Setting up your Istio environment
 
@@ -90,7 +90,7 @@ EOF
 ```bash
 # Install Istio Chart and enable Grafana, Service Graph, and Jaeger (tracing)
 
-helm upgrade --install istio --version 1.0.4 \
+helm upgrade --install istio --version 1.1.7 \
 	--set grafana.enabled=true \
 	--set servicegraph.enabled=true \
 	--set tracing.enabled=true \
@@ -98,7 +98,7 @@ helm upgrade --install istio --version 1.0.4 \
 	ibm-charts/ibm-istio --namespace istio-system
 ```
 
-If you want to disable select features, simply set the desired feature to `false`
+>If you want to disable select features, simply set the desired feature to `false`
 
 You can check the availability of your Istio pods with the following waiting command:
 
@@ -122,10 +122,7 @@ Now let's proceed with installing the `bluecompute` chart itself as follows:
 
 ```bash
 # Add Helm repository
-helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
-
-# KEVIN/JJ Test this link
-helm repo add bluecompute-mp https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile/bluecompute-mp
+helm repo add bluecompute-mp https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp
 
 # Refresh Helm repositories
 helm repo update
@@ -135,16 +132,16 @@ Now, using the edited values file, install the chart with the command below:
 
 ```bash
 # Install helm chart
-helm upgrade --install bluecompute --namespace default \
-	-f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/bluecompute-ce/values-istio-gateway.yaml
+helm install bluecompute --name bluecompute
 ```
 
 It should take a few minutes for all of the pods to be up and running. Run the following command multiple times until all of the pods show a status of `RUNNING`.
+
 ```bash
 kubectl get pods
 ```
 
-### Validate the Application
+### Visit your App
 In order to validate the application, you will need to access the IP address and port number of the Ingress Gateway, which will depend on the environment you are using. To access the IP address and port number, run the commands below based on your environment:
 
 ```bash
@@ -165,49 +162,11 @@ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 echo $GATEWAY_URL
 ```
 
-To validate the application, open a browser window and enter the gateway URL from above and press enter. You should be able to see the web application's home page, as shown below.
+Or if deploying with minikube, you can simply run:
 
-![BlueCompute Detail](../../static/imgs/bluecompute_web_home.png?raw=true)
-
-You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/spring#validate-the-web-application) to validate the web application functionality. You should be able to see a catalog, be able to login, make orders, and see your orders listed in your profile (once you are logged in).
-
-### Access the Kiali Dashboard
-Using Grafana, Service Graph, and Jaeger tracing should give you more than enough information to learn your application's networking architecture, identify bottlenecks, and debug networking calls. This information alone is plenty to out carry day-to-day operations. However, there are instances when the tracing shows that a service is working as expected, but somehow, networking calls to other services still fail. Sometimes the issue comes from a bug in the individual service's Istio configuration, which you cannot access with the above mention dashboards.
-
-Luckily, Kiali can help you with that. Kiali is an open source project that works with Istio to visualize the service mesh topology, including features like circuit breakers or request rates. Kiali even includes Jaeger Tracing out of the box.
-
-To access the Kiali dashboard, you will need to run the following port-forwarding command:
 ```bash
-kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=kiali -o jsonpath='{.items[0].metadata.name}') 20001:20001 &;
+minikube service bluecompute-web
 ```
-
-Now, open a new browser tab and go to http://localhost:20001/kiali to open Kiali dashboard, as shown below:
-![Architecture](../../static/imgs/istio/kiali_1_login.png)
-
-Login using `admin` and `secret` as the username and password, respectively, which come from the secret that you setup earlier when deploying Istio. If successful, you will be presented with the home page, which shows a graph of the services from all of the namespaces in your cluster.
-![Architecture](../../static/imgs/istio/kiali_2_home.png)
-
-The above can be overwhelming to look at. Instead of looking at the entire cluster, let's just focus on the services in the `default` namespace, which is where `bluecompute-ce` is deployed. To view the services in the `default` namespace, click on the `Namespace` drop-down and select `default`, which should present you with the following view:
-![Architecture](../../static/imgs/istio/kiali_3_default_graph.png)
-
-You should now see a much cleaner chart showing the services pertaining to `bluecompute-ce`. I personally like this graph better compared to `Service Graph`. From this graph you can click on the individual links between microservices and explore the request volume per second. Let's see what that looks like by clicking on the link between the `istio-ingressgateway` and `web` service, which should present you with the following view:
-![Architecture](../../static/imgs/istio/kiali_4_gateway_web.png)
-
-Notice above that you can see the requests per second and graphs for different status codes. Also notice in the `Source app` and `Destination app` that you can see namespace and version of the microservices in question. Feel free to explore the other application links.
-
-If you click on the `Applications` menu on the left, followed by clicking on the `web` application, you will be able to see high level metrics for the application. Mostly the status of the health status of the deployment and the envoy side car and Inbound and Outboud metrics, as shown below:
-![Architecture](../../static/imgs/istio/kiali_5_web_status.png)
-
-If you click on the `Workloads` menu on the left, followed by clicking on the `web` workload, you will be able to see pod specific information and metrics, including labels, container name and init container names, as shown below:
-![Architecture](../../static/imgs/istio/kiali_6_workloads_web_info.png)
-
-If you click on the `Services` menu on the left, followed by clicking on the `catalog` service, you will be able to see service specific information and metrics, but also workloads that the service is associated with and source workloads from which it gets networking calls, as shown below. More importantly, you can also see the `Virtual Services` and `Destination Rules` associated with the service and their configuration. You can even click on `View YAML` to explore the actual YAML file that was used to deploy the Istio resources, which is great for debugging Istio configuration.
-![Architecture](../../static/imgs/istio/kiali_7_services_catalog_destination.png)
-
-Lastly, if you want to only see a list of Istio resources, you can click on the `Istio Config` menu on the left. You will see things like `Virtual Services`, `Destination Rules`, and even `Gateways`.
-![Architecture](../../static/imgs/istio/kiali_8_istio_config.png)
-
-The above should have provided you a high level view of Kiali's features and visibility into the Istio Service Mesh. Combined with Jaeger Tracing and even Grafana dashboard, if enabled, you should be able to use Kiali as the main entrypoint for all things service mesh.
 
 ## Cleanup
 To kill all port-forwarding connections, run the following command:
