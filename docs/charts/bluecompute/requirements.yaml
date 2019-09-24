@@ -1,25 +1,25 @@
 dependencies:
   - name: inventory
-    version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    version: 0.1.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-micro-inventory/microprofile/chart/release
   - name: auth
-    version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    version: 0.1.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-auth/microprofile/chart/release
   - name: catalog
-    version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    version: 0.1.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-micro-catalog/microprofile/chart/release
   - name: customer
-    version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    version: 0.1.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-micro-customer/microprofile/chart/release
   - name: web
-    version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    version: 0.1.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/microprofile/chart/release
   - name: mysql
     version: 0.10.2
     repository: https://kubernetes-charts.storage.googleapis.com
   - name: ibmcase-elasticsearch
     version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-micro-catalog/microprofile/chart/release
   - name: keystore
     version: 0.0.2
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
@@ -27,8 +27,8 @@ dependencies:
     version: 5.2.2
     repository: https://kubernetes-charts.storage.googleapis.com
   - name: orders
-    version: 0.0.1
-    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
+    version: 0.1.0
+    repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders/microprofile/chart/release
   - name: ibm-icpmonitoring
     version: 1.1.0
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
