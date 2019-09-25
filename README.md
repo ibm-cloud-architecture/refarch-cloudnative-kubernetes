@@ -10,12 +10,12 @@
 
 ## Introduction
 
-This project provides a reference implementation for running a Cloud Native Application which leverages the [**Java MicroProfile**](https://microprofile.io/) and [**Spring Boot**](https://projects.spring.io/spring-boot/) technologies for its microservices. The target cloud environment for the application is a [**Kubernetes-based**](https://kubernetes.io/) platform which might be [**Minikube**](https://kubernetes.io/docs/getting-started-guides/minikube/) / [**Docker Edge**](https://docs.docker.com/edge/) for development stages and [**IBM Cloud**](https://www.ibm.com/cloud/) or [**IBM Cloud Private**](https://www.ibm.com/cloud-computing/products/ibm-cloud-private/) for production stages.
+This project provides a reference implementation for running a Cloud Native Application which leverages the [**Java MicroProfile**](https://microprofile.io/) and [**Spring Boot**](https://projects.spring.io/spring-boot/) technologies for its microservices. The target cloud environment for the application is a [**Kubernetes-based**](https://kubernetes.io/) platform which might be [**Minikube**](https://kubernetes.io/docs/getting-started-guides/minikube/) / [**Docker Edge**](https://docs.docker.com/edge/) for development stages and [**IBM Cloud**](https://www.ibm.com/cloud/) or [**IBM Cloud Private**](https://www.ibm.com/cloud-computing/products/ibm-cloud-private/) for production stages. Our project also supports [Istio](https://istio.io) as our service mesh, with our guide [here](./docs/istio.md) for further Istio details.
 
 ## Architecture
 
 <p align="center">
-    <img src="images/bluecompute_ce.png">
+    <img src="static/images/bluecompute_ce.png">
 </p>
 
 ## Application Overview
@@ -43,11 +43,11 @@ To know more about these implementations, Click on the below images to access re
 
 <p align="center">
   <a href="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring">
-    <img src="images/spring_small.png">
+    <img src="static/images/spring_small.png">
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile">
-    <img src="images/microprofile_small.png">
+    <img src="static/images/microprofile_small.png">
   </a>
 </p>
 
