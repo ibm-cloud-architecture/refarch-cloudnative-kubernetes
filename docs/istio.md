@@ -46,7 +46,7 @@ helm repo add ibm-charts https://registry.bluemix.net/helm/ibm-charts
 **NOTE: Before installing Istio!**  
 If using Helm version prior to **2.10.0**, either upgrade your Helm version or install IBM Istio's Custom Resource Definitions (CRDs) with the command below. You will have to wait a few seconds for the changes to be committed to the kube-apiserver:
 
-```bash
+>```bash
 kubectl apply -f https://raw.githubusercontent.com/IBM/charts/master/stable/ibm-istio/templates/crds.yaml
 ```
 
@@ -67,7 +67,8 @@ kubectl apply -f https://raw.githubusercontent.com/IBM/charts/master/stable/ibm-
 DASHBOARD_USERNAME=$(echo -n 'admin' | base64);
 DASHBOARD_PASSPHRASE=$(echo -n 'secret' | base64);
 
-# Namespace
+# Namespace, and Create if does not exist
+kubectl create namespace istio-system
 NAMESPACE="istio-system";
 
 cat <<EOF | kubectl apply -f -
