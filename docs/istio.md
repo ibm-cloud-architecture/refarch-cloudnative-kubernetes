@@ -31,7 +31,7 @@ Having such flexibility comes at a price though. For example, the more microserv
 
 ## Blue-Compute Istiofied
 
-# TODO: Link to Master branch header
+For information regarding the Bluecompute architecture and further details on the Istio files, check our guide [here](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/docs/istio.md).
 
 ## Setting up your Istio environment
 
@@ -143,6 +143,7 @@ kubectl get pods
 ```
 
 ### Visit your App
+
 In order to validate the application, you will need to access the IP address and port number of the Ingress Gateway, which will depend on the environment you are using. To access the IP address and port number, run the commands below based on your environment:
 
 ```bash
@@ -170,43 +171,33 @@ minikube service bluecompute-web
 ```
 
 ## Cleanup
+
 To kill all port-forwarding connections, run the following command:
+
 ```bash
 killall kubectl
 ```
 
 To delete Kiali secret, run the following command:
+
 ```bash
 kubectl delete secret kiali -n istio-system
 ```
 
 To disable automatic sidecar injection, run the following command:
+
 ```bash
 kubectl label namespace default istio-injection-
 ```
 
 To uninstall `bluecompute-ce` chart, run the following command:
+
 ```bash
 helm delete bluecompute --purge # --tls if using IBM Cloud Private
 ```
 
 Lastly, to uninstall `istio` chart, run the following command:
+
 ```bash
 helm delete istio --purge # --tls if using IBM Cloud Private
 ```
-
-## Conclusion
-Congratulations for finishing reading this document. That was a lot of information. Let's recap the stuff we learned today:
-* Minimum requirements to allow pods to benefit from the service mesh features.
-* How to properly create liveness and readiness probes that will work in a service mesh, even when Mutual TLS is enabled.
-* Istio's current limitations with StatefulSet-based services and how to to get Deployment-based Istiofied services to communicate with StatefulSet services outside of the service mesh.
-* How to create custom Istio YAML files for more granular control of Istio configuration for each microservice.
-* Deployed Istio and enabled Grafana, Service Graph, Jaeger Tracing, and Kiali dashboards.
-* Deployed the Bluecompute into Istio-enabled cluster and enabled Istio Gateway.
-* Generated networking load against Istio Gateway to generate telemetry and tracing metrics for the web and catalog services.
-* Used Grafana to visualize the networking request volume on both services.
-* Used Service Graph to visualize Bluecompute's entire network architecture and view inbound and outbound request volume on each service.
-* Used Jaeger to search and analyze network traces for calls between the web and catalog services.
-* Used Kiali to do all the above plus exploring Istio configuration for each service.
-
-By doing all the above, you now have the ability to modify existing services/applications to leverage most of the Istio service mesh features and debug running applications using Istio's telemetry and tracing information.
