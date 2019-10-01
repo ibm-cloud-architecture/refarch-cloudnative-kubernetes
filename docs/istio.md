@@ -1,8 +1,8 @@
 # Exploring Istio Service Mesh Features with Bluecompute
 
-
 ## Table of Contents
-  * [Introduction](#introduction)
+
+* [Introduction](#introduction)
   * [Requirements](#requirements)
   * [Blue-Compute Istiofied](#blue-compute-istiofied)
   * [Deploying Istio Helm Chart](#deploying-istio-helm-chart)
@@ -15,17 +15,17 @@
 
 The journey to cloud-native microservices comes with great technical benefits. As we saw in the microservices reference architecture (Bluecompute) we were able to deploy, update, test, and manage individual microservices that comprise the overall application. By leveraging `Helm`, we are able to package these services into charts and package those into an umbrella chart that deploys the entire application stack conveniently and quickly.
 
-Having such flexibility comes at a price though. For example, the more microservices you have, the more complicated it becomes to manage, deploy, update, monitor, and debug. Thankfully, the Kubernetes community acknowledge these limitations and has provided us with the concept of a `Service Mesh`. As explained [here](https://istio.io/docs/concepts/what-is-istio/#what-is-a-service-mesh), the term "service mesh" describes the network of microservices that make up applications and the interactions between them. Examples of service mesh projects include [OpenShift](https://www.openshift.com/), developed by RedHat, and [`Istio`](https://istio.io/), co-developed by IBM and Google. Featured in Bluecompute, Istio aims to help you connect, secure, control, and observe your services in a standardized and language-agnostic way that doesn't require any code changes to the services.
+Having such flexibility comes at a price though. For example, the more microservices you have, the more complicated it becomes to manage, deploy, update, monitor, and debug. Thankfully, the Kubernetes community acknowledge these limitations and has provided us with the concept of a service mesh. As explained [here](https://istio.io/docs/concepts/what-is-istio/#what-is-a-service-mesh), the term "service mesh" describes the network of microservices that make up applications and the interactions between them. Examples of service mesh projects include [OpenShift](https://www.openshift.com/), developed by RedHat, and [Istio](https://istio.io/), co-developed by IBM and Google. Featured in Bluecompute, Istio aims to help you connect, secure, control, and observe your services in a standardized and language-agnostic way that doesn't require any code changes to the services.
 
 ## Requirements
 
-* A Kubernetes cluster 
-	+ [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
-	+ For local development/deployment, try a single-node cluster setup with [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+* A Kubernetes cluster
+  * [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
+  * For local development/deployment, try a single-node cluster setup with [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
 * [kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it onto your platform.
 * [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
-	+ If using `IBM Cloud Private`, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html) to install `helm`.
-	+ If using IBM Cloud Kubernetes Service (IKS), please use the most up-to-date version of helm
+  * If using `IBM Cloud Private`, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html) to install `helm`.
+  * If using IBM Cloud Kubernetes Service (IKS), please use the most up-to-date version of helm
 
 ## Blue-Compute Istiofied
 
@@ -37,81 +37,70 @@ We will be using IBM's official [Istio Helm Chart](https://github.com/IBM/charts
 
 1) First, we must add the `IBM Cloud Charts` Helm repository with the command below:
 
-```bash
-helm repo add ibm-charts https://registry.bluemix.net/helm/ibm-charts
-```
+    ```bash
+    helm repo add ibm-charts https://registry.bluemix.net/helm/ibm-charts
+    ```
 
-**NOTE: Before installing Istio!**  
-If using Helm version prior to **2.10.0**, either upgrade your Helm version or install IBM Istio's Custom Resource Definitions (CRDs) with the command below. You will have to wait a few seconds for the changes to be committed to the kube-apiserver:
+1) To enable Kiali, an open source project that seeks to visualize your service mesh topology, we will need to create a secret containing a username and passphrase to access the Kiali dashboard.
 
->```bash
-kubectl apply -f https://raw.githubusercontent.com/IBM/charts/master/stable/ibm-istio/templates/crds.yaml
-```
+    ```bash
+    # Username and Passphrase in base64 format
+    DASHBOARD_USERNAME=$(echo -n 'admin' | base64);
+    DASHBOARD_PASSPHRASE=$(echo -n 'secret' | base64);
 
->It should be that noted above that if these CRDs were applied to a version greater than 2.10.0, an error similar to `Error: customresourcedefinitions.apiextensions.k8s.io "gateways.networking.istio.io" already exists` will appear. To resolve this conflict, delete the conflicting CRDs
->```
->kubectl delete crd gateways.networking.istio.io
->```
->
->If confident, you can delete all CRDs with a
->```
->kubectl delete crd --all
->```
+    # Namespace, and Create if does not exist
+    kubectl create namespace istio-system
+    NAMESPACE="istio-system";
 
-2) To enable Kiali, an open source project that seeks to visualize your service mesh topology, we will need to create a secret containing a username and passphrase to access the Kiali dashboard.
+    cat <<EOF | kubectl apply -f -
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: kiali
+      namespace: $NAMESPACE
+      labels:
+        app: kiali
+    type: Opaque
+    data:
+      username: $DASHBOARD_USERNAME
+      passphrase: $DASHBOARD_PASSPHRASE
+    EOF
+    ```
 
-```bash
-# Username and Passphrase in base64 format
-DASHBOARD_USERNAME=$(echo -n 'admin' | base64);
-DASHBOARD_PASSPHRASE=$(echo -n 'secret' | base64);
+1) Now we can deploy the Istio chart if `helm` version is **2.10.0** or higher:
 
-# Namespace, and Create if does not exist
-kubectl create namespace istio-system
-NAMESPACE="istio-system";
+    ```bash
+    # Install Istio Chart and enable Grafana, Service Graph, and Jaeger (tracing)
 
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Secret
-metadata:
-  name: kiali
-  namespace: $NAMESPACE
-  labels:
-    app: kiali
-type: Opaque
-data:
-  username: $DASHBOARD_USERNAME
-  passphrase: $DASHBOARD_PASSPHRASE
-EOF
-```
+    helm upgrade --install istio --version 1.1.7 \
+      --set grafana.enabled=true \
+      --set servicegraph.enabled=true \
+      --set tracing.enabled=true \
+      --set kiali.enabled=true \
+      ibm-charts/ibm-istio --namespace istio-system
+    ```
 
-3) Now we can deploy the Istio chart in the `istio-system` namespace as follows:
+    If your helm version cannot be updated, install IBM Istio's Custom Resource Definitions (CRDs) with the command below. You will have to wait a few seconds for the changes to be committed to the kube-apiserver:
 
-```bash
-# Install Istio Chart and enable Grafana, Service Graph, and Jaeger (tracing)
+    ```bash
+    kubectl apply -f https://raw.githubusercontent.com/IBM/charts/master/stable/ibm-istio/templates/crds.yaml
+    ```
 
-helm upgrade --install istio --version 1.1.7 \
-	--set grafana.enabled=true \
-	--set servicegraph.enabled=true \
-	--set tracing.enabled=true \
-	--set kiali.enabled=true \
-	ibm-charts/ibm-istio --namespace istio-system
-```
+    If you want to disable select features, simply set the desired feature to `false`.
 
->If you want to disable select features, simply set the desired feature to `false`
+    You can check the availability of your Istio pods with the following waiting command:
 
-You can check the availability of your Istio pods with the following waiting command:
+    ```bash
+    kubectl get pods -n istio-system -w
+    ```
 
-```bash
-kubectl get pods -n istio-system -w
-```
+1) Istio works best when you leverage its automatic sidecar injection feature, which automatically puts all of the YAML pertaining to the Istio sidecar into your deployments/pods upon deployment. 
 
-4) Istio works best when you leverage its automatic sidecar injection feature, which automatically puts all of the YAML pertaining to the Istio sidecar into your deployments/pods upon deployment. 
+    To leverage Istio's automatic sidecar injection feature, we need to enable it by labeling the namespace in which you will leverage this feature. We will use the `default` namespace, which you can label with:
 
-To leverage Istio's automatic sidecar injection feature, we need to enable it by labeling the namespace in which you will leverage this feature. We will use the `default` namespace, which you can label with:
-
-```bash
-kubectl label namespace default istio-injection=enabled
-```
+    ```bash
+    kubectl label namespace default istio-injection=enabled
+    ```
 
 ## Deploying the Istio Bluecompute Helm Chart
 
@@ -119,26 +108,26 @@ Now let's proceed with installing the `bluecompute` chart itself as follows:
 
 1) Add the remote Helm chart repository:
 
-```bash
-# Add Helm repository
-helm repo add bluecompute-mp https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp
+    ```bash
+    # Add Helm repository
+    helm repo add bluecompute-mp https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/bluecompute-mp
 
-# Refresh Helm repositories
-helm repo update
-```
+    # Refresh Helm repositories
+    helm repo update
+    ```
 
-Now, using the edited values file, install the chart with the command below:
+1) Now install the chart with the command below:
 
-```bash
-# Install helm chart
-helm install bluecompute --name bluecompute
-```
+    ```bash
+    # Install helm chart
+    helm install bluecompute --name bluecompute
+    ```
 
-It should take a few minutes for all of the pods to be up and running. Run the following command multiple times until all of the pods show a status of `RUNNING`.
+    It should take a few minutes for all of the pods to be up and running. Run the following command multiple times until all of the pods show a status of `RUNNING`.
 
-```bash
-kubectl get pods
-```
+    ```bash
+    kubectl get pods
+    ```
 
 ### Visit your App
 
