@@ -13,9 +13,7 @@
 
 ## Introduction
 
-The journey to cloud-native microservices comes with great technical benefits. As we saw in the microservices reference architecture (Bluecompute) we were able to deploy, update, test, and manage individual microservices that comprise the overall application. By leveraging `Helm`, we are able to package these services into charts and package those into an umbrella chart that deploys the entire application stack conveniently and quickly.
-
-Having such flexibility comes at a price though. For example, the more microservices you have, the more complicated it becomes to manage, deploy, update, monitor, and debug. Thankfully, the Kubernetes community acknowledge these limitations and has provided us with the concept of a service mesh. As explained [here](https://istio.io/docs/concepts/what-is-istio/#what-is-a-service-mesh), the term "service mesh" describes the network of microservices that make up applications and the interactions between them. Examples of service mesh projects include [OpenShift](https://www.openshift.com/), developed by RedHat, and [Istio](https://istio.io/), co-developed by IBM and Google. Featured in Bluecompute, Istio aims to help you connect, secure, control, and observe your services in a standardized and language-agnostic way that doesn't require any code changes to the services.
+This document serves to provide basic information to prop up a Bluecompute instance along with Istio. For a more robust explanation of Bluecompute, Istio, and architectural design choices, please refer to our [Istio document](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/blob/master/docs/istio.md) in the master branch.
 
 ## Requirements
 
