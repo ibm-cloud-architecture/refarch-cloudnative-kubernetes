@@ -3,13 +3,13 @@
 ## Table of Contents
 
 * [Introduction](#introduction)
-  * [Requirements](#requirements)
-  * [Blue-Compute Istiofied](#blue-compute-istiofied)
-  * [Deploying Istio Helm Chart](#deploying-istio-helm-chart)
-  * [Setting up your Istio environment](#setting-up-your-istio-environment)
-  * [Deploying the Istio Bluecompute Helm Chart](#deploying-the-istio-bluecompute-helm-chart)
-  * [Visit your App](#visit-your-app)
-  * [Cleanup](#cleanup)
+* [Requirements](#requirements)
+* [Blue-Compute Istiofied](#blue-compute-istiofied)
+* [Deploying Istio Helm Chart](#deploying-istio-helm-chart)
+* [Setting up your Istio environment](#setting-up-your-istio-environment)
+* [Deploying the Istio Bluecompute Helm Chart](#deploying-the-istio-bluecompute-helm-chart)
+* [Visit your App](#visit-your-app)
+* [Cleanup](#cleanup)
 
 ## Introduction
 
