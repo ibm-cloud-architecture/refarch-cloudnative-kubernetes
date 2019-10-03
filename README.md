@@ -36,19 +36,17 @@ There are several components of this architecture.
 
 This application has been implemented using two of the most popular technologies used for Java microservices development.
 
-* [**Spring Boot**](https://projects.spring.io/spring-boot/) 
-* [**Java MicroProfile**](https://microprofile.io/)
-
-To know more about these implementations, Click on the below images to access respective versions of our application.
+* [**Java MicroProfile Implementation**](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile#cloud-native-development-with-microprofile-websphere-liberty-and-ibm-cloud-private)
+* [**Spring Boot Implementation**](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring#run-a-cloud-native-microservices-application-on-a-kubernetes-cluster) 
 
 <p align="center">
-  <a href="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile">
+  <a href="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile#cloud-native-development-with-microprofile-websphere-liberty-and-ibm-cloud-private">
     <img src="static/images/microprofile_small.png">
   </a>
-  <a href="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring">
+  <a href="https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/spring#run-a-cloud-native-microservices-application-on-a-kubernetes-cluster">
     <img src="static/images/spring_small.png">
   </a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 </p>
 
 ## References
