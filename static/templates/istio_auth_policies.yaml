@@ -1,0 +1,13 @@
+{{ if and .Values.global.istio.enabled .Values.mysql.enabled }}
+apiVersion: "authentication.istio.io/v1alpha1"
+kind: "Policy"
+metadata:
+  name: {{ template "bluecompute.mysql.fullname" . }}
+spec:
+  targets:
+  - name: {{ template "bluecompute.mysql.fullname" . }}
+    ports:
+    - number: {{ .Values.mysql.service.port }}
+  peers:
+  - mtls: {}
+{{ end }}

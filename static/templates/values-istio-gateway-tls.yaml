@@ -1,0 +1,492 @@
+# Declare variables to be passed into your templates.
+global:
+  hs256key:
+    secretName: bluecompute-hs256key
+    secret: E6526VJkKYhyTFRFMC0pTECpHcZ7TGcq8pKsVVgz9KtESVpheEO284qKzfzg8HpWNBPeHOxNGlyudUHi6i8tFQJXC8PiI48RUpMh23vPDLGD35pCM0417gf58z5xlmRNii56fwRCmIhhV7hDsm3KO2jRv4EBVz7HrYbzFeqI45CaStkMYNipzSm2duuer7zRdMjEKIdqsby0JfpQpykHmC5L6hxkX0BT7XWqztTr6xHCwqst26O0g8r7bXSYjp4a
+  cluster:
+    name: "my-cluster"
+    region: us-south
+  istio:
+    enabled: true
+    gateway:
+      enabled: true
+      name: bluecompute-gateway
+      hosts:
+        - "*.bluecompute.com"
+      TLS:
+        enabled: true
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: true
+        serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+        privateKey: /etc/istio/ingressgateway-certs/tls.key
+        caCertificates: /etc/istio/ingressgateway-ca-certs/ca-chain.cert.pem
+
+ingress:
+  enabled: false
+  hostnames:
+    app: #app.bluecompute.com
+    api: #api.bluecompute.com
+  annotations:
+    ingress.bluemix.net/redirect-to-https: "True"
+  enableTLS: false
+  TLS:
+  - secretName: bluecompute.com
+    hosts:
+      - bluecompute.com
+
+auth:
+  enabled: true
+  fullnameOverride: auth
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-auth
+    tag: 0.6.0
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    externalPort: 8083
+    nodePort: 32383
+  resources:
+    limits:
+      memory: 384Mi
+    requests:
+      memory: 64Mi
+  bash:
+    image:
+      repository: ibmcase/bluecompute-bash-curl-ssl
+      tag: latest
+      pullPolicy: IfNotPresent
+  hs256key:
+    secretName:
+    secret:
+  customer:
+    url: http://customer:8082
+  istio:
+    enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
+    mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
+    loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "auth.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
+
+catalog:
+  enabled: true
+  fullnameOverride: catalog
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-catalog
+    tag: 0.6.0
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    externalPort: 8081
+    nodePort: 32381
+  resources:
+    limits:
+      memory: 384Mi
+    requests:
+      memory: 64Mi
+  inventory:
+    url: http://inventory:8080
+  curl:
+    image: alexeiled/curl
+    imageTag: latest
+    imagePullPolicy: IfNotPresent
+  elasticsearch:
+    protocol: http
+    host: catalog-elasticsearch-client
+    port: 9200
+    username:
+    password:
+    healthcheck: "_cat/health"
+    cacertificatebase64:
+  istio:
+    enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
+    mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
+    loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "catalog.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
+
+elasticsearch:
+  enabled: true
+  fullnameOverride: catalog-elasticsearch
+  protocol: http
+  port: 9200
+  username:
+  password:
+  healthcheck: "_cat/health"
+  cacertificatebase64:
+  appVersion: 6.6.1
+  image:
+    repository: docker.elastic.co/elasticsearch/elasticsearch-oss
+    tag: 6.6.1
+    pullPolicy: IfNotPresent
+    #pullSecrets:
+    #- sa-default
+  serviceAccounts:
+    client:
+      create: false
+      name:
+    master:
+      create: false
+      name:
+    data:
+      create: false
+      name:
+  initImage:
+    repository: "busybox"
+    tag: "latest"
+    pullPolicy: "Always"
+  cluster:
+    env:
+      MINIMUM_MASTER_NODES: "2"
+  client:
+    replicas: 1
+    serviceType: ClusterIP
+    podAnnotations:
+      sidecar.istio.io/inject: "false"
+  master:
+    replicas: 2
+    persistence:
+      enabled: false
+      size: 4Gi
+      storageClass:
+      accessMode: ReadWriteOnce
+    podAnnotations:
+      sidecar.istio.io/inject: "false"
+  data:
+    replicas: 1
+    persistence:
+      enabled: false
+      size: 30Gi
+      storageClass:
+      accessMode: ReadWriteOnce
+    podAnnotations:
+      sidecar.istio.io/inject: "false"
+  sysctlInitContainer:
+    enabled: true
+
+customer:
+  enabled: true
+  fullnameOverride: customer
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-customer
+    tag: 0.6.0
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    externalPort: 8082
+    nodePort: 32382
+  resources:
+    limits:
+      memory: 384Mi
+    requests:
+      memory: 64Mi
+  testUser:
+    createUser: true
+    username: user
+    password: passw0rd
+  bash:
+    image:
+      repository: ibmcase/bluecompute-bash-curl-ssl
+      tag: latest
+      pullPolicy: IfNotPresent
+  hs256key:
+    secretName:
+    secret:
+  couchdb:
+    host: customer-couchdb-svc-couchdb
+    protocol: http
+    port: 5985
+    existingSecret:
+    adminUsername: user
+    adminPassword: passw0rd
+    database: customers
+  istio:
+    enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
+    mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
+    loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "customer.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
+
+couchdb:
+  enabled: true
+  image:
+    repository: "couchdb"
+    tag: "2.3.0"
+    pullPolicy: IfNotPresent
+  fullnameOverride: customer-couchdb
+  protocol: http
+  createAdminSecret: true
+  adminUsername: user
+  adminPassword: passw0rd
+  service:
+    externalPort: 5985
+  clusterSize: 1
+  persistentVolume:
+    enabled: false
+    size: 10Gi
+    accessModes:
+      - ReadWriteOnce
+    storageClass:
+  helperImage:
+    repository: kocolosk/couchdb-statefulset-assembler
+    tag: 1.2.0
+    pullPolicy: IfNotPresent
+  initImage:
+    repository: "busybox"
+    tag: "latest"
+    pullPolicy: "Always"
+  podAnnotations:
+    sidecar.istio.io/inject: "false"
+
+inventory:
+  enabled: true
+  fullnameOverride: inventory
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-inventory
+    tag: 0.6.0
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    externalPort: 8080
+    nodePort: 32380
+  resources:
+    limits:
+      memory: 384Mi
+    requests:
+      memory: 64Mi
+  mysql:
+    host: inventory-mysql
+    port: 3306
+    existingSecret:
+    user: dbuser
+    password: password
+    database: inventorydb
+    # For mysql init container
+    image: "mysql"
+    imageTag: "5.7.14"
+    imagePullPolicy: IfNotPresent
+  istio:
+    enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
+    mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
+    loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "inventory.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
+
+mysql:
+  enabled: true
+  image: "mysql"
+  imageTag: "5.7.14"
+  imagePullPolicy: IfNotPresent
+  fullnameOverride: inventory-mysql
+  mysqlRootPassword: admin123
+  mysqlUser: dbuser
+  mysqlPassword: password
+  mysqlDatabase: inventorydb
+  service:
+    port: 3306
+  persistence:
+    enabled: false
+    size: 8Gi
+    storageClass:
+    accessMode: ReadWriteOnce
+    existingClaim:
+    subPath:
+    annotations: {}
+  istio:
+    mTLS: ISTIO_MUTUAL
+    loadBalancer: LEAST_CONN
+  busybox:
+    image: "busybox"
+    tag: "latest"
+
+orders:
+  enabled: true
+  fullnameOverride: orders
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-orders
+    tag: 0.6.0
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    externalPort: 8084
+    nodePort: 32384
+  resources:
+    limits:
+      memory: 384Mi
+    requests:
+      memory: 64Mi
+  mysql:
+    image: "mysql"
+    imageTag: "5.7.14"
+    imagePullPolicy: IfNotPresent
+  hs256key:
+    secretName:
+    secret:
+  mariadb:
+    # Leaving empty so it gets name form release name and nameOverride
+    host:
+    port: 3307
+    existingSecret:
+    user: dbuser
+    password: password
+    database: ordersdb
+  istio:
+    enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
+    mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
+    loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "orders.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
+
+mariadb:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnami/mariadb
+    tag: 10.1.38
+    pullPolicy: IfNotPresent
+  service:
+    port: 3307
+  rootUser:
+    password: admin123
+  nameOverride: orders-mariadb
+  db:
+    user: dbuser
+    password: password
+    name: ordersdb
+  replication:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+      existingClaim:
+      #mountPath: ""
+      annotations: {}
+      storageClass:
+      accessMode: ReadWriteOnce
+      size: 8Gi
+    annotations:
+      - key: sidecar.istio.io/inject
+        value: "false"
+  slave:
+    replicas: 1
+    persistence:
+      enabled: false
+      annotations: {}
+      storageClass:
+      accessMode: ReadWriteOnce
+      size: 8Gi
+    annotations:
+      - key: sidecar.istio.io/inject
+        value: "false"
+
+web:
+  enabled: true
+  fullnameOverride: web
+  replicaCount: 1
+  image:
+    repository: ibmcase/bluecompute-web
+    tag: 0.6.0
+    pullPolicy: Always
+  service:
+    type: NodePort
+    externalPort: 80
+    nodePort: 31337
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  services:
+    auth:
+      protocol: http
+      host: auth
+      port: 8083
+    catalog:
+      protocol: http
+      host: catalog
+      port: 8081
+    customer:
+      protocol: http
+      host: customer
+      port: 8082
+    orders:
+      protocol: http
+      host: orders
+      port: 8084
+    reviews:
+      protocol: http
+      host:
+      port:
+  istio:
+    enabled: false
+    # ISTIO_MUTUAL, SIMPLE, DISABLE
+    mTLS: ISTIO_MUTUAL
+    # LEAST_CONN, ROUND_ROBIN
+    loadBalancer: LEAST_CONN
+    gateway:
+      enabled: false
+      name:
+      hosts:
+        - "web.bluecompute.com"
+      TLS:
+        enabled: false
+        # SIMPLE, MUTUAL
+        mode: SIMPLE
+        httpsRedirect: false
