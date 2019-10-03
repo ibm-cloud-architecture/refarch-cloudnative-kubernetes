@@ -72,7 +72,7 @@ Istio's features and follow best practices.
 ![Architecture](../static/images/diagram_bluecompute_istio.png)
 
 You will notice that, compared to the original [architecture diagram](../static/images/app_architecture.png), the
-overall application remains the same, minus a few additions:
+overall application remains the same with a few additions:
 
 * Instead of an Ingress Controller or NodePort, the application is now made publicly available via the Istio Ingress Gateway.
 * All service pods now have an [Envoy Proxy](https://istio.io/docs/concepts/what-is-istio/#envoy) sidecar container,
@@ -102,7 +102,7 @@ The second requirement was to have explicit `app` and `version` labels for each 
 provides Istio with the enough context for its routing, tracing, and telemetry features, which we will explore in the
 later sections.
 
-Here is the YAML for the `inventory` service, which includes the named `http` port and both the `app` and `version`
+Here is the YAML for the Inventory service, which includes the named `http` port and both the `app` and `version`
 labels:
 
 To learn more about all the requirements for pods and services, please look at Istio's
@@ -477,7 +477,7 @@ You should be able to see the web application's home page, as shown below.
 ![BlueCompute Detail](../static/images/bluecompute_web_home.png?raw=true)
 
 You can reference
-[this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/spring#validate-the-web-application) to validate the web application functionality. You should be able to see a catalog, be able to login, make orders, and see your orders listed in your profile (once you are logged in).
+[this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/spring#validate-the-web-application) for validating the web application functionality. You should be able to see a catalog, be able to login, make orders, and see your orders listed in your profile (once you are logged in).
 
 ## Telemetry & Tracing
 
