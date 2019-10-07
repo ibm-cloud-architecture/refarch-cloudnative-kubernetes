@@ -6,3 +6,7 @@ docs/charts/bluecompute/charts/
 docs/charts/bluecompute/requirements.lock
 docs/charts/bluecompute-icp/charts/
 docs/charts/bluecompute-icp/requirements.lock
+
+# Configs
+.project
+.settings
