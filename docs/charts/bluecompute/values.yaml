@@ -207,7 +207,9 @@ mariadb:
       enabled: false
       existingClaim:
       mountPath: ""
-      annotations: {}
+      annotations:
+      - key: sidecar.istio.io/inject
+        value: false
       storageClass:
       accessMode: ReadWriteOnce
       size: 8Gi
@@ -215,7 +217,9 @@ mariadb:
     replicas: 1
     persistence:
       enabled: false
-      annotations: {}
+      annotations:
+      - key: sidecar.istio.io/inject
+        value: false
       storageClass:
       accessMode: ReadWriteOnce
       size: 8Gi
