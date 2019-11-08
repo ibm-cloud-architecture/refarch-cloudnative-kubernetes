@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Bluecompute Microprofile Application Chart
 name: bluecompute
-version: 0.0.6
+version: 0.1.1
 home: https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile
 sources:
   - https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/tree/microprofile

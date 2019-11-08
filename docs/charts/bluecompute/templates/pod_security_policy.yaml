@@ -1,5 +1,5 @@
 {{- if not (eq .Release.Namespace "default") }}
-apiVersion: extensions/v1beta1
+apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   name: {{ .Release.Name }}-pod-security-policy
