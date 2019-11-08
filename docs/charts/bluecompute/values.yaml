@@ -207,22 +207,22 @@ mariadb:
       enabled: false
       existingClaim:
       mountPath: ""
-      annotations:
-      - key: sidecar.istio.io/inject
-        value: false
       storageClass:
       accessMode: ReadWriteOnce
       size: 8Gi
+    annotations:
+      - key: sidecar.istio.io/inject
+        value: false
   slave:
     replicas: 1
     persistence:
       enabled: false
-      annotations:
-      - key: sidecar.istio.io/inject
-        value: false
       storageClass:
       accessMode: ReadWriteOnce
       size: 8Gi
+    annotations:
+      - key: sidecar.istio.io/inject
+        value: false
 
 web:
   enabled: true
