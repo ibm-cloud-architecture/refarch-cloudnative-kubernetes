@@ -175,7 +175,7 @@ The Microprofile Spec provides fault tolerance policies that allow for timeout, 
 
 Even though the MP fault tolerant policies are configured at the application level, it is fairly easy to disable and replace them with the istio implementation. The Blue Compute application demonstrates this with the timeout policy. When istio is enabled for the application, a config map property is passed to the application that disables the MP timeout policy, and instead enables a timeout policy that is configured at the istio level, avoiding a conflict that multiplies the configured time out level when both the MP and Istio policies are enabled. 
 
-[This] guide goes through how to synergize Istio and Microprofile's fault tolerance policies in more detail. 
+[This](https://openliberty.io/guides/microprofile-istio-retry-fallback.html#adding-the-microprofile-retry-annotation) guide goes through how to synergize Istio and Microprofile's fault tolerance policies in more detail. 
 
 ## Traffic Management 
 
