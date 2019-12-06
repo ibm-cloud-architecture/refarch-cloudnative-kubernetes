@@ -6,23 +6,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: {{ template "grafana.fullname" . }}
-    chart: {{ .Chart.Name }}
-    component: grafana
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  labels: {{- include "grafana.labels" . | indent 4 }}
   name: {{ template "grafana.fullname" . }}
 spec:
   replicas: 1
+  selector:
+    matchLabels: {{- include "grafana.labels" . | indent 6 }}
   template:
     metadata:
-      labels:
-        app: {{ template "grafana.fullname" . }}
-        chart: {{ .Chart.Name }}
-        component: grafana
-        release: "{{ .Release.Name }}"
-        heritage: {{ .Release.Service }}
+      labels: {{- include "grafana.labels" . | indent 8 }}
       annotations:
         productName: grafana
         productVersion: 4.6.3

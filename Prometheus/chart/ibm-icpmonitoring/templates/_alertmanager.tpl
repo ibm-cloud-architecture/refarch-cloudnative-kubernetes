@@ -17,3 +17,11 @@ alertmanager.yml: |-
     receiver: default-receiver
     repeat_interval: 3h
 {{- end }}
+
+{{- define "alertmanager.labels" }}
+app: {{ template "prometheus.fullname" . }}-alertmanager
+chart: {{ .Chart.Name }}
+component: alertmanager
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end }}

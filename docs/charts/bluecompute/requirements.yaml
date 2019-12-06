@@ -14,18 +14,12 @@ dependencies:
   - name: web
     version: 0.1.1
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/microprofile/chart/release
-  - name: mysql
-    version: 1.4.0
-    repository: https://kubernetes-charts.storage.googleapis.com
   - name: ibmcase-elasticsearch
     version: 0.0.2
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-micro-catalog/microprofile/chart/release
   - name: keystore
     version: 0.0.3
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/microprofile/docs/charts/services-bc-mp
-  - name: mariadb
-    version: 7.0.0
-    repository: https://kubernetes-charts.storage.googleapis.com
   - name: orders
     version: 0.1.1
     repository: https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-micro-orders/microprofile/chart/release

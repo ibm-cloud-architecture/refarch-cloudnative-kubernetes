@@ -6,23 +6,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: {{ template "prometheus.fullname" . }}
-    chart: {{ .Chart.Name }}
-    component: prometheus
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  labels: {{- include "prometheus.labels" . | indent 4 }}
   name: {{ template "prometheus.fullname" . }}
 spec:
   replicas: 1
+  selector:
+    matchLabels: {{- include "prometheus.labels" . | indent 6 }}
   template:
     metadata:
-      labels:
-        app: {{ template "prometheus.fullname" . }}
-        chart: {{ .Chart.Name }}
-        component: prometheus
-        release: {{ .Release.Name }}
-        heritage: {{ .Release.Service }}
+      labels: {{- include "prometheus.labels" . | indent 8 }}
       annotations:
         productName: prometheus
         productVersion: 2.0.0
