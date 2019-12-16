@@ -310,3 +310,11 @@ prometheus.yml: |-
       {{- end }}
   {{- end }}
 {{- end }}
+
+{{- define "prometheus.labels" }}
+app: {{ template "prometheus.fullname" . }}
+chart: {{ .Chart.Name }}
+component: prometheus
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end }}

@@ -155,3 +155,11 @@ grafana.ini: |-
     [grafana_com]
     url = https://grafana.com
 {{- end }}
+
+{{- define "grafana.labels" }}
+app: {{ template "grafana.fullname" . }}
+chart: {{ .Chart.Name }}
+component: grafana
+release: {{ .Release.Name }}
+heritage: {{ .Release.Service }}
+{{- end }}

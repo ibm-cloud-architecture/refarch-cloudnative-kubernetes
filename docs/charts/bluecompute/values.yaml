@@ -185,44 +185,44 @@ orders:
 #   mysqlRootPassword: password
 #   mysqlPassword: password
 
-mariadb:
-  enabled: true
-  image:
-    registry: docker.io
-    repository: bitnami/mariadb
-    tag: 10.1.36-debian-9
-    pullPolicy: IfNotPresent
-  service:
-    port: 3307
-  rootUser:
-    password: password
-  db:
-    user: dbuser
-    password: password
-    name: ordersdb
-  replication:
-    enabled: false
-  master:
-    persistence:
-      enabled: false
-      existingClaim:
-      mountPath: ""
-      annotations:
-      - key: sidecar.istio.io/inject
-        value: false
-      storageClass:
-      accessMode: ReadWriteOnce
-      size: 8Gi
-  slave:
-    replicas: 1
-    persistence:
-      enabled: false
-      annotations:
-      - key: sidecar.istio.io/inject
-        value: false
-      storageClass:
-      accessMode: ReadWriteOnce
-      size: 8Gi
+# mariadb:
+#   enabled: true
+#   image:
+#     registry: docker.io
+#     repository: bitnami/mariadb
+#     tag: 10.1.36-debian-9
+#     pullPolicy: IfNotPresent
+#   service:
+#     port: 3307
+#   rootUser:
+#     password: password
+#   db:
+#     user: dbuser
+#     password: password
+#     name: ordersdb
+#   replication:
+#     enabled: false
+#   master:
+#     persistence:
+#       enabled: false
+#       existingClaim:
+#       mountPath: ""
+#       storageClass:
+#       accessMode: ReadWriteOnce
+#       size: 8Gi
+#     annotations:
+#       - key: sidecar.istio.io/inject
+#         value: false
+#   slave:
+#     replicas: 1
+#     persistence:
+#       enabled: false
+#       storageClass:
+#       accessMode: ReadWriteOnce
+#       size: 8Gi
+#     annotations:
+#       - key: sidecar.istio.io/inject
+#         value: false
 
 web:
   enabled: true
