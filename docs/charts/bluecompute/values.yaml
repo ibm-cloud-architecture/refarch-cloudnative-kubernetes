@@ -5,7 +5,7 @@ auth:
   replicaCount: 1
   image:
     repository: ibmcase/auth-mp
-    tag: v3.0.0
+    tag: v4.0.0
     pullPolicy: IfNotPresent
   service:
     name: auth
@@ -60,7 +60,7 @@ customer:
   replicaCount: 1
   image:
     repository: ibmcase/customer-mp
-    tag: v4.0.0
+    tag: v4.1.0
     pullPolicy: IfNotPresent
     resources:
       requests:
@@ -68,7 +68,6 @@ customer:
         memory: 300Mi
   service:
     name: customer
-    cloudantservicename: cloudant-service
     type: NodePort
     servicePort: 9080
     servicePortHttps: 9443
@@ -79,16 +78,6 @@ customer:
     mountPath: /opt/ibm/wlp/usr/shared
   jwt:
     id: myMpJwt
-  cloudant:
-    user: admin
-    password: pass
-    protocol: http
-    host: localhost
-    type: NodePort
-    port: 80
-    nodeport: 31222
-    database: customers
-    image: ibmcase/populate
   persistence:
     enabled: false
     accessMode: ReadWriteOnce
@@ -229,7 +218,7 @@ web:
   replicaCount: 1
   image:
     repository: ibmcase/bc-web-mp
-    tag: v2.0.0
+    tag: v2.2.0
     pullPolicy: IfNotPresent
   service:
     name: bluecompute-web
