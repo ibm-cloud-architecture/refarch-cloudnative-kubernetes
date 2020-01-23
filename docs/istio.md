@@ -155,6 +155,35 @@ Or if deploying with minikube, you can simply run:
 minikube service bluecompute-web
 ```
 
+## Istio and Microprofile
+
+Both Istio and Microprofile have an overlapping feature set. This sample application makes use of both Istio's and Microprofile's implementation of telemetry and fault tolerance. This application also makes use of Istio's traffic routing rules which allows you to control the flow of traffic. 
+
+The microprofile features mostly supplement what istio provides, but in a few cases, like fault tolerance, you have the option of choosing microprofile or istio's implementation. 
+
+### Telemetry 
+
+The running application has the default distributed tracing implementation that istio provides. These metrics are provided by default when running on an istio enavbled environment. No extra configuration is needed. Microprofile supplements istio's [metrics](https://istio.io/docs/reference/config/policy-and-telemetry/metrics/) with it's own [metrics](https://github.com/eclipse/microprofile-metrics) data. 
+
+Open Liberty exposes these metrics through a metrics endpoint. We've exposed this endpoint in our Customer, Orders, Inventory, and Catalog microservices.  MicroProfile metrics provides application-specific metrics, which istio does not provide. It is complementary to Istio telemetry.
+
+[Open Liberty Metrics](https://openliberty.io/guides/microprofile-metrics.html)
+
+### Fault Tolerance 
+
+The Microprofile Spec provides fault tolerance policies that allow for timeout, retry, bulkhead, circuit breaker, and fallback properties to be configured. With the exception of fallback, istio also provides these policies. The BlueCompute application makes use of the microprofile timeout, retry, and fallback policies. 
+
+Even though the MP fault tolerant policies are configured at the application level, it is fairly easy to disable and replace them with the istio implementation. The Blue Compute application demonstrates this with the timeout policy. When istio is enabled for the application, a config map property is passed to the application that disables the MP timeout policy, and instead enables a timeout policy that is configured at the istio level, avoiding a conflict that multiplies the configured time out level when both the MP and Istio policies are enabled. 
+
+[This](https://openliberty.io/guides/microprofile-istio-retry-fallback.html#adding-the-microprofile-retry-annotation) guide goes through how to synergize Istio and Microprofile's fault tolerance policies in more detail. 
+
+## Traffic Management 
+
+This application makes use of Istio's [traffic management policies](https://istio.io/docs/concepts/traffic-management/). Each microservice has a [sidecar](https://istio.io/docs/reference/config/networking/sidecar/) enabled, a [virtual service](https://istio.io/docs/reference/config/networking/virtual-service/) configured, and [destination rules](https://istio.io/docs/reference/config/networking/destination-rule/) configured. 
+
+The istio enabled version of the sample application replaces the default ingress entry with a [gateway](https://istio.io/docs/reference/config/networking/gateway/). In addition, the web service also has traffic routing rules configured to showcase canary deployments. The istio changes specific to the web microservice  [here](https://istio.io/docs/concepts/traffic-management/).
+
+
 ## Cleanup
 
 To kill all port-forwarding connections, run the following command:
