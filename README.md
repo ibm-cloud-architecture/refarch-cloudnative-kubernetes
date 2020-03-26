@@ -81,7 +81,7 @@ runtimes.
 ### Download required CLIs
 To deploy the application, you require the following tools:
 - [kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it on your platform.
-- [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
+- [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://helm.sh/docs/intro/install/) to install it on your platform.
   + If using `IBM Cloud Private`, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html) to install `helm`.
 
 ### Get application source code (optional)
