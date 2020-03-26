@@ -1,0 +1,103 @@
+---
+# Source: bluecompute-ce/charts/couchdb/templates/statefulset.yaml
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: customer-couchdb-couchdb
+  labels:
+    app: couchdb
+    chart: couchdb-1.1.1
+    release: bluecompute
+    heritage: Helm
+spec:
+  replicas: 1
+  serviceName: customer-couchdb-couchdb
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: couchdb
+      release: bluecompute
+  template:
+    metadata:
+      labels:
+        app: couchdb
+        release: bluecompute
+    spec:
+      initContainers:
+        - name: init-copy
+          image: "busybox:latest"
+          imagePullPolicy: Always
+          command: ['sh','-c','cp /tmp/chart.ini /default.d; ls -lrt /default.d;']
+          volumeMounts:
+          - name: config
+            mountPath: /tmp/
+          - name: config-storage
+            mountPath: /default.d
+      containers:
+        - name: couchdb
+          image: "couchdb:2.3.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: couchdb
+              containerPort: 5984
+            - name: epmd
+              containerPort: 4369
+            - containerPort: 9100
+          env:
+            - name: COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: customer-couchdb-couchdb
+                  key: adminUsername
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: customer-couchdb-couchdb
+                  key: adminPassword
+            - name: COUCHDB_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: customer-couchdb-couchdb
+                  key: cookieAuthSecret
+            - name: ERL_FLAGS
+              value: " -name couchdb  -setcookie monster "
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5984
+          readinessProbe:
+            httpGet:
+              path: /_up
+              port: 5984
+          resources:
+            {}
+          volumeMounts:
+          - name: config-storage
+            mountPath: /opt/couchdb/etc/default.d
+          - name: database-storage
+            mountPath: /opt/couchdb/data
+        - name: couchdb-statefulset-assembler
+          image: "kocolosk/couchdb-statefulset-assembler:1.2.0"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: customer-couchdb-couchdb
+                  key: adminUsername
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: customer-couchdb-couchdb
+                  key: adminPassword
+      volumes:
+        - name: config-storage
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: customer-couchdb-couchdb
+            items:
+              - key: inifile
+                path: chart.ini
+        - name: database-storage
+          emptyDir: {}

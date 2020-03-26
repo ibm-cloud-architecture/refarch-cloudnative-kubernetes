@@ -1,0 +1,91 @@
+---
+# Source: bluecompute-ce/charts/auth/templates/deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: auth
+  labels:    
+    app: "auth"
+    tier: "backend"
+    version: "v1"
+    heritage: "Helm"
+    release: "bluecompute"
+    chart: auth-0.6.0
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:        
+        app: "auth"
+        tier: "backend"
+        version: "v1"
+        heritage: "Helm"
+        release: "bluecompute"
+        chart: auth-0.6.0
+    spec:
+      initContainers:      
+      - name: test-customer
+        image: ibmcase/bluecompute-bash-curl-ssl:latest
+        imagePullPolicy: IfNotPresent
+        command:
+        - "/bin/bash"
+        - "-c"
+        - "until curl --max-time 1 http://customer:8082; do echo waiting for customer-service; sleep 1; done"
+        resources:    
+          limits:
+            memory: 384Mi
+          requests:
+            memory: 64Mi
+        securityContext:    
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsUser: 2000
+      containers:
+      - name: "auth"
+        image: "ibmcase/bluecompute-auth:0.6.0"
+        imagePullPolicy: "Always"
+        volumeMounts:
+        - mountPath: /spring-tmp
+          name: spring-tmp
+        ports:
+        - containerPort: 8083
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8093
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8093
+          initialDelaySeconds: 35
+          periodSeconds: 20
+          failureThreshold: 6
+        resources:          
+          limits:
+            memory: 384Mi
+          requests:
+            memory: 64Mi
+        securityContext:          
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsUser: 2000
+        env:        
+        - name: SERVICE_PORT
+          value: "8083"
+        - name: JAVA_TMP_DIR
+          value: /spring-tmp        
+        - name: CUSTOMER_URL
+          value: http://customer:8082        
+        - name: HS256_KEY
+          valueFrom:
+            secretKeyRef:
+              name: bluecompute-hs256key
+              key:  key
+      volumes:
+      - name: spring-tmp
+        emptyDir:
+          medium: "Memory"

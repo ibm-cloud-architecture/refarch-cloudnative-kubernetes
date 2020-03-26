@@ -1,0 +1,22 @@
+---
+# Source: bluecompute-ce/charts/mariadb/templates/master-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: bluecompute-orders-mariadb
+  labels:
+    app: "orders-mariadb"
+    component: "master"
+    chart: mariadb-5.5.3
+    release: "bluecompute"
+    heritage: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+  - name: mysql
+    port: 3307
+    targetPort: mysql
+  selector:
+    app: "orders-mariadb"
+    component: "master"
+    release: "bluecompute"

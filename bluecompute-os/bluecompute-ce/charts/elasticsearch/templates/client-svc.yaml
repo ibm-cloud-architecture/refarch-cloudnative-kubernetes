@@ -1,0 +1,23 @@
+---
+# Source: bluecompute-ce/charts/elasticsearch/templates/client-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: elasticsearch
+    chart: elasticsearch-1.21.1
+    component: "client"
+    heritage: Helm
+    release: bluecompute
+  name: catalog-elasticsearch-client
+
+spec:
+  ports:
+    - name: http
+      port: 9200
+      targetPort: http
+  selector:
+    app: elasticsearch
+    component: "client"
+    release: bluecompute
+  type: ClusterIP

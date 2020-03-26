@@ -1,0 +1,20 @@
+---
+# Source: bluecompute-ce/charts/mysql/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-mysql
+  labels:
+    app: inventory-mysql
+    chart: "mysql-0.15.0"
+    release: "bluecompute"
+    heritage: "Helm"
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+  - name: mysql
+    port: 3306
+    targetPort: mysql
+  selector:
+    app: inventory-mysql

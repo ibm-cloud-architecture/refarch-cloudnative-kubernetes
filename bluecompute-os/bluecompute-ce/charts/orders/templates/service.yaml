@@ -1,0 +1,28 @@
+---
+# Source: bluecompute-ce/charts/orders/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders
+  namespace: bluecompute
+  labels:    
+    app: "orders"
+    tier: "backend"
+    version: "v1"
+    heritage: "Helm"
+    release: "bluecompute"
+    chart: orders-0.6.0
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8084
+    targetPort: 8084
+  selector:    
+    app: "orders"
+    tier: "backend"
+    version: "v1"
+    heritage: "Helm"
+    release: "bluecompute"
+    chart: orders-0.6.0

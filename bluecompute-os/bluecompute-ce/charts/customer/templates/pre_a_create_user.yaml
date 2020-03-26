@@ -1,0 +1,97 @@
+---
+# Source: bluecompute-ce/charts/customer/templates/pre_a_create_user.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bluecompute-customer-create-user-hw3sv
+  labels:    
+    app: "customer"
+    tier: "backend"
+    version: "v1"
+    heritage: "Helm"
+    release: "bluecompute"
+    chart: customer-0.6.0
+spec:
+  template:
+    metadata:
+      name: bluecompute-customer-create-user-sg7zf
+      labels:        
+        app: "customer"
+        tier: "backend"
+        version: "v1"
+        heritage: "Helm"
+        release: "bluecompute"
+        chart: customer-0.6.0
+    spec:
+      restartPolicy: Never
+      initContainers:      
+      - name: test-customer
+        image: ibmcase/bluecompute-bash-curl-ssl:latest
+        imagePullPolicy: IfNotPresent
+        command:
+        - "/bin/bash"
+        - "-c"
+        - "until curl --max-time 1 http://customer:8082; do echo waiting for customer-service; sleep 1; done"
+        resources:    
+          limits:
+            memory: 384Mi
+          requests:
+            memory: 64Mi
+        securityContext:    
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsUser: 2000
+        env:  
+        - name: COUCHDB_HOST
+          value: "customer-couchdb-svc-couchdb"
+        - name: COUCHDB_PROTOCOL
+          value: "http"
+        - name: COUCHDB_PORT
+          value: "5985"
+        - name: COUCHDB_DATABASE
+          value: "customers"
+        - name: COUCHDB_USER
+          valueFrom:
+            secretKeyRef:
+              name: customer-couchdb-secret
+              key: adminUsername
+        - name: COUCHDB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: customer-couchdb-secret
+              key: adminPassword
+      containers:
+      - name: create-user
+        image: ibmcase/bluecompute-bash-curl-ssl:latest
+        command: ["/bin/bash", "-c" ]
+        args:
+        - >
+            secret=${HS256_KEY};
+            jwt1=$(echo -n '{"alg":"HS256","typ":"JWT"}' | openssl enc -base64);
+            jwt2=$(echo -n "{\"scope\":[\"admin\"],\"user_name\":\"${TEST_USER}\"}" | openssl enc -base64);
+            jwt3=$(echo -n "${jwt1}.${jwt2}" | tr '+\/' '-_' | tr -d '=' | tr -d '\r\n');
+            jwt4=$(echo -n "${jwt3}" | openssl dgst -binary -sha256 -hmac "${secret}" | openssl enc -base64 | tr '+\/' '-_' | tr -d '=' | tr -d '\r\n');
+            jwt=$(echo -n "${jwt3}.${jwt4}");
+            for i in `seq 1 120`; do
+              curl --max-time 5 -X POST http://customer:8082/micro/customer -H "Content-type: application/json" -H "Authorization: Bearer ${jwt}" -d "{\"username\": \"${TEST_USER}\", \"password\": \"${TEST_PASSWORD}\", \"firstName\": \"user\", \"lastName\": \"name\", \"email\": \"user@name.com\"}";
+            done
+        imagePullPolicy: IfNotPresent
+        resources:          
+          limits:
+            memory: 384Mi
+          requests:
+            memory: 64Mi
+        securityContext:          
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsUser: 2000
+        env:        
+        - name: TEST_USER
+          value: "user"
+        - name: TEST_PASSWORD
+          value: "passw0rd"        
+        - name: HS256_KEY
+          valueFrom:
+            secretKeyRef:
+              name: bluecompute-hs256key
+              key:  key

@@ -1,0 +1,67 @@
+---
+# Source: bluecompute-ce/charts/web/templates/deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web
+  labels:    
+    app: "web"
+    tier: "frontend"
+    version: "v1"
+    heritage: "Helm"
+    release: "bluecompute"
+    chart: web-0.6.0
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:        
+        app: "web"
+        tier: "frontend"
+        version: "v1"
+        heritage: "Helm"
+        release: "bluecompute"
+        chart: web-0.6.0
+    spec:
+      containers:
+      - name: "web"
+        image: "ibmcase/bluecompute-web:0.6.0"
+        imagePullPolicy: "Always"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 9000
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 9000
+          initialDelaySeconds: 35
+          periodSeconds: 20
+          failureThreshold: 6
+        resources:          
+          limits:
+            memory: 128Mi
+          requests:
+            memory: 128Mi
+        securityContext:          
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsUser: 2000
+      volumes:
+      - name: config-volume
+        configMap:
+          name: web-config
+          items:
+          - key: checks
+            path: checks
+          - key: default.json
+            path: default.json

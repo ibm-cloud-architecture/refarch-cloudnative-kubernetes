@@ -1,0 +1,19 @@
+---
+# Source: bluecompute-ce/charts/couchdb/templates/headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: customer-couchdb-couchdb
+  labels:
+    app: couchdb
+    chart: couchdb-1.1.1
+    release: bluecompute
+    heritage: Helm
+spec:
+  clusterIP: None
+  ports:
+    - name: couchdb
+      port: 5984
+  selector:
+    app: couchdb
+    release: bluecompute

@@ -1,0 +1,11 @@
+---
+# Source: bluecompute-ce/charts/mariadb/templates/tests.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bluecompute-orders-mariadb-tests
+data:
+  run.sh: |-
+    @test "Testing MariaDB is accessible" {
+      mysql -h bluecompute-orders-mariadb -uroot -p$MARIADB_ROOT_PASSWORD -e 'show databases;'
+    }

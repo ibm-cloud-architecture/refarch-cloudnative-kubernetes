@@ -1,0 +1,111 @@
+---
+# Source: bluecompute-ce/charts/inventory/templates/deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: inventory
+  labels:    
+    app: "inventory"
+    tier: "backend"
+    version: "v1"
+    heritage: "Helm"
+    release: "bluecompute"
+    chart: inventory-0.6.0
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:        
+        app: "inventory"
+        tier: "backend"
+        version: "v1"
+        heritage: "Helm"
+        release: "bluecompute"
+        chart: inventory-0.6.0
+    spec:
+      initContainers:      
+      - name: test-mysql
+        image: mysql:5.7.14
+        imagePullPolicy: IfNotPresent
+        command:
+        - "/bin/bash"
+        - "-c"
+        - "until mysql -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e status; do echo waiting for mysql; sleep 1; done"
+        resources:    
+          limits:
+            memory: 384Mi
+          requests:
+            memory: 64Mi
+        securityContext:    
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsUser: 2000
+        env:  
+        - name: MYSQL_HOST
+          value: "inventory-mysql"
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: MYSQL_DATABASE
+          value: "inventorydb"
+        - name: MYSQL_USER
+          value: "dbuser"
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: inventory-mysql-secret
+              key: mysql-password
+      containers:
+      - name: "inventory"
+        image: "ibmcase/bluecompute-inventory:0.6.0"
+        imagePullPolicy: "Always"
+        volumeMounts:
+        - mountPath: /spring-tmp
+          name: spring-tmp
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8090
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8090
+          initialDelaySeconds: 35
+          periodSeconds: 20
+          failureThreshold: 6
+        resources:          
+          limits:
+            memory: 384Mi
+          requests:
+            memory: 64Mi
+        securityContext:          
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsUser: 2000
+        env:        
+        - name: SERVICE_PORT
+          value: "8080"
+        - name: JAVA_TMP_DIR
+          value: /spring-tmp        
+        - name: MYSQL_HOST
+          value: "inventory-mysql"
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: MYSQL_DATABASE
+          value: "inventorydb"
+        - name: MYSQL_USER
+          value: "dbuser"
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: inventory-mysql-secret
+              key: mysql-password
+      volumes:
+      - name: spring-tmp
+        emptyDir:
+          medium: "Memory"

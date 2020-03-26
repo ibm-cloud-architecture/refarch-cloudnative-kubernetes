@@ -1,0 +1,16 @@
+---
+# Source: bluecompute-ce/charts/couchdb/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: customer-couchdb-couchdb
+  labels:
+    app: couchdb
+    chart: "couchdb-1.1.1"
+    heritage: "Helm"
+    release: "bluecompute"
+data:
+  inifile: |
+    [chttpd]
+    bind_address = any
+    require_valid_user = false
