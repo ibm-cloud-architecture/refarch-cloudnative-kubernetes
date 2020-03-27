@@ -22,7 +22,6 @@
     + [Deploy BlueCompute Services on OpenLiberty](#deploy-bluecompute-services-on-openliberty)
     + [Deploy BlueCompute Across Multiple Kubernetes Cluster](#deploy-bluecompute-across-multiple-kubernetes-cluster)
     + [Istio-enabled Version](#istio-enabled-version)
-    + [Deploy BlueCompute to an OpenShift Cluster](#deploy-bluecompute-to-an-openshift-cluster)
   * [Conclusion](#conclusion)
   * [Further Reading: DevOps automation, Resiliency and Cloud Management and Monitoring](#further-reading-devops-automation-resiliency-and-cloud-management-and-monitoring)
     + [DevOps](#devops)
@@ -46,7 +45,7 @@ There are several components of this architecture.
 
 * This OmniChannel application contains an [AngularJS](https://angularjs.org/) based web application. The diagram depicts it as Browser.
 * The Web app invokes its own backend Microservices to fetch data, we call this component BFFs following the [Backend for Frontends](http://samnewman.io/patterns/architectural/bff/) pattern.  In this Layer, front end developers usually write backend logic for their front end.  The Web BFF is implemented using the Node.js Express Framework. These Microservices are packaged as Docker containers and managed by Kubernetes cluster.
-* The BFFs invokes another layer of reusable Java Microservices. In a real world project, this is sometimes written by different teams.  The reusable microservices are written in Java. They run inside a Kubernetes cluster, for example the [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) or [IBM Cloud Private](https://www.ibm.com/cloud/private), using [Docker](https://www.docker.com/).
+* The BFFs invokes another layer of reusable Java Microservices. In a real world project, this is sometimes written by different teams.  The reusable microservices are written in Java. They run inside a Kubernetes cluster, for example the [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) or [Red Hat Openshift](https://www.redhat.com/en/technologies/cloud-computing/openshift), using [Docker](https://www.docker.com/).
 * The Java Microservices retrieve their data from the following databases:
   + The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/).
   + The Customer service stores and retrieves Customer data from a searchable JSON datasource using [CouchDB](http://couchdb.apache.org/).
@@ -77,10 +76,10 @@ runtimes.
 
 ### Download required CLIs
 To deploy the application, you require the following tools:
+- [oc](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) (oc CLI) - Follow the instructions [here](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html#installing-the-cli)
 - [kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it on your platform.
 - [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
-  + If using `IBM Cloud Private`, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html) to install `helm`.
-
+ 
 ### Get application source code (optional)
 - Clone the base repository:
   ```bash
@@ -163,7 +162,6 @@ The following clusters have been tested with this sample application:
   ```
 
 - [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
-- [IBM Cloud Private](https://www.ibm.com/cloud/private) - Create a Kubernetes cluster in an on-premise datacenter.  The community edition (IBM Cloud Private CE) is free of charge.  Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.0/installing/installing.html) to install IBM Cloud Private CE.
 
 ### Deploy to Kubernetes Cluster
 We have packaged all the application components as Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the application, follow the instructions to configure `kubectl` for access to the Kubernetes cluster.
@@ -194,8 +192,20 @@ You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-
 ![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)
 
 ### Red Hat CodeReady Containers
+Retrieve the web route URL as follows.
 
-**TBD**
+```bash
+oc get route
+```
+
+You should see an output with the route URL similar to the following:
+
+```bash
+NAME   HOST/PORT                                 PATH   SERVICES   PORT   TERMINATION   WILDCARD
+web    web-bluecompute.apps.cp4mcmdemo.kpak.tk          web        http                 None
+```
+
+Where `YOUR_CLUSTER_DOMAIN.com` is the OpenShift Cluster's domain name and `web` is the CNAME created for the web route.
 
 ### Minikube
 If you've installed on `minikube` you can find the IP by issuing:
@@ -211,7 +221,12 @@ Use the following test credentials to login:
 - **Password:** passw0rd
 
 ## Delete the Application
-To delete the application from your cluster, run the following:
+To delete the application from your openshift cluster, run the following:
+```bash
+oc delete project bluecompute
+``` 
+
+To delete the application from your kubernetes cluster using helm, run the following:
 ```bash
 helm delete bluecompute --purge
 ```
@@ -276,7 +291,7 @@ Sometimes it is required for microservices in one Kubernetes cluster to communic
 To learn about adding BlueCompute to an Istio-Enabled cluster, please checkout the document located at [docs/istio/README.md](docs/istio/README.md).
 
 ## Conclusion
-You have successfully deployed a 10-Microservices application on a Kubernetes Cluster in less than 1 minute by using the power of Helm charts. With such tools you can be assured that, in the case of Disaster Recovery, you can get your entire application up an running in no time. Also, by using Helm and Kubernetes, you can deploy your app in new environments to do things such as Q/A Testing, Performance Testing, UAT Testing, and tear it down afterwards as part of an automated testing pipeline.
+You have successfully deployed a 10-Microservices application on a Kubernetes Cluster in less than 1 minute. With such tools you can be assured that, in the case of Disaster Recovery, you can get your entire application up an running in no time. Also, by using Kubernetes, you can deploy your app in new environments to do things such as Q/A Testing, Performance Testing, UAT Testing, and tear it down afterwards as part of an automated testing pipeline.
 
 To learn how you can put together an automated DevOps pipeline for Kubernetes, checkout the following section.
 
