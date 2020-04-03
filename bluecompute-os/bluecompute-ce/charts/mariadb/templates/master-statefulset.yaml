@@ -1,0 +1,96 @@
+---
+# Source: bluecompute-ce/charts/mariadb/templates/master-statefulset.yaml
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: bluecompute-mariadb
+  labels:
+    app: "orders-mariadb"
+    chart: mariadb-5.5.3
+    component: "master"
+    release: "bluecompute"
+    heritage: "Helm"
+spec:
+  selector:
+    matchLabels:
+      release: "bluecompute"
+      component: "master"
+      app: orders-mariadb
+  serviceName: "bluecompute-mariadb"
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "orders-mariadb"
+        component: "master"
+        release: "bluecompute"
+        chart: mariadb-5.5.3
+    spec:
+      serviceAccountName: "default"
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app: "orders-mariadb"
+                  release: "bluecompute"
+      containers:
+      - name: "mariadb"
+        image: docker.io/bitnami/mariadb:10.1.38
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: MARIADB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: bluecompute-orders-mariadb
+              key: mariadb-root-password
+        - name: MARIADB_USER
+          value: "dbuser"
+        - name: MARIADB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: bluecompute-orders-mariadb
+              key: mariadb-password
+        - name: MARIADB_DATABASE
+          value: "ordersdb"
+        ports:
+        - name: mysql
+          containerPort: 3306
+        livenessProbe:
+          exec:
+            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MARIADB_ROOT_PASSWORD"]
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command: ["sh", "-c", "exec mysqladmin status -uroot -p$MARIADB_ROOT_PASSWORD"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+        resources:
+          {}
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/mariadb
+        - name: config
+          mountPath: /opt/bitnami/mariadb/conf/my.cnf
+          subPath: my.cnf
+      volumes:
+        - name: config
+          configMap:
+            name: bluecompute-mariadb
+        - name: data
+          emptyDir: {}

@@ -1,0 +1,41 @@
+---
+# Source: bluecompute-ce/templates/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: bluecompute-bluecompute-ce
+  labels:    
+    app: bluecompute
+    heritage: "Helm"
+    release: "bluecompute"
+    chart: bluecompute-ce-0.0.9
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: web
+          servicePort: 80
+  - http:
+      paths:
+      - path: /oauth
+        backend:
+          serviceName: auth
+          servicePort: 8083
+      - path: /micro/items
+        backend:
+          serviceName: catalog
+          servicePort: 8081
+      - path: /micro/customer
+        backend:
+          serviceName: customer
+          servicePort: 8082
+      - path: /micro/inventory
+        backend:
+          serviceName: inventory
+          servicePort: 8080
+      - path: /micro/orders
+        backend:
+          serviceName: orders
+          servicePort: 8084

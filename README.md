@@ -7,25 +7,21 @@
   * [Deploy the Application](#deploy-the-application)
     + [Download required CLIs](#download-required-clis)
     + [Get application source code (optional)](#get-application-source-code-optional)
+    + [Create a OpenShift Cluster](#create-a-openshift-cluster)
+    + [Deploy to OpenShift Cluster](#deploy-to-openshift-cluster)
     + [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
     + [Deploy to Kubernetes Cluster](#deploy-to-kubernetes-cluster)
   * [Validate the Application](#validate-the-application)
+    + [Red Hat CodeReady Containers](#red-hat-codeready-containers)
     + [Minikube](#minikube)
     + [Login](#login)
   * [Delete the Application](#delete-the-application)
   * [Optional Deployments](#optional-deployments)
     + [Deploy BlueCompute to IBM Cloud Kubernetes Service](#deploy-bluecompute-to-ibm-cloud-kubernetes-service)
       - [Access and Validate the Application](#access-and-validate-the-application)
-    + [Deploy BlueCompute to IBM Cloud Private](#deploy-bluecompute-to-ibm-cloud-private)
-      - [OPTIONAL: Deploying BlueCompute to non-default Namespaces](#optional-deploying-bluecompute-to-non-default-namespaces)
-      - [Access and Validate the Application](#access-and-validate-the-application-1)
-      - [Delete the Application](#delete-the-application-1)
-      - [Helm Version](#helm-version)
     + [Deploy BlueCompute Services on OpenLiberty](#deploy-bluecompute-services-on-openliberty)
-    + [Deploy BlueCompute to IBM Cloud Private Cluster with No Internet Access](#deploy-bluecompute-to-ibm-cloud-private-cluster-with-no-internet-access)
     + [Deploy BlueCompute Across Multiple Kubernetes Cluster](#deploy-bluecompute-across-multiple-kubernetes-cluster)
     + [Istio-enabled Version](#istio-enabled-version)
-    + [Deploy BlueCompute to an OpenShift Cluster](#deploy-bluecompute-to-an-openshift-cluster)
   * [Conclusion](#conclusion)
   * [Further Reading: DevOps automation, Resiliency and Cloud Management and Monitoring](#further-reading-devops-automation-resiliency-and-cloud-management-and-monitoring)
     + [DevOps](#devops)
@@ -49,7 +45,7 @@ There are several components of this architecture.
 
 * This OmniChannel application contains an [AngularJS](https://angularjs.org/) based web application. The diagram depicts it as Browser.
 * The Web app invokes its own backend Microservices to fetch data, we call this component BFFs following the [Backend for Frontends](http://samnewman.io/patterns/architectural/bff/) pattern.  In this Layer, front end developers usually write backend logic for their front end.  The Web BFF is implemented using the Node.js Express Framework. These Microservices are packaged as Docker containers and managed by Kubernetes cluster.
-* The BFFs invokes another layer of reusable Java Microservices. In a real world project, this is sometimes written by different teams.  The reusable microservices are written in Java. They run inside a Kubernetes cluster, for example the [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) or [IBM Cloud Private](https://www.ibm.com/cloud/private), using [Docker](https://www.docker.com/).
+* The BFFs invokes another layer of reusable Java Microservices. In a real world project, this is sometimes written by different teams.  The reusable microservices are written in Java. They run inside a Kubernetes cluster, for example the [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) or [Red Hat Openshift](https://www.redhat.com/en/technologies/cloud-computing/openshift), using [Docker](https://www.docker.com/).
 * The Java Microservices retrieve their data from the following databases:
   + The Catalog service retrieves items from a searchable JSON datasource using [ElasticSearch](https://www.elastic.co/).
   + The Customer service stores and retrieves Customer data from a searchable JSON datasource using [CouchDB](http://couchdb.apache.org/).
@@ -80,15 +76,84 @@ runtimes.
 
 ### Download required CLIs
 To deploy the application, you require the following tools:
+- [oc](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) (oc CLI) - Follow the instructions [here](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html#installing-the-cli)
 - [kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it on your platform.
-- [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://helm.sh/docs/intro/install/) to install it on your platform.
-  + If using `IBM Cloud Private`, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html) to install `helm`.
-
+- [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
 ### Get application source code (optional)
 - Clone the base repository:
   ```bash
   git clone -b spring --single-branch https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes
   ```
+
+### Create a OpenShift Cluster
+
+The following clusters have been tested with this sample application:
+
+- [Red Hat CodeReady Containers](https://cloud.redhat.com/openshift/install/crc/installer-provisioned) - Create an OpenShift cluster on your local machine.
+
+To provision it:
+  ```bash
+  crc start 
+  ```
+Enter your pull secret when prompted. You can get it [here](https://cloud.redhat.com/openshift/install/crc/installer-provisioned)
+
+- [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Standard cluster.  Follow the instructions [here](https://cloud.ibm.com/docs/openshift?topic=openshift-getting-started).
+
+### Deploy to OpenShift Cluster
+
+To deploy the application, follow the instructions to configure `oc` for access to the OpenShift cluster.
+
+1. Log into the OpenShift cluster.
+
+```bash
+oc login
+```
+2. Create a new project to deploy the `bluecompute-ce` YAML files:
+
+```bash
+oc new-project bluecompute
+```
+
+3. Add Security Context Constraints (SCC) to the default Service Account.
+
+```bash
+oc adm policy add-scc-to-user anyuid system:serviceaccount:bluecompute:default
+
+oc adm policy add-scc-to-user privileged system:serviceaccount:bluecompute:default
+```
+
+4. To deploy the `bluecompute-ce` YAML files, use the command below:
+
+```bash
+oc apply --recursive --filename bluecompute-os
+```
+
+5. After a minute or so, the containers will be deployed to the cluster. Use the below command to test if the pods are running.
+
+```bash
+oc get pods | grep -v test
+```
+
+6. Expose the web service.
+
+```bash
+oc expose svc web
+```
+
+7. Retrieve the web route URL as follows.
+
+```bash
+oc get route
+```
+
+You should see an output with the route URL similar to the following:
+
+```bash
+NAME   HOST/PORT                                 PATH   SERVICES   PORT   TERMINATION   WILDCARD
+web    web-bluecompute.apps.cp4mcmdemo.kpak.tk          web        http                 None
+```
+
+Where `YOUR_CLUSTER_DOMAIN.com` is the OpenShift Cluster's domain name and `web` is the CNAME created for the web route.
 
 ### Create a Kubernetes Cluster
 The following clusters have been tested with this sample application:
@@ -106,7 +171,6 @@ The following clusters have been tested with this sample application:
   ```
 
 - [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Lite cluster, which is free of charge.  Follow the instructions [here](https://console.bluemix.net/docs/containers/container_index.html).
-- [IBM Cloud Private](https://www.ibm.com/cloud/private) - Create a Kubernetes cluster in an on-premise datacenter.  The community edition (IBM Cloud Private CE) is free of charge.  Follow the instructions [here](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.0/installing/installing.html) to install IBM Cloud Private CE.
 
 ### Deploy to Kubernetes Cluster
 We have packaged all the application components as Kubernetes [Charts](https://github.com/kubernetes/charts). To deploy the application, follow the instructions to configure `kubectl` for access to the Kubernetes cluster.
@@ -131,9 +195,26 @@ helm upgrade --install bluecompute ibmcase/bluecompute-ce
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
 
 ## Validate the Application
+
 You can reference [this link](https://github.com/ibm-cloud-architecture/refarch-cloudnative-bluecompute-web/tree/spring#validate-the-web-application) to validate the sample web application.
 
 ![BlueCompute Detail](static/imgs/bluecompute_web_home.png?raw=true)
+
+### Red Hat CodeReady Containers
+Retrieve the web route URL as follows.
+
+```bash
+oc get route
+```
+
+You should see an output with the route URL similar to the following:
+
+```bash
+NAME   HOST/PORT                                 PATH   SERVICES   PORT   TERMINATION   WILDCARD
+web    web-bluecompute.apps.cp4mcmdemo.kpak.tk          web        http                 None
+```
+
+Where `YOUR_CLUSTER_DOMAIN.com` is the OpenShift Cluster's domain name and `web` is the CNAME created for the web route.
 
 ### Minikube
 If you've installed on `minikube` you can find the IP by issuing:
@@ -149,7 +230,12 @@ Use the following test credentials to login:
 - **Password:** passw0rd
 
 ## Delete the Application
-To delete the application from your cluster, run the following:
+To delete the application from your openshift cluster, run the following:
+```bash
+oc delete project bluecompute
+``` 
+
+To delete the application from your kubernetes cluster using helm, run the following:
 ```bash
 helm delete bluecompute --purge
 ```
@@ -183,93 +269,6 @@ In your browser navigate to **`http://<IP>:31337`**.
 
 To validate the application itself, feel free to use the instructions [here](#validate-the-application).
 
-### Deploy BlueCompute to IBM Cloud Private
-IBM Cloud Private (ICP) contains integration with Helm that allows you to install the application and all of its components in a few steps. This can be done as an administrator using the following steps:
-1. Click on the user icon on the top right corner and then click on `Configure client`.
-2. Copy the displayed `kubectl` configuration, paste it in your terminal, and press Enter on your keyboard.
-3. Download and initialize helm in your cluster using [these instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_3.1.0/app_center/create_helm_cli.html).
-4. **NOTE**: If using IBM Cloud Private 3.1 or newer, you are required to create an [ImagePolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_images/image_security.html) that allows you to deploy images from the `docker.io` and `docker.elastic.co` Docker Registries:
-  ```bash
-  kubectl apply -f https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/static/image_policy.yaml
-  ```
-
-5. Add the `helm` package repository containing the reference application:
-  ```bash
-  helm repo add ibmcase https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes/spring/docs/charts/bluecompute-ce
-  ```
-
-6. Install the reference application:
-  ```bash
-  helm upgrade --install bluecompute ibmcase/bluecompute-ce --tls
-  ```
-
-7. **NOTE**: If you want to deploy `bluecompute-ce` to a `non-default` namespace, follow the instructions in [Deploying BlueCompute to non-default Namespaces](#optional-deploying-bluecompute-to-non-default-namespaces) as there are a few extra steps required that involve **PodSecurityPolicies**.
-
-After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
-
-#### OPTIONAL: Deploying BlueCompute to non-default Namespaces
-The `default` namespace in IBM Cloud Private is a special namespace that lets you deploy any type of container (including privileged containers) as long as you create an [ImagePolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_images/image_security.html) for it. That's because the default namespace's service account is authorized to use the [`ibm-privileged-psp` PodSecurityPolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/security.html), which provides admin-level access to that service account. This is great for deploying workloads that require admin-level access, such as monitoring or networking agents.
-
-However, most Kubernetes users don't require admin-level access to the cluster so they are usually assigned to work with non-default namespaces that have the [`ibm-restricted-psp` PodSecurityPolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/security.html), which doesn't have admin-level access and only allows you to deploy non-root unprivileged containers. Shall those users (or service accounts) require admin-level access to the cluster, they would have to request it before it is granted.
-
-In order to deploy `bluecompute-ce` to a `non-default` namespace, you will need to bind that namespace's default service account to the `ibm-privileged-psp` [PodSecurityPolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/security.html). That's because the `mysql`, `elasticsearch`, `couchdb`, and `mariadb` community Helm Charts are running their processes as root because they don't specify a `numeric id` for their container users in their [SecurityContext](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) (i.e. checkout SecurityContext in [Elasticsearch Helm Chart](https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L30)) if they have any. That's unfortunate because the Dockerfiles used in the Helm charts **DO** specify a non-root username (as shown in the [MySQL Dockerfile](https://github.com/docker-library/mysql/blob/bb7ea52db4e12d3fb526450d22382d5cd8cd41ca/5.7/Dockerfile#L4)) but Kubernetes requires a **NUMERIC** instead.
-
-The Elasticsearch Helm Chart also requires the use of a root [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) (as shown [here](https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-state-fulset.yaml#L101)) and a privileged Init Container (as shown [here](https://github.com/helm/charts/blob/master/stable/elasticsearch/templates/master-statefulset.yaml#L79)) to manually increase lockable memory limits and disable swapping in the worker nodes for Elasticsearch to work properly, even though Elasticsearch itself does not run as root.
-
-Now that you understand why we need to authorize a non-default namespace to use the `ibm-privileged-psp` [PodSecurityPolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/security.html), let's go ahead and do that with the following commands:
-
-```bash
-# Create non-default bluecompute namespace
-kubectl create namespace bluecompute
-
-# Create Role that allows the use of ibm-privileged-psp PodSecurityPolicy
-kubectl create role psp:privileged -n bluecompute \
-    --verb=use \
-    --resource=podsecuritypolicy \
-    --resource-name=ibm-privileged-psp
-
-# Bind the above role to the default service account in bluecompute namespace
-kubectl create rolebinding bluecompute:psp:privileged -n bluecompute \
-    --role=psp:privileged \
-    --serviceaccount=bluecompute:default
-```
-
-Now that the `default` service account for the `bluecompute` namespace is authorized to use the `ibm-privileged-psp` [PodSecurityPolicy](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.2/manage_cluster/security.html), let's deploy `bluecompute-ce` chart with the following command:
-
-```bash
-helm upgrade --install bluecompute --namespace bluecompute ibmcase/bluecompute-ce --tls
-```
-
-After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md).
-
-#### Access and Validate the Application
-To access the application, you need to access the IP address of one of your proxy nodes. Pick the IP of any of your proxy nodes.
-
-In your browser navigate to **`http://<IP>:31337`**.
-
-To validate the application itself, feel free to use the instructions [here](#validate-the-application).
-
-#### Delete the Application
-To delete the application from your cluster, run the following commands:
-```bash
-# Delete the bluecompute-ce chart
-helm delete bluecompute --purge --tls
-
-# If you deployed the chart to a non-default namespace,
-# you also have to delete both the Role and the RoleBinding
-# NOTE: The following assumes that you deployed the chart to bluecompute namespace
-kubectl --namespace bluecompute delete rolebinding bluecompute:psp:privileged;
-kubectl --namespace bluecompute delete role psp:privileged;
-```
-
-#### Helm Version
-If Chart installation fails, it usually has to do with the version of helm in your workstation being incompatible with the one installed in the IBM Cloud Private Cluster. To verify installed versions of helm, use the following command:
-```bash
-helm version --tls
-```
-
-If the versions are different, you might want to delete the current helm client and install a version of helm client that matches the server one. To do so, please refer to Helm's guide [here](https://github.com/kubernetes/helm/blob/master/docs/install.md).
-
 ### Deploy BlueCompute Services on OpenLiberty
 
 The Spring Boot applications can be deployed on WebSphere Liberty as well. In this case, the embedded server i.e. the application server packaged up in the JAR file will be Liberty. To deploy the BlueCompute services on Open Liberty, follow the instructions below.
@@ -294,20 +293,14 @@ helm upgrade --install bluecompute -f openliberty.yaml ibmcase/bluecompute-ce
 
 After a minute or so, the containers will be deployed to the cluster.  The output of the installation contains instructions on how to access the application once it has finished deploying.  For more information on the additional options for the chart, see [this document](bluecompute-ce/README.md). To validate the application, have a look at [Validate the Application](#validate-the-application) for instructions.
 
-### Deploy BlueCompute to IBM Cloud Private Cluster with No Internet Access
-Sometimes you are required to deploy services to an ICP cluster that has no internet access, which means that it can only pull docker images from ICP's Private Docker Registry. To learn how you can package the BlueCompute Chart (and all its Docker images), upload it directly to ICP, and install it without an Internet connection, checkout [Running Microservices Reference Architecture in Airgapped ICP Environments](docs/icp-uploading-chart).
-
 ### Deploy BlueCompute Across Multiple Kubernetes Cluster
 Sometimes it is required for microservices in one Kubernetes cluster to communicate with services in separate Kubernetes cluster. To learn how you can deploy BlueCompute services across clusters and have them communicate with one another, checkout [Microservice to Microservice Communication across clusters using Private Network](docs/cluster-to-cluster).
 
 ### Istio-enabled Version
-To learn about adding BlueCompute to an Istio-Enabled cluster, please checkout the document located at [docs/istio/README.md](docs/istio/README.md);
-
-### Deploy BlueCompute to an OpenShift Cluster
-To learn about deploying BlueCompute into an OpenShift cluster, please checkout the document located at [docs/openshift/README.md](docs/openshift/README.md);
+To learn about adding BlueCompute to an Istio-Enabled cluster, please checkout the document located at [docs/istio/README.md](docs/istio/README.md).
 
 ## Conclusion
-You have successfully deployed a 10-Microservices application on a Kubernetes Cluster in less than 1 minute by using the power of Helm charts. With such tools you can be assured that, in the case of Disaster Recovery, you can get your entire application up an running in no time. Also, by using Helm and Kubernetes, you can deploy your app in new environments to do things such as Q/A Testing, Performance Testing, UAT Testing, and tear it down afterwards as part of an automated testing pipeline.
+You have successfully deployed a 10-Microservices application on a Kubernetes Cluster in less than 1 minute. With such tools you can be assured that, in the case of Disaster Recovery, you can get your entire application up an running in no time. Also, by using Kubernetes, you can deploy your app in new environments to do things such as Q/A Testing, Performance Testing, UAT Testing, and tear it down afterwards as part of an automated testing pipeline.
 
 To learn how you can put together an automated DevOps pipeline for Kubernetes, checkout the following section.
 

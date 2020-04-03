@@ -1,0 +1,81 @@
+---
+# Source: bluecompute-ce/charts/web/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-config
+  labels:    
+    app: "web"
+    tier: "frontend"
+    version: "v1"
+    heritage: "Helm"
+    release: "bluecompute"
+    chart: web-0.6.0
+data:
+  checks: "# Check the main website, including text content\r\n/\tIBM Cloud Architecture\r\n\r\n#Check
+    the Inventory page\r\n/catalog/ Dayton Meat Chopper\r\n\r\n# Check for stylesheets
+    and for text content in stylesheets\r\n/stylesheets/font-awesome/font-awesome.css
+    \   @font-face\r\n\r\n\r\n# Check a sub-domain\r\n#//some-subdomain.some-site.com/reviews
+    Review Data\r\n\r\n# Check HTTP access, and for text content\r\n# http://localhost:8000\tBlueCompute
+    Store!\r\n# http://localhost:8000/inventory/\tDayton Meat Chopper\r\n"
+  default.json: |
+    {
+      "Application": {
+        "cluster_name": "my-cluster",
+        "region": "us-south"
+      },
+      "Auth-Server": {
+        "client_id":"bluecomputeweb",
+        "client_secret":"bluecomputewebs3cret"
+      },
+      "APIs": {
+        "catalog": {
+          "protocol": "http",
+          "service_name": "catalog:8081",
+          "base_path": "/micro",
+          "require": [
+          ]
+        },
+        "orders": {
+          "protocol": "http",
+          "service_name": "orders:8084",
+          "base_path": "/micro",
+          "require": [
+            "oauth"
+          ]
+        },
+        "review": {
+          "protocol": "http",
+          "base_path": "/api",
+          "require": [
+            "oauth"
+          ]
+        },
+        "customer": {
+          "protocol": "http",
+          "service_name": "customer:8082",
+          "base_path": "/micro",
+          "require": [
+            "client_id",
+            "oauth"
+
+          ]
+        },
+        "oauth20": {
+          "protocol": "http",
+          "service_name": "auth:8083",
+          "base_path": "/oauth",
+          "paths": {
+            "authz": "/authorize",
+            "token": "/token"
+          },
+          "grant_types": [
+            "password"
+          ],
+          "scopes": [
+            "bluecompute"
+          ],
+          "redirect_url": "http://localhost"
+        }
+      }
+    }
