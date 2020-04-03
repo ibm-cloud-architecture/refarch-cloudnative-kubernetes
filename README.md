@@ -79,7 +79,6 @@ To deploy the application, you require the following tools:
 - [oc](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) (oc CLI) - Follow the instructions [here](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html#installing-the-cli)
 - [kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it on your platform.
 - [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
- 
 ### Get application source code (optional)
 - Clone the base repository:
   ```bash
