@@ -88,7 +88,17 @@ To deploy the application, you require the following tools:
 
 ### Create a OpenShift Cluster
 
-**TBD**
+The following clusters have been tested with this sample application:
+
+- [Red Hat CodeReady Containers](https://cloud.redhat.com/openshift/install/crc/installer-provisioned) - Create an OpenShift cluster on your local machine.
+
+To provision it:
+  ```bash
+  crc start 
+  ```
+Enter your pull secret when prompted. You can get it [here](https://cloud.redhat.com/openshift/install/crc/installer-provisioned)
+
+- [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service) - Create a Kubernetes cluster in IBM Cloud.  The application runs in the Standard cluster.  Follow the instructions [here](https://cloud.ibm.com/docs/openshift?topic=openshift-getting-started).
 
 ### Deploy to OpenShift Cluster
 
