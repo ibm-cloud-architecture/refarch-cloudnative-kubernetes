@@ -36,14 +36,18 @@
 ## Introduction
 This project provides a reference implementation for running a Cloud Native Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.
 
-This Personal part, where I have c created using cmd:
+This Personal part, where I have created using cmd:
 
+```bash
 helm template docs/charts/bluecompute-ce/bluecompute-ce-0.0.10.tgz --namespace bluecompute  --name-template openshift --set web.service.type=ClusterIP --output-dir bluecompute-os
+```
 
-Updated apiVersion as
-extensions/v1beta to apps/v1
-apps/v1beta2 to apps/v1
-extensions/v1beta1 to networking.k8s.io/v1
+Updated apiVersion as:
+1. extensions/v1beta to apps/v1
+
+2. apps/v1beta2 to apps/v1
+
+3. extensions/v1beta1 to networking.k8s.io/v1
 
 ![Application Architecture](static/imgs/app_architecture.png?raw=true)
 
