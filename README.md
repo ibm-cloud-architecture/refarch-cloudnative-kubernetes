@@ -34,7 +34,7 @@
       - [Contributing a Chart to `ibmcase-charts` Helm Chart Repository](#contributing-a-chart-to-ibmcase-charts-helm-chart-repository)
 
 ## Introduction
-This project provides a reference implementation for running a Cloud Native Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.
+This project provides a reference implementation for running a Cloud Native Web Application using a Microservices architecture on a Kubernetes cluster.  
 
 This Personal part, where I have created using cmd:
 
@@ -48,6 +48,8 @@ Updated apiVersion as:
 2. apps/v1beta2 to apps/v1
 
 3. extensions/v1beta1 to networking.k8s.io/v1
+
+The logical architecture for this reference implementation is shown in the picture below.
 
 ![Application Architecture](static/imgs/app_architecture.png?raw=true)
 
