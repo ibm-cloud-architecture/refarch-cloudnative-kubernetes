@@ -1,29 +1,32 @@
 ---
 # Source: bluecompute-ce/charts/orders/templates/deployment.yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: orders
-  labels:    
+  labels:
     app: "orders"
     tier: "backend"
     version: "v1"
     heritage: "Helm"
     release: "bluecompute"
-    chart: orders-0.6.0
+    chart: orders-0.6.1
 spec:
+  selector:
+    matchLabels:
+      app: orders
   replicas: 1
   template:
     metadata:
-      labels:        
+      labels:
         app: "orders"
         tier: "backend"
         version: "v1"
         heritage: "Helm"
         release: "bluecompute"
-        chart: orders-0.6.0
+        chart: orders-0.6.1
     spec:
-      initContainers:      
+      initContainers:
       - name: test-mariadb
         image: mysql:5.7.14
         imagePullPolicy: IfNotPresent
@@ -31,16 +34,16 @@ spec:
         - "/bin/bash"
         - "-c"
         - "until mysql -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e status; do echo waiting for mariadb; sleep 1; done"
-        resources:    
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:    
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
-        env:  
+        env:
         - name: MYSQL_HOST
           value: bluecompute-orders-mariadb
         - name: MYSQL_PORT
@@ -78,20 +81,20 @@ spec:
           initialDelaySeconds: 35
           periodSeconds: 20
           failureThreshold: 6
-        resources:          
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:          
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
-        env:        
+        env:
         - name: SERVICE_PORT
           value: "8084"
         - name: JAVA_TMP_DIR
-          value: /spring-tmp        
+          value: /spring-tmp
         - name: MYSQL_HOST
           value: bluecompute-orders-mariadb
         - name: MYSQL_PORT
@@ -104,7 +107,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: orders-mariadb-secret
-              key: mariadb-password        
+              key: mariadb-password
         - name: HS256_KEY
           valueFrom:
             secretKeyRef:

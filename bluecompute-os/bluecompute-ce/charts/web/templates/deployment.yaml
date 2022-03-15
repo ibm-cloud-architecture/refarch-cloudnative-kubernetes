@@ -1,10 +1,10 @@
 ---
 # Source: bluecompute-ce/charts/web/templates/deployment.yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web
-  labels:    
+  labels:
     app: "web"
     tier: "frontend"
     version: "v1"
@@ -12,10 +12,13 @@ metadata:
     release: "bluecompute"
     chart: web-0.6.0
 spec:
+  selector:
+    matchLabels:
+      app: web
   replicas: 1
   template:
     metadata:
-      labels:        
+      labels:
         app: "web"
         tier: "frontend"
         version: "v1"
@@ -47,12 +50,12 @@ spec:
           initialDelaySeconds: 35
           periodSeconds: 20
           failureThreshold: 6
-        resources:          
+        resources:
           limits:
             memory: 128Mi
           requests:
             memory: 128Mi
-        securityContext:          
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000

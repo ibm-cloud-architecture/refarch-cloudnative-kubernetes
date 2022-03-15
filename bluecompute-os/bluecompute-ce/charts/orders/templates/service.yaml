@@ -11,7 +11,7 @@ metadata:
     version: "v1"
     heritage: "Helm"
     release: "bluecompute"
-    chart: orders-0.6.0
+    chart: orders-0.6.1
 spec:
   type: ClusterIP
   ports:
@@ -25,4 +25,4 @@ spec:
     version: "v1"
     heritage: "Helm"
     release: "bluecompute"
-    chart: orders-0.6.0
+    chart: orders-0.6.1

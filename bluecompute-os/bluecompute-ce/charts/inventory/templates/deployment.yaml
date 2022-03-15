@@ -1,10 +1,10 @@
 ---
 # Source: bluecompute-ce/charts/inventory/templates/deployment.yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: inventory
-  labels:    
+  labels:
     app: "inventory"
     tier: "backend"
     version: "v1"
@@ -12,10 +12,13 @@ metadata:
     release: "bluecompute"
     chart: inventory-0.6.0
 spec:
+  selector:
+    matchLabels:
+      app: inventory
   replicas: 1
   template:
     metadata:
-      labels:        
+      labels:
         app: "inventory"
         tier: "backend"
         version: "v1"
@@ -23,7 +26,7 @@ spec:
         release: "bluecompute"
         chart: inventory-0.6.0
     spec:
-      initContainers:      
+      initContainers:
       - name: test-mysql
         image: mysql:5.7.14
         imagePullPolicy: IfNotPresent
@@ -31,16 +34,16 @@ spec:
         - "/bin/bash"
         - "-c"
         - "until mysql -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e status; do echo waiting for mysql; sleep 1; done"
-        resources:    
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:    
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
-        env:  
+        env:
         - name: MYSQL_HOST
           value: "inventory-mysql"
         - name: MYSQL_PORT
@@ -78,20 +81,20 @@ spec:
           initialDelaySeconds: 35
           periodSeconds: 20
           failureThreshold: 6
-        resources:          
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:          
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
-        env:        
+        env:
         - name: SERVICE_PORT
           value: "8080"
         - name: JAVA_TMP_DIR
-          value: /spring-tmp        
+          value: /spring-tmp
         - name: MYSQL_HOST
           value: "inventory-mysql"
         - name: MYSQL_PORT

@@ -1,10 +1,10 @@
 ---
 # Source: bluecompute-ce/charts/catalog/templates/deployment.yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: catalog
-  labels:    
+  labels:
     app: "catalog"
     tier: "backend"
     version: "v1"
@@ -12,10 +12,13 @@ metadata:
     release: "bluecompute"
     chart: catalog-0.6.0
 spec:
+  selector:
+    matchLabels:
+      app: catalog
   replicas: 1
   template:
     metadata:
-      labels:        
+      labels:
         app: "catalog"
         tier: "backend"
         version: "v1"
@@ -23,7 +26,7 @@ spec:
         release: "bluecompute"
         chart: catalog-0.6.0
     spec:
-      initContainers:      
+      initContainers:
       - name: test-elasticsearch
         image: alexeiled/curl:latest
         imagePullPolicy: IfNotPresent
@@ -31,16 +34,16 @@ spec:
         - "/bin/sh"
         - "-c"
         - "set -x; until curl -k ${ES_PROTOCOL}://${ES_HOST}:${ES_PORT}/${ES_HEALTH} | grep -E 'green|yellow'; do echo waiting for elasticsearch; sleep 1; done; echo elasticsearch is ready"
-        resources:    
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:    
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
-        env:  
+        env:
         - name: ES_URL
           value: "${ES_PROTOCOL}://${ES_HOST}:${ES_PORT}"
         - name: ES_HOST
@@ -50,7 +53,7 @@ spec:
         - name: ES_PORT
           value: "9200"
         - name: ES_HEALTH
-          value: "_cat/health"      
+          value: "_cat/health"
       - name: test-inventory
         image: alexeiled/curl:latest
         imagePullPolicy: IfNotPresent
@@ -58,16 +61,16 @@ spec:
         - "/bin/sh"
         - "-c"
         - "until curl ${INVENTORY_URL}; do echo waiting for inventory-service at ${INVENTORY_URL}; sleep 1; done; echo inventory is ready"
-        resources:    
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:    
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
-        env:  
+        env:
         - name: INVENTORY_URL
           value: http://inventory:8080
       containers:
@@ -94,20 +97,20 @@ spec:
           initialDelaySeconds: 35
           periodSeconds: 20
           failureThreshold: 6
-        resources:          
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:          
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
-        env:        
+        env:
         - name: SERVICE_PORT
           value: "8081"
         - name: JAVA_TMP_DIR
-          value: /spring-tmp        
+          value: /spring-tmp
         - name: ES_URL
           value: "${ES_PROTOCOL}://${ES_HOST}:${ES_PORT}"
         - name: ES_HOST

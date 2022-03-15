@@ -1,10 +1,10 @@
 ---
 # Source: bluecompute-ce/charts/customer/templates/deployment.yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: customer
-  labels:    
+  labels:
     app: "customer"
     tier: "backend"
     version: "v1"
@@ -12,10 +12,13 @@ metadata:
     release: "bluecompute"
     chart: customer-0.6.0
 spec:
+  selector:
+    matchLabels:
+      app: customer
   replicas: 1
   template:
     metadata:
-      labels:        
+      labels:
         app: "customer"
         tier: "backend"
         version: "v1"
@@ -23,24 +26,24 @@ spec:
         release: "bluecompute"
         chart: customer-0.6.0
     spec:
-      initContainers:      
+      initContainers:
       - name: test-couchdb
         image: ibmcase/bluecompute-bash-curl-ssl:latest
-        imagePullPolicy: 
+        imagePullPolicy:
         command:
         - "/bin/bash"
         - "-c"
         - "until curl --max-time 1 ${COUCHDB_PROTOCOL}://${COUCHDB_USER}:${COUCHDB_PASSWORD}@${COUCHDB_HOST}:${COUCHDB_PORT}; do echo waiting for couchdb; /bin/sleep 1; done"
-        resources:    
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:    
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
-        env:  
+        env:
         - name: COUCHDB_HOST
           value: "customer-couchdb-svc-couchdb"
         - name: COUCHDB_PROTOCOL
@@ -83,20 +86,20 @@ spec:
           initialDelaySeconds: 35
           periodSeconds: 20
           failureThreshold: 6
-        resources:          
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:          
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
-        env:        
+        env:
         - name: SERVICE_PORT
           value: "8082"
         - name: JAVA_TMP_DIR
-          value: /spring-tmp        
+          value: /spring-tmp
         - name: COUCHDB_HOST
           value: "customer-couchdb-svc-couchdb"
         - name: COUCHDB_PROTOCOL
@@ -114,7 +117,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: customer-couchdb-secret
-              key: adminPassword        
+              key: adminPassword
         - name: HS256_KEY
           valueFrom:
             secretKeyRef:

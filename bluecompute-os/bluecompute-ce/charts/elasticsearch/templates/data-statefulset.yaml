@@ -1,6 +1,6 @@
 ---
 # Source: bluecompute-ce/charts/elasticsearch/templates/data-statefulset.yaml
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
@@ -11,6 +11,9 @@ metadata:
     release: bluecompute
   name: catalog-elasticsearch-data
 spec:
+  selector:
+    matchLabels:
+      app: elasticsearch
   serviceName: catalog-elasticsearch-data
   replicas: 1
   template:
@@ -35,41 +38,6 @@ spec:
                   app: "elasticsearch"
                   release: "bluecompute"
                   component: "data"
-      initContainers:
-      # see https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
-      # and https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-configuration-memory.html#mlockall
-      - name: "sysctl"
-        image: "busybox:latest"
-        imagePullPolicy: "Always"
-        resources:
-            {}
-        command: ["sysctl", "-w", "vm.max_map_count=262144"]
-        securityContext:
-          privileged: true
-      - name: "chown"
-        image: "docker.elastic.co/elasticsearch/elasticsearch-oss:6.6.1"
-        imagePullPolicy: "IfNotPresent"
-        resources:
-            {}
-        command:
-        - /bin/bash
-        - -c
-        - >
-          set -e;
-          set -x;
-          chown elasticsearch:elasticsearch /usr/share/elasticsearch/data;
-          for datadir in $(find /usr/share/elasticsearch/data -mindepth 1 -maxdepth 1 -not -name ".snapshot"); do
-            chown -R elasticsearch:elasticsearch $datadir;
-          done;
-          chown elasticsearch:elasticsearch /usr/share/elasticsearch/logs;
-          for logfile in $(find /usr/share/elasticsearch/logs -mindepth 1 -maxdepth 1 -not -name ".snapshot"); do
-            chown -R elasticsearch:elasticsearch $logfile;
-          done
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-        - mountPath: /usr/share/elasticsearch/data
-          name: data
       containers:
       - name: elasticsearch
         env:

@@ -1,15 +1,18 @@
 ---
 # Source: bluecompute-ce/charts/couchdb/templates/statefulset.yaml
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: customer-couchdb-couchdb
   labels:
     app: couchdb
     chart: couchdb-1.1.1
     release: bluecompute
     heritage: Helm
+  name: customer-couchdb-couchdb
 spec:
+  selector:
+    matchLabels:
+      app: couchdb 
   replicas: 1
   serviceName: customer-couchdb-couchdb
   podManagementPolicy: Parallel

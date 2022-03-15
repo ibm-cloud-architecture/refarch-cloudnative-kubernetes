@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: bluecompute-inventory-populate-mysql-bsw9p
+  name: bluecompute-inventory-populate-mysql-d49sb
   labels:    
     app: "inventory"
     tier: "backend"
@@ -14,7 +14,7 @@ metadata:
 spec:
   template:
     metadata:
-      name: bluecompute-inventory-populate-mysql-g2stq
+      name: bluecompute-inventory-populate-mysql-fie2a
       labels:        
         app: "inventory"
         tier: "backend"
