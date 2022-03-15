@@ -38,10 +38,6 @@ This project provides a reference implementation for running a Cloud Native Web 
 
 This Personal part, where I have created using cmd:
 
-```bash
-helm template docs/charts/bluecompute-ce/bluecompute-ce-0.0.10.tgz --namespace bluecompute  --name-template openshift --set web.service.type=ClusterIP --output-dir bluecompute-os
-```
-
 Special clone option is
 ```bash
 git clone -b spring --single-branch https://github.com/JensMikael/JMJ-os-bluecompute
