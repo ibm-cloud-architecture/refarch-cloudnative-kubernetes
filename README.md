@@ -71,18 +71,18 @@ https://kubernetes.io/docs/reference/using-api/deprecation-guide/
 
 Updated apiVersion as:
 1. extensions/v1beta to apps/v1  OR apps/v1beta2 to apps/v1 in files:
-bluecompute-os/bluecompute-ce/charts/auth/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/catalog/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/couchdb/templates/statefulset.yaml
-bluecompute-os/bluecompute-ce/charts/customer/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/client-deployment.yaml
-bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/data-statefulset.yaml
-bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/master-statefulset.yaml
-bluecompute-os/bluecompute-ce/charts/inventory/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/mariadb/templates/master-statefulset.yaml
-bluecompute-os/bluecompute-ce/charts/mysql/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/orders/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/web/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/auth/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/catalog/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/couchdb/templates/statefulset.yaml
+- bluecompute-os/bluecompute-ce/charts/customer/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/client-deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/data-statefulset.yaml
+- bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/master-statefulset.yaml
+- bluecompute-os/bluecompute-ce/charts/inventory/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/mariadb/templates/master-statefulset.yaml
+- bluecompute-os/bluecompute-ce/charts/mysql/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/orders/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/web/templates/deployment.yaml
 
 2. Need to update the  spec.selector.name because of the new apiVersion
 ```bash
@@ -93,17 +93,17 @@ spec:
 ```
 This is needed for the following files as listed:
 
-bluecompute-os/bluecompute-ce/charts/auth/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/catalog/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/couchdb/templates/statefulset.yaml
-bluecompute-os/bluecompute-ce/charts/customer/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/client-deployment.yaml
-bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/data-statefulset.yaml
-bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/master-statefulset.yaml
-bluecompute-os/bluecompute-ce/charts/inventory/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/mysql/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/orders/templates/deployment.yaml
-bluecompute-os/bluecompute-ce/charts/web/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/auth/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/catalog/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/couchdb/templates/statefulset.yaml
+- bluecompute-os/bluecompute-ce/charts/customer/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/client-deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/data-statefulset.yaml
+- bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/master-statefulset.yaml
+- bluecompute-os/bluecompute-ce/charts/inventory/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/mysql/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/orders/templates/deployment.yaml
+- bluecompute-os/bluecompute-ce/charts/web/templates/deployment.yaml
 
 3. extensions/v1beta1 to networking.k8s.io/v1 in file:
 bluecompute-os/bluecompute-ce/templates/ingress.yaml
