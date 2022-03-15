@@ -1,0 +1,16 @@
+---
+# Source: bluecompute-ce/charts/mysql/templates/tests/test-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inventory-mysql-test
+  labels:
+    app: inventory-mysql
+    chart: "mysql-0.15.0"
+    heritage: "Helm"
+    release: "openshift"
+data:
+  run.sh: |-
+    @test "Testing MySQL Connection" {
+      mysql --host=inventory-mysql --port=3306 -u root -padmin123
+    }

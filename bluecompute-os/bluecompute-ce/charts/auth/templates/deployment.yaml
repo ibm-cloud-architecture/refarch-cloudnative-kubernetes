@@ -1,29 +1,32 @@
 ---
 # Source: bluecompute-ce/charts/auth/templates/deployment.yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth
-  labels:    
+  labels:
     app: "auth"
     tier: "backend"
     version: "v1"
     heritage: "Helm"
-    release: "bluecompute"
+    release: "openshift"
     chart: auth-0.6.0
 spec:
+  selector:
+    matchLabels:
+      app: auth
   replicas: 1
   template:
     metadata:
-      labels:        
+      labels:
         app: "auth"
         tier: "backend"
         version: "v1"
         heritage: "Helm"
-        release: "bluecompute"
+        release: "openshift"
         chart: auth-0.6.0
     spec:
-      initContainers:      
+      initContainers:
       - name: test-customer
         image: ibmcase/bluecompute-bash-curl-ssl:latest
         imagePullPolicy: IfNotPresent
@@ -31,12 +34,12 @@ spec:
         - "/bin/bash"
         - "-c"
         - "until curl --max-time 1 http://customer:8082; do echo waiting for customer-service; sleep 1; done"
-        resources:    
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:    
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
@@ -64,22 +67,22 @@ spec:
           initialDelaySeconds: 35
           periodSeconds: 20
           failureThreshold: 6
-        resources:          
+        resources:
           limits:
             memory: 384Mi
           requests:
             memory: 64Mi
-        securityContext:          
+        securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsUser: 2000
-        env:        
+        env:
         - name: SERVICE_PORT
           value: "8083"
         - name: JAVA_TMP_DIR
-          value: /spring-tmp        
+          value: /spring-tmp
         - name: CUSTOMER_URL
-          value: http://customer:8082        
+          value: http://customer:8082
         - name: HS256_KEY
           valueFrom:
             secretKeyRef:

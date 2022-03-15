@@ -36,6 +36,15 @@
 ## Introduction
 This project provides a reference implementation for running a Cloud Native Web Application using a Microservices architecture on a Kubernetes cluster.  The logical architecture for this reference implementation is shown in the picture below.
 
+This Personal part, where I have c created using cmd:
+
+helm template docs/charts/bluecompute-ce/bluecompute-ce-0.0.10.tgz --namespace bluecompute  --name-template openshift --set web.service.type=ClusterIP --output-dir bluecompute-os
+
+Updated apiVersion as
+extensions/v1beta to apps/v1
+apps/v1beta2 to apps/v1
+extensions/v1beta1 to networking.k8s.io/v1
+
 ![Application Architecture](static/imgs/app_architecture.png?raw=true)
 
 ## Application Overview
@@ -93,7 +102,7 @@ The following clusters have been tested with this sample application:
 
 To provision it:
   ```bash
-  crc start 
+  crc start
   ```
 Enter your pull secret when prompted. You can get it [here](https://cloud.redhat.com/openshift/install/crc/installer-provisioned)
 
@@ -233,7 +242,7 @@ Use the following test credentials to login:
 To delete the application from your openshift cluster, run the following:
 ```bash
 oc delete project bluecompute
-``` 
+```
 
 To delete the application from your kubernetes cluster using helm, run the following:
 ```bash

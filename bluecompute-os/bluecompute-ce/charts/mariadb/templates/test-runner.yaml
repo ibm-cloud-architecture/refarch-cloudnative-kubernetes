@@ -1,0 +1,46 @@
+---
+# Source: bluecompute-ce/charts/mariadb/templates/test-runner.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "openshift-orders-mariadb-test-yzsb5"
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  initContainers:
+    - name: "test-framework"
+      image: "dduportal/bats:0.4.0"
+      command:
+        - "bash"
+        - "-c"
+        - |
+          set -ex
+          # copy bats to tools dir
+          cp -R /usr/local/libexec/ /tools/bats/
+      volumeMounts:
+      - mountPath: /tools
+        name: tools
+  containers:
+    - name: mariadb-test
+      image: docker.io/bitnami/mariadb:10.1.38
+      imagePullPolicy: "IfNotPresent"
+      command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
+      env:
+        - name: MARIADB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: openshift-orders-mariadb
+              key: mariadb-root-password
+      volumeMounts:
+      - mountPath: /tests
+        name: tests
+        readOnly: true
+      - mountPath: /tools
+        name: tools
+  volumes:
+  - name: tests
+    configMap:
+      name: openshift-orders-mariadb-tests
+  - name: tools
+    emptyDir: {}
+  restartPolicy: Never

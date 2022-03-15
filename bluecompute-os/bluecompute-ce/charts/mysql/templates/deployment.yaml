@@ -1,15 +1,18 @@
 ---
 # Source: bluecompute-ce/charts/mysql/templates/deployment.yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: inventory-mysql
   labels:
     app: inventory-mysql
     chart: "mysql-0.15.0"
-    release: "bluecompute"
+    release: "openshift"
     heritage: "Helm"
 spec:
+  selector:
+    matchLabels:
+      app: inventory-mysql
   template:
     metadata:
       labels:
@@ -26,7 +29,7 @@ spec:
       # - name: do-something
       #   image: busybox
       #   command: ['do', 'something']
-      
+
       containers:
       - name: inventory-mysql
         image: "mysql:5.7.14"
@@ -81,7 +84,7 @@ spec:
         # - name: extras
         #   mountPath: /usr/share/extras
         #   readOnly: true
-        
+
       volumes:
       - name: data
         emptyDir: {}

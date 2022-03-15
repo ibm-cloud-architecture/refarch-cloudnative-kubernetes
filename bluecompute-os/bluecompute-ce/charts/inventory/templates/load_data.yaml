@@ -3,24 +3,24 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: bluecompute-inventory-populate-mysql-bsw9p
+  name: openshift-inventory-populate-mysql-ynanr
   labels:    
     app: "inventory"
     tier: "backend"
     version: "v1"
     heritage: "Helm"
-    release: "bluecompute"
+    release: "openshift"
     chart: inventory-0.6.0
 spec:
   template:
     metadata:
-      name: bluecompute-inventory-populate-mysql-g2stq
+      name: openshift-inventory-populate-mysql-l3xgm
       labels:        
         app: "inventory"
         tier: "backend"
         version: "v1"
         heritage: "Helm"
-        release: "bluecompute"
+        release: "openshift"
         chart: inventory-0.6.0
     spec:
       restartPolicy: Never

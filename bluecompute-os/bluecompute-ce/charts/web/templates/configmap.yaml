@@ -4,15 +4,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: web-config
-  labels:    
+  labels:
     app: "web"
     tier: "frontend"
     version: "v1"
     heritage: "Helm"
-    release: "bluecompute"
+    release: "openshift"
     chart: web-0.6.0
 data:
-  checks: "# Check the main website, including text content\r\n/\tIBM Cloud Architecture\r\n\r\n#Check
+  checks: "# Check the main website, including text content\r\n/\tIBM Cloud Architecture for OpenShift\r\n\r\n#Check
     the Inventory page\r\n/catalog/ Dayton Meat Chopper\r\n\r\n# Check for stylesheets
     and for text content in stylesheets\r\n/stylesheets/font-awesome/font-awesome.css
     \   @font-face\r\n\r\n\r\n# Check a sub-domain\r\n#//some-subdomain.some-site.com/reviews

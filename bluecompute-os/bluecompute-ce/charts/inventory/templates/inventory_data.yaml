@@ -9,7 +9,7 @@ metadata:
     tier: "backend"
     version: "v1"
     heritage: "Helm"
-    release: "bluecompute"
+    release: "openshift"
     chart: inventory-0.6.0
 data:
   mysql_data.sql: |-

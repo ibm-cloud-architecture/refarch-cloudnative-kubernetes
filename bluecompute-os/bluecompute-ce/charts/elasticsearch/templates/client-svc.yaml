@@ -8,7 +8,7 @@ metadata:
     chart: elasticsearch-1.21.1
     component: "client"
     heritage: Helm
-    release: bluecompute
+    release: openshift
   name: catalog-elasticsearch-client
 
 spec:
@@ -19,5 +19,5 @@ spec:
   selector:
     app: elasticsearch
     component: "client"
-    release: bluecompute
+    release: openshift
   type: ClusterIP

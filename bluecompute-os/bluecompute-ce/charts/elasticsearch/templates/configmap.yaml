@@ -7,7 +7,7 @@ metadata:
   labels:
     app: catalog-elasticsearch
     chart: "elasticsearch-1.21.1"
-    release: "bluecompute"
+    release: "openshift"
     heritage: "Helm"
 data:
   elasticsearch.yml: |-

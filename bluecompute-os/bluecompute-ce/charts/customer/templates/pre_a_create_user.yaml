@@ -3,24 +3,24 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: bluecompute-customer-create-user-hw3sv
+  name: openshift-customer-create-user-brm6h
   labels:    
     app: "customer"
     tier: "backend"
     version: "v1"
     heritage: "Helm"
-    release: "bluecompute"
+    release: "openshift"
     chart: customer-0.6.0
 spec:
   template:
     metadata:
-      name: bluecompute-customer-create-user-sg7zf
+      name: openshift-customer-create-user-gmmf7
       labels:        
         app: "customer"
         tier: "backend"
         version: "v1"
         heritage: "Helm"
-        release: "bluecompute"
+        release: "openshift"
         chart: customer-0.6.0
     spec:
       restartPolicy: Never

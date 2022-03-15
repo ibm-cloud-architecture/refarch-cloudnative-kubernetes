@@ -1,6 +1,6 @@
 ---
 # Source: bluecompute-ce/charts/elasticsearch/templates/client-deployment.yaml
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -8,16 +8,19 @@ metadata:
     chart: elasticsearch-1.21.1
     component: "client"
     heritage: Helm
-    release: bluecompute
+    release: openshift
   name: catalog-elasticsearch-client
 spec:
+  selector:
+    matchLabels:
+      app: elasticsearch
   replicas: 1
   template:
     metadata:
       labels:
         app: elasticsearch
         component: "client"
-        release: bluecompute
+        release: openshift
     spec:
       serviceAccountName: default
       securityContext:
@@ -31,19 +34,8 @@ spec:
               labelSelector:
                 matchLabels:
                   app: "elasticsearch"
-                  release: "bluecompute"
+                  release: "openshift"
                   component: "client"
-      initContainers:
-      # see https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
-      # and https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-configuration-memory.html#mlockall
-      - name: "sysctl"
-        image: "busybox:latest"
-        imagePullPolicy: "Always"
-        resources:
-            {}
-        command: ["sysctl", "-w", "vm.max_map_count=262144"]
-        securityContext:
-          privileged: true
       containers:
       - name: elasticsearch
         env:

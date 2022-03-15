@@ -1,13 +1,13 @@
 ---
 # Source: bluecompute-ce/charts/couchdb/templates/statefulset.yaml
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: customer-couchdb-couchdb
   labels:
     app: couchdb
     chart: couchdb-1.1.1
-    release: bluecompute
+    release: openshift
     heritage: Helm
 spec:
   replicas: 1
@@ -16,13 +16,13 @@ spec:
   selector:
     matchLabels:
       app: couchdb
-      release: bluecompute
+      release: openshift
   template:
     metadata:
       labels:
         app: couchdb
-        release: bluecompute
-    spec:
+        release: openshift
+  spec:
       initContainers:
         - name: init-copy
           image: "busybox:latest"
