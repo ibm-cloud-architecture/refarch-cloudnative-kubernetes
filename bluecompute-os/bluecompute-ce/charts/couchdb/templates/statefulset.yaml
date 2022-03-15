@@ -3,26 +3,29 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: customer-couchdb-couchdb
   labels:
     app: couchdb
     chart: couchdb-1.1.1
-    release: openshift
+    release: bluecompute
     heritage: Helm
+  name: customer-couchdb-couchdb
 spec:
+  selector:
+    matchLabels:
+      app: couchdb 
   replicas: 1
   serviceName: customer-couchdb-couchdb
   podManagementPolicy: Parallel
   selector:
     matchLabels:
       app: couchdb
-      release: openshift
+      release: bluecompute
   template:
     metadata:
       labels:
         app: couchdb
-        release: openshift
-  spec:
+        release: bluecompute
+    spec:
       initContainers:
         - name: init-copy
           image: "busybox:latest"

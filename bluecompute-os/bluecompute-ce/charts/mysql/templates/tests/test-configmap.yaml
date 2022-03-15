@@ -8,7 +8,7 @@ metadata:
     app: inventory-mysql
     chart: "mysql-0.15.0"
     heritage: "Helm"
-    release: "openshift"
+    release: "bluecompute"
 data:
   run.sh: |-
     @test "Testing MySQL Connection" {

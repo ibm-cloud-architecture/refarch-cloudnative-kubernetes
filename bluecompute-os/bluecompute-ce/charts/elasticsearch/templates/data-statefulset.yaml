@@ -8,7 +8,7 @@ metadata:
     chart: elasticsearch-1.21.1
     component: "data"
     heritage: Helm
-    release: openshift
+    release: bluecompute
   name: catalog-elasticsearch-data
 spec:
   selector:
@@ -21,7 +21,7 @@ spec:
       labels:
         app: elasticsearch
         component: "data"
-        release: openshift
+        release: bluecompute
         role: data
     spec:
       serviceAccountName: default
@@ -36,7 +36,7 @@ spec:
               labelSelector:
                 matchLabels:
                   app: "elasticsearch"
-                  release: "openshift"
+                  release: "bluecompute"
                   component: "data"
       containers:
       - name: elasticsearch

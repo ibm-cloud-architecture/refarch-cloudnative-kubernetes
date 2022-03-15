@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "openshift-orders-mariadb-test-yzsb5"
+  name: "bluecompute-orders-mariadb-test-lhyvi"
   annotations:
     "helm.sh/hook": test-success
 spec:
@@ -29,7 +29,7 @@ spec:
         - name: MARIADB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: openshift-orders-mariadb
+              name: bluecompute-orders-mariadb
               key: mariadb-root-password
       volumeMounts:
       - mountPath: /tests
@@ -40,7 +40,7 @@ spec:
   volumes:
   - name: tests
     configMap:
-      name: openshift-orders-mariadb-tests
+      name: bluecompute-orders-mariadb-tests
   - name: tools
     emptyDir: {}
   restartPolicy: Never

@@ -8,7 +8,7 @@ metadata:
     app: inventory-mysql
     chart: "mysql-0.15.0"
     heritage: "Helm"
-    release: "openshift"
+    release: "bluecompute"
   annotations:
     "helm.sh/hook": test-success
 spec:
@@ -26,7 +26,7 @@ spec:
       - mountPath: /tools
         name: tools
   containers:
-    - name: openshift-test
+    - name: bluecompute-test
       image: "mysql:5.7.14"
       command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
       volumeMounts:

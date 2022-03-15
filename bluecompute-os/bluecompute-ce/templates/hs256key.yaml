@@ -7,7 +7,7 @@ metadata:
   labels:    
     app: bluecompute
     heritage: "Helm"
-    release: "openshift"
+    release: "bluecompute"
     chart: bluecompute-ce-0.0.10
 data:
   key: RTY1MjZWSmtLWWh5VEZSRk1DMHBURUNwSGNaN1RHY3E4cEtzVlZnejlLdEVTVnBoZUVPMjg0cUt6ZnpnOEhwV05CUGVIT3hOR2x5dWRVSGk2aTh0RlFKWEM4UGlJNDhSVXBNaDIzdlBETEdEMzVwQ00wNDE3Z2Y1OHo1eGxtUk5paTU2ZndSQ21JaGhWN2hEc20zS08yalJ2NEVCVno3SHJZYnpGZXFJNDVDYVN0a01ZTmlwelNtMmR1dWVyN3pSZE1qRUtJZHFzYnkwSmZwUXB5a0htQzVMNmh4a1gwQlQ3WFdxenRUcjZ4SEN3cXN0MjZPMGc4cjdiWFNZanA0YQ==

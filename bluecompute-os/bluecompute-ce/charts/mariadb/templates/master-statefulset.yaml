@@ -3,20 +3,20 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: openshift-mariadb
+  name: bluecompute-mariadb
   labels:
     app: "orders-mariadb"
     chart: mariadb-5.5.3
     component: "master"
-    release: "openshift"
+    release: "bluecompute"
     heritage: "Helm"
 spec:
   selector:
     matchLabels:
-      release: "openshift"
+      release: "bluecompute"
       component: "master"
       app: orders-mariadb
-  serviceName: "openshift-mariadb"
+  serviceName: "bluecompute-mariadb"
   replicas: 1
   updateStrategy:
     type: RollingUpdate
@@ -25,7 +25,7 @@ spec:
       labels:
         app: "orders-mariadb"
         component: "master"
-        release: "openshift"
+        release: "bluecompute"
         chart: mariadb-5.5.3
     spec:
       serviceAccountName: "default"
@@ -41,7 +41,7 @@ spec:
               labelSelector:
                 matchLabels:
                   app: "orders-mariadb"
-                  release: "openshift"
+                  release: "bluecompute"
       containers:
       - name: "mariadb"
         image: docker.io/bitnami/mariadb:10.1.38
@@ -50,14 +50,14 @@ spec:
         - name: MARIADB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: openshift-orders-mariadb
+              name: bluecompute-orders-mariadb
               key: mariadb-root-password
         - name: MARIADB_USER
           value: "dbuser"
         - name: MARIADB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: openshift-orders-mariadb
+              name: bluecompute-orders-mariadb
               key: mariadb-password
         - name: MARIADB_DATABASE
           value: "ordersdb"
@@ -91,6 +91,6 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: openshift-mariadb
+            name: bluecompute-mariadb
         - name: data
           emptyDir: {}

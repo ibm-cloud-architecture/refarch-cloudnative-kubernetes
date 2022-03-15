@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: openshift-orders-mariadb-tests
+  name: bluecompute-orders-mariadb-tests
 data:
   run.sh: |-
     @test "Testing MariaDB is accessible" {
-      mysql -h openshift-orders-mariadb -uroot -p$MARIADB_ROOT_PASSWORD -e 'show databases;'
+      mysql -h bluecompute-orders-mariadb -uroot -p$MARIADB_ROOT_PASSWORD -e 'show databases;'
     }

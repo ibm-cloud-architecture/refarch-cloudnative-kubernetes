@@ -9,7 +9,7 @@ metadata:
     tier: "backend"
     version: "v1"
     heritage: "Helm"
-    release: "openshift"
+    release: "bluecompute"
     chart: orders-0.6.1
 spec:
   selector:
@@ -23,7 +23,7 @@ spec:
         tier: "backend"
         version: "v1"
         heritage: "Helm"
-        release: "openshift"
+        release: "bluecompute"
         chart: orders-0.6.1
     spec:
       initContainers:
@@ -45,7 +45,7 @@ spec:
           runAsUser: 2000
         env:
         - name: MYSQL_HOST
-          value: openshift-orders-mariadb
+          value: bluecompute-orders-mariadb
         - name: MYSQL_PORT
           value: "3307"
         - name: MYSQL_DATABASE
@@ -96,7 +96,7 @@ spec:
         - name: JAVA_TMP_DIR
           value: /spring-tmp
         - name: MYSQL_HOST
-          value: openshift-orders-mariadb
+          value: bluecompute-orders-mariadb
         - name: MYSQL_PORT
           value: "3307"
         - name: MYSQL_DATABASE

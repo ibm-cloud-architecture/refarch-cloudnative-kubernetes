@@ -8,7 +8,7 @@ metadata:
     chart: elasticsearch-1.21.1
     component: "master"
     heritage: Helm
-    release: openshift
+    release: bluecompute
   name: catalog-elasticsearch-discovery
 spec:
   clusterIP: None
@@ -18,4 +18,4 @@ spec:
   selector:
     app: elasticsearch
     component: "master"
-    release: openshift
+    release: bluecompute

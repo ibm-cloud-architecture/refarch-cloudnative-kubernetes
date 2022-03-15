@@ -9,7 +9,7 @@ metadata:
     tier: "backend"
     version: "v1"
     heritage: "Helm"
-    release: "openshift"
+    release: "bluecompute"
     chart: auth-0.6.0
 spec:
   selector:
@@ -23,7 +23,7 @@ spec:
         tier: "backend"
         version: "v1"
         heritage: "Helm"
-        release: "openshift"
+        release: "bluecompute"
         chart: auth-0.6.0
     spec:
       initContainers:

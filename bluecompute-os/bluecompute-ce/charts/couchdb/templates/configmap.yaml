@@ -8,7 +8,7 @@ metadata:
     app: couchdb
     chart: "couchdb-1.1.1"
     heritage: "Helm"
-    release: "openshift"
+    release: "bluecompute"
 data:
   inifile: |
     [chttpd]

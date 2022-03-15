@@ -1,13 +1,13 @@
+---
 # Source: bluecompute-ce/templates/ingress.yaml
-# apiVersion: apps/v1
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: openshift-bluecompute-ce
+  name: bluecompute-bluecompute-ce
   labels:
     app: bluecompute
     heritage: "Helm"
-    release: "openshift"
+    release: "bluecompute"
     chart: bluecompute-ce-0.0.10
 spec:
   rules:

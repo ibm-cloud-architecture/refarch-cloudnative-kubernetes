@@ -8,7 +8,7 @@ metadata:
     chart: elasticsearch-1.21.1
     component: "client"
     heritage: Helm
-    release: openshift
+    release: bluecompute
   name: catalog-elasticsearch-client
 spec:
   selector:
@@ -20,7 +20,7 @@ spec:
       labels:
         app: elasticsearch
         component: "client"
-        release: openshift
+        release: bluecompute
     spec:
       serviceAccountName: default
       securityContext:
@@ -34,7 +34,7 @@ spec:
               labelSelector:
                 matchLabels:
                   app: "elasticsearch"
-                  release: "openshift"
+                  release: "bluecompute"
                   component: "client"
       containers:
       - name: elasticsearch

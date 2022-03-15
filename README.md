@@ -36,29 +36,93 @@
 ## Introduction
 This project provides a reference implementation for running a Cloud Native Web Application using a Microservices architecture on a Kubernetes cluster.  
 
-This Personal part, where I have created using cmd:
+The logical architecture for this reference implementation is shown in the picture below.
 
-Special clone option is
+![Application Architecture](static/imgs/app_architecture.png?raw=true)
+
+
+## JMJ special adoption
+This Personal part, where I have updated the files as cloned from
 ```bash
-git clone -b spring --single-branch https://github.com/JensMikael/JMJ-os-bluecompute
+git clone -b spring --single-branch https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes
 ```
+Rebuild my own repository as
 
 Special build option is
-
+- delete old bluecompute-os/bluecompute-ce directory
+```bash
+cd bluecompute-os
+```
+```bash
+rm-rf bluecompute-ce
+```
+- build a new bluecompute-os/bluecompute-ce directory using the command
 ```bash
 helm template docs/charts/bluecompute-ce/bluecompute-ce-0.0.10.tgz --namespace bluecompute  --name-template bluecompute --set web.service.type=ClusterIP --output-dir bluecompute-os
 ```
 
+- Moved them into my own repository available at :
+Special clone option is
+```bash
+git clone -b spring --single-branch https://github.com/JensMikael/JMJ-os-bluecompute
+```
+There is some modification required because of update to kubectl. Details are int he depricated list for kubernetes
+https://kubernetes.io/docs/reference/using-api/deprecation-guide/
+
 Updated apiVersion as:
-1. extensions/v1beta to apps/v1
+1. extensions/v1beta to apps/v1  OR apps/v1beta2 to apps/v1 in files:
+bluecompute-os/bluecompute-ce/charts/auth/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/catalog/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/couchdb/templates/statefulset.yaml
+bluecompute-os/bluecompute-ce/charts/customer/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/client-deployment.yaml
+bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/data-statefulset.yaml
+bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/master-statefulset.yaml
+bluecompute-os/bluecompute-ce/charts/inventory/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/mariadb/templates/master-statefulset.yaml
+bluecompute-os/bluecompute-ce/charts/mysql/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/orders/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/web/templates/deployment.yaml
 
-2. apps/v1beta2 to apps/v1
+2. Need to update the  spec.selector.name because of the new apiVersion
+```bash
+spec:
+  selector:
+    matchLabels:
+      app: <appname>
+```
+This is needed for the following files as listed:
 
-3. extensions/v1beta1 to networking.k8s.io/v1
+bluecompute-os/bluecompute-ce/charts/auth/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/catalog/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/couchdb/templates/statefulset.yaml
+bluecompute-os/bluecompute-ce/charts/customer/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/client-deployment.yaml
+bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/data-statefulset.yaml
+bluecompute-os/bluecompute-ce/charts/elasticsearch/templates/master-statefulset.yaml
+bluecompute-os/bluecompute-ce/charts/inventory/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/mysql/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/orders/templates/deployment.yaml
+bluecompute-os/bluecompute-ce/charts/web/templates/deployment.yaml
 
-The logical architecture for this reference implementation is shown in the picture below.
+3. extensions/v1beta1 to networking.k8s.io/v1 in file:
+bluecompute-os/bluecompute-ce/templates/ingress.yaml
 
-![Application Architecture](static/imgs/app_architecture.png?raw=true)
+This also inply the need to adopt the new syntax for
+spec.rules[0].http.paths[0].pathType  . I have selected ImplementationSpecific
+
+Need to adopt new syntax for serviceName & servicePort
+spec.rules[0].http.paths[0].backend.service.name
+spec.rules[0].http.paths[0].backend.service.port.number
+
+4.  Update the Elastic search to try and remove root previligies
+https://www.ibm.com/cloud/blog/deploying-helm-charts-on-openshift
+
+In bluecompute-os/bluecompute-ce/charts/elasticsearch/templates edit the files:
+client-deplpoyment.yaml: Delete 39-49
+data-statefulset.yaml: Delete  41-75
+master-statefulset.yaml: Delete  41 -76
+
 
 ## Application Overview
 The application is a simple store front shopping application that displays a catalog of antique computing devices, where users can search and buy products. It has a web interface that relies on separate BFF (Backend for Frontend) services to interact with the backend data.
